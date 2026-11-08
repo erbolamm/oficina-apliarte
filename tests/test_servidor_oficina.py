@@ -67,6 +67,8 @@ class TestServidorOficina(unittest.TestCase):
             self.assertEqual(datos["estado"], "activo")
             self.assertTrue(datos["total_habilidades"] >= 1)
             self.assertTrue(datos["total_resenas"] >= 1)
+            self.assertEqual(datos.get("total_pestanas"), 27)
+            self.assertEqual(datos.get("pestanas_publicas"), 3)
 
     def test_endpoint_habilidades_lista(self):
         with urllib.request.urlopen(f"{self.base_url}/api/habilidades") as resp:
@@ -162,6 +164,42 @@ class TestServidorOficina(unittest.TestCase):
             self.fail("Deberia haber lanzado HTTPError 405")
         except urllib.error.HTTPError as e:
             self.assertEqual(e.code, 405)
+
+    def test_vista_instala_tu_oficina(self):
+        for ruta in ("/vista/instala-tu-oficina", "/instala-tu-oficina"):
+            with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
+                self.assertEqual(resp.status, 200)
+                self.assertIn("text/html", resp.headers.get("Content-Type", ""))
+                html = resp.read().decode("utf-8")
+                self.assertIn("Oficina ApliArte — Instala tu Oficina", html)
+                self.assertIn("APLIARTE", html)
+                self.assertIn("Hola Kodee", html)
+
+    def test_endpoint_pestanas_ecosistema(self):
+        with urllib.request.urlopen(f"{self.base_url}/api/pestanas") as resp:
+            self.assertEqual(resp.status, 200)
+            datos = json.loads(resp.read().decode("utf-8"))
+            self.assertEqual(datos["modo"], "solo_lectura")
+            self.assertEqual(datos["total"], 27)
+            slugs_publicos = [p["slug"] for p in datos["pestanas"] if p["publica"]]
+            self.assertEqual(set(slugs_publicos), {"skills", "resenas", "instala-tu-oficina"})
+
+    def test_vista_pestana_privada_bloqueada(self):
+        for ruta in ("/vista/aplichat", "/vista/propuestas", "/vista/facturas"):
+            with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
+                self.assertEqual(resp.status, 200)
+                self.assertIn("text/html", resp.headers.get("Content-Type", ""))
+                html = resp.read().decode("utf-8")
+                self.assertIn("blurred-content", html)
+                self.assertIn("Instala tu Oficina en Hostinger", html)
+                self.assertIn("Pestaña Privada", html)
+
+    def test_archivo_escaparate_js(self):
+        with urllib.request.urlopen(f"{self.base_url}/vistas/escaparate.js") as resp:
+            self.assertEqual(resp.status, 200)
+            self.assertIn("javascript", resp.headers.get("Content-Type", ""))
+            js = resp.read().decode("utf-8")
+            self.assertIn("PESTANAS_ECOSISTEMA", js)
 
 
 if __name__ == "__main__":

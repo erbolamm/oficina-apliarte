@@ -1,0 +1,13 @@
+services:
+  oficina-apliarte:
+    build: .
+    container_name: oficina-apliarte
+    restart: always
+    ports:
+      - "8791:8791"
+    volumes:
+      - ./resenas:/app/resenas
+      - ./habilidades:/app/habilidades
+    environment:
+      - OFICINA_PUERTO=8791
+      - OFICINA_HOST=0.0.0.0

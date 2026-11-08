@@ -275,9 +275,10 @@
     <span class="badge">Modo Solo Lectura</span>
   </header>
 
-  <nav class="nav-tabs">
+  <nav class="nav-tabs" id="escaparate-nav">
     <a href="/vista/skills" class="nav-tab">Banco de Habilidades</a>
     <a href="/resenas" class="nav-tab active">Resenas de Tiendas</a>
+    <a href="/vista/instala-tu-oficina" class="nav-tab" style="color:var(--primary);border:1px solid var(--primary);">Instala tu Oficina</a>
   </nav>
 
   <div class="layout">
@@ -465,6 +466,12 @@
     };
 
     loadReviews();
+  </script>
+  <script src="/vistas/escaparate.js"></script>
+  <script>
+    if (typeof renderizarBarraEscaparate === 'function') {
+      renderizarBarraEscaparate('escaparate-nav', 'resenas');
+    }
   </script>
 </body>
 </html>

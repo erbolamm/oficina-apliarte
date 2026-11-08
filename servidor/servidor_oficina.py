@@ -16,6 +16,36 @@ DIR_HABILIDADES = RAIZ_PROYECTO / "habilidades"
 DIR_VISTAS = RAIZ_PROYECTO / "vistas"
 DIR_RESENAS = RAIZ_PROYECTO / "resenas"
 
+PESTANAS_ECOSISTEMA = [
+    {"slug": "skills", "titulo": "Banco de Habilidades", "ruta": "/vista/skills", "publica": True},
+    {"slug": "resenas", "titulo": "Reseñas de Tiendas", "ruta": "/resenas", "publica": True},
+    {"slug": "instala-tu-oficina", "titulo": "Instala tu Oficina", "ruta": "/vista/instala-tu-oficina", "publica": True},
+    {"slug": "propuestas", "titulo": "Bandeja de Propuestas y Aprendizajes", "ruta": "/vista/propuestas", "publica": False},
+    {"slug": "aplichat", "titulo": "ApliChat y Buzón de Conversación", "ruta": "/vista/aplichat", "publica": False},
+    {"slug": "tiendas", "titulo": "Tiendas y Metadatos ASO", "ruta": "/vista/tiendas", "publica": False},
+    {"slug": "diseno", "titulo": "Capturas Retina y Mockups", "ruta": "/vista/diseno", "publica": False},
+    {"slug": "musica", "titulo": "Música Procedural Strudel", "ruta": "/vista/musica", "publica": False},
+    {"slug": "mercado", "titulo": "Estudio de Mercado y Tendencias", "ruta": "/vista/mercado", "publica": False},
+    {"slug": "locucion", "titulo": "Locución y Doblaje", "ruta": "/vista/locucion", "publica": False},
+    {"slug": "facturas", "titulo": "Facturas y Gestoría Trimestral", "ruta": "/vista/facturas", "publica": False},
+    {"slug": "correos", "titulo": "Correos de Soporte de Usuarios", "ruta": "/vista/correos", "publica": False},
+    {"slug": "pnl", "titulo": "Programación Neurolingüística (PNL)", "ruta": "/vista/pnl", "publica": False},
+    {"slug": "herramientas", "titulo": "Catálogo de Herramientas", "ruta": "/vista/herramientas", "publica": False},
+    {"slug": "auditor-tiendas", "titulo": "Auditoría de Tiendas y Versiones", "ruta": "/vista/auditor-tiendas", "publica": False},
+    {"slug": "auditoria-web", "titulo": "Auditoría Web y Conversión", "ruta": "/vista/auditoria-web", "publica": False},
+    {"slug": "admob", "titulo": "AdMob y Publicidad Dual", "ruta": "/vista/admob", "publica": False},
+    {"slug": "aislar-voces", "titulo": "Aislamiento Vocal y Peritaje", "ruta": "/vista/aislar-voces", "publica": False},
+    {"slug": "campana-visual", "titulo": "Campaña Visual Multiformato", "ruta": "/vista/campana-visual", "publica": False},
+    {"slug": "edicion-video", "titulo": "Edición y Mezcla de Vídeo", "ruta": "/vista/edicion-video", "publica": False},
+    {"slug": "presentaciones", "titulo": "Presentaciones Multilingües", "ruta": "/vista/presentaciones", "publica": False},
+    {"slug": "blogger", "titulo": "Publicaciones en Blogger", "ruta": "/vista/blogger", "publica": False},
+    {"slug": "conciliacion", "titulo": "Conciliación Bancaria", "ruta": "/vista/conciliacion", "publica": False},
+    {"slug": "ses-hospedajes", "titulo": "Registro SES Hospedajes", "ruta": "/vista/ses-hospedajes", "publica": False},
+    {"slug": "vps", "titulo": "Estado de Infraestructura VPS", "ruta": "/vista/vps", "publica": False},
+    {"slug": "apliarte-bot", "titulo": "Supervisión de ApliArteBot", "ruta": "/vista/apliarte-bot", "publica": False},
+    {"slug": "directo", "titulo": "Monitor de Directo y Streaming", "ruta": "/vista/directo", "publica": False},
+]
+
 
 def parsear_frontmatter(texto: str) -> dict:
     metadatos = {}
@@ -126,12 +156,27 @@ class ManejadorOficina(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(cuerpo)
 
+    def responder_js(self, js_texto: str, codigo: int = 200):
+        cuerpo = js_texto.encode("utf-8")
+        self.send_response(codigo)
+        self.send_header("Content-Type", "application/javascript; charset=utf-8")
+        self.send_header("Content-Length", str(len(cuerpo)))
+        self.send_header("X-Modo-Oficina", "solo_lectura")
+        self.end_headers()
+        self.wfile.write(cuerpo)
+
     def responder_error(self, mensaje: str, codigo: int = 404):
         self.responder_json({"error": mensaje, "codigo": codigo}, codigo=codigo)
 
     def do_GET(self):
         parsed = urlparse(self.path)
         ruta = parsed.path.rstrip("/")
+
+        if ruta in ("/vistas/escaparate.js", "/escaparate.js"):
+            archivo_js = DIR_VISTAS / "escaparate.js"
+            if archivo_js.exists():
+                self.responder_js(archivo_js.read_text(encoding="utf-8"))
+                return
 
         if ruta == "" or ruta == "/" or ruta == "/vista/skills" or ruta == "/skills":
             archivo_vista = DIR_VISTAS / "skills.html"
@@ -145,6 +190,12 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 self.responder_html(archivo_vista.read_text(encoding="utf-8"))
                 return
 
+        if ruta in ("/vista/instala-tu-oficina", "/instala-tu-oficina"):
+            archivo_vista = DIR_VISTAS / "instala-tu-oficina.html"
+            if archivo_vista.exists():
+                self.responder_html(archivo_vista.read_text(encoding="utf-8"))
+                return
+
         if ruta == "/api/estado":
             self.responder_json({
                 "servicio": "oficina-apliarte",
@@ -153,6 +204,16 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 "version": "0.1.0",
                 "total_habilidades": len(listar_habilidades()),
                 "total_resenas": len(listar_resenas()),
+                "total_pestanas": len(PESTANAS_ECOSISTEMA),
+                "pestanas_publicas": sum(1 for p in PESTANAS_ECOSISTEMA if p["publica"]),
+            })
+            return
+
+        if ruta == "/api/pestanas":
+            self.responder_json({
+                "modo": "solo_lectura",
+                "total": len(PESTANAS_ECOSISTEMA),
+                "pestanas": PESTANAS_ECOSISTEMA,
             })
             return
 
@@ -195,6 +256,18 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 self.responder_error(f"Resena '{id_resena}' no encontrada", 404)
             return
 
+        if ruta.startswith("/vista/"):
+            slug = ruta.replace("/vista/", "").strip("/")
+            for p in PESTANAS_ECOSISTEMA:
+                if p["slug"] == slug:
+                    plantilla_privada = DIR_VISTAS / "pestana_privada.html"
+                    if plantilla_privada.exists():
+                        contenido = plantilla_privada.read_text(encoding="utf-8")
+                        contenido = contenido.replace("{{TITULO_PESTANA}}", p["titulo"])
+                        self.responder_html(contenido)
+                        return
+                    break
+
         self.responder_error(f"Ruta '{ruta}' no encontrada en modo solo lectura", 404)
 
     def do_POST(self):
@@ -211,7 +284,7 @@ class ManejadorOficina(BaseHTTPRequestHandler):
         pass
 
 
-def arrancar_servidor(puerto: int = 8795, host: str = "127.0.0.1"):
+def arrancar_servidor(puerto: int = 8791, host: str = "0.0.0.0"):
     servidor = HTTPServer((host, puerto), ManejadorOficina)
     print(f"Servidor Oficina ApliArte escuchando en http://{host}:{puerto} (solo lectura)")
     try:
@@ -222,6 +295,6 @@ def arrancar_servidor(puerto: int = 8795, host: str = "127.0.0.1"):
 
 
 if __name__ == "__main__":
-    puerto_env = int(os.environ.get("OFICINA_PUERTO", "8795"))
-    host_env = os.environ.get("OFICINA_HOST", "127.0.0.1")
+    puerto_env = int(os.environ.get("OFICINA_PUERTO", "8791"))
+    host_env = os.environ.get("OFICINA_HOST", "0.0.0.0")
     arrancar_servidor(puerto=puerto_env, host=host_env)
