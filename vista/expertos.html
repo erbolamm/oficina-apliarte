@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#005fa9">
+  <title>Expertos Soberanos · Oficina ApliArte</title>
+  <link rel="stylesheet" href="../panel-shell.css">
+  <style>
+    .expertos-grid { display: grid; grid-template-columns: 320px 1fr; gap: 20px; margin-top: 15px; }
+    .boletines-list { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px; max-height: 650px; overflow-y: auto; }
+    .boletin-item { padding: 10px; border-bottom: 1px solid var(--border); cursor: pointer; border-radius: 4px; transition: background 0.15s; }
+    .boletin-item:hover, .boletin-item.active { background: var(--hover); }
+    .boletin-title { font-weight: bold; font-size: 0.95rem; margin-bottom: 4px; color: var(--primary); }
+    .boletin-meta { font-size: 0.8rem; color: var(--muted); }
+    .viewer-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+    .viewer-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+    .viewer-body { white-space: pre-wrap; font-family: monospace; font-size: 0.9rem; background: var(--bg); padding: 15px; border-radius: 6px; border: 1px solid var(--border); max-height: 500px; overflow-y: auto; }
+    .consultas-box { border: 1px solid var(--border); border-radius: 8px; padding: 15px; background: var(--surface); margin-top: 20px; }
+    .query-form { display: flex; gap: 10px; margin-top: 10px; }
+    .query-input { flex: 1; padding: 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); }
+    .query-select { padding: 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); }
+    .query-btn { padding: 10px 16px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+    .query-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .response-box { margin-top: 15px; padding: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; min-height: 80px; font-size: 0.9rem; white-space: pre-wrap; }
+    .tabs-nav { display: flex; gap: 8px; margin-bottom: 15px; border-bottom: 2px solid var(--border); padding-bottom: 8px; flex-wrap: wrap; }
+    .tab-btn { padding: 8px 16px; border: 1px solid var(--border); background: var(--bg); border-radius: 6px; cursor: pointer; font-weight: bold; }
+    .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+    @media (max-width: 768px) {
+      .expertos-grid { grid-template-columns: 1fr; }
+      .viewer-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .query-form { flex-direction: column; }
+    }
+  </style>
+  <script>
+    try {
+      document.documentElement.dataset.theme = localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
+    } catch (_) {}
+  </script>
+</head>
+<body>
+  <div class="app-shell">
+    <main class="main-content" style="padding: 24px; max-width: 1300px; margin: 0 auto;">
+      <header style="margin-bottom: 20px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <h1 style="margin: 0; font-size: 1.8rem; display: flex; align-items: center; gap: 10px;">
+              <span>🦉</span> <span>Expertos Soberanos (VPS-Ready)</span>
+            </h1>
+            <p style="margin: 5px 0 0 0; color: var(--muted); font-size: 0.95rem;">
+              Boletines diarios matinales y consultas en 100% solo lectura de Claude, Codex y Google.
+            </p>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <a href="/vista/supervision" class="query-btn" style="text-decoration:none; background:var(--surface); color:var(--text); border:1px solid var(--border);">📊 Supervisión</a>
+            <a href="/vista/mesa-redonda" class="query-btn" style="text-decoration:none; background:var(--surface); color:var(--text); border:1px solid var(--border);">⚖️ Mesa Redonda</a>
+            <a href="/" class="query-btn" style="text-decoration:none;">⌂ Oficina</a>
+          </div>
+        </div>
+      </header>
+
+      <div class="tabs-nav">
+        <button class="tab-btn active" onclick="seleccionarExperto('claude')">🟣 Experto Claude</button>
+        <button class="tab-btn" onclick="seleccionarExperto('codex')">🟢 Experto Codex</button>
+        <button class="tab-btn" onclick="seleccionarExperto('google')">🔵 Experto Google</button>
+      </div>
+
+      <div class="expertos-grid">
+        <div class="boletines-list">
+          <div style="font-weight:bold; margin-bottom:10px; display:flex; justify-content:space-between;">
+            <span>Boletines Diarios</span>
+            <span id="badge-total" style="font-size:0.8rem; background:var(--primary); color:white; padding:2px 6px; border-radius:10px;">0</span>
+          </div>
+          <div id="boletines-items">Cargando boletines...</div>
+        </div>
+
+        <div class="viewer-panel">
+          <div class="viewer-header">
+            <div>
+              <strong id="view-title" style="font-size:1.1rem;">Selecciona un boletín</strong>
+              <div id="view-meta" style="font-size:0.8rem; color:var(--muted); margin-top:2px;">-</div>
+            </div>
+            <div id="view-commit" style="font-size:0.8rem; background:var(--bg); padding:4px 8px; border-radius:4px; border:1px solid var(--border);">Commit: -</div>
+          </div>
+          <div class="viewer-body" id="view-content">Selecciona un boletín de la izquierda para ver su contenido completo.</div>
+        </div>
+      </div>
+
+      <div class="consultas-box">
+        <h3 style="margin:0 0 8px 0; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
+          <span>🔍</span> <span>Consulta Soberana en Solo Lectura (agy CLI)</span>
+        </h3>
+        <p style="margin:0; font-size:0.85rem; color:var(--muted);">
+          Invocación aislada sin permisos de escritura ni ejecución destructiva. Parámetros de seguridad de <code>disabledTools</code> activos.
+        </p>
+        <div class="query-form">
+          <select id="select-modelo" class="query-select">
+            <option value="gemini-3.8-flash-low">Gemini 3.8 Flash (Low)</option>
+            <option value="claude-3-7-sonnet">Claude 3.7 Sonnet</option>
+            <option value="gpt-4o">GPT-4o</option>
+          </select>
+          <input type="text" id="query-input" class="query-input" placeholder="Formula tu pregunta técnica sobre el ecosistema o boletines...">
+          <button id="btn-consultar" class="query-btn" onclick="ejecutarConsulta()">Consultar</button>
+        </div>
+        <div class="response-box" id="query-response">Las respuestas técnicas aparecerán aquí...</div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    let expertoActivo = 'claude';
+    let listaBoletines = [];
+
+    async function cargarBoletines() {
+      const cont = document.getElementById('boletines-items');
+      cont.innerHTML = 'Cargando...';
+      try {
+        const res = await fetch(`/api/expertos/boletines?experto=${expertoActivo}`);
+        const data = await res.json();
+        if (data.ok && data.boletines) {
+          listaBoletines = data.boletines;
+          document.getElementById('badge-total').textContent = data.total;
+          document.getElementById('view-commit').textContent = 'Último commit: ' + data.ultimo_commit;
+          renderLista();
+          if (listaBoletines.length > 0) {
+            mostrarBoletin(0);
+          } else {
+            document.getElementById('view-title').textContent = 'Sin boletines registrados';
+            document.getElementById('view-content').textContent = 'No hay boletines fechados en este repositorio.';
+          }
+        } else {
+          cont.innerHTML = `<div style="color:red;">${data.error || 'Error'}</div>`;
+        }
+      } catch (e) {
+        cont.innerHTML = `<div style="color:red;">Error de red: ${e}</div>`;
+      }
+    }
+
+    function renderLista() {
+      const cont = document.getElementById('boletines-items');
+      if (listaBoletines.length === 0) {
+        cont.innerHTML = '<div style="color:var(--muted); font-size:0.85rem;">No hay boletines disponibles.</div>';
+        return;
+      }
+      cont.innerHTML = listaBoletines.map((b, i) => `
+        <div class="boletin-item ${i === 0 ? 'active' : ''}" onclick="mostrarBoletin(${i})">
+          <div class="boletin-title">${b.archivo}</div>
+          <div class="boletin-meta">${b.modificado.substring(0, 10)} · ${(b.tamano / 1024).toFixed(1)} KB</div>
+        </div>
+      `).join('');
+    }
+
+    function mostrarBoletin(idx) {
+      document.querySelectorAll('.boletin-item').forEach((el, i) => {
+        el.classList.toggle('active', i === idx);
+      });
+      const b = listaBoletines[idx];
+      if (!b) return;
+      document.getElementById('view-title').textContent = b.archivo;
+      document.getElementById('view-meta').textContent = `Ruta: ${b.ruta} · Tamaño: ${b.tamano} bytes`;
+      document.getElementById('view-content').textContent = b.contenido_completo || b.extracto;
+    }
+
+    function seleccionarExperto(exp) {
+      expertoActivo = exp;
+      document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+        const names = ['claude', 'codex', 'google'];
+        btn.classList.toggle('active', names[i] === exp);
+      });
+      cargarBoletines();
+    }
+
+    async function ejecutarConsulta() {
+      const input = document.getElementById('query-input');
+      const prompt = input.value.trim();
+      if (!prompt) return;
+      const modelo = document.getElementById('select-modelo').value;
+      const respBox = document.getElementById('query-response');
+      const btn = document.getElementById('btn-consultar');
+
+      btn.disabled = true;
+      respBox.textContent = `Consultando a experto-${expertoActivo} con modelo ${modelo}...`;
+
+      try {
+        const res = await fetch('/api/expertos/consultar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ experto: expertoActivo, prompt: prompt, modelo: modelo })
+        });
+        const data = await res.json();
+        if (data.ok) {
+          respBox.textContent = data.respuesta;
+        } else {
+          respBox.textContent = `Error: ${data.error || 'Fallo en la consulta'}`;
+        }
+      } catch (e) {
+        respBox.textContent = `Error de conexión: ${e}`;
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    cargarBoletines();
+  </script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#005fa9">
+  <title>Herdr · Consola Móvil · Oficina ApliArte</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23005fa9%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2246%22%20font-size%3D%2238%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-weight%3D%22bold%22%20text-anchor%3D%22middle%22%20fill%3D%22%235ecef5%22%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../panel-shell.css">
+  <link rel="stylesheet" href="/herdr-movil.css">
+  <script>
+    try {
+      document.documentElement.dataset.theme =
+        localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
+      document.documentElement.dataset.sidebar =
+        localStorage.getItem("erbolamm-panel-sidebar") === "icons" ? "icons" : "full";
+    } catch (_) {}
+  </script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="office-sidebar" id="office-sidebar" aria-label="Navegación de la oficina">
+      <div class="sidebar-brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/><polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/></svg>
+        <span><strong>Oficina ApliArte</strong><small>Panel de control operativo ApliArte</small></span>
+        <button id="sidebar-toggle" class="sidebar-toggle" type="button" aria-controls="office-sidebar" aria-expanded="true" aria-label="Plegar la barra lateral a solo iconos" title="Plegar la barra lateral"><span class="chev" aria-hidden="true">‹</span></button>
+      </div>
+      <nav class="side-nav" aria-label="Secciones">
+        <a class="nav-card" href="/"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
+        <a class="nav-card" href="/vista/javier"><span class="nav-icon" aria-hidden="true">👤</span><span class="nav-copy"><strong>Espacio Javier</strong><small>Control personal y ja--</small></span></a>
+        <a class="nav-card" href="/vista/inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
+        <a class="nav-card" href="/vista/aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
+        <a class="nav-card" href="/vista/skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
+        <a class="nav-card" href="/vista/conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
+        <a class="nav-card" href="/vista/plugins"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
+        <a class="nav-card" href="/vista/reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
+        <a class="nav-card" href="/vista/propuestas"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
+        <a class="nav-card" href="/vista/diseno"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
+        <a class="nav-card" href="/vista/tiendas"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
+        <a class="nav-card" href="/vista/mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
+        <a class="nav-card" href="/vista/correos"><span class="nav-icon" aria-hidden="true">✉</span><span class="nav-copy"><strong>Correos y Alertas</strong><small>erbolamm y javier</small></span></a>
+        <a class="nav-card" href="/vista/pnl"><span class="nav-icon" aria-hidden="true">🧠</span><span class="nav-copy"><strong>Estudio PNL</strong><small>Enganche y microcopy</small></span></a>
+        <a class="nav-card" href="/vista/musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
+        <a class="nav-card" href="/vista/idiomas"><span class="nav-icon" aria-hidden="true">🌐</span><span class="nav-copy"><strong>Idiomas</strong><small>Traducción y locución</small></span></a>
+        <a class="nav-card" href="/vista/locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
+        <a class="nav-card" href="/vista/voicestudio"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
+        <a class="nav-card" href="/vista/terminales"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
+        <a class="nav-card" href="/vista/facturas"><span class="nav-icon" aria-hidden="true">€</span><span class="nav-copy"><strong>Facturas</strong><small>Gestor de facturas</small></span></a>
+        <a class="nav-card" href="/vista/blogger"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
+        <a class="nav-card" href="/vista/bitacora"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
+        <a class="nav-card" href="/vista/directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
+        <a class="nav-card" href="/resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
+        <a class="nav-card" href="/vista/settings"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-copy"><strong>Ajustes</strong><small>Opciones por defecto</small></span></a>
+        <a class="nav-card" href="/vista/como-funciona"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
+      </nav>
+      <p class="sidebar-note"><strong>Privada y local</strong>Control táctil de Herdr sobre Tailscale. Sin servicios externos ni telemetría.</p>
+    </aside>
+    <div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
+
+    <main class="office-content" id="office">
+      <header class="topbar">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/><polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/></svg>
+          <h1>Herdr · Consola Móvil</h1>
+        </div>
+        <span class="private-chip">Consola Herdr</span>
+        <span class="connection" id="connection" data-kind="loading">Conectando</span>
+        <button id="refresh-btn" class="btn-refresh" type="button" onclick="window.location.reload()" aria-label="Actualizar vista" title="Actualizar">↻</button>
+        <button id="theme-toggle" type="button" aria-label="Activar modo oscuro" title="Cambiar tema"><span id="theme-icon" aria-hidden="true">☾</span></button>
+      </header>
+
+      <div class="herdr-movil-app">
+        <div id="herdr-notice" class="herdr-notice-banner" role="status" hidden></div>
+
+        <!-- 1. Workspaces (selector flexible táctil con disposición wrap) -->
+        <section aria-labelledby="workspaces-heading">
+          <div class="section-label" id="workspaces-heading">Workspaces activos</div>
+          <div class="workspaces-scroll workspaces-wrap" id="workspaces-list" role="tablist" aria-label="Workspaces de Herdr"></div>
+        </section>
+
+        <!-- 2. Paneles del Workspace -->
+        <section aria-labelledby="panes-heading">
+          <div class="section-label" id="panes-heading">Paneles y Agentes</div>
+          <div class="panes-grid" id="panes-list" role="list" aria-label="Paneles disponibles"></div>
+        </section>
+
+        <!-- 3. Visor de Terminal en Vivo -->
+        <section class="terminal-viewer-wrap" aria-labelledby="terminal-view-heading">
+          <div class="terminal-header">
+            <div class="terminal-info">
+              <span class="terminal-pane-tag" id="current-pane-tag">Panel</span>
+              <span id="current-status-chip" class="herdr-chip chip-idle">idle</span>
+              <span id="terminal-lines-count" class="herdr-subtitle">0 líneas</span>
+            </div>
+            <div class="terminal-controls">
+              <button type="button" id="btn-live-toggle" class="term-btn active" title="Alternar actualización en vivo">
+                <span class="live-indicator-dot" aria-hidden="true"></span>
+                <span id="live-label">En vivo</span>
+              </button>
+              <button type="button" id="btn-autoscroll" class="term-btn active" title="Alternar auto-scroll">⬇ Auto-scroll</button>
+              <button type="button" id="btn-copiar" class="term-btn" title="Copiar salida al portapapeles">Copiar</button>
+              <button type="button" id="btn-zoom-out" class="term-btn" title="Disminuir tamaño de letra">A-</button>
+              <button type="button" id="btn-zoom-in" class="term-btn" title="Aumentar tamaño de letra">A+</button>
+            </div>
+          </div>
+          <pre id="terminal-output" class="terminal-box" tabindex="0">Cargando consola de Herdr…</pre>
+
+          <!-- Teclas Rápidas de Terminal -->
+          <div class="quick-keys-strip" aria-label="Teclas rápidas de terminal">
+            <button type="button" class="quick-key-btn btn-ctrl-c" data-key="ctrl-c" title="Detener proceso actual con Ctrl+C">🛑 Ctrl+C</button>
+            <button type="button" class="quick-key-btn" data-key="enter" title="Enviar tecla Enter">↵ Enter</button>
+            <button type="button" class="quick-key-btn" data-key="esc" title="Enviar tecla Escape">⎋ Esc</button>
+            <button type="button" class="quick-key-btn" data-key="tab" title="Enviar tecla Tab">Tab</button>
+            <button type="button" class="quick-key-btn" data-key="clear" title="Limpiar buffer en pantalla">Limpiar</button>
+          </div>
+        </section>
+
+        <!-- Desplegable Flotante de Comandos de Terminal -->
+        <div class="terminal-cmds-dropdown" id="terminal-cmds-dropdown" hidden>
+          <div class="dropdown-header">
+            <span class="dropdown-title">⚡ Comandos de Terminal</span>
+            <button type="button" class="dropdown-close" id="btn-close-cmds-dropdown" aria-label="Cerrar">✕</button>
+          </div>
+          <div class="dropdown-list" id="dropdown-cmds-list"></div>
+        </div>
+
+        <!-- Diálogo Modal de Confirmación Previa -->
+        <div class="terminal-confirm-overlay" id="terminal-confirm-overlay" hidden>
+          <div class="terminal-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
+            <div class="confirm-modal-header">
+              <span class="confirm-icon">⚡</span>
+              <h3 class="confirm-title" id="confirm-modal-title">Confirmar Ejecución</h3>
+            </div>
+            <p class="confirm-modal-body" id="confirm-modal-body">
+              ¿Deseas ejecutar este comando en la terminal seleccionada?
+            </p>
+            <div class="confirm-modal-preview">
+              <code id="confirm-modal-cmd">git status</code>
+              <span class="confirm-modal-target" id="confirm-modal-target">Terminal: w3M:p1</span>
+            </div>
+            <div class="confirm-modal-actions">
+              <button type="button" class="touch-btn touch-btn-primary" id="btn-confirm-exec">
+                ✓ Confirmar Ejecución
+              </button>
+              <button type="button" class="touch-btn" id="btn-confirm-cancel">
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Barra Fija Inferior Adaptada para el Pulgar -->
+      <footer class="herdr-thumb-bar" id="herdr-thumb-bar">
+        <div class="thumb-bar-inner">
+          <div class="quick-commands-carousel" aria-label="Comandos frecuentes sugeridos">
+            <button type="button" class="cmd-pill" data-cmd="git status">git status</button>
+            <button type="button" class="cmd-pill" data-cmd="git diff">git diff</button>
+            <button type="button" class="cmd-pill" data-cmd="dart test">dart test</button>
+            <button type="button" class="cmd-pill" data-cmd="dart analyze">dart analyze</button>
+            <button type="button" class="cmd-pill" data-cmd="herdr agent list">agent list</button>
+            <button type="button" class="cmd-pill" data-cmd="herdr pane list">pane list</button>
+          </div>
+
+          <form id="herdr-input-form" class="input-row">
+            <button type="button" id="btn-mode-toggle" class="mode-toggle-btn" title="Cambiar modo de envío">💬 Prompt</button>
+            <textarea id="herdr-input-text" class="herdr-textarea" rows="1" placeholder="Instrucción o prompt para el agente…" enterkeyhint="send" maxlength="2000"></textarea>
+            <button type="button" id="btn-herdr-dictate" class="mic-dictate-btn" title="Dictar por voz" aria-label="Dictar por voz">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5-3c0 2.76-2.24 5-5 5s-5-2.76-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+            </button>
+            <button type="submit" id="btn-send" class="send-action-btn" title="Enviar">Enviar</button>
+          </form>
+        </div>
+      </footer>
+
+      <p class="public-note">Oficina local · Central ErBolamm · Vista optimizada para móvil</p>
+    </main>
+  </div>
+
+  <p class="sr-only" id="announcer" aria-live="polite"></p>
+  <script src="../panel-shell.js"></script>
+  <script src="/herdr-movil.js"></script>
+</body>
+</html>

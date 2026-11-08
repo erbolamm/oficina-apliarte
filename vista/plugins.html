@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#005fa9">
+  <title>Plugins · Oficina local de ErBolamm</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23005fa9%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2246%22%20font-size%3D%2234%22%20text-anchor%3D%22middle%22%20fill%3D%22%235ecef5%22%3E%E2%8C%98%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../panel-shell.css">
+  <script>
+    try {
+      document.documentElement.dataset.theme =
+        localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
+      document.documentElement.dataset.sidebar =
+        localStorage.getItem("erbolamm-panel-sidebar") === "icons" ? "icons" : "full";
+    } catch (_) {}
+  </script>
+  <style>
+    /* Lenguaje visual común de Personalizar (Skills · Conectores · Plugins · Reflect).
+       Se repite en las cuatro vistas porque cada vista de la Oficina lleva su
+       propio bloque de estilos. Plano, compacto y con bordes de 1 px (AGENTS.md §3.3). */
+    .cz-page {
+      --cz-soft: color-mix(in srgb, var(--ink) 68%, transparent);
+      --cz-line: color-mix(in srgb, var(--ink) 18%, transparent);
+      --cz-accent: var(--blue);
+      max-width: 880px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding-bottom: 3rem;
+    }
+    html[data-theme="dark"] .cz-page { --cz-accent: var(--cyan); }
+    .cz-page.cz-wide { max-width: 1180px; }
+
+    .cz-tabs {
+      display: flex;
+      gap: 0.25rem;
+      border-bottom: 1px solid var(--cz-line);
+      overflow-x: auto;
+    }
+    .cz-tab {
+      padding: 0.5rem 0.75rem;
+      margin-bottom: -1px;
+      border-bottom: 2px solid transparent;
+      color: var(--cz-soft);
+      font-size: 0.92rem;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .cz-tab:hover { color: var(--ink); }
+    .cz-tab[aria-current="page"] {
+      color: var(--ink);
+      border-bottom-color: var(--cz-accent);
+    }
+    .cz-tab:focus-visible,
+    .cz-switch:focus-visible,
+    .cz-btn:focus-visible,
+    .cz-seg button:focus-visible,
+    .cz-row summary:focus-visible {
+      outline: 2px solid var(--cz-accent);
+      outline-offset: 2px;
+    }
+
+    .cz-head h2 {
+      margin: 0;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .cz-head p {
+      margin: 0.25rem 0 0;
+      max-width: 68ch;
+      color: var(--cz-soft);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .cz-note {
+      margin: 0;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--cz-line);
+      border-left: 3px solid var(--cz-accent);
+      border-radius: var(--radius-sm);
+      background: var(--subtle);
+      color: var(--ink);
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+    .cz-note[hidden] { display: none; }
+
+    .cz-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .cz-search {
+      flex: 1 1 240px;
+      min-height: 36px;
+      padding: 0.4rem 0.7rem;
+      border: 1px solid var(--cz-line);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.92rem;
+    }
+    .cz-search:focus {
+      outline: none;
+      border-color: var(--cz-accent);
+    }
+    .cz-seg {
+      display: inline-flex;
+      border: 1px solid var(--cz-line);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    .cz-seg button {
+      min-height: 34px;
+      padding: 0.3rem 0.7rem;
+      border: 0;
+      border-radius: 0;
+      background: var(--surface);
+      color: var(--cz-soft);
+      font: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: none;
+    }
+    .cz-seg button + button { border-left: 1px solid var(--cz-line); }
+    .cz-seg button[aria-pressed="true"] {
+      background: var(--subtle);
+      color: var(--ink);
+    }
+    .cz-count {
+      margin-left: auto;
+      color: var(--cz-soft);
+      font-size: 0.85rem;
+    }
+
+    .cz-group-title {
+      margin: 0.5rem 0 0;
+      color: var(--cz-soft);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .cz-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border: 1px solid var(--cz-line);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      overflow: hidden;
+    }
+    .cz-row { border-top: 1px solid var(--cz-line); }
+    .cz-row:first-child { border-top: 0; }
+    .cz-row[hidden] { display: none; }
+    .cz-row-main {
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 0.75rem;
+    }
+    .cz-icon {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--cz-line);
+      border-radius: var(--radius-sm);
+      background: var(--subtle);
+      color: var(--ink);
+      font-size: 1.05rem;
+      line-height: 1;
+    }
+    .cz-name {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem;
+      margin: 0;
+      color: var(--ink);
+      font-size: 0.96rem;
+      font-weight: 650;
+    }
+    .cz-desc {
+      margin: 0.1rem 0 0;
+      color: var(--cz-soft);
+      font-size: 0.86rem;
+      line-height: 1.45;
+    }
+    .cz-aside {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cz-pill {
+      display: inline-block;
+      padding: 0.08rem 0.45rem;
+      border: 1px solid var(--cz-line);
+      border-radius: 999px;
+      color: var(--cz-soft);
+      font-size: 0.72rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .cz-pill[data-kind="on"] {
+      border-color: var(--cz-accent);
+      color: var(--cz-accent);
+    }
+    .cz-pill[data-kind="warn"] {
+      border-color: var(--warm);
+      color: var(--brown);
+    }
+    html[data-theme="dark"] .cz-pill[data-kind="warn"] { color: var(--warm); }
+
+    .cz-switch {
+      position: relative;
+      flex: none;
+      width: 38px;
+      min-width: 38px;
+      height: 22px;
+      min-height: 22px;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--light);
+      cursor: pointer;
+      box-shadow: none;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .cz-switch::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #ffffff;
+      transition: transform 0.15s ease;
+    }
+    .cz-switch[aria-checked="true"] {
+      border-color: var(--blue);
+      background: var(--blue);
+    }
+    .cz-switch[aria-checked="true"]::after { transform: translateX(16px); }
+    .cz-switch:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+    .cz-switch:hover { transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .cz-switch,
+      .cz-switch::after { transition: none; }
+    }
+
+    .cz-row details { border-top: 1px dashed var(--cz-line); }
+    .cz-row summary {
+      padding: 0.35rem 0.75rem;
+      color: var(--cz-soft);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .cz-row summary:hover { color: var(--ink); }
+    .cz-kv {
+      display: grid;
+      grid-template-columns: minmax(120px, 190px) minmax(0, 1fr);
+      gap: 0.4rem 0.75rem;
+      margin: 0;
+      padding: 0.25rem 0.75rem 0.75rem;
+      font-size: 0.86rem;
+    }
+    .cz-kv dt {
+      color: var(--cz-soft);
+      font-weight: 600;
+    }
+    .cz-kv dd {
+      margin: 0;
+      color: var(--ink);
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+    .cz-kv a { color: var(--cz-accent); }
+    @media (max-width: 620px) {
+      .cz-kv { grid-template-columns: 1fr; }
+      .cz-row-main { grid-template-columns: 36px minmax(0, 1fr); }
+      .cz-aside {
+        grid-column: 2;
+        justify-content: flex-start;
+      }
+    }
+
+    .cz-code {
+      padding: 0.08rem 0.35rem;
+      border: 1px solid var(--cz-line);
+      border-radius: 0.35rem;
+      background: var(--subtle);
+      color: var(--ink);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.8rem;
+    }
+    .cz-btn {
+      min-height: 30px;
+      padding: 0.2rem 0.6rem;
+      border: 1px solid var(--cz-line);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: none;
+    }
+    .cz-btn:hover {
+      border-color: var(--cz-accent);
+      transform: none;
+      box-shadow: none;
+    }
+    .cz-empty {
+      margin: 0;
+      padding: 0.75rem;
+      border: 1px dashed var(--cz-line);
+      border-radius: var(--radius-md);
+      color: var(--cz-soft);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+    .cz-empty[hidden] { display: none; }
+
+    .cz-toast {
+      position: fixed;
+      left: 50%;
+      bottom: 1.25rem;
+      z-index: 50;
+      max-width: min(90vw, 520px);
+      padding: 0.5rem 0.85rem;
+      border: 1px solid var(--cz-line);
+      border-radius: var(--radius-sm);
+      background: var(--ink);
+      color: var(--page);
+      font-size: 0.86rem;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 8px);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+    .cz-toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="office-sidebar" id="office-sidebar" aria-label="Navegación de la oficina">
+      <div class="sidebar-brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+        </svg>
+        <span><strong>Oficina ApliArte</strong><small>Panel de control operativo ApliArte</small></span>
+        <button id="sidebar-toggle" class="sidebar-toggle" type="button"
+          aria-controls="office-sidebar" aria-expanded="true" aria-label="Plegar la barra lateral a solo iconos" title="Plegar la barra lateral">
+          <span class="chev" aria-hidden="true">‹</span>
+        </button>
+      </div>
+      <nav class="side-nav" aria-label="Secciones">
+        <a class="nav-card" href="/"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
+        <a class="nav-card" href="/vista/javier"><span class="nav-icon" aria-hidden="true">👤</span><span class="nav-copy"><strong>Espacio Javier</strong><small>Control personal y ja--</small></span></a>
+        <a class="nav-card" href="/vista/inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
+        <a class="nav-card" href="/vista/aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
+        <a class="nav-card" href="/vista/skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
+        <a class="nav-card" href="/vista/conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
+        <a class="nav-card" href="/vista/plugins" aria-current="page"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
+        <a class="nav-card" href="/vista/reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
+        <a class="nav-card" href="/vista/propuestas"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
+        <a class="nav-card" href="/vista/diseno"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
+        <a class="nav-card" href="/vista/tiendas"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
+        <a class="nav-card" href="/vista/mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
+        <a class="nav-card" href="/vista/correos"><span class="nav-icon" aria-hidden="true">✉</span><span class="nav-copy"><strong>Correos y Alertas</strong><small>erbolamm y javier</small></span></a>
+        <a class="nav-card" href="/vista/pnl"><span class="nav-icon" aria-hidden="true">🧠</span><span class="nav-copy"><strong>Estudio PNL</strong><small>Enganche y microcopy</small></span></a>
+        <a class="nav-card" href="/vista/musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
+        <a class="nav-card" href="/vista/idiomas"><span class="nav-icon" aria-hidden="true">🌐</span><span class="nav-copy"><strong>Idiomas</strong><small>Traducción y locución</small></span></a>
+        <a class="nav-card" href="/vista/locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
+        <a class="nav-card" href="/vista/voicestudio"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
+        <a class="nav-card" href="/vista/terminales"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
+        <a class="nav-card" href="/vista/facturas"><span class="nav-icon" aria-hidden="true">€</span><span class="nav-copy"><strong>Facturas</strong><small>Gestor de facturas</small></span></a>
+        <a class="nav-card" href="/vista/blogger"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
+        <a class="nav-card" href="/vista/bitacora"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
+        <a class="nav-card" href="/vista/directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
+        <a class="nav-card" href="/resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
+        <a class="nav-card" href="/vista/settings"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-copy"><strong>Ajustes</strong><small>Opciones por defecto</small></span></a>
+        <a class="nav-card" href="/vista/como-funciona"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
+      </nav>
+      <p class="sidebar-note"><strong>Privada y local</strong>No conecta la oficina pública, no consulta cuotas y no muestra historial.</p>
+    </aside>
+    <div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
+
+    <main class="office-content" id="office">
+      <header class="topbar">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+            <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+          </svg>
+          <h1>Plugins</h1>
+        </div>
+        <span class="private-chip">Oficina local · privada</span>
+        <span class="connection" id="connection" data-kind="loading">Conectando</span>
+        <button id="refresh-btn" class="btn-refresh" type="button" onclick="window.location.reload()" aria-label="Actualizar vista" title="Actualizar">↻</button>
+        <button id="theme-toggle" type="button" aria-label="Activar modo oscuro" title="Cambiar tema">
+          <span id="theme-icon" aria-hidden="true">☾</span>
+        </button>
+      </header>
+      <p class="updated" id="updated">Enciende o apaga las pestañas de la barra lateral</p>
+
+      <div class="cz-page">
+        <nav class="cz-tabs" aria-label="Personalizar la Oficina">
+          <a class="cz-tab" href="/vista/skills">Skills</a>
+          <a class="cz-tab" href="/vista/conectores">Conectores</a>
+          <a class="cz-tab" href="/vista/plugins" aria-current="page">Plugins</a>
+          <a class="cz-tab" href="/vista/reflect">Reflect</a>
+        </nav>
+        <header class="cz-head">
+          <h2>Plugins</h2>
+          <p>Cada módulo de la Oficina es una pestaña de la barra lateral. Apaga las que no uses para dejar la barra limpia: la página sigue existiendo y se puede volver a encender aquí.</p>
+        </header>
+
+        <p class="cz-note">Lo que apagues se guarda solo en este navegador. La Oficina y esta pestaña de Plugins no se pueden ocultar, para que siempre haya un camino de vuelta.</p>
+        <p class="cz-note" id="cz-error" hidden></p>
+
+        <div class="cz-toolbar">
+          <input type="search" id="cz-search" class="cz-search" placeholder="Buscar un módulo" autocomplete="off" aria-label="Buscar módulos">
+          <div class="cz-seg" role="group" aria-label="Filtrar módulos">
+            <button type="button" data-filter="all" aria-pressed="true">Todos</button>
+            <button type="button" data-filter="on" aria-pressed="false">Visibles</button>
+            <button type="button" data-filter="off" aria-pressed="false">Ocultos</button>
+          </div>
+          <button type="button" class="cz-btn" id="cz-show-all">Mostrar todos</button>
+          <span class="cz-count" id="cz-count" aria-live="polite"></span>
+        </div>
+
+        <h3 class="cz-group-title">Pestañas de la barra lateral</h3>
+        <ul class="cz-list" id="cz-modules"></ul>
+        <p class="cz-empty" id="cz-empty" hidden>Ningún módulo coincide con la búsqueda.</p>
+
+        <h3 class="cz-group-title">Proyectos satélite sin pestaña</h3>
+        <ul class="cz-list">
+          <li class="cz-row">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">⌖</span>
+              <div>
+                <h3 class="cz-name">apliarte-remote</h3>
+                <p class="cz-desc">Control remoto. Todavía no tiene pestaña en la Oficina, así que aquí no hay nada que encender.</p>
+              </div>
+              <div class="cz-aside"><span class="cz-pill" data-kind="warn">Sin pestaña</span></div>
+            </div>
+          </li>
+        </ul>
+
+        <h3 class="cz-group-title">Vistas y Herramientas Especializadas de la Oficina</h3>
+        <ul class="cz-list" id="cz-specialized-views">
+          <li class="cz-row" data-href="/vista/buscar" data-search="buscar tareas buscar tareas e historial /vista/buscar">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">🔍</span>
+              <div>
+                <h3 class="cz-name"><a href="/vista/buscar" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Buscar</a></h3>
+                <p class="cz-desc">Buscar tareas e historial</p>
+              </div>
+              <div class="cz-aside">
+                <a href="/vista/buscar" class="cz-btn" target="_blank" rel="noopener" style="text-decoration:none">Abrir ↗</a>
+              </div>
+            </div>
+          </li>
+          <li class="cz-row" data-href="/vista/herdr" data-search="herdr supervisor multi-agente herdr /vista/herdr">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">🤖</span>
+              <div>
+                <h3 class="cz-name"><a href="/vista/herdr" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Herdr</a></h3>
+                <p class="cz-desc">Supervisor multi-agente Herdr</p>
+              </div>
+              <div class="cz-aside">
+                <a href="/vista/herdr" class="cz-btn" target="_blank" rel="noopener" style="text-decoration:none">Abrir ↗</a>
+              </div>
+            </div>
+          </li>
+          <li class="cz-row" data-href="/vista/mesa-redonda" data-search="mesa redonda deliberación colegiada /vista/mesa-redonda">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">👥</span>
+              <div>
+                <h3 class="cz-name"><a href="/vista/mesa-redonda" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Mesa Redonda</a></h3>
+                <p class="cz-desc">Deliberación colegiada</p>
+              </div>
+              <div class="cz-aside">
+                <a href="/vista/mesa-redonda" class="cz-btn" target="_blank" rel="noopener" style="text-decoration:none">Abrir ↗</a>
+              </div>
+            </div>
+          </li>
+          <li class="cz-row" data-href="/vista/manual" data-search="manual manual canónico /vista/manual">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">📖</span>
+              <div>
+                <h3 class="cz-name"><a href="/vista/manual" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Manual</a></h3>
+                <p class="cz-desc">Manual canónico</p>
+              </div>
+              <div class="cz-aside">
+                <a href="/vista/manual" class="cz-btn" target="_blank" rel="noopener" style="text-decoration:none">Abrir ↗</a>
+              </div>
+            </div>
+          </li>
+          <li class="cz-row" data-href="/vista/rozzum" data-search="rozzum telemetría nerviosa rozzum /vista/rozzum">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">🧬</span>
+              <div>
+                <h3 class="cz-name"><a href="/vista/rozzum" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Rozzum</a></h3>
+                <p class="cz-desc">Telemetría nerviosa Rozzum</p>
+              </div>
+              <div class="cz-aside">
+                <a href="/vista/rozzum" class="cz-btn" target="_blank" rel="noopener" style="text-decoration:none">Abrir ↗</a>
+              </div>
+            </div>
+          </li>
+          <li class="cz-row" data-href="/vista/dictamen-tareas" data-search="dictamen tareas dictamen y auditoría de tareas /vista/dictamen-tareas">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">⚖️</span>
+              <div>
+                <h3 class="cz-name"><a href="/vista/dictamen-tareas" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Dictamen de Tareas</a></h3>
+                <p class="cz-desc">Dictamen y auditoría de tareas</p>
+              </div>
+              <div class="cz-aside">
+                <a href="/vista/dictamen-tareas" class="cz-btn" target="_blank" rel="noopener" style="text-decoration:none">Abrir ↗</a>
+              </div>
+            </div>
+          </li>
+          <li class="cz-row" data-href="/vista/megapromtista" data-search="megapromtista generador de megaprompts /vista/megapromtista">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">🪄</span>
+              <div>
+                <h3 class="cz-name"><a href="/vista/megapromtista" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">MegaPromtista</a></h3>
+                <p class="cz-desc">Generador de megaprompts</p>
+              </div>
+              <div class="cz-aside">
+                <a href="/vista/megapromtista" class="cz-btn" target="_blank" rel="noopener" style="text-decoration:none">Abrir ↗</a>
+              </div>
+            </div>
+          </li>
+          <li class="cz-row" data-href="/vista/supervision" data-search="supervisión supervisión operativa /vista/supervision">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">🛡️</span>
+              <div>
+                <h3 class="cz-name"><a href="/vista/supervision" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Supervisión</a></h3>
+                <p class="cz-desc">Supervisión operativa</p>
+              </div>
+              <div class="cz-aside">
+                <a href="/vista/supervision" class="cz-btn" target="_blank" rel="noopener" style="text-decoration:none">Abrir ↗</a>
+              </div>
+            </div>
+          </li>
+          <li class="cz-row" data-href="/vista/idiomas" data-search="idiomas gestión de idiomas y localización /vista/idiomas">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">🌐</span>
+              <div>
+                <h3 class="cz-name"><a href="/vista/idiomas" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Idiomas</a></h3>
+                <p class="cz-desc">Gestión de idiomas y localización</p>
+              </div>
+              <div class="cz-aside">
+                <a href="/vista/idiomas" class="cz-btn" target="_blank" rel="noopener" style="text-decoration:none">Abrir ↗</a>
+              </div>
+            </div>
+          </li>
+          <li class="cz-row" data-href="/vista/dispositivos" data-search="dispositivos dispositivos y red /vista/dispositivos">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">💻</span>
+              <div>
+                <h3 class="cz-name"><a href="/vista/dispositivos" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Dispositivos</a></h3>
+                <p class="cz-desc">Dispositivos y red</p>
+              </div>
+              <div class="cz-aside">
+                <a href="/vista/dispositivos" class="cz-btn" target="_blank" rel="noopener" style="text-decoration:none">Abrir ↗</a>
+              </div>
+            </div>
+          </li>
+          <li class="cz-row" data-href="/vista/plano" data-search="plano plano 2d/3d /vista/plano">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">🧊</span>
+              <div>
+                <h3 class="cz-name"><a href="/vista/plano" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Plano</a></h3>
+                <p class="cz-desc">Plano 2D/3D</p>
+              </div>
+              <div class="cz-aside">
+                <a href="/vista/plano" class="cz-btn" target="_blank" rel="noopener" style="text-decoration:none">Abrir ↗</a>
+              </div>
+            </div>
+          </li>
+          <li class="cz-row" data-href="/vista/radar" data-search="radar radar de nodos /vista/radar">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">◎</span>
+              <div>
+                <h3 class="cz-name"><a href="/vista/radar" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Radar</a></h3>
+                <p class="cz-desc">Radar de nodos</p>
+              </div>
+              <div class="cz-aside">
+                <a href="/vista/radar" class="cz-btn" target="_blank" rel="noopener" style="text-decoration:none">Abrir ↗</a>
+              </div>
+            </div>
+          </li>
+          <li class="cz-row" data-href="/vista/buzon" data-search="buzón buzon buzón de entrega /vista/buzon">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">📥</span>
+              <div>
+                <h3 class="cz-name"><a href="/vista/buzon" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Buzón</a></h3>
+                <p class="cz-desc">Buzón de entrega</p>
+              </div>
+              <div class="cz-aside">
+                <a href="/vista/buzon" class="cz-btn" target="_blank" rel="noopener" style="text-decoration:none">Abrir ↗</a>
+              </div>
+            </div>
+          </li>
+          <li class="cz-row" data-href="/vista/informes" data-search="informes informes y reportes /vista/informes">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">📋</span>
+              <div>
+                <h3 class="cz-name"><a href="/vista/informes" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Informes</a></h3>
+                <p class="cz-desc">Informes y reportes</p>
+              </div>
+              <div class="cz-aside">
+                <a href="/vista/informes" class="cz-btn" target="_blank" rel="noopener" style="text-decoration:none">Abrir ↗</a>
+              </div>
+            </div>
+          </li>
+          <li class="cz-row" data-href="/vista/delegar" data-search="delegar creador y delegador de tareas /vista/delegar">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">＋</span>
+              <div>
+                <h3 class="cz-name"><a href="/vista/delegar" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Delegar</a></h3>
+                <p class="cz-desc">Creador y delegador de tareas</p>
+              </div>
+              <div class="cz-aside">
+                <a href="/vista/delegar" class="cz-btn" target="_blank" rel="noopener" style="text-decoration:none">Abrir ↗</a>
+              </div>
+            </div>
+          </li>
+          <li class="cz-row" data-href="/vista/tablero" data-search="tablero tablero alternativo de tareas /vista/tablero">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">▥</span>
+              <div>
+                <h3 class="cz-name"><a href="/vista/tablero" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Tablero</a></h3>
+                <p class="cz-desc">Tablero alternativo de tareas</p>
+              </div>
+              <div class="cz-aside">
+                <a href="/vista/tablero" class="cz-btn" target="_blank" rel="noopener" style="text-decoration:none">Abrir ↗</a>
+              </div>
+            </div>
+          </li>
+          <li class="cz-row" data-href="/vista/corazon" data-search="corazón corazon corazón del sistema /vista/corazon">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">❤️</span>
+              <div>
+                <h3 class="cz-name"><a href="/vista/corazon" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Corazón</a></h3>
+                <p class="cz-desc">Corazón del sistema</p>
+              </div>
+              <div class="cz-aside">
+                <a href="/vista/corazon" class="cz-btn" target="_blank" rel="noopener" style="text-decoration:none">Abrir ↗</a>
+              </div>
+            </div>
+          </li>
+          <li class="cz-row" data-href="/vista/aplichat-pro" data-search="aplichat pro aplichat versión pro /vista/aplichat-pro">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">💬</span>
+              <div>
+                <h3 class="cz-name"><a href="/vista/aplichat-pro" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">ApliChat Pro</a></h3>
+                <p class="cz-desc">ApliChat versión Pro</p>
+              </div>
+              <div class="cz-aside">
+                <a href="/vista/aplichat-pro" class="cz-btn" target="_blank" rel="noopener" style="text-decoration:none">Abrir ↗</a>
+              </div>
+            </div>
+          </li>
+          <li class="cz-row" data-href="/vista/expertos" data-search="expertos catálogo de agentes expertos /vista/expertos">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">🧠</span>
+              <div>
+                <h3 class="cz-name"><a href="/vista/expertos" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Expertos</a></h3>
+                <p class="cz-desc">Catálogo de agentes expertos</p>
+              </div>
+              <div class="cz-aside">
+                <a href="/vista/expertos" class="cz-btn" target="_blank" rel="noopener" style="text-decoration:none">Abrir ↗</a>
+              </div>
+            </div>
+          </li>
+          <li class="cz-row" data-href="/vista/agentes" data-search="agentes panel de agentes activos /vista/agentes">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">🤖</span>
+              <div>
+                <h3 class="cz-name"><a href="/vista/agentes" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Agentes</a></h3>
+                <p class="cz-desc">Panel de agentes activos</p>
+              </div>
+              <div class="cz-aside">
+                <a href="/vista/agentes" class="cz-btn" target="_blank" rel="noopener" style="text-decoration:none">Abrir ↗</a>
+              </div>
+            </div>
+          </li>
+          <li class="cz-row" data-href="/vista/recurrentes" data-search="recurrentes tareas periódicas programadas /vista/recurrentes">
+            <div class="cz-row-main">
+              <span class="cz-icon" aria-hidden="true">🔄</span>
+              <div>
+                <h3 class="cz-name"><a href="/vista/recurrentes" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Recurrentes</a></h3>
+                <p class="cz-desc">Tareas periódicas programadas</p>
+              </div>
+              <div class="cz-aside">
+                <a href="/vista/recurrentes" class="cz-btn" target="_blank" rel="noopener" style="text-decoration:none">Abrir ↗</a>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <p class="public-note">Oficina local de ErBolamm · Solo visualización y control, sin IA en el navegador</p>
+    </main>
+  </div>
+
+  <div class="cz-toast" id="cz-toast" role="status" aria-live="polite"></div>
+
+  <script src="../panel-shell.js"></script>
+  <script>
+    function h(tag, props, ...children) {
+      const node = document.createElement(tag);
+      for (const [key, value] of Object.entries(props || {})) {
+        if (value === false || value == null) continue;
+        if (key === "class") node.className = value;
+        else if (key === "text") node.textContent = value;
+        else if (key.startsWith("on")) node.addEventListener(key.slice(2), value);
+        else node.setAttribute(key, value === true ? "" : value);
+      }
+      for (const child of children.flat()) {
+        if (child == null || child === false) continue;
+        node.append(child);
+      }
+      return node;
+    }
+
+    let toastTimer = null;
+    function showToast(message) {
+      const toast = document.getElementById("cz-toast");
+      if (!toast) return;
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    function copyText(text) {
+      if (!navigator.clipboard) {
+        showToast("Este navegador no permite copiar desde aquí");
+        return;
+      }
+      navigator.clipboard.writeText(text).then(
+        () => showToast("Copiado: " + text),
+        () => showToast("No se pudo copiar"),
+      );
+    }
+
+    function readStore(key, fallback) {
+      try {
+        const value = JSON.parse(localStorage.getItem(key) || "null");
+        return value == null ? fallback : value;
+      } catch (_) {
+        return fallback;
+      }
+    }
+
+    function writeStore(key, value) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+        return true;
+      } catch (_) {
+        return false;
+      }
+    }
+
+    // La lista sale de la barra lateral canónica (window.Oficina.sideNav), no de
+    // una copia: una pestaña nueva en panel-shell.js aparece aquí sola.
+    const SATELLITES = { "/vista/directo": "apliarte-directo" };
+    const shell = window.Oficina;
+    const list = document.getElementById("cz-modules");
+    let filter = "all";
+    let query = "";
+
+    function applyFilter() {
+      const hidden = shell.hiddenNav();
+      let visible = 0;
+      list.querySelectorAll(".cz-row").forEach((row) => {
+        const on = !hidden.includes(row.dataset.href);
+        const show =
+          (filter === "all" || (filter === "on") === on) &&
+          (!query || row.dataset.search.includes(query));
+        row.hidden = !show;
+        if (show) visible += 1;
+      });
+      document.getElementById("cz-empty").hidden = visible > 0;
+      const total = shell.sideNav.length;
+      document.getElementById("cz-count").textContent =
+        (total - hidden.length) + " de " + total + " visibles";
+
+      const specList = document.getElementById("cz-specialized-views");
+      if (specList) {
+        specList.querySelectorAll(".cz-row").forEach((row) => {
+          const match = !query || (row.dataset.search && row.dataset.search.includes(query));
+          row.hidden = !match;
+        });
+      }
+    }
+
+    function buildRow(item, summary) {
+      const locked = shell.lockedNav.includes(item.href);
+      const pill = h("span", { class: "cz-pill" });
+      const toggle = h("button", {
+        type: "button", class: "cz-switch", role: "switch", disabled: locked,
+        "aria-label": "Mostrar " + item.label + " en la barra lateral",
+        onclick: () => {
+          const isOn = toggle.getAttribute("aria-checked") === "true";
+          shell.setNavHidden(item.href, isOn);
+          paint();
+          applyFilter();
+        },
+      });
+      function paint() {
+        const on = !shell.hiddenNav().includes(item.href);
+        toggle.setAttribute("aria-checked", on ? "true" : "false");
+        pill.dataset.kind = on ? "on" : "off";
+        pill.textContent = locked ? "Siempre visible" : on ? "Visible" : "Oculto";
+      }
+      paint();
+
+      const name = h("h3", { class: "cz-name" }, h("a", { href: item.href, text: item.label, style: "color:inherit;text-decoration:none" }));
+      if (SATELLITES[item.href]) {
+        name.append(h("span", { class: "cz-pill", text: "Satélite · " + SATELLITES[item.href] }));
+      }
+      const desc = summary || item.desc;
+      const row = h("li", { class: "cz-row", "data-href": item.href },
+        h("div", { class: "cz-row-main" },
+          h("span", { class: "cz-icon", "aria-hidden": "true", text: item.icon }),
+          h("div", {}, name, h("p", { class: "cz-desc", text: desc })),
+          h("div", { class: "cz-aside" }, pill, toggle)));
+      row.dataset.search = [item.label, item.desc, desc, SATELLITES[item.href] || ""].join(" ").toLowerCase();
+      row.repaint = paint;
+      return row;
+    }
+
+    async function loadSummaries() {
+      try {
+        const response = await fetch("/api/como-funciona", { cache: "no-store" });
+        if (!response.ok) return new Map();
+        const data = await response.json();
+        return new Map((data.modulos_principales || []).map((m) => [m.ruta, m.resumen]));
+      } catch (_) {
+        return new Map();
+      }
+    }
+
+    async function render() {
+      if (!shell || !Array.isArray(shell.sideNav) || typeof shell.setNavHidden !== "function") {
+        const error = document.getElementById("cz-error");
+        error.textContent = "No se pudo leer la barra lateral de la Oficina. Recarga la página; si sigue igual, el servidor está sirviendo una versión antigua del shell.";
+        error.hidden = false;
+        return;
+      }
+      const summaries = await loadSummaries();
+      list.replaceChildren(...shell.sideNav.map((item) => buildRow(item, summaries.get(item.href))));
+      applyFilter();
+
+      document.getElementById("cz-search").addEventListener("input", (event) => {
+        query = event.target.value.toLowerCase().trim();
+        applyFilter();
+      });
+      document.querySelectorAll(".cz-seg button").forEach((button) => {
+        button.addEventListener("click", () => {
+          filter = button.dataset.filter;
+          document.querySelectorAll(".cz-seg button").forEach((other) => {
+            other.setAttribute("aria-pressed", other === button ? "true" : "false");
+          });
+          applyFilter();
+        });
+      });
+      document.getElementById("cz-show-all").addEventListener("click", () => {
+        for (const href of shell.hiddenNav()) shell.setNavHidden(href, false);
+        list.querySelectorAll(".cz-row").forEach((row) => row.repaint());
+        applyFilter();
+        showToast("Todas las pestañas vuelven a verse");
+      });
+      window.addEventListener("storage", (event) => {
+        if (event.key !== "erbolamm-panel-hidden-nav") return;
+        list.querySelectorAll(".cz-row").forEach((row) => row.repaint());
+        applyFilter();
+      });
+    }
+    render();
+  </script>
+</body>
+</html>

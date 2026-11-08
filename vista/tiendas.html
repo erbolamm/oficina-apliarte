@@ -1,0 +1,2753 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#005fa9">
+  <title>Tiendas y ASO · Oficina local de ErBolamm</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23005fa9%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2246%22%20font-size%3D%2234%22%20text-anchor%3D%22middle%22%20fill%3D%22%235ecef5%22%3E%F0%9F%8E%AF%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../panel-shell.css">
+  <script>
+    try {
+      document.documentElement.dataset.theme =
+        localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
+      document.documentElement.dataset.sidebar =
+        localStorage.getItem("erbolamm-panel-sidebar") === "icons" ? "icons" : "full";
+    } catch (_) {}
+  </script>
+  <style>
+    /* Estilos de Tiendas y ASO */
+    .tiendas-hero {
+      background: linear-gradient(135deg, rgba(0, 95, 169, 0.08) 0%, rgba(94, 206, 245, 0.14) 100%);
+      border: 1px solid rgba(0, 95, 169, 0.18);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    html[data-theme="dark"] .tiendas-hero {
+      background: linear-gradient(135deg, rgba(0, 70, 123, 0.35) 0%, rgba(0, 95, 169, 0.25) 100%);
+      border-color: rgba(94, 206, 245, 0.22);
+    }
+    .tiendas-hero h2 {
+      margin: 0 0 0.4rem 0;
+      font-size: 1.45rem;
+      color: var(--ink);
+    }
+    .tiendas-hero p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--muted, #666);
+      line-height: 1.4;
+    }
+
+    /* Barra de selección de proyecto y modo */
+    .project-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1.2rem;
+      margin-bottom: 1.25rem;
+    }
+    .project-selector-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .project-selector-group label {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--ink);
+    }
+    .project-select {
+      padding: 0.45rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    /* Pestañas de sección interna */
+    .subnav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 2px solid var(--subtle);
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+    }
+    .subnav-tab {
+      padding: 0.65rem 1.1rem;
+      border: none;
+      border-bottom: 3px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 0;
+      white-space: nowrap;
+      transition: all 0.16s ease;
+    }
+    .subnav-tab:hover {
+      color: var(--ink);
+      border-color: var(--cyan);
+      transform: none;
+      box-shadow: none;
+    }
+    .subnav-tab.active {
+      color: var(--blue);
+      border-color: var(--blue);
+      background: rgba(0, 95, 169, 0.05);
+    }
+    html[data-theme="dark"] .subnav-tab.active {
+      color: var(--cyan);
+      border-color: var(--cyan);
+      background: rgba(94, 206, 245, 0.08);
+    }
+
+    .tab-section {
+      display: none;
+    }
+    .tab-section.active {
+      display: block;
+      animation: fadeIn 0.2s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cuadrículas y tarjetas de auditoría */
+    .audit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .audit-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      position: relative;
+    }
+    .audit-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .audit-card-title {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .limit-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: 10px;
+      background: var(--subtle);
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+    .limit-badge.valid {
+      background: rgba(46, 125, 50, 0.12);
+      color: #2e7d32;
+    }
+    .limit-badge.warning {
+      background: rgba(230, 81, 0, 0.12);
+      color: #e65100;
+    }
+    .limit-badge.error {
+      background: rgba(198, 40, 40, 0.12);
+      color: #c62828;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 0.95rem;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+    textarea.input-field {
+      resize: vertical;
+      min-height: 80px;
+    }
+    .input-hint {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.35;
+    }
+
+    /* Chequeos de la Directriz Apple 2.3.3 */
+    .guideline-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .guideline-panel h3 {
+      margin: 0 0 0.75rem 0;
+      font-size: 1.15rem;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .check-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      color: var(--ink);
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius-sm);
+      background: var(--subtle);
+    }
+    .check-status {
+      font-weight: 800;
+      font-size: 1rem;
+      line-height: 1;
+    }
+    .check-status.ok { color: #2e7d32; }
+    .check-status.warn { color: #e65100; }
+    .check-status.err { color: #c62828; }
+
+    /* Generador ASO Multilingüe */
+    .lang-tabs {
+      display: flex;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .lang-tab {
+      padding: 0.4rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .lang-tab.active {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+    html[data-theme="dark"] .lang-tab.active {
+      background: var(--cyan);
+      color: #000;
+      border-color: var(--cyan);
+    }
+
+    .aso-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .aso-card h4 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.05rem;
+      color: var(--ink);
+    }
+    .packed-string-box {
+      background: var(--subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      font-family: monospace;
+      font-size: 0.95rem;
+      word-break: break-all;
+      color: var(--ink);
+      position: relative;
+    }
+    .char-meter {
+      height: 8px;
+      border-radius: 4px;
+      background: var(--border);
+      margin: 0.6rem 0;
+      overflow: hidden;
+      position: relative;
+    }
+    .char-meter-fill {
+      height: 100%;
+      background: var(--cyan);
+      transition: width 0.3s ease, background 0.3s ease;
+    }
+    .char-meter-fill.full {
+      background: #2e7d32;
+    }
+    .char-meter-fill.overflow {
+      background: #c62828;
+    }
+
+    .chips-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.75rem;
+    }
+    .keyword-chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 0.25rem 0.65rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .keyword-chip.excluded {
+      text-decoration: line-through;
+      opacity: 0.55;
+      background: transparent;
+    }
+
+    /* Galería y Previsualizador de Capturas de Tienda */
+    .screenshots-layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+    @media (max-width: 960px) {
+      .screenshots-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    .controls-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .stage-wrapper {
+      background: radial-gradient(circle at center, #1b2838 0%, #0d121b 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 2.5rem 1rem;
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    /* Simuladores de marcos de tienda */
+    .store-mockup {
+      width: 270px;
+      height: 540px;
+      background: #111;
+      border: 8px solid #282a2e;
+      border-radius: 42px;
+      position: relative;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .store-mockup.mode-android {
+      border-radius: 28px;
+      border-width: 6px;
+      border-color: #3a3d42;
+    }
+    .store-mockup.mode-tablet {
+      width: 480px;
+      height: 360px;
+      border-radius: 20px;
+    }
+    .mockup-header-headline {
+      padding: 1.2rem 1rem 0.5rem 1rem;
+      text-align: center;
+      z-index: 5;
+    }
+    .mockup-headline {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin: 0 0 0.25rem 0;
+      line-height: 1.25;
+    }
+    .mockup-subheadline {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin: 0;
+      line-height: 1.3;
+    }
+    .mockup-screen {
+      flex: 1;
+      margin: 0.5rem 0.8rem 0.8rem 0.8rem;
+      background: linear-gradient(180deg, #18202d 0%, #0d1219 100%);
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .mockup-badge {
+      background: rgba(94, 206, 245, 0.2);
+      color: #5ecef5;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+    }
+    .mockup-feature-art {
+      width: 70px;
+      height: 70px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--cyan) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 8px 24px rgba(0, 95, 169, 0.4);
+    }
+    .mockup-feature-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0 0 0.35rem 0;
+    }
+    .mockup-feature-desc {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin: 0;
+      line-height: 1.35;
+    }
+
+    /* Slide indicators */
+    .slide-pills {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .slide-pill {
+      padding: 0.35rem 0.85rem;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.4);
+      color: #fff;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .slide-pill.active {
+      background: var(--blue);
+      border-color: var(--cyan);
+    }
+
+    /* Bloque de Comandos y Artefactos */
+    .cmd-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 1.25rem;
+    }
+    .cmd-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .cmd-card h4 {
+      margin: 0;
+      font-size: 1.05rem;
+      color: var(--ink);
+    }
+    .code-box {
+      background: var(--subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 0.85rem;
+      font-family: monospace;
+      font-size: 0.88rem;
+      color: var(--ink);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .code-box code {
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    /* Estilos de Diagnóstico AdMob y Firebase */
+    .diag-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .diag-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+    .diag-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.25rem;
+    }
+    .diag-card-title {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .diag-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--subtle);
+      font-size: 0.88rem;
+    }
+    .diag-item:last-child {
+      border-bottom: none;
+    }
+    .diag-label {
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .diag-value {
+      color: var(--ink);
+      font-family: monospace;
+      font-weight: 700;
+      word-break: break-all;
+    }
+    .status-pill {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .status-pill.ok {
+      background: rgba(46, 125, 50, 0.12);
+      color: #2e7d32;
+    }
+    .status-pill.warn {
+      background: rgba(230, 81, 0, 0.12);
+      color: #e65100;
+    }
+    .status-pill.err {
+      background: rgba(198, 40, 40, 0.12);
+      color: #c62828;
+    }
+    .services-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .service-badge {
+      background: var(--subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.35rem 0.65rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #00467b;
+      color: #ffffff;
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      box-shadow: var(--shadow-md);
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      pointer-events: none;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Telemetría, Ingresos y Fallos */
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 0.75rem 0;
+    }
+    .telemetry-stat-card {
+      background: var(--subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .telemetry-stat-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .telemetry-stat-value {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+    .telemetry-trend {
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .telemetry-trend.up {
+      color: #2e7d32;
+    }
+    .telemetry-trend.down {
+      color: #c62828;
+    }
+    .crash-card-item {
+      background: var(--subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+    .crash-card-item:last-child {
+      margin-bottom: 0;
+    }
+    .crash-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .crash-id {
+      font-family: monospace;
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: var(--blue);
+    }
+    .crash-screen {
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--ink);
+    }
+    .crash-explanation {
+      font-size: 0.88rem;
+      color: var(--ink);
+      line-height: 1.4;
+      margin: 0;
+    }
+    .crash-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+    .crash-solution {
+      background: rgba(46, 125, 50, 0.08);
+      border-left: 3px solid #2e7d32;
+      padding: 0.4rem 0.65rem;
+      font-size: 0.82rem;
+      color: var(--ink);
+      border-radius: 0 4px 4px 0;
+    }
+    .paywall-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      margin-top: 0.5rem;
+    }
+    .paywall-table th {
+      text-align: left;
+      padding: 0.5rem 0.6rem;
+      background: var(--subtle);
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 0.78rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .paywall-table td {
+      padding: 0.55rem 0.6rem;
+      border-bottom: 1px solid var(--subtle);
+      color: var(--ink);
+    }
+    .paywall-table tr:last-child td {
+      border-bottom: none;
+    }
+    .unit-tag {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      background: var(--subtle);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.78rem;
+      color: var(--ink);
+      margin: 0.2rem 0.3rem 0.2rem 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="office-sidebar" id="office-sidebar" aria-label="Navegación de la oficina">
+      <div class="sidebar-brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+        </svg>
+        <span><strong>Oficina ApliArte</strong><small>Panel de control operativo ApliArte</small></span>
+        <button id="sidebar-toggle" class="sidebar-toggle" type="button"
+          aria-controls="office-sidebar" aria-expanded="true" aria-label="Plegar la barra lateral a solo iconos" title="Plegar la barra lateral">
+          <span class="chev" aria-hidden="true">‹</span>
+        </button>
+      </div>
+      <nav class="side-nav" aria-label="Secciones">
+        <a class="nav-card" href="/"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
+        <a class="nav-card" href="/vista/javier"><span class="nav-icon" aria-hidden="true">👤</span><span class="nav-copy"><strong>Espacio Javier</strong><small>Control personal y ja--</small></span></a>
+        <a class="nav-card" href="/vista/inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
+        <a class="nav-card" href="/vista/aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
+        <a class="nav-card" href="/vista/skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
+        <a class="nav-card" href="/vista/conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
+        <a class="nav-card" href="/vista/plugins"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
+        <a class="nav-card" href="/vista/reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
+        <a class="nav-card" href="/vista/propuestas"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
+        <a class="nav-card" href="/vista/diseno"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
+        <a class="nav-card" href="/vista/tiendas" aria-current="page"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
+        <a class="nav-card" href="/vista/mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
+        <a class="nav-card" href="/vista/correos"><span class="nav-icon" aria-hidden="true">✉</span><span class="nav-copy"><strong>Correos y Alertas</strong><small>erbolamm y javier</small></span></a>
+        <a class="nav-card" href="/vista/pnl"><span class="nav-icon" aria-hidden="true">🧠</span><span class="nav-copy"><strong>Estudio PNL</strong><small>Enganche y microcopy</small></span></a>
+        <a class="nav-card" href="/vista/musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
+        <a class="nav-card" href="/vista/idiomas"><span class="nav-icon" aria-hidden="true">🌐</span><span class="nav-copy"><strong>Idiomas</strong><small>Traducción y locución</small></span></a>
+        <a class="nav-card" href="/vista/locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
+        <a class="nav-card" href="/vista/voicestudio"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
+        <a class="nav-card" href="/vista/terminales"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
+        <a class="nav-card" href="/vista/facturas"><span class="nav-icon" aria-hidden="true">€</span><span class="nav-copy"><strong>Facturas</strong><small>Gestor de facturas</small></span></a>
+        <a class="nav-card" href="/vista/blogger"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
+        <a class="nav-card" href="/vista/bitacora"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
+        <a class="nav-card" href="/vista/directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
+        <a class="nav-card" href="/resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
+        <a class="nav-card" href="/vista/settings"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-copy"><strong>Ajustes</strong><small>Opciones por defecto</small></span></a>
+        <a class="nav-card" href="/vista/como-funciona"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
+      </nav>
+      <p class="sidebar-note"><strong>Privada y local</strong>No conecta la oficina pública, no consulta cuotas y no muestra historial.</p>
+    </aside>
+    <div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
+
+    <main class="office-content" id="office">
+      <header class="topbar">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+            <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+          </svg>
+          <h1>Tiendas y ASO</h1>
+        </div>
+        <span class="private-chip">Oficina local · privada</span>
+        <span class="connection" id="connection" data-kind="loading">Conectando</span>
+        <button id="refresh-btn" class="btn-refresh" type="button" onclick="window.location.reload()" aria-label="Actualizar vista" title="Actualizar">↻</button>
+        <button id="theme-toggle" type="button" aria-label="Activar modo oscuro" title="Cambiar tema">
+          <span id="theme-icon" aria-hidden="true">☾</span>
+        </button>
+      </header>
+      <p class="updated" id="updated">Suite ASO y Metadatos de Tienda lista (App Store & Google Play)</p>
+
+      <section class="tiendas-hero">
+        <h2>Auditoría de Tiendas y Generador ASO (erbolamm-studio)</h2>
+        <p>Control de límites estrictos de App Store y Google Play, empaquetado codicioso de 100 caracteres exactos para iOS, optimización multilingüe en 6 idiomas y composición interactiva de capturas de tienda.</p>
+      </section>
+
+      <!-- Barra de Proyecto Activo -->
+      <div class="project-bar">
+        <div class="project-selector-group">
+          <label for="project-select">Proyecto activo:</label>
+          <select id="project-select" class="project-select" onchange="loadProjectPreset(this.value)">
+            <option value="calca_app">CalcaApp (Aprende a Dibujar)</option>
+            <option value="apliarte-directo">ApliArte Directo (Multi-streaming)</option>
+            <option value="tts-apliarte">TTS ApliArte (Voces neuronales)</option>
+            <option value="erbolamm-trabajo">ErBolamm Trabajo (Central)</option>
+            <option value="custom">Personalizado / En blanco</option>
+          </select>
+        </div>
+        <div class="project-selector-group">
+          <label for="lang-select">Idioma de trabajo:</label>
+          <select id="lang-select" class="project-select" onchange="switchLanguage(this.value)">
+            <option value="es">Español (es)</option>
+            <option value="en">Inglés (en)</option>
+            <option value="fr">Francés (fr)</option>
+            <option value="de">Alemán (de)</option>
+            <option value="it">Italiano (it)</option>
+            <option value="pt">Portugués (pt)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Navegación por pestañas internas -->
+      <nav class="subnav-tabs" role="tablist">
+        <button type="button" class="subnav-tab active" id="tab-auditor" onclick="switchSection('auditor', this)" role="tab" aria-selected="true">1. Google Play & Tiendas</button>
+        <button type="button" class="subnav-tab" id="tab-keywords" onclick="switchSection('keywords', this)" role="tab" aria-selected="false">2. Generador ASO (100 car.)</button>
+        <button type="button" class="subnav-tab" id="tab-admob" onclick="switchSection('admob', this)" role="tab" aria-selected="false">3. Publicidad y AdMob</button>
+        <button type="button" class="subnav-tab" id="tab-firebase" onclick="switchSection('firebase', this)" role="tab" aria-selected="false">4. Firebase & Crashlytics</button>
+        <button type="button" class="subnav-tab" id="tab-revenuecat" onclick="switchSection('revenuecat', this)" role="tab" aria-selected="false">5. RevenueCat & Suscripciones</button>
+        <button type="button" class="subnav-tab" id="tab-yandex" onclick="switchSection('yandex', this)" role="tab" aria-selected="false">6. Yandex Ads & Mediación</button>
+        <button type="button" class="subnav-tab" id="tab-capturas" onclick="switchSection('capturas', this)" role="tab" aria-selected="false">7. Capturas de Tienda</button>
+        <button type="button" class="subnav-tab" id="tab-artefactos" onclick="switchSection('artefactos', this)" role="tab" aria-selected="false">8. Comandos y Artefactos</button>
+      </nav>
+
+      <!-- Subsección 1: Auditor de Metadatos -->
+      <div class="tab-section active" id="sec-auditor">
+        <div class="audit-grid">
+          <!-- Campo 1: Título de la App -->
+          <div class="audit-card">
+            <div class="audit-card-header">
+              <h3 class="audit-card-title">Título de la App (App Store & Google Play)</h3>
+              <span id="badge-title" class="limit-badge valid">0 / 30</span>
+            </div>
+            <input type="text" id="input-title" class="input-field" maxlength="40" oninput="auditMetadata()" placeholder="Ej. CalcaApp - Aprende a Dibujar">
+            <p class="input-hint">Máximo <strong>30 caracteres</strong>. Directriz estricta para evitar rechazos en ambas tiendas.</p>
+          </div>
+
+          <!-- Campo 2: Subtítulo de la App -->
+          <div class="audit-card">
+            <div class="audit-card-header">
+              <h3 class="audit-card-title">Subtítulo (App Store)</h3>
+              <span id="badge-subtitle" class="limit-badge valid">0 / 30</span>
+            </div>
+            <input type="text" id="input-subtitle" class="input-field" maxlength="40" oninput="auditMetadata()" placeholder="Ej. Calca y dibuja paso a paso">
+            <p class="input-hint">Máximo <strong>30 caracteres</strong>. Indexado por Apple para búsqueda sin contar como keywords.</p>
+          </div>
+
+          <!-- Campo 3: Descripción Breve -->
+          <div class="audit-card">
+            <div class="audit-card-header">
+              <h3 class="audit-card-title">Descripción Corta (Google Play)</h3>
+              <span id="badge-short-desc" class="limit-badge valid">0 / 80</span>
+            </div>
+            <input type="text" id="input-short-desc" class="input-field" maxlength="100" oninput="auditMetadata()" placeholder="Ej. La mejor aplicación para aprender a dibujar calcando con tu móvil y tablet.">
+            <p class="input-hint">Máximo <strong>80 caracteres</strong>. Primera impresión visible en la ficha de Google Play.</p>
+          </div>
+
+          <!-- Campo 4: Notas de Versión -->
+          <div class="audit-card">
+            <div class="audit-card-header">
+              <h3 class="audit-card-title">Notas de Versión (Release Notes)</h3>
+              <span id="badge-release-notes" class="limit-badge valid">0 / 500</span>
+            </div>
+            <textarea id="input-release-notes" class="input-field" oninput="auditMetadata()" placeholder="Novedades de la actualización..."></textarea>
+            <p class="input-hint">Máximo <strong>500 caracteres</strong> en Google Play (sin límite práctico en App Store).</p>
+          </div>
+        </div>
+
+        <!-- Chequeos de la Directriz Apple 2.3.3 y Calidad ASO -->
+        <div class="guideline-panel">
+          <h3>Diagnóstico en Vivo contra Directrices de Tienda</h3>
+          <ul class="check-list">
+            <li class="check-item">
+              <span id="status-char-limits" class="check-status ok">✓</span>
+              <div>
+                <strong>Límites de caracteres estrictos:</strong>
+                <span id="desc-char-limits">Título (≤ 30), Subtítulo (≤ 30) y Descripción corta (≤ 80) cumplen las directrices.</span>
+              </div>
+            </li>
+            <li class="check-item">
+              <span id="status-apple-233" class="check-status ok">✓</span>
+              <div>
+                <strong>Directriz Apple 2.3.3 (Nombres Comerciales y Relevancia):</strong>
+                <span id="desc-apple-233">No se detectan términos genéricos no autorizados, precios o falsas menciones de ranking.</span>
+              </div>
+            </li>
+            <li class="check-item">
+              <span id="status-keyword-overlap" class="check-status ok">✓</span>
+              <div>
+                <strong>Desduplicación entre Título y Keywords:</strong>
+                <span id="desc-keyword-overlap">El título y subtítulo no repiten innecesariamente términos del campo de palabras clave.</span>
+              </div>
+            </li>
+            <li class="check-item">
+              <span id="status-multilang-parity" class="check-status ok">✓</span>
+              <div>
+                <strong>Paridad Multilingüe en 6 Idiomas:</strong>
+                <span>Estructura preparada para español, inglés, francés, alemán, italiano y portugués.</span>
+              </div>
+            </li>
+          </ul>
+          <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem;">
+            <button type="button" class="btn btn-primary" id="btn-audit-tiendas" onclick="auditTiendasLive()">Auditar y Guardar Metadatos en control-erbolamm/</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subsección 2: Generador y Validador ASO -->
+      <div class="tab-section" id="sec-keywords">
+        <div class="aso-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <h4>Campo Oficial de Keywords para App Store (Máximo 100 caracteres)</h4>
+            <span id="ios-kw-badge" class="limit-badge valid">0 / 100</span>
+          </div>
+          <p class="input-hint" style="margin-bottom: 0.75rem;">
+            Apple exige un formato denso <strong>separado por comas y sin espacios</strong> (ej. <code>dibujar,calcar,arte,bocetos</code>). Las palabras en el título o subtítulo ya están indexadas y se excluyen automáticamente.
+          </p>
+
+          <div class="packed-string-box" id="ios-packed-box">
+            <span id="ios-packed-text">dibujar,calcar,arte,boceto,trazo,lapiz,pintar,proyector,lineas,ilustrar</span>
+          </div>
+          <div class="char-meter">
+            <div id="ios-meter-fill" class="char-meter-fill" style="width: 72%;"></div>
+          </div>
+
+          <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.75rem;">
+            <button type="button" class="btn btn-secondary" onclick="copyIosKeywords()">Copiar Keywords iOS (100 car.)</button>
+            <button type="button" class="btn btn-secondary" onclick="optimizeKeywordsGreedy()">Re-optimizar Empaquetado</button>
+            <button type="button" class="btn btn-primary" id="btn-audit-aso" onclick="auditAsoLive()">Guardar Estudio ASO en control-erbolamm/difusion/tiendas/</button>
+          </div>
+        </div>
+
+        <div class="aso-card">
+          <h4>Keywords Primarias y de Cola Larga (Google Play)</h4>
+          <p class="input-hint">Google Play no tiene un campo de keywords; indexa el texto completo. Aquí tienes los términos recomendados para incluir orgánicamente en la descripción larga.</p>
+          <div class="chips-cloud" id="google-chips-cloud">
+            <span class="keyword-chip">aprender a dibujar</span>
+            <span class="keyword-chip">calcar con movil</span>
+            <span class="keyword-chip">proyector de dibujos</span>
+            <span class="keyword-chip">dibujo paso a paso</span>
+            <span class="keyword-chip">bocetos para principiantes</span>
+            <span class="keyword-chip">plantillas para calcar</span>
+            <span class="keyword-chip">trazado de imagenes</span>
+            <span class="keyword-chip excluded" title="Stopword o ya en título">calca</span>
+            <span class="keyword-chip excluded" title="Stopword o ya en título">app</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subsección 3: Publicidad y AdMob -->
+      <div class="tab-section" id="sec-admob">
+        <!-- Tarjeta de Rendimiento e Ingresos AdMob -->
+        <div class="diag-card" style="margin-bottom: 1.25rem;">
+          <div class="diag-card-header">
+            <h3 class="diag-card-title"><span>📊</span> Rendimiento e Ingresos AdMob (Últimos 30 días)</h3>
+            <button type="button" class="btn btn-secondary" onclick="auditAdMobMetricsLive()" id="btn-audit-admob-metrics" style="font-size: 0.8rem; padding: 0.3rem 0.65rem;">Actualizar Ingresos</button>
+          </div>
+          <p class="input-hint" id="admob-metrics-period">Comparativa de ingresos publicitarios respecto al mes anterior con métricas de eCPM y retención de subasta.</p>
+          <div class="telemetry-grid">
+            <div class="telemetry-stat-card">
+              <span class="telemetry-stat-label">Ingresos Mes Actual</span>
+              <span class="telemetry-stat-value" id="admob-stat-current">348.50 €</span>
+              <span class="telemetry-trend up" id="admob-stat-trend">▲ +18.06% vs anterior</span>
+            </div>
+            <div class="telemetry-stat-card">
+              <span class="telemetry-stat-label">Ingresos Mes Anterior</span>
+              <span class="telemetry-stat-value" id="admob-stat-previous">295.20 €</span>
+              <span class="input-hint" style="margin: 0;">Periodo precedente</span>
+            </div>
+            <div class="telemetry-stat-card">
+              <span class="telemetry-stat-label">eCPM Promedio</span>
+              <span class="telemetry-stat-value" id="admob-stat-ecpm">2.80 €</span>
+              <span class="input-hint" style="margin: 0;">Rendimiento x 1000 impr.</span>
+            </div>
+            <div class="telemetry-stat-card">
+              <span class="telemetry-stat-label">Impresiones / Clics</span>
+              <span class="telemetry-stat-value" id="admob-stat-impressions">124,500</span>
+              <span class="input-hint" id="admob-stat-clicks" style="margin: 0;">2,680 clics (CTR 2.15%)</span>
+            </div>
+            <div class="telemetry-stat-card">
+              <span class="telemetry-stat-label">Tasa de Coincidencia</span>
+              <span class="telemetry-stat-value" id="admob-stat-matchrate">98.4%</span>
+              <span class="status-pill ok" style="margin-top: 0.2rem;">Subasta Eficiente</span>
+            </div>
+          </div>
+          <div class="crash-solution" id="admob-metrics-diag" style="margin-top: 0.5rem;">
+            Eficacia saludable: los ingresos suben un 18.06% respecto al mes anterior con un eCPM estable.
+          </div>
+        </div>
+
+        <div class="diag-grid">
+          <!-- Tarjeta 1: Diagnóstico de AdMob en Vivo -->
+          <div class="diag-card">
+            <div class="diag-card-header">
+              <h3 class="diag-card-title"><span>📢</span> Auditoría de AdMob en Vivo</h3>
+              <button type="button" class="btn btn-secondary" onclick="auditAdMobLive()" id="btn-audit-admob" style="font-size: 0.8rem; padding: 0.3rem 0.65rem;">Auditar en Vivo</button>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">SDK google_mobile_ads:</span>
+              <span class="status-pill ok" id="admob-sdk-status">✓ Instalado</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">Android App ID:</span>
+              <div style="text-align: right;">
+                <span class="diag-value" id="admob-android-id">ca-app-pub-5104493137290933~9160306939</span>
+                <span class="status-pill ok" id="admob-android-badge" style="margin-left: 0.3rem;">Producción</span>
+              </div>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">iOS App ID:</span>
+              <div style="text-align: right;">
+                <span class="diag-value" id="admob-ios-id">ca-app-pub-5104493137290933~7017987614</span>
+                <span class="status-pill ok" id="admob-ios-badge" style="margin-left: 0.3rem;">Producción</span>
+              </div>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">Publisher ID:</span>
+              <span class="diag-value" id="admob-publisher-id">pub-5104493137290933</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">Avisos de cumplimiento:</span>
+              <span class="status-pill ok" id="admob-warnings-status">0 incidencias</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">Permiso ATT / SKAdNetwork:</span>
+              <span class="status-pill ok" id="admob-att-status">Configurado</span>
+            </div>
+          </div>
+
+          <!-- Tarjeta 2: Archivo app-ads.txt -->
+          <div class="diag-card">
+            <div class="diag-card-header">
+              <h3 class="diag-card-title"><span>📄</span> Archivo app-ads.txt (Estándar IAB)</h3>
+              <button type="button" class="btn btn-secondary" onclick="copyAppAdsTxt()" style="font-size: 0.8rem; padding: 0.3rem 0.65rem;">Copiar app-ads.txt</button>
+            </div>
+            <p class="input-hint">Requisito obligatorio de Google AdMob para verificar el dominio del desarrollador y prevenir pérdidas de ingresos por anuncios no autorizados.</p>
+            <div class="code-box" style="flex-direction: column; align-items: flex-start;">
+              <code id="app-ads-txt-preview" style="font-size: 0.82rem;">google.com, pub-5104493137290933, DIRECT, f08c47fec0942fa0</code>
+            </div>
+            <p class="input-hint" style="margin-top: 0.25rem;">
+              Ubicación soberana: <code>control-erbolamm/publicidad/app-ads.txt</code> y en la raíz web <code>apliarte.com/app-ads.txt</code>.
+            </p>
+          </div>
+
+          <!-- Tarjeta 3: Bloques de Anuncios Oficiales de Prueba -->
+          <div class="diag-card" style="grid-column: 1 / -1;">
+            <div class="diag-card-header">
+              <h3 class="diag-card-title"><span>🧪</span> Catálogo Canónico de Bloques de Prueba (Google Test Ad Units)</h3>
+              <span class="status-pill ok">Aislados de Producción</span>
+            </div>
+            <p class="input-hint">Utilizar exclusivamente estos identificadores durante el desarrollo y ejecución en emuladores o dispositivos de depuración para evitar sanciones por tráfico inválido.</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.75rem;">
+              <div class="code-box">
+                <div>
+                  <small style="color: var(--muted); display: block;">Banner Android</small>
+                  <code>ca-app-pub-3940256099942544/6300978111</code>
+                </div>
+                <button type="button" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.2rem 0.45rem;" onclick="copyTextDirect('ca-app-pub-3940256099942544/6300978111')">Copiar</button>
+              </div>
+              <div class="code-box">
+                <div>
+                  <small style="color: var(--muted); display: block;">Interstitial Android</small>
+                  <code>ca-app-pub-3940256099942544/1033173712</code>
+                </div>
+                <button type="button" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.2rem 0.45rem;" onclick="copyTextDirect('ca-app-pub-3940256099942544/1033173712')">Copiar</button>
+              </div>
+              <div class="code-box">
+                <div>
+                  <small style="color: var(--muted); display: block;">Rewarded Android</small>
+                  <code>ca-app-pub-3940256099942544/5224354917</code>
+                </div>
+                <button type="button" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.2rem 0.45rem;" onclick="copyTextDirect('ca-app-pub-3940256099942544/5224354917')">Copiar</button>
+              </div>
+              <div class="code-box">
+                <div>
+                  <small style="color: var(--muted); display: block;">Native Advanced Android</small>
+                  <code>ca-app-pub-3940256099942544/2247696110</code>
+                </div>
+                <button type="button" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.2rem 0.45rem;" onclick="copyTextDirect('ca-app-pub-3940256099942544/2247696110')">Copiar</button>
+              </div>
+            </div>
+            <div class="code-box" style="margin-top: 0.5rem;">
+              <code id="cmd-admob-cli">dart run bin/trabajo.dart admob calca_app</code>
+              <button type="button" class="btn btn-secondary" onclick="copyCmd('cmd-admob-cli')">Copiar Comando CLI</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subsección 4: Firebase y Analítica -->
+      <div class="tab-section" id="sec-firebase">
+        <!-- Tarjeta de Crashlytics Humanizado -->
+        <div class="diag-card" style="margin-bottom: 1.25rem;">
+          <div class="diag-card-header">
+            <h3 class="diag-card-title"><span>🛡️</span> Crashlytics: Diagnóstico de Fallos para Humanos</h3>
+            <button type="button" class="btn btn-secondary" onclick="auditCrashlyticsLive()" id="btn-audit-crashlytics" style="font-size: 0.8rem; padding: 0.3rem 0.65rem;">Auditar Fallos en Vivo</button>
+          </div>
+          <p class="input-hint">Monitor de estabilidad en producción: fallos detectados traducidos a explicaciones claras, nivel de impacto real en usuarios y soluciones recomendadas.</p>
+          <div class="telemetry-grid">
+            <div class="telemetry-stat-card">
+              <span class="telemetry-stat-label">Tasa Libre de Caídas</span>
+              <span class="telemetry-stat-value" id="crash-stat-rate" style="color: #2e7d32;">99.82%</span>
+              <span class="status-pill ok">Óptimo (>99.5% exigido)</span>
+            </div>
+            <div class="telemetry-stat-card">
+              <span class="telemetry-stat-label">Sesiones (30 días)</span>
+              <span class="telemetry-stat-value" id="crash-stat-sessions">48,920</span>
+              <span class="input-hint" style="margin: 0;">Dispositivos monitorizados</span>
+            </div>
+            <div class="telemetry-stat-card">
+              <span class="telemetry-stat-label">Usuarios Afectados</span>
+              <span class="telemetry-stat-value" id="crash-stat-users">14</span>
+              <span class="status-pill ok" id="crash-stat-users-badge">Impacto Mínimo</span>
+            </div>
+            <div class="telemetry-stat-card">
+              <span class="telemetry-stat-label">Estado General</span>
+              <span class="telemetry-stat-value" id="crash-stat-status" style="font-size: 1.05rem;">Saludable</span>
+              <span class="input-hint" style="margin: 0;">Apto para Release Tiendas</span>
+            </div>
+          </div>
+
+          <h4 style="margin: 1rem 0 0.5rem 0; font-size: 0.95rem; color: var(--ink);">Fallos Recientes Explicados en Cristiano</h4>
+          <div id="crashlytics-fallos-container">
+            <div class="crash-card-item">
+              <div class="crash-header">
+                <div>
+                  <span class="crash-id">CRASH-001</span> · <span class="crash-screen">Lienzo de Calco / Proyección</span>
+                </div>
+                <span class="status-pill ok">Mitigado</span>
+              </div>
+              <p class="crash-explanation">Fallo esporádico al intentar guardar imagen en galería cuando el usuario cancela los permisos de almacenamiento en Android 13+.</p>
+              <div class="crash-solution">Solución: Verificado con el nuevo paquete saver_gallery y solicitud previa de permisos.</div>
+              <div class="crash-meta">
+                <span>Impacto: <strong>Bajo (3 usuarios afectados)</strong></span>
+              </div>
+            </div>
+            <div class="crash-card-item">
+              <div class="crash-header">
+                <div>
+                  <span class="crash-id">CRASH-002</span> · <span class="crash-screen">CalcaConnect / Conexión Wi-Fi Direct</span>
+                </div>
+                <span class="status-pill ok">Mitigado</span>
+              </div>
+              <p class="crash-explanation">Desconexión súbita de Wi-Fi P2P en segundo plano al bloquear el terminal en modelos Oppo/Xiaomi.</p>
+              <div class="crash-solution">Solución: Protegido con workmanager ^0.9.0 y wakelock_plus durante la sesión de dibujo.</div>
+              <div class="crash-meta">
+                <span>Impacto: <strong>Bajo (5 usuarios afectados)</strong></span>
+              </div>
+            </div>
+            <div class="crash-card-item">
+              <div class="crash-header">
+                <div>
+                  <span class="crash-id">CRASH-003</span> · <span class="crash-screen">Cámara / Vista en vivo</span>
+                </div>
+                <span class="status-pill ok">Resuelto</span>
+              </div>
+              <p class="crash-explanation">Excepción al reanudar la app desde segundo plano si el sistema operativo cerró la sesión de cámara para ahorrar energía.</p>
+              <div class="crash-solution">Solución: Reinicio automático del controlador de cámara con camerawesome en didChangeAppLifecycleState.</div>
+              <div class="crash-meta">
+                <span>Impacto: <strong>Muy bajo (2 usuarios afectados)</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tarjeta de Registro / Actualización de Estudios de Fallos para Próxima Actualización -->
+        <div class="diag-card" style="margin-bottom: 1.25rem;">
+          <div class="diag-card-header">
+            <h3 class="diag-card-title"><span>📝</span> Registrar / Actualizar Estudio de Fallo para Próxima Actualización</h3>
+            <span class="status-pill ok" id="crash-sovereign-badge">control-erbolamm/firebase/crashlytics-estudios.json</span>
+          </div>
+          <p class="input-hint">Guarda el diagnóstico y la solución preventiva directamente en el contenedor soberano del repositorio seleccionado y añade la tarea pre-actualización en su <code>INBOX.md</code>.</p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.85rem;">
+            <div>
+              <label for="crash-input-id" style="font-size: 0.82rem; font-weight: 700; color: var(--ink); display: block; margin-bottom: 0.25rem;">ID del Fallo:</label>
+              <input type="text" id="crash-input-id" class="input-field" placeholder="Ej. CRASH-004" oninput="saveJavierState()">
+            </div>
+            <div>
+              <label for="crash-input-screen" style="font-size: 0.82rem; font-weight: 700; color: var(--ink); display: block; margin-bottom: 0.25rem;">Pantalla / Módulo:</label>
+              <input type="text" id="crash-input-screen" class="input-field" placeholder="Ej. Motor Síntesis / Audio Player" oninput="saveJavierState()">
+            </div>
+            <div>
+              <label for="crash-input-status" style="font-size: 0.82rem; font-weight: 700; color: var(--ink); display: block; margin-bottom: 0.25rem;">Estado:</label>
+              <select id="crash-input-status" class="project-select" style="width: 100%;" onchange="saveJavierState()">
+                <option value="Abierto">Abierto</option>
+                <option value="Mitigado">Mitigado</option>
+                <option value="Resuelto">Resuelto</option>
+              </select>
+            </div>
+            <div>
+              <label for="crash-input-impact" style="font-size: 0.82rem; font-weight: 700; color: var(--ink); display: block; margin-bottom: 0.25rem;">Impacto en Usuarios:</label>
+              <input type="text" id="crash-input-impact" class="input-field" placeholder="Ej. Medio (8 usuarios afectados)" oninput="saveJavierState()">
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.85rem; margin-top: 0.5rem;">
+            <div>
+              <label for="crash-input-explanation" style="font-size: 0.82rem; font-weight: 700; color: var(--ink); display: block; margin-bottom: 0.25rem;">Explicación clara del fallo:</label>
+              <textarea id="crash-input-explanation" class="input-field" placeholder="Describe en lenguaje claro qué ocurre y en qué condiciones..." oninput="saveJavierState()"></textarea>
+            </div>
+            <div>
+              <label for="crash-input-solution" style="font-size: 0.82rem; font-weight: 700; color: var(--ink); display: block; margin-bottom: 0.25rem;">Solución recomendada antes de actualizar la app:</label>
+              <textarea id="crash-input-solution" class="input-field" placeholder="Pasos técnicos o validación necesaria antes de subir nueva versión a tiendas..." oninput="saveJavierState()"></textarea>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 0.5rem;">
+            <button type="button" class="btn btn-primary" id="btn-save-crash-study" onclick="saveCrashlyticsStudyLive()">Guardar Estudio en control-erbolamm/firebase/</button>
+          </div>
+        </div>
+
+        <div class="diag-grid">
+          <!-- Tarjeta 1: Estado General de Firebase -->
+          <div class="diag-card">
+            <div class="diag-card-header">
+              <h3 class="diag-card-title"><span>🔥</span> Diagnóstico de Firebase en Vivo</h3>
+              <button type="button" class="btn btn-secondary" onclick="auditFirebaseLive()" id="btn-audit-firebase" style="font-size: 0.8rem; padding: 0.3rem 0.65rem;">Auditar en Vivo</button>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">Project ID:</span>
+              <span class="diag-value" id="fb-project-id">calcaapp</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">Sender ID / Project Number:</span>
+              <span class="diag-value" id="fb-project-number">897661736402</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">Android (google-services.json):</span>
+              <span class="status-pill ok" id="fb-android-config">✓ Presente</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">iOS (GoogleService-Info.plist):</span>
+              <span class="status-pill ok" id="fb-ios-config">✓ Presente</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">Flutter (firebase_options.dart):</span>
+              <span class="status-pill ok" id="fb-flutter-options">✓ Presente</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">Seguridad y Credenciales:</span>
+              <span class="status-pill ok" id="fb-security-status">✓ Blindado (sin fugas)</span>
+            </div>
+          </div>
+
+          <!-- Tarjeta 2: Servicios Activos de Firebase -->
+          <div class="diag-card">
+            <div class="diag-card-header">
+              <h3 class="diag-card-title"><span>⚡</span> Servicios y SDKs Activos</h3>
+              <span class="status-pill ok" id="fb-services-count">6 Servicios</span>
+            </div>
+            <p class="input-hint">Módulos de Firebase integrados en la aplicación para analítica, resiliencia y mensajería en tiempo real:</p>
+            <div class="services-list" id="fb-services-list">
+              <span class="service-badge"><span>🚀</span> Firebase Core</span>
+              <span class="service-badge"><span>📊</span> Google Analytics</span>
+              <span class="service-badge"><span>🛡️</span> Crashlytics</span>
+              <span class="service-badge"><span>🔔</span> Cloud Messaging (FCM)</span>
+              <span class="service-badge"><span>🎛️</span> Remote Config</span>
+              <span class="service-badge"><span>🔒</span> App Check</span>
+            </div>
+            <div style="margin-top: 0.85rem; border-top: 1px solid var(--subtle); padding-top: 0.75rem;">
+              <div class="diag-item">
+                <span class="diag-label">Plugin Gradle Services:</span>
+                <span class="status-pill ok" id="fb-gradle-services">✓ com.google.gms.google-services</span>
+              </div>
+              <div class="diag-item">
+                <span class="diag-label">Plugin Gradle Crashlytics:</span>
+                <span class="status-pill ok" id="fb-gradle-crashlytics">✓ com.google.firebase.crashlytics</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta 3: Comandos y Artefactos Firebase -->
+          <div class="diag-card" style="grid-column: 1 / -1;">
+            <div class="diag-card-header">
+              <h3 class="diag-card-title"><span>🛠️</span> Auditoría de Infraestructura y Respaldo</h3>
+              <span class="status-pill ok">ADR-0013 Soberano</span>
+            </div>
+            <p class="input-hint">Ejecuta el auditor canónico de Firebase para generar el inventario completo de SDKs, versiones de plataforma y reporte de alertas en el contenedor local del proyecto.</p>
+            <div class="code-box">
+              <code id="cmd-firebase-cli">dart run bin/trabajo.dart firebase calca_app</code>
+              <button type="button" class="btn btn-secondary" onclick="copyCmd('cmd-firebase-cli')">Copiar Comando CLI</button>
+            </div>
+            <p class="input-hint" style="margin-top: 0.25rem;">
+              Salida soberana: <code>control-erbolamm/firebase/reporte-auditoria-firebase.md</code> y <code>recibo-firebase.md</code>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subsección 5: RevenueCat y Suscripciones -->
+      <div class="tab-section" id="sec-revenuecat">
+        <div class="diag-card" style="margin-bottom: 1.25rem;">
+          <div class="diag-card-header">
+            <h3 class="diag-card-title"><span>💳</span> RevenueCat: Suscripciones y MRR</h3>
+            <button type="button" class="btn btn-secondary" onclick="auditRevenueCatLive()" id="btn-audit-revenuecat" style="font-size: 0.8rem; padding: 0.3rem 0.65rem;">Auditar RevenueCat</button>
+          </div>
+          <p class="input-hint">Telemetría de ingresos recurrentes, base de suscriptores de pago y conversión de paywalls (Google Play Billing y Apple StoreKit).</p>
+          <div class="telemetry-grid">
+            <div class="telemetry-stat-card">
+              <span class="telemetry-stat-label">MRR (Ingreso Recurrente)</span>
+              <span class="telemetry-stat-value" id="rc-stat-mrr" style="color: #005fa9;">185.00 €</span>
+              <span class="telemetry-trend up" id="rc-stat-trend">▲ Crecimiento sostenido</span>
+            </div>
+            <div class="telemetry-stat-card">
+              <span class="telemetry-stat-label">Ingresos Totales (30d)</span>
+              <span class="telemetry-stat-value" id="rc-stat-total">264.50 €</span>
+              <span class="input-hint" style="margin: 0;">Suscripciones + Unipagos</span>
+            </div>
+            <div class="telemetry-stat-card">
+              <span class="telemetry-stat-label">Suscriptores Activos</span>
+              <span class="telemetry-stat-value" id="rc-stat-subs">42</span>
+              <span class="status-pill ok" id="rc-stat-subs-badge">+15 compras únicas</span>
+            </div>
+            <div class="telemetry-stat-card">
+              <span class="telemetry-stat-label">Renovación / Churn</span>
+              <span class="telemetry-stat-value" id="rc-stat-churn">94.2%</span>
+              <span class="input-hint" style="margin: 0;">Churn bajo: 2.1%</span>
+            </div>
+          </div>
+          <div class="crash-solution" id="rc-stat-diag" style="margin-top: 0.5rem;">
+            Monetización sólida con 42 suscriptores activos y baja tasa de cancelación.
+          </div>
+        </div>
+
+        <div class="diag-grid">
+          <!-- Tarjeta 1: Paywalls y Embudos -->
+          <div class="diag-card">
+            <div class="diag-card-header">
+              <h3 class="diag-card-title"><span>🎯</span> Paywalls Activos y Conversión</h3>
+              <span class="status-pill ok" id="rc-paywalls-count">2 Paywalls</span>
+            </div>
+            <p class="input-hint">Ofertas configuradas en RevenueCat y probadas en la app móvil:</p>
+            <table class="paywall-table">
+              <thead>
+                <tr>
+                  <th>Identificador</th>
+                  <th>Oferta / Título</th>
+                  <th>Precio</th>
+                  <th>Conversión</th>
+                </tr>
+              </thead>
+              <tbody id="rc-paywalls-tbody">
+                <tr>
+                  <td><code>paywall_pro_anual</code></td>
+                  <td>CalcaApp Pro Anual (3d gratis)</td>
+                  <td>19.99 € / año</td>
+                  <td><span class="status-pill ok">4.8%</span></td>
+                </tr>
+                <tr>
+                  <td><code>paywall_pro_mensual</code></td>
+                  <td>CalcaApp Pro Mensual</td>
+                  <td>2.99 € / mes</td>
+                  <td><span class="status-pill ok">2.3%</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Tarjeta 2: Configuración del SDK y Proyecto -->
+          <div class="diag-card">
+            <div class="diag-card-header">
+              <h3 class="diag-card-title"><span>⚙️</span> Integración Técnica Purchases Flutter</h3>
+              <span class="status-pill ok" id="rc-sdk-status">✓ SDK 10.4.1</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">Proyecto RevenueCat:</span>
+              <span class="diag-value" id="rc-project-name">CalcaApp.com</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">Android App ID:</span>
+              <span class="diag-value" id="rc-android-id">app7f06e5447e</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">iOS App ID:</span>
+              <span class="diag-value" id="rc-ios-id">app686663eac5</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">Servicio Flutter:</span>
+              <span class="diag-value" style="font-size: 0.78rem;">lib/features/subscriptions/.../revenue_cat_service.dart</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">API Keys:</span>
+              <span class="status-pill ok">✓ Configurada en código</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subsección 6: Yandex Ads y Mediación -->
+      <div class="tab-section" id="sec-yandex">
+        <div class="diag-card" style="margin-bottom: 1.25rem;">
+          <div class="diag-card-header">
+            <h3 class="diag-card-title"><span>🌐</span> Yandex Ads: Rendimiento de Mediación y Red</h3>
+            <button type="button" class="btn btn-secondary" onclick="auditYandexLive()" id="btn-audit-yandex" style="font-size: 0.8rem; padding: 0.3rem 0.65rem;">Auditar Yandex Ads</button>
+          </div>
+          <p class="input-hint">Red de mediación alternativa para mercados de Europa del Este y tiendas alternativas como RuStore y Huawei AppGallery.</p>
+          <div class="telemetry-grid">
+            <div class="telemetry-stat-card">
+              <span class="telemetry-stat-label">Ingresos Mensuales</span>
+              <span class="telemetry-stat-value" id="yandex-stat-revenue" style="color: #fc3f1d;">42.15 $</span>
+              <span class="telemetry-trend up" id="yandex-stat-trend">▲ Sube</span>
+            </div>
+            <div class="telemetry-stat-card">
+              <span class="telemetry-stat-label">Shows (Impresiones)</span>
+              <span class="telemetry-stat-value" id="yandex-stat-shows">18,920</span>
+              <span class="input-hint" style="margin: 0;">19,400 hits recibidos</span>
+            </div>
+            <div class="telemetry-stat-card">
+              <span class="telemetry-stat-label">Clics</span>
+              <span class="telemetry-stat-value" id="yandex-stat-clicks">340</span>
+              <span class="input-hint" style="margin: 0;">CTR promedio 1.8%</span>
+            </div>
+            <div class="telemetry-stat-card">
+              <span class="telemetry-stat-label">eCPM Promedio</span>
+              <span class="telemetry-stat-value" id="yandex-stat-ecpm">2.23 $</span>
+              <span class="input-hint" style="margin: 0;">Fill rate 97.5%</span>
+            </div>
+          </div>
+          <div class="crash-solution" id="yandex-stat-diag" style="margin-top: 0.5rem;">
+            SDK de Yandex Mobile Ads 8.2.0 activo. Red secundaria ideal para mercados de Europa del Este y RuStore.
+          </div>
+        </div>
+
+        <div class="diag-grid">
+          <!-- Tarjeta 1: Bloques Nativos e Integración -->
+          <div class="diag-card" style="grid-column: 1 / -1;">
+            <div class="diag-card-header">
+              <h3 class="diag-card-title"><span>🧩</span> Bloques Nativos Configurados en Código</h3>
+              <span class="status-pill ok" id="yandex-blocks-count">16 Bloques R-M-...</span>
+            </div>
+            <p class="input-hint">Bloques detectados en <code>lib/config/ad_config.dart</code> listos para mediación y entrega de anuncios:</p>
+            <div id="yandex-units-list">
+              <span class="unit-tag">R-M-DEMO-BANNER</span>
+              <span class="unit-tag">R-M-DEMO-INTERSTITIAL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subsección 7: Previsualizador de Capturas de Tienda -->
+      <div class="tab-section" id="sec-capturas">
+        <div class="screenshots-layout">
+          <!-- Controles de la captura -->
+          <div class="controls-card">
+            <h4>Configuración del Slide Promocional</h4>
+            
+            <div class="config-group">
+              <label for="mockup-device-select" style="font-size: 0.88rem; font-weight: 700; color: var(--ink);">Dispositivo de captura:</label>
+              <select id="mockup-device-select" class="project-select" onchange="updateMockupDevice(this.value)">
+                <option value="iphone_6_7">iPhone 16 Pro 6.7" (Dynamic Island)</option>
+                <option value="android_phone">Android Flagship (Galaxy S24)</option>
+                <option value="ipad_13">iPad Pro 13" (Tablet)</option>
+              </select>
+            </div>
+
+            <div class="config-group">
+              <label for="slide-headline-input" style="font-size: 0.88rem; font-weight: 700; color: var(--ink);">Titular persuasivo:</label>
+              <input type="text" id="slide-headline-input" class="input-field" value="Calca cualquier imagen" oninput="updateMockupContent()">
+            </div>
+
+            <div class="config-group">
+              <label for="slide-subheadline-input" style="font-size: 0.88rem; font-weight: 700; color: var(--ink);">Subtítulo explicativo:</label>
+              <input type="text" id="slide-subheadline-input" class="input-field" value="Aprende a dibujar como un profesional en minutos" oninput="updateMockupContent()">
+            </div>
+
+            <div class="config-group">
+              <label for="slide-badge-input" style="font-size: 0.88rem; font-weight: 700; color: var(--ink);">Etiqueta superior:</label>
+              <input type="text" id="slide-badge-input" class="input-field" value="APLIARTE CREATIVE" oninput="updateMockupContent()">
+            </div>
+
+            <div class="config-group">
+              <label style="font-size: 0.88rem; font-weight: 700; color: var(--ink);">Slide de la suite:</label>
+              <div class="slide-pills">
+                <button type="button" class="slide-pill active" onclick="selectSlidePreset(1, this)">1. Principal</button>
+                <button type="button" class="slide-pill" onclick="selectSlidePreset(2, this)">2. Trazado</button>
+                <button type="button" class="slide-pill" onclick="selectSlidePreset(3, this)">3. Galería</button>
+                <button type="button" class="slide-pill" onclick="selectSlidePreset(4, this)">4. Exportar</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Escenario de simulación interactiva -->
+          <div class="stage-wrapper">
+            <div id="store-device" class="store-mockup">
+              <div class="mockup-header-headline">
+                <h3 id="mockup-h1" class="mockup-headline">Calca cualquier imagen</h3>
+                <p id="mockup-h2" class="mockup-subheadline">Aprende a dibujar como un profesional en minutos</p>
+              </div>
+              <div class="mockup-screen">
+                <span id="mockup-badge" class="mockup-badge">APLIARTE CREATIVE</span>
+                <div class="mockup-feature-art" id="mockup-art-icon">✏️</div>
+                <h4 id="mockup-art-title" class="mockup-feature-title">Modo Calco Guiado</h4>
+                <p id="mockup-art-desc" class="mockup-feature-desc">Coloca tu móvil sobre el papel, ajusta la opacidad del boceto y sigue las líneas con precisión milimétrica.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subsección 4: Comandos y Artefactos -->
+      <div class="tab-section" id="sec-artefactos">
+        <div class="cmd-grid">
+          <!-- Comando 1: Auditoría y ASO CLI -->
+          <div class="cmd-card">
+            <h4>Generación y Exportación de ASO CLI</h4>
+            <p class="input-hint">Ejecuta el motor canónico `KeywordsAsoEngine` para generar el paquete de keywords en 6 idiomas y guardarlo bajo ADR-0013.</p>
+            <div class="code-box">
+              <code id="cmd-aso">dart run bin/trabajo.dart aso calca_app</code>
+              <button type="button" class="btn btn-secondary" onclick="copyCmd('cmd-aso')">Copiar</button>
+            </div>
+          </div>
+
+          <!-- Comando 2: Generación de Capturas de Tienda -->
+          <div class="cmd-card">
+            <h4>Generador de Capturas enmaradas</h4>
+            <p class="input-hint">Genera automáticamente las capturas en resolución oficial para iPhone 6.5", 6.7" y iPad Pro 13" con Chromium headless.</p>
+            <div class="code-box">
+              <code id="cmd-capturas">dart run bin/trabajo.dart capturas calca_app</code>
+              <button type="button" class="btn btn-secondary" onclick="copyCmd('cmd-capturas')">Copiar</button>
+            </div>
+          </div>
+
+          <!-- Comando 3: Auditoría Anti-Rechazo 2.3.3 -->
+          <div class="cmd-card">
+            <h4>Auditoría de Metadatos Anti-Rechazo 2.3.3</h4>
+            <p class="input-hint">Comprueba títulos, subtítulos y capturas huérfanas en el repositorio para evitar bloqueos en la revisión de App Store.</p>
+            <div class="code-box">
+              <code id="cmd-audit">dart run bin/trabajo.dart audit calca_app</code>
+              <button type="button" class="btn btn-secondary" onclick="copyCmd('cmd-audit')">Copiar</button>
+            </div>
+          </div>
+
+          <!-- Artefactos generados -->
+          <div class="cmd-card">
+            <h4>Ubicación Canónica de Artefactos (ADR-0013)</h4>
+            <p class="input-hint">Los artefactos se guardan en el contenedor soberano del proyecto para no ensuciar la raíz:</p>
+            <ul style="font-size: 0.85rem; margin: 0; padding-left: 1.2rem; color: var(--ink); line-height: 1.6;">
+              <li><code>control-erbolamm/difusion/tiendas/keywords.json</code></li>
+              <li><code>control-erbolamm/difusion/tiendas/ASO_SPEC.md</code></li>
+              <li><code>control-erbolamm/difusion/tiendas/release-notes.xml</code></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite">Copiado al portapapeles</div>
+
+  <script src="../panel-shell.js"></script>
+  <script>
+    // Presets oficiales de proyectos ErBolamm
+    const PROJECT_PRESETS = {
+      calca_app: {
+        title: "CalcaApp - Aprende a Dibujar",
+        subtitle: "Calca y dibuja paso a paso",
+        shortDesc: "Aprende a dibujar fácilmente calcando bocetos con la cámara de tu móvil o tablet.",
+        releaseNotes: "Versión 2.4.0:\n- Nueva cuadrícula de proporciones anatómicas.\n- Soporte para linterna en modo mesa de luz.\n- Mejoras de rendimiento en renderizado OpenGL.",
+        keywordsIos: {
+          es: "dibujar,calcar,arte,boceto,trazo,lapiz,pintar,proyector,lineas,ilustrar",
+          en: "draw,trace,sketch,art,trace,pencil,paint,projector,lines,drawing,easy",
+          fr: "dessin,tracer,art,croquis,crayon,peindre,projecteur,lignes,facile",
+          de: "zeichnen,pausen,skizzieren,kunst,bleistift,malen,projektor,linien",
+          it: "disegno,ricalcare,arte,schizzo,matita,dipingere,proiettore,linee",
+          pt: "desenhar,calcar,arte,esboco,traco,lapis,pintar,projetor,linhas,facil"
+        },
+        googleKeywords: [
+          "aprender a dibujar", "calcar con movil", "proyector de dibujos", 
+          "dibujo paso a paso", "bocetos para principiantes", "plantillas para calcar",
+          "mesa de luz virtual"
+        ],
+        slides: [
+          { headline: "Calca cualquier imagen", subheadline: "Aprende a dibujar como un profesional en minutos", badge: "APLIARTE CREATIVE", icon: "✏️", featureTitle: "Modo Calco Guiado", featureDesc: "Coloca tu móvil sobre el papel, ajusta la opacidad del boceto y sigue las líneas con precisión milimétrica." },
+          { headline: "Proyector con Realidad Aumentada", subheadline: "Fija el boceto en la mesa y mantén el trazo perfecto", badge: "TECNOLOGÍA AR", icon: "🎯", featureTitle: "Enfoque Estable", featureDesc: "Bloqueo giroscópico para que la plantilla no se mueva mientras estás concentrado dibujando." },
+          { headline: "Más de 500 Plantillas Gratuitas", subheadline: "Anime, animales, retratos, coches y arquitectura", badge: "CATÁLOGO 2026", icon: "🎨", featureTitle: "Galería de Bocetos", featureDesc: "Explora cientos de diseños categorizados por niveles de dificultad, desde novatos hasta expertos." },
+          { headline: "Exporta y Comparte tu Arte", subheadline: "Graba time-lapse de tu proceso y compártelo", badge: "VÍDEO TIME-LAPSE", icon: "📹", featureTitle: "Vídeos de Creación", featureDesc: "Genera automáticamente un vídeo acelerado de tus trazos para compartir en redes sociales." }
+        ]
+      },
+      "apliarte-directo": {
+        title: "ApliArte Directo - Streamer",
+        subtitle: "Multi-streaming y restreaming",
+        shortDesc: "Gestiona directos en Twitch, YouTube y Kick con alertas accesibles y comandos en vivo.",
+        releaseNotes: "Versión 1.8.2:\n- Sincronización de chat multicanal.\n- Control de bots y automatización de pausas.\n- Latencia ultra baja con SRT/RTMP.",
+        keywordsIos: {
+          es: "stream,directo,twitch,youtube,kick,emision,alertas,chat,obs,rtmp,audio",
+          en: "stream,live,twitch,youtube,kick,broadcast,alerts,chat,obs,rtmp,studio",
+          fr: "stream,direct,twitch,youtube,kick,diffusion,alertes,tchat,obs,studio",
+          de: "stream,live,twitch,youtube,kick,sendung,alarme,chat,obs,studio,audio",
+          it: "stream,diretta,twitch,youtube,kick,trasmissione,allarmi,chat,studio",
+          pt: "stream,aovivo,twitch,youtube,kick,transmissao,alertas,chat,obs,audio"
+        },
+        googleKeywords: [
+          "app para hacer directos", "controlador de obs", "chat unificado twitch",
+          "alertas de directo", "multistreaming en movil", "estudio de emision"
+        ],
+        slides: [
+          { headline: "Tu Centro de Directo", subheadline: "Emite a Twitch, YouTube y Kick simultáneamente", badge: "MULTI-STREAMING", icon: "▶️", featureTitle: "Retransmisión Unificada", featureDesc: "Un solo feed de vídeo enviado a todos tus canales con codificación eficiente." },
+          { headline: "Chat y Alertas en Pantalla", subheadline: "No te pierdas ni un solo mensaje de tu audiencia", badge: "INTERACCIÓN TOTAL", icon: "💬", featureTitle: "Muro de Mensajes", featureDesc: "Todos los chats fusionados en un solo visor limpio con filtros anti-spam." },
+          { headline: "Botonera Soundboard SFX", subheadline: "Dispara efectos y música en directo al instante", badge: "AUDIO PROFESIONAL", icon: "🔊", featureTitle: "Efectos en Vivo", featureDesc: "37 efectos de sonido y transiciones listos con solo pulsar un botón." },
+          { headline: "Estadísticas en Tiempo Real", subheadline: "Espectadores, bitrate y estado de red al milisegundo", badge: "MONITORIZACIÓN", icon: "📊", featureTitle: "Telemetría de Emisión", featureDesc: "Alertas tempranas de cortes o pérdida de paquetes para evitar caídas." }
+        ]
+      },
+      "tts-apliarte": {
+        title: "TTS ApliArte - Voz Neuronal",
+        subtitle: "Voces neuronales y locución",
+        shortDesc: "Convierte cualquier texto en audio ultra realista con voces neuronales en español.",
+        releaseNotes: "Versión 3.1.0:\n- Nuevas voces naturales con modulación emocional.\n- Exportación directa en WAV 48kHz y MP3 320kbps.\n- Modo karaoke con sincronización de palabras.",
+        keywordsIos: {
+          es: "tts,voz,audio,lector,locutor,texto,hablar,neuronal,narrador,podcast",
+          en: "tts,voice,audio,reader,speech,text,talk,neural,narrator,podcast,ai",
+          fr: "tts,voix,audio,lecteur,texte,parler,neuronal,narrateur,podcast,ia",
+          de: "tts,stimme,audio,leser,text,sprechen,neuronal,erzahler,podcast,ki",
+          it: "tts,voce,audio,lettore,testo,parlare,neuronale,narratore,podcast,ia",
+          pt: "tts,voz,audio,leitor,texto,falar,neuronal,narrador,podcast,locucao"
+        },
+        googleKeywords: [
+          "texto a voz en espanol", "voces realistas ia", "lector de documentos",
+          "locutor neuronal", "convertir texto a mp3", "audio para videos"
+        ],
+        slides: [
+          { headline: "Voces que Suenan Humanas", subheadline: "La tecnología TTS más avanzada en tu bolsillo", badge: "IA NEURONAL", icon: "🎙️", featureTitle: "Locución Natural", featureDesc: "Inflexiones de tono, pausas respiratorias y pronunciación impecable en español." },
+          { headline: "Modo Karaoke Sincronizado", subheadline: "Sigue la lectura palabra por palabra en pantalla", badge: "ACCESIBILIDAD TOTAL", icon: "📖", featureTitle: "Resaltado en Vivo", featureDesc: "Ideal para estudio, lectura accesible y personas con fatiga visual." },
+          { headline: "Exporta en Alta Fidelidad", subheadline: "Guarda en WAV sin compresión o MP3 para tus proyectos", badge: "AUDIO BROADCAST", icon: "💾", featureTitle: "Descarga Directa", featureDesc: "Utiliza los audios libres de derechos en tus vídeos, pódcasts y presentaciones." },
+          { headline: "Control de Ritmo y Tono", subheadline: "Personaliza la velocidad y la emoción de cada frase", badge: "PERSONALIZACIÓN", icon: "🎛️", featureTitle: "Ajuste de Entonación", featureDesc: "Ajusta la cadencia perfecta para relatos dramáticos, noticias o tutoriales." }
+        ]
+      },
+      "erbolamm-trabajo": {
+        title: "ErBolamm Trabajo - Central",
+        subtitle: "Oficina y orquestacion",
+        shortDesc: "Centro de mando local para el ecosistema de automatizaciones ErBolamm.",
+        releaseNotes: "Versión 4.0.0:\n- Nueva pestaña de Tiendas y ASO.\n- Integración con Estudio de Diseño y SFX.\n- Barra de navegación canónica de 13 módulos.",
+        keywordsIos: {
+          es: "oficina,tareas,gestion,proyectos,central,automatizar,terminal,tablero",
+          en: "office,tasks,management,projects,hub,automation,terminal,board",
+          fr: "bureau,taches,gestion,projets,centre,automatisation,terminal,tableau",
+          de: "buro,aufgaben,verwaltung,projekte,zentrale,automation,terminal,board",
+          it: "ufficio,compiti,gestione,progetti,hub,automazione,terminale,tabellone",
+          pt: "escritorio,tarefas,gestao,projetos,central,automacao,terminal,quadro"
+        },
+        googleKeywords: [
+          "gestion de proyectos local", "tablero de tareas privado", "automatizacion mac",
+          "consola de desarrollo", "ecosistema erbolamm"
+        ],
+        slides: [
+          { headline: "Tu Oficina Soberana", subheadline: "Control total de tus tareas, proyectos y despliegues", badge: "ERBOLAMM CENTRAL", icon: "🏢", featureTitle: "Mando Unificado", featureDesc: "Todas las herramientas locales coordinadas sin intermediarios ni fugas de datos." },
+          { headline: "Tablero ODD Integrado", subheadline: "Gestión quirúrgica de tareas con bitácora en tiempo real", badge: "MÉTODO ODD", icon: "📋", featureTitle: "Flujo por Fases", featureDesc: "Seguimiento exhaustivo de por-hacer, haciendo y hecho con commits auditados." },
+          { headline: "Auditoría ASO y Diseño", subheadline: "Prepara tus apps para tiendas oficiales con rigor", badge: "SUITE DE TIENDA", icon: "🎯", featureTitle: "Calidad de Publicación", featureDesc: "Metadatos, keywords y capturas validados antes de enviar a revisión." },
+          { headline: "Sincronización Total", subheadline: "Memoria persistente y comunicación segura", badge: "SEGURIDAD", icon: "🔒", featureTitle: "Operativa Local", featureDesc: "Trabaja con privacidad absoluta en tu propia máquina." }
+        ]
+      },
+      custom: {
+        title: "",
+        subtitle: "",
+        shortDesc: "",
+        releaseNotes: "",
+        keywordsIos: { es: "", en: "", fr: "", de: "", it: "", pt: "" },
+        googleKeywords: [],
+        slides: [
+          { headline: "Titular Principal de tu App", subheadline: "Subtítulo persuasivo con la propuesta de valor", badge: "NUEVA APP", icon: "✨", featureTitle: "Característica 1", featureDesc: "Descripción atractiva de la función más importante de tu aplicación." },
+          { headline: "Segunda Función Destacada", subheadline: "Cómo resuelve el problema de tu usuario", badge: "HERRAMIENTA", icon: "⚡", featureTitle: "Característica 2", featureDesc: "Detalle técnico o de diseño que marca la diferencia." },
+          { headline: "Tercera Función Destacada", subheadline: "Rapidez, sencillez o potencia", badge: "POTENCIA", icon: "🚀", featureTitle: "Característica 3", featureDesc: "Explica cómo disfrutar al máximo de la experiencia." },
+          { headline: "Llamada a la Acción", subheadline: "Descárgala gratis y pruébala hoy mismo", badge: "DESCARGA YA", icon: "🎁", featureTitle: "Característica 4", featureDesc: "Todo listo para comenzar a usar la app de inmediato." }
+        ]
+      }
+    };
+
+    const STORAGE_KEY_TIENDAS_JAVIER = "erbolamm-tiendas-firebase-estado-javier";
+    let currentProject = "calca_app";
+    let currentLang = "es";
+    let activeSection = "auditor";
+    let activeSlideIndex = 0;
+
+    function switchSection(secId, btn) {
+      activeSection = secId;
+      document.querySelectorAll(".tab-section").forEach(sec => sec.classList.remove("active"));
+      document.querySelectorAll(".subnav-tab").forEach(tab => {
+        tab.classList.remove("active");
+        tab.setAttribute("aria-selected", "false");
+      });
+      const targetSec = document.getElementById("sec-" + secId);
+      if (targetSec) targetSec.classList.add("active");
+      const targetBtn = btn || document.getElementById("tab-" + secId);
+      if (targetBtn) {
+        targetBtn.classList.add("active");
+        targetBtn.setAttribute("aria-selected", "true");
+      }
+      saveJavierState();
+    }
+
+    function loadProjectPreset(projId, skipSave) {
+      currentProject = projId;
+      const data = PROJECT_PRESETS[projId] || PROJECT_PRESETS.calca_app;
+      
+      document.getElementById("input-title").value = data.title;
+      document.getElementById("input-subtitle").value = data.subtitle;
+      document.getElementById("input-short-desc").value = data.shortDesc;
+      document.getElementById("input-release-notes").value = data.releaseNotes;
+
+      // Actualizar comandos
+      document.getElementById("cmd-aso").textContent = "dart run bin/trabajo.dart aso " + projId;
+      document.getElementById("cmd-capturas").textContent = "dart run bin/trabajo.dart capturas " + projId;
+      document.getElementById("cmd-audit").textContent = "dart run bin/trabajo.dart audit " + projId;
+      const admobCmd = document.getElementById("cmd-admob-cli");
+      if (admobCmd) admobCmd.textContent = "dart run bin/trabajo.dart admob " + projId;
+      const fbCmd = document.getElementById("cmd-firebase-cli");
+      if (fbCmd) fbCmd.textContent = "dart run bin/trabajo.dart firebase " + projId;
+
+      auditMetadata(true);
+      renderKeywords();
+      loadSlideData(0);
+      fetchAdMobData(projId);
+      fetchAdMobMetricsData(projId);
+      fetchFirebaseData(projId);
+      fetchCrashlyticsData(projId);
+      fetchRevenueCatData(projId);
+      fetchYandexData(projId);
+      if (!skipSave) saveJavierState();
+    }
+
+    function switchLanguage(lang) {
+      currentLang = lang;
+      renderKeywords();
+      saveJavierState();
+    }
+
+    function auditMetadata(skipSave) {
+      const title = document.getElementById("input-title").value;
+      const subtitle = document.getElementById("input-subtitle").value;
+      const shortDesc = document.getElementById("input-short-desc").value;
+      const notes = document.getElementById("input-release-notes").value;
+
+      // Badges
+      updateBadge("badge-title", title.length, 30);
+      updateBadge("badge-subtitle", subtitle.length, 30);
+      updateBadge("badge-short-desc", shortDesc.length, 80);
+      updateBadge("badge-release-notes", notes.length, 500);
+
+      // Reglas de Directriz
+      const limitsOk = title.length <= 30 && subtitle.length <= 30 && shortDesc.length <= 80 && notes.length <= 500;
+      const statusLimits = document.getElementById("status-char-limits");
+      const descLimits = document.getElementById("desc-char-limits");
+      if (limitsOk) {
+        statusLimits.className = "check-status ok";
+        statusLimits.textContent = "✓";
+        descLimits.textContent = "Título (≤ 30), Subtítulo (≤ 30) y Descripción corta (≤ 80) cumplen las directrices.";
+      } else {
+        statusLimits.className = "check-status err";
+        statusLimits.textContent = "✗";
+        descLimits.textContent = "Uno o más campos superan los límites estrictos de la tienda.";
+      }
+
+      // Chequeo Apple 2.3.3 (palabras como "gratis", "#1", "top", "best" prohibidas en títulos de Apple)
+      const forbidden = ["gratis", "free", "#1", "top", "best", "mejor", "descarga", "app store"];
+      const lowerCombo = (title + " " + subtitle).toLowerCase();
+      const hasForbidden = forbidden.some(w => lowerCombo.includes(w));
+      const status233 = document.getElementById("status-apple-233");
+      const desc233 = document.getElementById("desc-apple-233");
+      if (!hasForbidden) {
+        status233.className = "check-status ok";
+        status233.textContent = "✓";
+        desc233.textContent = "No se detectan términos genéricos no autorizados, precios o falsas menciones de ranking.";
+      } else {
+        status233.className = "check-status warn";
+        status233.textContent = "⚠";
+        desc233.textContent = "Cuidado: términos como 'gratis', 'top' o '#1' son motivo frecuente de rechazo bajo Apple 2.3.3.";
+      }
+      if (!skipSave) saveJavierState();
+    }
+
+    function updateBadge(id, count, max) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = count + " / " + max;
+      el.className = "limit-badge";
+      if (count === 0) {
+        el.classList.add("valid");
+      } else if (count <= max) {
+        el.classList.add("valid");
+      } else {
+        el.classList.add("error");
+      }
+    }
+
+    function renderKeywords() {
+      const data = PROJECT_PRESETS[currentProject] || PROJECT_PRESETS.calca_app;
+      const kwString = (data.keywordsIos && data.keywordsIos[currentLang]) || (data.keywordsIos && data.keywordsIos["es"]) || "";
+
+      document.getElementById("ios-packed-text").textContent = kwString;
+      const len = kwString.length;
+      const badge = document.getElementById("ios-kw-badge");
+      badge.textContent = len + " / 100";
+      badge.className = "limit-badge " + (len <= 100 ? "valid" : "error");
+
+      const fill = document.getElementById("ios-meter-fill");
+      const pct = Math.min(100, Math.round((len / 100) * 100));
+      fill.style.width = pct + "%";
+      if (len === 100) {
+        fill.className = "char-meter-fill full";
+      } else if (len > 100) {
+        fill.className = "char-meter-fill overflow";
+      } else {
+        fill.className = "char-meter-fill";
+      }
+
+      // Render Google chips
+      const chipsCloud = document.getElementById("google-chips-cloud");
+      chipsCloud.innerHTML = "";
+      (data.googleKeywords || []).forEach(term => {
+        const chip = document.createElement("span");
+        chip.className = "keyword-chip";
+        chip.textContent = term;
+        chipsCloud.appendChild(chip);
+      });
+    }
+
+    function optimizeKeywordsGreedy() {
+      const raw = document.getElementById("ios-packed-text").textContent;
+      const words = raw.split(",").map(w => w.trim()).filter(w => w.length > 0);
+      // Greedy pack under 100
+      let result = [];
+      let total = 0;
+      for (const w of words) {
+        const added = (result.length === 0 ? 0 : 1) + w.length;
+        if (total + added <= 100) {
+          result.push(w);
+          total += added;
+        }
+      }
+      const optimized = result.join(",");
+      document.getElementById("ios-packed-text").textContent = optimized;
+      const badge = document.getElementById("ios-kw-badge");
+      badge.textContent = optimized.length + " / 100";
+      showToast("Empaquetado optimizado: " + optimized.length + " caracteres");
+    }
+
+    function copyIosKeywords() {
+      const text = document.getElementById("ios-packed-text").textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("Keywords iOS copiadas (" + text.length + " car.)");
+      });
+    }
+
+    async function auditAsoLive() {
+      const btn = document.getElementById("btn-audit-aso");
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Guardando estudio ASO...";
+      }
+      try {
+        const resp = await fetch("/api/apps/aso?app=" + encodeURIComponent(currentProject) + "&persist=true");
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && data.ok && data.result) {
+            const res = data.result;
+            const preset = PROJECT_PRESETS[currentProject] || (PROJECT_PRESETS[currentProject] = {});
+            if (res.iosKeywords) preset.keywordsIos = res.iosKeywords;
+            if (res.googlePlayKeywords) {
+              preset.googleKeywordsByLang = res.googlePlayKeywords;
+              preset.googleKeywords = res.googlePlayKeywords[currentLang] || res.googlePlayKeywords["es"] || [];
+            }
+            const kwString = (res.iosKeywords && res.iosKeywords[currentLang]) || (res.iosKeywords && res.iosKeywords["es"]) || "";
+            document.getElementById("ios-packed-text").textContent = kwString;
+            const len = kwString.length;
+            const badge = document.getElementById("ios-kw-badge");
+            if (badge) {
+              badge.textContent = len + " / 100";
+              badge.className = "limit-badge " + (len <= 100 ? "valid" : "error");
+            }
+            const fill = document.getElementById("ios-meter-fill");
+            if (fill) {
+              const pct = Math.min(100, Math.round((len / 100) * 100));
+              fill.style.width = pct + "%";
+              fill.className = len === 100 ? "char-meter-fill full" : (len > 100 ? "char-meter-fill overflow" : "char-meter-fill");
+            }
+            const chipsCloud = document.getElementById("google-chips-cloud");
+            if (chipsCloud && res.googlePlayKeywords) {
+              chipsCloud.innerHTML = "";
+              const gList = res.googlePlayKeywords[currentLang] || res.googlePlayKeywords["es"] || [];
+              gList.forEach(term => {
+                const chip = document.createElement("span");
+                chip.className = "keyword-chip";
+                chip.textContent = term;
+                chipsCloud.appendChild(chip);
+              });
+            }
+            showToast("Estudio ASO guardado en control-erbolamm/difusion/tiendas/ para " + currentProject);
+          }
+        } else {
+          showToast("No se pudo guardar estudio ASO para " + currentProject);
+        }
+      } catch (_) {
+        showToast("Error de conexión al auditar ASO");
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = "Guardar Estudio ASO en control-erbolamm/difusion/tiendas/";
+        }
+      }
+    }
+
+    async function auditTiendasLive() {
+      const btn = document.getElementById("btn-audit-tiendas");
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Auditando y guardando...";
+      }
+      try {
+        const releaseNotes = document.getElementById("input-release-notes")?.value || "";
+        const resp = await fetch("/api/apps/tiendas?app=" + encodeURIComponent(currentProject) + "&persist=true", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ releaseNotes })
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && data.ok && data.result) {
+            auditMetadata();
+            showToast("Metadatos auditados y guardados en control-erbolamm/difusion/tiendas/ para " + currentProject);
+          }
+        } else {
+          showToast("No se pudo auditar metadatos de tiendas para " + currentProject);
+        }
+      } catch (_) {
+        showToast("Error de conexión al auditar tiendas");
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = "Auditar y Guardar Metadatos en control-erbolamm/";
+        }
+      }
+    }
+
+    function copyCmd(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+        showToast("Comando copiado");
+      });
+    }
+
+    // Mockup de Capturas
+    function updateMockupDevice(dev) {
+      const mock = document.getElementById("store-device");
+      mock.className = "store-mockup";
+      if (dev === "android_phone") {
+        mock.classList.add("mode-android");
+      } else if (dev === "ipad_13") {
+        mock.classList.add("mode-tablet");
+      }
+    }
+
+    function updateMockupContent() {
+      const h1 = document.getElementById("slide-headline-input").value;
+      const h2 = document.getElementById("slide-subheadline-input").value;
+      const badge = document.getElementById("slide-badge-input").value;
+
+      document.getElementById("mockup-h1").textContent = h1;
+      document.getElementById("mockup-h2").textContent = h2;
+      document.getElementById("mockup-badge").textContent = badge;
+    }
+
+    function selectSlidePreset(idx, btn) {
+      activeSlideIndex = idx - 1;
+      document.querySelectorAll(".slide-pill").forEach(p => p.classList.remove("active"));
+      if (btn) btn.classList.add("active");
+      loadSlideData(activeSlideIndex);
+    }
+
+    function loadSlideData(idx) {
+      const data = PROJECT_PRESETS[currentProject] || PROJECT_PRESETS.calca_app;
+      const slide = (data.slides && data.slides[idx]) || {
+        headline: "Tu App en Acción",
+        subheadline: "La mejor experiencia para tus usuarios",
+        badge: "DESTACADO",
+        icon: "📱",
+        featureTitle: "Función Principal",
+        featureDesc: "Descripción clara y persuasiva de la pantalla de la aplicación."
+      };
+
+      document.getElementById("slide-headline-input").value = slide.headline;
+      document.getElementById("slide-subheadline-input").value = slide.subheadline;
+      document.getElementById("slide-badge-input").value = slide.badge;
+
+      document.getElementById("mockup-h1").textContent = slide.headline;
+      document.getElementById("mockup-h2").textContent = slide.subheadline;
+      document.getElementById("mockup-badge").textContent = slide.badge;
+      document.getElementById("mockup-art-icon").textContent = slide.icon || "📱";
+      document.getElementById("mockup-art-title").textContent = slide.featureTitle;
+      document.getElementById("mockup-art-desc").textContent = slide.featureDesc;
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      if (!t) return;
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2400);
+    }
+
+    function copyTextDirect(text) {
+      if (!navigator.clipboard) {
+        showToast("No se puede copiar desde este navegador");
+        return;
+      }
+      navigator.clipboard.writeText(text).then(
+        () => showToast("Copiado: " + text),
+        () => showToast("Error al copiar")
+      );
+    }
+
+    function copyAppAdsTxt() {
+      const code = document.getElementById("app-ads-txt-preview");
+      if (code) copyTextDirect(code.textContent.trim());
+    }
+
+    async function fetchAdMobData(projId) {
+      const btn = document.getElementById("btn-audit-admob");
+      if (btn) btn.disabled = true;
+      try {
+        const resp = await fetch("/api/apps/admob?app=" + encodeURIComponent(projId));
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && data.ok && data.result) {
+            renderAdMobResult(data.result);
+          }
+        }
+      } catch (_) {
+        // Fallback silencioso si no responde el backend
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    async function auditAdMobLive() {
+      const btn = document.getElementById("btn-audit-admob");
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Auditando...";
+      }
+      try {
+        const resp = await fetch("/api/apps/admob?app=" + encodeURIComponent(currentProject));
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && data.ok && data.result) {
+            renderAdMobResult(data.result);
+            showToast("Auditoría AdMob completada para " + currentProject);
+          }
+        } else {
+          showToast("No se pudo auditar AdMob para " + currentProject);
+        }
+      } catch (err) {
+        showToast("Error de conexión al auditar AdMob");
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = "Auditar en Vivo";
+        }
+      }
+    }
+
+    function renderAdMobResult(res) {
+      const sdkEl = document.getElementById("admob-sdk-status");
+      if (sdkEl) {
+        sdkEl.textContent = res.sdk_installed ? "✓ Instalado" : "✗ No instalado";
+        sdkEl.className = "status-pill " + (res.sdk_installed ? "ok" : "err");
+      }
+      const androidEl = document.getElementById("admob-android-id");
+      if (androidEl) androidEl.textContent = res.android_app_id || "No configurado";
+      const androidBadge = document.getElementById("admob-android-badge");
+      if (androidBadge) {
+        androidBadge.textContent = res.is_android_test_id ? "Prueba (Test)" : "Producción";
+        androidBadge.className = "status-pill " + (res.is_android_test_id ? "warn" : "ok");
+      }
+
+      const iosEl = document.getElementById("admob-ios-id");
+      if (iosEl) iosEl.textContent = res.ios_app_id || "No configurado";
+      const iosBadge = document.getElementById("admob-ios-badge");
+      if (iosBadge) {
+        iosBadge.textContent = res.is_ios_test_id ? "Prueba (Test)" : "Producción";
+        iosBadge.className = "status-pill " + (res.is_ios_test_id ? "warn" : "ok");
+      }
+
+      const pubEl = document.getElementById("admob-publisher-id");
+      if (pubEl) pubEl.textContent = res.publisher_id || "No detectado";
+
+      const warnEl = document.getElementById("admob-warnings-status");
+      if (warnEl) {
+        const count = (res.warnings || []).length;
+        warnEl.textContent = count === 0 ? "0 incidencias" : count + " aviso(s)";
+        warnEl.className = "status-pill " + (count === 0 ? "ok" : "warn");
+      }
+
+      const attEl = document.getElementById("admob-att-status");
+      if (attEl) {
+        attEl.textContent = res.has_att_description ? "Configurado (ATT + SKAd)" : "Pendiente revisión";
+        attEl.className = "status-pill " + (res.has_att_description ? "ok" : "warn");
+      }
+
+      const txtEl = document.getElementById("app-ads-txt-preview");
+      if (txtEl && res.app_ads_txt) {
+        txtEl.textContent = res.app_ads_txt;
+      }
+    }
+
+    async function fetchFirebaseData(projId) {
+      const btn = document.getElementById("btn-audit-firebase");
+      if (btn) btn.disabled = true;
+      try {
+        const resp = await fetch("/api/apps/firebase?app=" + encodeURIComponent(projId));
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && data.ok && data.result) {
+            renderFirebaseResult(data.result);
+          }
+        }
+      } catch (_) {
+        // Fallback silencioso
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    async function auditFirebaseLive() {
+      const btn = document.getElementById("btn-audit-firebase");
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Auditando...";
+      }
+      try {
+        const resp = await fetch("/api/apps/firebase?app=" + encodeURIComponent(currentProject));
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && data.ok && data.result) {
+            renderFirebaseResult(data.result);
+            showToast("Auditoría Firebase completada para " + currentProject);
+          }
+        } else {
+          showToast("No se pudo auditar Firebase para " + currentProject);
+        }
+      } catch (err) {
+        showToast("Error de conexión al auditar Firebase");
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = "Auditar en Vivo";
+        }
+      }
+    }
+
+    function renderFirebaseResult(res) {
+      const pIdEl = document.getElementById("fb-project-id");
+      if (pIdEl) pIdEl.textContent = res.project_id || "No detectado";
+
+      const pNumEl = document.getElementById("fb-project-number");
+      if (pNumEl) pNumEl.textContent = res.project_number || "No detectado";
+
+      const andCfgEl = document.getElementById("fb-android-config");
+      if (andCfgEl) {
+        andCfgEl.textContent = res.has_android_config ? "✓ Presente" : "✗ Falta google-services.json";
+        andCfgEl.className = "status-pill " + (res.has_android_config ? "ok" : "err");
+      }
+
+      const iosCfgEl = document.getElementById("fb-ios-config");
+      if (iosCfgEl) {
+        iosCfgEl.textContent = res.has_ios_config ? "✓ Presente" : "✗ Falta GoogleService-Info.plist";
+        iosCfgEl.className = "status-pill " + (res.has_ios_config ? "ok" : "err");
+      }
+
+      const fltCfgEl = document.getElementById("fb-flutter-options");
+      if (fltCfgEl) {
+        fltCfgEl.textContent = res.has_flutter_options ? "✓ Presente" : "✗ Falta firebase_options.dart";
+        fltCfgEl.className = "status-pill " + (res.has_flutter_options ? "ok" : "warn");
+      }
+
+      const secEl = document.getElementById("fb-security-status");
+      if (secEl) {
+        const secAlerts = (res.security_alerts || []).length;
+        secEl.textContent = secAlerts === 0 ? "✓ Blindado (sin fugas)" : secAlerts + " alerta(s) de seguridad";
+        secEl.className = "status-pill " + (secAlerts === 0 ? "ok" : "err");
+      }
+
+      const sCountEl = document.getElementById("fb-services-count");
+      const activeList = res.active_services || [];
+      if (sCountEl) sCountEl.textContent = activeList.length + " Servicios";
+
+      const sListEl = document.getElementById("fb-services-list");
+      if (sListEl && activeList.length > 0) {
+        sListEl.innerHTML = "";
+        activeList.forEach(srv => {
+          const b = document.createElement("span");
+          b.className = "service-badge";
+          b.innerHTML = "<span>✓</span> " + srv;
+          sListEl.appendChild(b);
+        });
+      }
+
+      const gSrvEl = document.getElementById("fb-gradle-services");
+      if (gSrvEl) {
+        gSrvEl.textContent = res.gradle_google_services_plugin_present ? "✓ com.google.gms.google-services" : "✗ No detectado";
+        gSrvEl.className = "status-pill " + (res.gradle_google_services_plugin_present ? "ok" : "err");
+      }
+
+      const gCrashEl = document.getElementById("fb-gradle-crashlytics");
+      if (gCrashEl) {
+        gCrashEl.textContent = res.gradle_crashlytics_plugin_present ? "✓ com.google.firebase.crashlytics" : "✗ No detectado";
+        gCrashEl.className = "status-pill " + (res.gradle_crashlytics_plugin_present ? "ok" : "err");
+      }
+    }
+
+    // AdMob Rendimiento e Ingresos
+    async function fetchAdMobMetricsData(projId) {
+      try {
+        const resp = await fetch("/api/apps/metricas/admob?app=" + encodeURIComponent(projId));
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && data.ok && data.result) {
+            renderAdMobMetricsResult(data.result);
+          }
+        }
+      } catch (_) {}
+    }
+
+    async function auditAdMobMetricsLive() {
+      const btn = document.getElementById("btn-audit-admob-metrics");
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Consultando...";
+      }
+      try {
+        const resp = await fetch("/api/apps/metricas/admob?app=" + encodeURIComponent(currentProject));
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && data.ok && data.result) {
+            renderAdMobMetricsResult(data.result);
+            showToast("Métricas de AdMob actualizadas");
+          }
+        } else {
+          showToast("No se pudieron obtener métricas de AdMob");
+        }
+      } catch (_) {
+        showToast("Error de conexión con AdMob");
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = "Actualizar Ingresos";
+        }
+      }
+    }
+
+    function renderAdMobMetricsResult(res) {
+      const m = res.metricas || {};
+      const curEl = document.getElementById("admob-stat-current");
+      if (curEl && m.ingresos_mes_actual !== undefined) {
+        curEl.textContent = m.ingresos_mes_actual.toFixed(2) + " €";
+      }
+      const prevEl = document.getElementById("admob-stat-previous");
+      if (prevEl && m.ingresos_mes_anterior !== undefined) {
+        prevEl.textContent = m.ingresos_mes_anterior.toFixed(2) + " €";
+      }
+      const trendEl = document.getElementById("admob-stat-trend");
+      if (trendEl && m.porcentaje_cambio !== undefined) {
+        const isUp = m.porcentaje_cambio >= 0;
+        trendEl.className = "telemetry-trend " + (isUp ? "up" : "down");
+        trendEl.textContent = (isUp ? "▲ +" : "▼ ") + m.porcentaje_cambio.toFixed(2) + "% vs anterior";
+      }
+      const ecpmEl = document.getElementById("admob-stat-ecpm");
+      if (ecpmEl && m.ecpm_promedio) ecpmEl.textContent = m.ecpm_promedio;
+
+      const impEl = document.getElementById("admob-stat-impressions");
+      if (impEl && m.impresiones) impEl.textContent = Number(m.impresiones).toLocaleString();
+
+      const clkEl = document.getElementById("admob-stat-clicks");
+      if (clkEl && m.clics && m.ctr) {
+        clkEl.textContent = Number(m.clics).toLocaleString() + " clics (CTR " + m.ctr + ")";
+      }
+
+      const matchEl = document.getElementById("admob-stat-matchrate");
+      if (matchEl && m.match_rate) matchEl.textContent = m.match_rate;
+
+      const diagEl = document.getElementById("admob-metrics-diag");
+      if (diagEl && res.diagnostico) diagEl.textContent = res.diagnostico;
+    }
+
+    // Crashlytics para Humanos
+    async function fetchCrashlyticsData(projId) {
+      try {
+        const resp = await fetch("/api/apps/fallos/crashlytics?app=" + encodeURIComponent(projId));
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && data.ok && data.result) {
+            renderCrashlyticsResult(data.result);
+          }
+        }
+      } catch (_) {}
+    }
+
+    async function auditCrashlyticsLive() {
+      const btn = document.getElementById("btn-audit-crashlytics");
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Auditando...";
+      }
+      try {
+        const resp = await fetch("/api/apps/fallos/crashlytics?app=" + encodeURIComponent(currentProject));
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && data.ok && data.result) {
+            renderCrashlyticsResult(data.result);
+            showToast("Crashlytics auditado en vivo");
+          }
+        } else {
+          showToast("No se pudo auditar Crashlytics");
+        }
+      } catch (_) {
+        showToast("Error de conexión con Crashlytics");
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = "Auditar Fallos en Vivo";
+        }
+      }
+    }
+
+    function renderCrashlyticsResult(res) {
+      const rateEl = document.getElementById("crash-stat-rate");
+      if (rateEl && res.tasa_libre_de_fallos) rateEl.textContent = res.tasa_libre_de_fallos;
+
+      const sessEl = document.getElementById("crash-stat-sessions");
+      if (sessEl && res.sesiones_analizadas_30d) sessEl.textContent = Number(res.sesiones_analizadas_30d).toLocaleString();
+
+      const userEl = document.getElementById("crash-stat-users");
+      if (userEl && res.usuarios_afectados_total !== undefined) userEl.textContent = res.usuarios_afectados_total;
+
+      const cont = document.getElementById("crashlytics-fallos-container");
+      if (cont && Array.isArray(res.fallos_recientes)) {
+        cont.innerHTML = "";
+        res.fallos_recientes.forEach(f => {
+          const card = document.createElement("div");
+          card.className = "crash-card-item";
+          card.innerHTML = `
+            <div class="crash-header">
+              <div>
+                <span class="crash-id">${escapeHtml(f.id)}</span> · <span class="crash-screen">${escapeHtml(f.pantalla)}</span>
+              </div>
+              <span class="status-pill ok">${escapeHtml(f.estado || 'Mitigado')}</span>
+            </div>
+            <p class="crash-explanation">${escapeHtml(f.explicacion)}</p>
+            <div class="crash-solution">Solución: ${escapeHtml(f.solucion_recomendada || '')}</div>
+            <div class="crash-meta">
+              <span>Impacto: <strong>${escapeHtml(f.impacto || '')}</strong></span>
+            </div>
+          `;
+          cont.appendChild(card);
+        });
+      }
+    }
+
+    async function saveCrashlyticsStudyLive() {
+      const id = (document.getElementById("crash-input-id")?.value || "").trim();
+      const pantalla = (document.getElementById("crash-input-screen")?.value || "").trim();
+      const estado = (document.getElementById("crash-input-status")?.value || "Abierto").trim();
+      const impacto = (document.getElementById("crash-input-impact")?.value || "Medio").trim();
+      const explicacion = (document.getElementById("crash-input-explanation")?.value || "").trim();
+      const solucion = (document.getElementById("crash-input-solution")?.value || "").trim();
+
+      if (!id || !pantalla || !explicacion || !solucion) {
+        showToast("Completa ID, pantalla, explicación y solución recomendada");
+        return;
+      }
+
+      const btn = document.getElementById("btn-save-crash-study");
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Guardando en control-erbolamm/firebase/...";
+      }
+      try {
+        const resp = await fetch(
+          "/api/apps/fallos/crashlytics?app=" + encodeURIComponent(currentProject),
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id,
+              pantalla,
+              estado,
+              impacto,
+              explicacion,
+              solucion_recomendada: solucion,
+            }),
+          }
+        );
+        const data = await resp.json();
+        if (resp.ok && data && data.ok && data.result) {
+          renderCrashlyticsResult(data.result);
+          ["crash-input-id", "crash-input-screen", "crash-input-impact", "crash-input-explanation", "crash-input-solution"].forEach(fId => {
+            const el = document.getElementById(fId);
+            if (el) el.value = "";
+          });
+          saveJavierState();
+          showToast("Estudio guardado en control-erbolamm/firebase/ y sincronizado con INBOX.md");
+        } else {
+          showToast((data && data.error) || "No se pudo guardar el estudio");
+        }
+      } catch (_) {
+        showToast("Error de conexión al guardar estudio de Crashlytics");
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = "Guardar Estudio en control-erbolamm/firebase/";
+        }
+      }
+    }
+
+    function saveJavierState() {
+      try {
+        let existing = {};
+        const raw = localStorage.getItem(STORAGE_KEY_TIENDAS_JAVIER);
+        if (raw) existing = JSON.parse(raw) || {};
+        const projectDrafts = existing.projectDrafts || {};
+        projectDrafts[currentProject] = {
+          title: document.getElementById("input-title")?.value || "",
+          subtitle: document.getElementById("input-subtitle")?.value || "",
+          shortDesc: document.getElementById("input-short-desc")?.value || "",
+          releaseNotes: document.getElementById("input-release-notes")?.value || "",
+          crashId: document.getElementById("crash-input-id")?.value || "",
+          crashScreen: document.getElementById("crash-input-screen")?.value || "",
+          crashStatus: document.getElementById("crash-input-status")?.value || "Abierto",
+          crashImpact: document.getElementById("crash-input-impact")?.value || "",
+          crashExplanation: document.getElementById("crash-input-explanation")?.value || "",
+          crashSolution: document.getElementById("crash-input-solution")?.value || "",
+        };
+        const state = {
+          currentProject,
+          currentLang,
+          activeSection,
+          projectDrafts,
+          updatedAt: new Date().toISOString(),
+        };
+        localStorage.setItem(STORAGE_KEY_TIENDAS_JAVIER, JSON.stringify(state));
+      } catch (_) {}
+    }
+
+    function restoreJavierState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY_TIENDAS_JAVIER);
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch (_) {
+        return null;
+      }
+    }
+
+    // RevenueCat Suscripciones
+    async function fetchRevenueCatData(projId) {
+      try {
+        const resp = await fetch("/api/apps/metricas/revenuecat?app=" + encodeURIComponent(projId));
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && data.ok && data.result) {
+            renderRevenueCatResult(data.result);
+          }
+        }
+      } catch (_) {}
+    }
+
+    async function auditRevenueCatLive() {
+      const btn = document.getElementById("btn-audit-revenuecat");
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Consultando...";
+      }
+      try {
+        const resp = await fetch("/api/apps/metricas/revenuecat?app=" + encodeURIComponent(currentProject));
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && data.ok && data.result) {
+            renderRevenueCatResult(data.result);
+            showToast("Telemetría de RevenueCat actualizada");
+          }
+        } else {
+          showToast("No se pudo auditar RevenueCat");
+        }
+      } catch (_) {
+        showToast("Error de conexión con RevenueCat");
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = "Auditar RevenueCat";
+        }
+      }
+    }
+
+    function renderRevenueCatResult(res) {
+      const m = res.metricas || {};
+      const mrrEl = document.getElementById("rc-stat-mrr");
+      if (mrrEl && m.mrr !== undefined) mrrEl.textContent = m.mrr.toFixed(2) + " €";
+
+      const totEl = document.getElementById("rc-stat-total");
+      if (totEl && m.ingresos_totales_30d !== undefined) totEl.textContent = m.ingresos_totales_30d.toFixed(2) + " €";
+
+      const subEl = document.getElementById("rc-stat-subs");
+      if (subEl && m.suscriptores_activos !== undefined) subEl.textContent = m.suscriptores_activos;
+
+      const subBadge = document.getElementById("rc-stat-subs-badge");
+      if (subBadge && m.compras_unicas !== undefined) {
+        subBadge.textContent = "+" + m.compras_unicas + " compras únicas";
+      }
+
+      const churnEl = document.getElementById("rc-stat-churn");
+      if (churnEl && m.renovaciones_exitosas) churnEl.textContent = m.renovaciones_exitosas;
+
+      const diagEl = document.getElementById("rc-stat-diag");
+      if (diagEl && res.diagnostico) diagEl.textContent = res.diagnostico;
+
+      const pNameEl = document.getElementById("rc-project-name");
+      if (pNameEl && res.proyecto) pNameEl.textContent = res.proyecto;
+
+      const andIdEl = document.getElementById("rc-android-id");
+      if (andIdEl && res.app_ids && res.app_ids.android) andIdEl.textContent = res.app_ids.android;
+
+      const iosIdEl = document.getElementById("rc-ios-id");
+      if (iosIdEl && res.app_ids && res.app_ids.ios) iosIdEl.textContent = res.app_ids.ios;
+
+      const tbody = document.getElementById("rc-paywalls-tbody");
+      if (tbody && Array.isArray(res.paywalls_activos)) {
+        tbody.innerHTML = "";
+        res.paywalls_activos.forEach(pw => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td><code>${escapeHtml(pw.identificador)}</code></td>
+            <td>${escapeHtml(pw.titulo)}</td>
+            <td>${escapeHtml(pw.precio)}</td>
+            <td><span class="status-pill ok">${escapeHtml(pw.conversion)}</span></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+    }
+
+    // Yandex Ads
+    async function fetchYandexData(projId) {
+      try {
+        const resp = await fetch("/api/apps/metricas/yandex?app=" + encodeURIComponent(projId));
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && data.ok && data.result) {
+            renderYandexResult(data.result);
+          }
+        }
+      } catch (_) {}
+    }
+
+    async function auditYandexLive() {
+      const btn = document.getElementById("btn-audit-yandex");
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Auditando...";
+      }
+      try {
+        const resp = await fetch("/api/apps/metricas/yandex?app=" + encodeURIComponent(currentProject));
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && data.ok && data.result) {
+            renderYandexResult(data.result);
+            showToast("Telemetría de Yandex Ads actualizada");
+          }
+        } else {
+          showToast("No se pudo auditar Yandex Ads");
+        }
+      } catch (_) {
+        showToast("Error de conexión con Yandex Ads");
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = "Auditar Yandex Ads";
+        }
+      }
+    }
+
+    function renderYandexResult(res) {
+      const m = res.metricas || {};
+      const revEl = document.getElementById("yandex-stat-revenue");
+      if (revEl && m.ingresos_mes !== undefined) revEl.textContent = m.ingresos_mes.toFixed(2) + " $";
+
+      const showEl = document.getElementById("yandex-stat-shows");
+      if (showEl && m.shows) showEl.textContent = Number(m.shows).toLocaleString();
+
+      const clkEl = document.getElementById("yandex-stat-clicks");
+      if (clkEl && m.clics) clkEl.textContent = Number(m.clics).toLocaleString();
+
+      const ecpmEl = document.getElementById("yandex-stat-ecpm");
+      if (ecpmEl && m.ecpm_promedio) ecpmEl.textContent = m.ecpm_promedio;
+
+      const diagEl = document.getElementById("yandex-stat-diag");
+      if (diagEl && res.diagnostico) diagEl.textContent = res.diagnostico;
+
+      const bCountEl = document.getElementById("yandex-blocks-count");
+      if (bCountEl && res.bloques_configurados !== undefined) {
+        bCountEl.textContent = res.bloques_configurados + " Bloques R-M-...";
+      }
+
+      const listCont = document.getElementById("yandex-units-list");
+      if (listCont && Array.isArray(res.bloques)) {
+        listCont.innerHTML = "";
+        res.bloques.forEach(b => {
+          const tag = document.createElement("span");
+          tag.className = "unit-tag";
+          tag.textContent = b;
+          listCont.appendChild(tag);
+        });
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // Inicializar
+    document.addEventListener("DOMContentLoaded", () => {
+      const saved = restoreJavierState();
+
+      // Sincronizar defaults desde Settings (/api/settings)
+      fetch("/api/settings", { cache: "no-store" })
+        .then(r => r.ok ? r.json() : null)
+        .then(d => {
+          if (d && d.settings) {
+            const defLang = d.settings["tiendas.idioma"];
+            if (defLang && (!saved || !saved.currentLang)) {
+              currentLang = defLang.startsWith("es") ? "es" : defLang;
+              if (typeof updateLangButtons === "function") updateLangButtons();
+            }
+          }
+        }).catch(() => {});
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const appParam = urlParams.get("app") || urlParams.get("proyecto") || (saved && saved.currentProject);
+      if (appParam) {
+        const select = document.getElementById("project-select");
+        if (select) {
+          let found = false;
+          for (let opt of select.options) {
+            if (opt.value === appParam) {
+              select.value = appParam;
+              found = true;
+              break;
+            }
+          }
+          if (!found) {
+            const opt = document.createElement("option");
+            opt.value = appParam;
+            opt.textContent = appParam + " (Local)";
+            select.appendChild(opt);
+            select.value = appParam;
+          }
+        }
+        currentProject = appParam;
+      }
+
+      if (saved && saved.currentLang) {
+        currentLang = saved.currentLang;
+        const langSelect = document.getElementById("lang-select");
+        if (langSelect) langSelect.value = currentLang;
+      }
+
+      loadProjectPreset(currentProject, true);
+
+      if (saved && saved.projectDrafts && saved.projectDrafts[currentProject]) {
+        const d = saved.projectDrafts[currentProject];
+        if (d.title) document.getElementById("input-title").value = d.title;
+        if (d.subtitle) document.getElementById("input-subtitle").value = d.subtitle;
+        if (d.shortDesc) document.getElementById("input-short-desc").value = d.shortDesc;
+        if (d.releaseNotes) document.getElementById("input-release-notes").value = d.releaseNotes;
+        if (d.crashId !== undefined && document.getElementById("crash-input-id")) {
+          document.getElementById("crash-input-id").value = d.crashId;
+        }
+        if (d.crashScreen !== undefined && document.getElementById("crash-input-screen")) {
+          document.getElementById("crash-input-screen").value = d.crashScreen;
+        }
+        if (d.crashStatus && document.getElementById("crash-input-status")) {
+          document.getElementById("crash-input-status").value = d.crashStatus;
+        }
+        if (d.crashImpact !== undefined && document.getElementById("crash-input-impact")) {
+          document.getElementById("crash-input-impact").value = d.crashImpact;
+        }
+        if (d.crashExplanation !== undefined && document.getElementById("crash-input-explanation")) {
+          document.getElementById("crash-input-explanation").value = d.crashExplanation;
+        }
+        if (d.crashSolution !== undefined && document.getElementById("crash-input-solution")) {
+          document.getElementById("crash-input-solution").value = d.crashSolution;
+        }
+        auditMetadata(true);
+      }
+
+      // Si hay hash en la URL (#admob, #firebase, #keywords, etc.) o sección guardada, cambiar pestaña
+      const hash = (window.location.hash || "").replace("#", "") || (saved && saved.activeSection);
+      if (hash && document.getElementById("sec-" + hash)) {
+        const btn = document.getElementById("tab-" + hash);
+        switchSection(hash, btn);
+      }
+    });
+  </script>
+</body>
+</html>

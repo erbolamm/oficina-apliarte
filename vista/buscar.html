@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Buscar tareas · todo el historial</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23005fa9%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2246%22%20font-size%3D%2234%22%20text-anchor%3D%22middle%22%3E%F0%9F%94%8D%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../panel-shell.css">
+<link rel="stylesheet" href="/office-3d.css">
+<style>
+  /* Botones de icono en el panel de búsqueda (mismo patrón que /vista/terminales) */
+  .real-office .buscar-result-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  .real-office .buscar-icon-btn {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid var(--cyan, #888);
+    border-radius: 6px;
+    background: var(--panel, transparent);
+    color: inherit;
+    font: inherit;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .real-office .buscar-icon-btn:hover { background: var(--panel-2, rgba(127,127,127,.12)); }
+  .real-office .buscar-icon-btn:focus-visible { outline: 2px solid var(--cyan, #888); outline-offset: 2px; }
+  .real-office .buscar-icon-btn svg { display: block; }
+  .real-office .office-tip {
+    position: fixed;
+    z-index: 9999;
+    max-width: 280px;
+    padding: 6px 10px;
+    background: var(--panel-2, #222);
+    color: var(--text, #fff);
+    border: 1px solid var(--cyan, #888);
+    border-radius: 6px;
+    font: 12px/1.4 system-ui, sans-serif;
+    box-shadow: 0 4px 12px rgba(0,0,0,.18);
+    pointer-events: none;
+  }
+  /* Barra de filtros/orden + popups (mismo lenguaje visual que .buscar-icon-btn) */
+  .real-office .buscar-tools {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    margin-left: auto;
+  }
+  .real-office .buscar-popup { position: relative; display: inline-block; }
+  .real-office .buscar-popup > summary {
+    list-style: none;
+    cursor: pointer;
+    font: 600 11px/1 system-ui, sans-serif;
+    letter-spacing: .03em;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid var(--cyan, #888);
+    border-radius: 6px;
+    background: var(--panel, transparent);
+    color: inherit;
+  }
+  .real-office .buscar-popup > summary::-webkit-details-marker { display: none; }
+  .real-office .buscar-popup[open] > summary {
+    background: var(--panel-2, rgba(127,127,127,.18));
+  }
+  .real-office .buscar-popup-body {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: 50;
+    min-width: 220px;
+    padding: 10px;
+    background: var(--panel, #fff);
+    color: var(--text, #111);
+    border: 1px solid var(--cyan, #888);
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0,0,0,.18);
+    display: grid;
+    gap: 8px;
+    font: 13px/1.3 system-ui, sans-serif;
+  }
+  .real-office .buscar-popup-body label {
+    display: grid;
+    gap: 4px;
+    color: inherit;
+  }
+  .real-office .buscar-popup-body select,
+  .real-office .buscar-popup-body input[type="radio"] {
+    font: inherit;
+    color: inherit;
+  }
+  .real-office .buscar-popup-clear {
+    margin-top: 4px;
+    padding: 4px 8px;
+    font: 12px/1 system-ui, sans-serif;
+    border: 1px solid var(--cyan, #888);
+    border-radius: 6px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+</style>
+<script>
+  try {
+    document.documentElement.dataset.theme =
+      localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
+  } catch (_) {}
+</script>
+</head>
+<body><div class="real-office"><main class="buscar-page">
+<header class="buscar-heading"><h1>Buscar tareas · todas las fechas</h1>
+ <div class="buscar-tools" role="toolbar" aria-label="Filtros y orden">
+  <details id="filter-popup" class="buscar-popup">
+   <summary class="buscar-icon-btn" aria-label="Filtrar resultados" data-tip="Filtrar por carpeta o por rol"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M1.8 2.6h12.4l-4.9 5.9v4.9l-2.6 1.2V8.5z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></summary>
+   <div class="buscar-popup-body">
+    <label>Carpeta
+     <select id="filter-state">
+      <option value="">Todas</option>
+      <option value="por-hacer">Por hacer</option>
+      <option value="pendiente">Pendiente de Javier</option>
+      <option value="haciendo">Haciendo</option>
+      <option value="hecho">Hecho</option>
+      <option value="historial">Historial</option>
+      <option value="futuras">Futuras</option>
+     </select>
+    </label>
+    <label>Rol
+     <select id="filter-role">
+      <option value="">Todos</option>
+      <option value="co">[co] Codex</option>
+      <option value="cl">[cl] Claude</option>
+      <option value="pi">[pi] Gentleman</option>
+      <option value="ja">[ja] Javier</option>
+      <option value="ge">[ge] agy</option>
+      <option value="gr">[gr] grok</option>
+      <option value="op">[op] opencode</option>
+      <option value="ex">[ex] Agente externo</option>
+     </select>
+    </label>
+    <button id="filter-clear" type="button" class="buscar-popup-clear">Quitar filtros</button>
+   </div>
+  </details>
+  <details id="sort-popup" class="buscar-popup">
+   <summary class="buscar-icon-btn" aria-label="Ordenar resultados" data-tip="Ordenar por nombre, por fecha o por coincidencia"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M4.6 3.2v9.6M2.4 5.4l2.2-2.2 2.2 2.2M11.4 12.8V3.2M9.2 10.6l2.2 2.2 2.2-2.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+   <div class="buscar-popup-body">
+    <label><input type="radio" name="sort" value="">Por coincidencia (por defecto)</label>
+    <label><input type="radio" name="sort" value="name">Por nombre</label>
+    <label><input type="radio" name="sort" value="date">Por fecha</label>
+   </div>
+  </details>
+ </div>
+  <button id="refresh-btn" class="btn-refresh" type="button" onclick="window.location.reload()" aria-label="Actualizar vista" title="Actualizar">↻</button>
+  <button id="theme" type="button" aria-label="Cambiar tema">☀ / ☾</button><button id="close" type="button" aria-label="Cerrar buscador">✕</button></header>
+<label for="query">Título, proyecto o palabras del contenido</label><input id="query" type="search" maxlength="300" placeholder="Busca mientras redactas; tu borrador queda en su ventana">
+<p class="buscar-hint">Incluye colas e historial de todos los días y años. Coincidencias por palabras, ordenadas por número de palabras encontradas; no es búsqueda semántica.</p>
+<p id="status" class="buscar-status" role="status"></p><p id="warnings" class="buscar-status" role="alert"></p><section id="results" class="buscar-results"></section><nav class="buscar-nav"><button id="previous" disabled>Anterior</button><button id="next" disabled>Siguiente</button></nav>
+</main></div>
+<script src="../panel-shell.js"></script>
+<script>
+(() => {
+ 'use strict';
+ const $ = id => document.getElementById(id);
+ let offset=0, timer=0, generation=0, controller=null;
+ $('query').value=new URLSearchParams(location.search).get('q')||'';
+
+ // Iconos SVG en línea: no dependen de fuentes del sistema (mismo patrón que /vista/terminales).
+ const ICONOS = {
+  copiar: '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><rect x="4.6" y="2.6" width="8.8" height="9.6" rx="1.3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2.6 5.4v8.2h8.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>',
+  ojo:    '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M1.6 8s2.4-4.6 6.4-4.6S14.4 8 14.4 8 12 12.6 8 12.6 1.6 8 1.6 8z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="8" cy="8" r="2.2" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>',
+  // editar usa el mismo glifo "✎" que la tarjeta del tablero: idéntico a "task-ficha-open".
+  editar: '<span aria-hidden="true">✎</span>',
+ };
+
+ // Ayuda emergente a los 3 segundos (mismo patrón que /vista/terminales).
+ const AYUDA_ESPERA = 3000;
+ let ayudaTemporizador = null;
+ let ayudaCaja = null;
+function cajaDeAyuda() {
+  if (!ayudaCaja) {
+    ayudaCaja = document.createElement('div');
+    ayudaCaja.className = 'office-tip';
+    ayudaCaja.setAttribute('role', 'tooltip');
+    ayudaCaja.hidden = true;
+    document.body.append(ayudaCaja);
+  }
+  return ayudaCaja;
+}
+function ocultarAyuda() {
+  window.clearTimeout(ayudaTemporizador);
+  ayudaTemporizador = null;
+  if (ayudaCaja) ayudaCaja.hidden = true;
+}
+
+// Estado de filtros y orden. Vive en la URL para que recargar mantenga la
+ // vista y no requiera almacenamiento local.
+ const filterParams = new URLSearchParams(location.search);
+ let filterState = filterParams.get('state') || '';
+ let filterRole = filterParams.get('role') || '';
+ let sortMode = filterParams.get('sort') || '';
+
+ function syncToolbar() {
+  $('filter-state').value = filterState;
+  $('filter-role').value = filterRole;
+  for (const r of document.querySelectorAll('input[name="sort"]')) {
+   r.checked = (r.value === sortMode);
+  }
+ }
+
+ function syncUrl() {
+  const p = new URLSearchParams(location.search);
+  if (filterState) p.set('state', filterState); else p.delete('state');
+  if (filterRole) p.set('role', filterRole); else p.delete('role');
+  if (sortMode) p.set('sort', sortMode); else p.delete('sort');
+  const next = `${location.pathname}${p.toString() ? '?' + p.toString() : ''}`;
+  if (next !== location.pathname + location.search) {
+   history.replaceState(null, '', next);
+  }
+ }
+
+ function applyFilterChanges() {
+  offset = 0;
+  syncUrl();
+  search();
+ }
+
+ $('filter-state').addEventListener('change', e => {
+  filterState = e.target.value;
+  applyFilterChanges();
+ });
+ $('filter-role').addEventListener('change', e => {
+  filterRole = e.target.value;
+  applyFilterChanges();
+ });
+ for (const r of document.querySelectorAll('input[name="sort"]')) {
+  r.addEventListener('change', e => {
+   if (e.target.checked) {
+    sortMode = e.target.value;
+    applyFilterChanges();
+   }
+  });
+ }
+ $('filter-clear').addEventListener('click', () => {
+  filterState = '';
+  filterRole = '';
+  syncToolbar();
+  applyFilterChanges();
+ });
+
+ syncToolbar();
+
+ // Ayuda de 3 s en los dos iconos nuevos y cierre del desplegable al pulsar fuera.
+ conAyuda($('filter-popup').querySelector('summary'));
+ conAyuda($('sort-popup').querySelector('summary'));
+ document.addEventListener('click', (event) => {
+  for (const popup of document.querySelectorAll('.buscar-popup[open]')) {
+   if (!popup.contains(event.target)) popup.removeAttribute('open');
+  }
+ });
+
+function programarAyuda(elemento) {
+   window.clearTimeout(ayudaTemporizador);
+   ayudaTemporizador = window.setTimeout(() => {
+     const texto = elemento.dataset.tip;
+     if (!texto) return;
+     const caja = cajaDeAyuda();
+     caja.textContent = texto;
+     caja.hidden = false;
+     const zona = elemento.getBoundingClientRect();
+     const ancho = caja.offsetWidth;
+     const alto = caja.offsetHeight;
+     const x = Math.max(8, Math.min(zona.left + zona.width / 2 - ancho / 2, window.innerWidth - ancho - 8));
+     let y = zona.bottom + 8;
+     if (y + alto > window.innerHeight - 8) y = Math.max(8, zona.top - alto - 8);
+     caja.style.left = `${Math.round(x)}px`;
+     caja.style.top = `${Math.round(y)}px`;
+   }, AYUDA_ESPERA);
+ }
+ function conAyuda(elemento) {
+   if (!elemento.dataset.tip) return;
+   elemento.addEventListener('mouseenter', () => programarAyuda(elemento));
+   elemento.addEventListener('mouseleave', ocultarAyuda);
+   elemento.addEventListener('focus', () => programarAyuda(elemento));
+   elemento.addEventListener('blur', ocultarAyuda);
+   elemento.addEventListener('mousedown', ocultarAyuda);
+ }
+
+ async function search() {
+  const current=++generation;
+  controller?.abort(); controller=new AbortController();
+  const token=window.Oficina?.office?.actionToken;
+  if(!token){$('status').textContent='Esperando conexión con la oficina…';return;}
+  $('status').textContent='Buscando…';
+  $('previous').disabled=true;$('next').disabled=true;
+  try {
+   const qs=new URLSearchParams({q:$('query').value,offset:String(offset)});
+   if(filterState)qs.set('state',filterState);
+   if(filterRole)qs.set('role',filterRole);
+   if(sortMode)qs.set('sort',sortMode);
+   const response=await fetch(`/api/tasks/search?${qs.toString()}`,{cache:'no-store',headers:{Accept:'application/json','X-ErBolamm-Action':String(token)},signal:controller.signal});
+   const data=await response.json();
+   if(!response.ok||!data.ok)throw new Error(response.status===404?'Reinicia el servidor local para habilitar el buscador.':data.message||data.error||`HTTP ${response.status}`);
+   if(current!==generation)return;
+   $('results').replaceChildren();
+   for(const result of data.results){
+    const article=document.createElement('article');
+    article.className='buscar-result';
+    const title=document.createElement('h2'), path=document.createElement('small'), actions=document.createElement('div'), body=document.createElement('pre');
+    actions.className='buscar-result-actions';
+    title.textContent=result.title;path.textContent=result.path;
+
+    // 1) Copiar contenido → icono clipboard
+    const copy=document.createElement('button');
+    copy.type='button';
+    copy.className='buscar-icon-btn';
+    copy.setAttribute('aria-label','Copiar contenido');
+    copy.dataset.tip='Copiar el contenido de esta tarea al portapapeles';
+    copy.innerHTML=ICONOS.copiar;
+    copy.addEventListener('click',async()=>{
+     try{await navigator.clipboard.writeText(result.body);copy.dataset.tip='Copiado al portapapeles';programarAyuda(copy);}
+     catch{copy.dataset.tip='No se pudo copiar; pulsa Consultar para seleccionar el texto';programarAyuda(copy);body.hidden=false;toggle.setAttribute('aria-expanded','true');toggle.dataset.tip='Ocultar el contenido original de la tarea';programarAyuda(toggle);}
+    });
+
+    // 2) Consultar/Ocultar contenido original → icono ojo
+    const toggle=document.createElement('button');
+    toggle.type='button';
+    toggle.className='buscar-icon-btn';
+    toggle.setAttribute('aria-label','Consultar contenido original');
+    toggle.setAttribute('aria-expanded','false');
+    toggle.dataset.tip='Mostrar el contenido original de esta tarea';
+    toggle.innerHTML=ICONOS.ojo;
+    body.textContent=result.body;body.hidden=true;
+    toggle.addEventListener('click',()=>{
+     const willShow=body.hidden;
+     body.hidden=!willShow;
+     toggle.setAttribute('aria-expanded',String(willShow));
+     toggle.setAttribute('aria-label', willShow?'Ocultar contenido original':'Consultar contenido original');
+     toggle.dataset.tip = willShow ? 'Ocultar el contenido original de la tarea' : 'Mostrar el contenido original de esta tarea';
+    });
+
+    // 3) Editar la tarea directamente → MISMO icono "✎" que la tarjeta del
+    // tablero. Todas las carpetas que encuentra el buscador son editables.
+    const edit=document.createElement('button');
+    edit.type='button';
+    edit.className='buscar-icon-btn';
+    edit.setAttribute('aria-label','Editar o responder esta tarea');
+    edit.dataset.tip='Abrir el editor de esta tarea en esta misma ventana';
+    edit.innerHTML=ICONOS.editar;
+    edit.addEventListener('click',()=>{
+     const file = result.file || result.fileName || '';
+     if (!file) { edit.dataset.tip='No se pudo abrir: la tarea no tiene archivo'; programarAyuda(edit); return; }
+     if (window.Oficina?.openTaskFicha) {
+       window.Oficina.openTaskFicha(file, { edit: true });
+     } else {
+       window.open(`/vista/tarea-ficha.html?file=${encodeURIComponent(file)}&edit=1`, `oficina-tarea-ficha-${file}`, 'popup=yes,width=560,height=900,resizable=yes,scrollbars=yes')?.focus();
+     }
+    });
+    conAyuda(edit);
+    actions.append(copy, toggle, edit);
+    article.append(title, path, actions, body);
+    $('results').append(article);
+
+   }
+   $('status').textContent=`${data.total} tareas encontradas · mostrando ${data.results.length?offset+1:0}–${offset+data.results.length}`;
+   $('warnings').textContent=(data.warnings||[]).join('\n');
+   $('previous').disabled=offset===0;$('next').disabled=offset+data.limit>=data.total;
+  }catch(error){if(error.name!=='AbortError'&&current===generation){$('results').replaceChildren();$('status').textContent=error.message;}}
+ }
+ $('query').addEventListener('input',()=>{offset=0;++generation;controller?.abort();clearTimeout(timer);timer=setTimeout(search,300);});
+ $('previous').addEventListener('click',()=>{offset=Math.max(0,offset-30);search();});
+ $('next').addEventListener('click',()=>{offset+=30;search();});
+ $('close').addEventListener('click',()=>window.close());
+ $('theme').addEventListener('click',()=>{document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';});
+ const wait=setInterval(()=>{if(window.Oficina?.office?.actionToken){clearInterval(wait);search();}},200);
+ setTimeout(()=>{clearInterval(wait);if(!window.Oficina?.office?.actionToken)$('status').textContent='Sin conexión con la oficina local.';},10000);
+})();
+</script></body></html>

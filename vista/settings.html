@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#005fa9">
+  <title>Ajustes · Oficina local de ErBolamm</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23005fa9%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2246%22%20font-size%3D%2234%22%20text-anchor%3D%22middle%22%20fill%3D%22%235ecef5%22%3E%E2%9A%99%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../panel-shell.css">
+  <script>
+    try {
+      document.documentElement.dataset.theme =
+        localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
+      document.documentElement.dataset.sidebar =
+        localStorage.getItem("erbolamm-panel-sidebar") === "icons" ? "icons" : "full";
+    } catch (_) {}
+  </script>
+  <style>
+    .settings-page {
+      max-width: 980px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      padding-bottom: 4rem;
+    }
+    .settings-head {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem;
+    }
+    .settings-head h2 {
+      margin: 0;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .settings-head p {
+      margin: 0.35rem 0 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+
+    .settings-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      border-bottom: 1px solid var(--subtle);
+      padding-bottom: 0.5rem;
+    }
+    .card-header .icon {
+      font-size: 1.25rem;
+    }
+    .card-header h3 {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .setting-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .setting-label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--ink);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .setting-label small {
+      font-weight: 400;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+    .setting-control {
+      width: 100%;
+      padding: 0.45rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.9rem;
+    }
+    .setting-control:focus {
+      outline: none;
+      border-color: var(--blue);
+    }
+
+    .save-banner {
+      position: sticky;
+      bottom: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--blue);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      z-index: 10;
+    }
+    .save-btn {
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 1.2rem;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .save-btn:hover {
+      opacity: 0.92;
+    }
+    .reset-btn {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 1rem;
+      font: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .reset-btn:hover {
+      color: var(--ink);
+      border-color: var(--ink);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="office-sidebar" id="office-sidebar" aria-label="Navegación de la oficina">
+      <div class="sidebar-brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+        </svg>
+        <span><strong>Oficina ApliArte</strong><small>Panel de control operativo ApliArte</small></span>
+        <button id="sidebar-toggle" class="sidebar-toggle" type="button"
+          aria-controls="office-sidebar" aria-expanded="true" aria-label="Plegar la barra lateral a solo iconos" title="Plegar la barra lateral">
+          <span class="chev" aria-hidden="true">‹</span>
+        </button>
+      </div>
+      <nav class="side-nav" aria-label="Secciones">
+        <a class="nav-card" href="/"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
+        <a class="nav-card" href="/vista/javier"><span class="nav-icon" aria-hidden="true">👤</span><span class="nav-copy"><strong>Espacio Javier</strong><small>Control personal y ja--</small></span></a>
+        <a class="nav-card" href="/vista/inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
+        <a class="nav-card" href="/vista/aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
+        <a class="nav-card" href="/vista/skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
+        <a class="nav-card" href="/vista/conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
+        <a class="nav-card" href="/vista/plugins"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
+        <a class="nav-card" href="/vista/reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
+        <a class="nav-card" href="/vista/propuestas"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
+        <a class="nav-card" href="/vista/diseno"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
+        <a class="nav-card" href="/vista/tiendas"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
+        <a class="nav-card" href="/vista/mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
+        <a class="nav-card" href="/vista/correos"><span class="nav-icon" aria-hidden="true">✉</span><span class="nav-copy"><strong>Correos y Alertas</strong><small>erbolamm y javier</small></span></a>
+        <a class="nav-card" href="/vista/pnl"><span class="nav-icon" aria-hidden="true">🧠</span><span class="nav-copy"><strong>Estudio PNL</strong><small>Enganche y microcopy</small></span></a>
+        <a class="nav-card" href="/vista/musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
+        <a class="nav-card" href="/vista/locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
+        <a class="nav-card" href="/vista/voicestudio"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
+        <a class="nav-card" href="/vista/terminales"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
+        <a class="nav-card" href="/vista/facturas"><span class="nav-icon" aria-hidden="true">€</span><span class="nav-copy"><strong>Facturas</strong><small>Gestor de facturas</small></span></a>
+        <a class="nav-card" href="/vista/blogger"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
+        <a class="nav-card" href="/vista/bitacora"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
+        <a class="nav-card" href="/vista/directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
+        <a class="nav-card" href="/vista/diapositivas"><span class="nav-icon" aria-hidden="true">⎘</span><span class="nav-copy"><strong>Diapositivas</strong><small>Presentaciones y difusión</small></span></a>
+        <a class="nav-card" href="/vista/shorts"><span class="nav-icon" aria-hidden="true">⏩</span><span class="nav-copy"><strong>Shorts</strong><small>Vídeo acelerado a 60 s</small></span></a>
+        <a class="nav-card" href="/resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
+        <a class="nav-card" href="/vista/settings" aria-current="page"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-copy"><strong>Ajustes</strong><small>Opciones por defecto</small></span></a>
+        <a class="nav-card" href="/vista/como-funciona"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
+      </nav>
+      <p class="sidebar-note"><strong>Privada y local</strong>Configuración centralizada para mantener las vistas de trabajo limpias.</p>
+    </aside>
+    <div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
+
+    <main class="office-content" id="office">
+      <header class="topbar" id="casita">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+            <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+          </svg>
+          <h1>Ajustes Centralizados (Settings)</h1>
+        </div>
+        <span class="private-chip">Configuración global</span>
+        <button id="refresh-btn" class="btn-refresh" type="button" onclick="window.location.reload()" aria-label="Actualizar vista" title="Actualizar">↻</button>
+        <button id="theme-toggle" type="button" aria-label="Activar modo oscuro" title="Cambiar tema">
+          <span id="theme-icon" aria-hidden="true">☾</span>
+        </button>
+      </header>
+
+      <div class="content-body">
+        <div class="settings-page">
+          <div class="settings-head">
+            <h2>Configuración Centralizada de la Oficina</h2>
+            <p>Define aquí las opciones y comportamientos por defecto para todas las herramientas. Las vistas operativas (Diseño, Locución, Música, Shorts...) se mantendrán limpias y directas al grano, consumiendo automáticamente estos valores.</p>
+          </div>
+
+          <div class="settings-grid">
+            <!-- Bloque Diseño y Vídeo -->
+            <section class="settings-card">
+              <div class="card-header">
+                <span class="icon" aria-hidden="true">🎨</span>
+                <h3>Estudio de Diseño y Vídeo</h3>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label" for="setting-video-res">Resolución por defecto <small>Exportación</small></label>
+                <select id="setting-video-res" class="setting-control" data-key="diseno.resolucion">
+                  <option value="1080p">Full HD (1080p · 1920×1080)</option>
+                  <option value="4k">Ultra HD (4K · 3840×2160)</option>
+                  <option value="720p">HD Ligero (720p · 1280×720)</option>
+                </select>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label" for="setting-video-fps">Tasa de cuadros <small>Framerate</small></label>
+                <select id="setting-video-fps" class="setting-control" data-key="diseno.fps">
+                  <option value="30">30 fps (Estándar web)</option>
+                  <option value="60">60 fps (Fluidez máxima)</option>
+                </select>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label" for="setting-video-engine">Motor de Render <small>Pipeline</small></label>
+                <select id="setting-video-engine" class="setting-control" data-key="diseno.motor">
+                  <option value="hyperframes-local">HyperFrames Local (Mac)</option>
+                  <option value="hyperframes-cloud">HyperFrames Cloud / VPS</option>
+                </select>
+              </div>
+            </section>
+
+            <!-- Bloque Locución y Voice Studio -->
+            <section class="settings-card">
+              <div class="card-header">
+                <span class="icon" aria-hidden="true">🎙</span>
+                <h3>Locución & Voice Studio</h3>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label" for="setting-voice-default">Voz predeterminada <small>Clonación / TTS</small></label>
+                <select id="setting-voice-default" class="setting-control" data-key="locucion.voz_defecto">
+                  <option value="javier-es">Javier Mateo (Clon oficial Español)</option>
+                  <option value="mabel-es">Mabel (Oficial Tráfico)</option>
+                  <option value="kokoro-es">Kokoro Neutra (Español estándar)</option>
+                  <option value="edge-es">Edge TTS Multilingüe</option>
+                </select>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label" for="setting-voice-speed">Velocidad de habla estándar</label>
+                <select id="setting-voice-speed" class="setting-control" data-key="locucion.velocidad">
+                  <option value="1.0">1.0× (Velocidad natural)</option>
+                  <option value="1.15">1.15× (Dinámico para Shorts)</option>
+                  <option value="1.25">1.25× (Rápido)</option>
+                  <option value="0.9">0.9× (Didáctico pausado)</option>
+                </select>
+              </div>
+            </section>
+
+            <!-- Bloque Shorts y Vídeo Vertical -->
+            <section class="settings-card">
+              <div class="card-header">
+                <span class="icon" aria-hidden="true">⏩</span>
+                <h3>Shorts & Redes</h3>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label" for="setting-shorts-duration">Duración objetivo <small>Límite</small></label>
+                <select id="setting-shorts-duration" class="setting-control" data-key="shorts.duracion">
+                  <option value="60">60 segundos (Máximo YouTube Shorts/TikTok)</option>
+                  <option value="45">45 segundos (Enganche óptimo)</option>
+                  <option value="30">30 segundos (Impacto rápido)</option>
+                </select>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label" for="setting-shorts-subtitles">Estilo de subtítulos dinámicos</label>
+                <select id="setting-shorts-subtitles" class="setting-control" data-key="shorts.subtitulos">
+                  <option value="kinetic-yellow">Cinético resaltado en amarillo</option>
+                  <option value="clean-white">Blanco limpio con borde negro</option>
+                  <option value="pill-box">Caja con fondo azul ApliArte</option>
+                </select>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label" for="setting-shorts-in">Carpeta de entrada local <small>Vídeos descargados</small></label>
+                <input id="setting-shorts-in" type="text" class="setting-control" data-key="shorts.carpeta_entrada" placeholder="~/Movies/Shorts/entrada (Vacío: por defecto)">
+              </div>
+              <div class="setting-item">
+                <label class="setting-label" for="setting-shorts-out">Carpeta de salida local <small>Vídeos terminados</small></label>
+                <input id="setting-shorts-out" type="text" class="setting-control" data-key="shorts.carpeta_salida" placeholder="~/Movies/Shorts/salida (Vacío: por defecto)">
+              </div>
+              <div class="setting-item">
+                <label class="setting-label" for="setting-shorts-webhook">Webhook n8n de difusión <small>Publicación desatendida de vídeo</small></label>
+                <input id="setting-shorts-webhook" type="text" class="setting-control" data-key="shorts.webhook_n8n" placeholder="https://n8n.apliarte.com/webhook/shorts-publicar">
+              </div>
+            </section>
+
+            <!-- Bloque Estudio Musical -->
+            <section class="settings-card">
+              <div class="card-header">
+                <span class="icon" aria-hidden="true">🎵</span>
+                <h3>Estudio Musical (Strudel)</h3>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label" for="setting-music-tempo">Tempo estándar (BPM)</label>
+                <select id="setting-music-tempo" class="setting-control" data-key="musica.tempo">
+                  <option value="120">120 BPM (Moderno / Electrónico)</option>
+                  <option value="90">90 BPM (Lo-Fi / Fondo relajado)</option>
+                  <option value="140">140 BPM (Enérgico / Acción)</option>
+                </select>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label" for="setting-music-volume">Volumen de fondo frente a locución</label>
+                <select id="setting-music-volume" class="setting-control" data-key="musica.volumen_fondo">
+                  <option value="15">-16 dB (Muy suave, voz protagonista)</option>
+                  <option value="25">-12 dB (Equilibrado)</option>
+                  <option value="40">-8 dB (Presente)</option>
+                </select>
+              </div>
+            </section>
+
+            <!-- Bloque Tiendas y ASO -->
+            <section class="settings-card">
+              <div class="card-header">
+                <span class="icon" aria-hidden="true">🎯</span>
+                <h3>Tiendas y ASO</h3>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label" for="setting-aso-lang">Idioma principal por defecto</label>
+                <select id="setting-aso-lang" class="setting-control" data-key="tiendas.idioma">
+                  <option value="es-ES">Español (España · es-ES)</option>
+                  <option value="en-US">Inglés (Estados Unidos · en-US)</option>
+                  <option value="es-419">Español (Latinoamérica · es-419)</option>
+                </select>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label" for="setting-aso-prefix">Prefijo de versión para releases</label>
+                <input id="setting-aso-prefix" type="text" class="setting-control" data-key="tiendas.prefijo_version" value="v">
+              </div>
+            </section>
+
+            <!-- Bloque ApliChat y Accesibilidad -->
+            <section class="settings-card">
+              <div class="card-header">
+                <span class="icon" aria-hidden="true">💬</span>
+                <h3>ApliChat & Accesibilidad</h3>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label" for="setting-chat-fontsize">Tamaño de letra inicial</label>
+                <select id="setting-chat-fontsize" class="setting-control" data-key="aplichat.tamano_letra">
+                  <option value="100">100% (Estándar)</option>
+                  <option value="115">115% (Mediano cómodo)</option>
+                  <option value="130">130% (Grande accesible)</option>
+                </select>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label" for="setting-chat-autotts">Lectura por voz de respuestas (TTS)</label>
+                <select id="setting-chat-autotts" class="setting-control" data-key="aplichat.auto_tts">
+                  <option value="manual">Manual (Pulsar botón de audio)</option>
+                  <option value="auto">Automático al recibir mensaje</option>
+                </select>
+              </div>
+            </section>
+          </div>
+
+          <!-- Barra de guardado persistente -->
+          <div class="save-banner" role="region" aria-label="Acciones de guardado de ajustes">
+            <div>
+              <strong style="color:var(--ink); font-size:0.95rem;">Ajustes en memoria local</strong>
+              <div id="save-status" style="font-size:0.8rem; color:var(--muted);">Los cambios se aplicarán automáticamente a todas las vistas.</div>
+            </div>
+            <div style="display:flex; gap:0.5rem;">
+              <button id="btn-reset-settings" class="reset-btn" type="button">Restablecer valores</button>
+              <button id="btn-save-settings" class="save-btn" type="button">Guardar cambios</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../panel-shell.js"></script>
+  <script>
+    (function() {
+      const STORAGE_KEY = 'erbolamm_oficina_settings_v1';
+
+      // Valores de fábrica predeterminados
+      const defaults = {
+        'diseno.resolucion': '1080p',
+        'diseno.fps': '30',
+        'diseno.motor': 'hyperframes-local',
+        'locucion.voz_defecto': 'javier-es',
+        'locucion.velocidad': '1.0',
+        'shorts.duracion': '60',
+        'shorts.subtitulos': 'kinetic-yellow',
+        'shorts.carpeta_entrada': '',
+        'shorts.carpeta_salida': '',
+        'shorts.webhook_n8n': 'https://n8n.apliarte.com/webhook/shorts-publicar',
+        'musica.tempo': '120',
+        'musica.volumen_fondo': '15',
+        'tiendas.idioma': 'es-ES',
+        'tiendas.prefijo_version': 'v',
+        'aplichat.tamano_letra': '100',
+        'aplichat.auto_tts': 'manual'
+      };
+
+      async function loadSettings() {
+        let active = Object.assign({}, defaults);
+
+        // 1. Intentar cargar desde el backend de la Oficina (/api/settings)
+        try {
+          const res = await fetch('/api/settings');
+          const data = await res.json();
+          if (data && data.ok && data.settings) {
+            active = Object.assign(active, data.settings);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data.settings));
+          }
+        } catch (_) {
+          // Fallback a localStorage si la red falla
+          try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) active = Object.assign(active, JSON.parse(raw));
+          } catch (_) {}
+        }
+
+        document.querySelectorAll('[data-key]').forEach(el => {
+          const key = el.getAttribute('data-key');
+          if (active[key] !== undefined) {
+            el.value = active[key];
+          }
+        });
+      }
+
+      async function getActionToken() {
+        let token = String(window.Oficina?.office?.actionToken || "");
+        if (!token) {
+          try {
+            const res = await fetch("/api/tasks", { cache: "no-store" });
+            if (res.ok) {
+              const data = await res.json();
+              token = String(data.office?.actionToken || "");
+            }
+          } catch (_) {}
+        }
+        return token;
+      }
+
+      async function saveSettings() {
+        const toSave = {};
+        document.querySelectorAll('[data-key]').forEach(el => {
+          const key = el.getAttribute('data-key');
+          toSave[key] = el.value;
+        });
+
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+
+          const token = await getActionToken();
+          const headers = { 'Content-Type': 'application/json' };
+          if (token) {
+            headers['x-erbolamm-action'] = token;
+          }
+
+          // Sincronizar en disco y con los orquestadores vía /api/settings
+          const res = await fetch('/api/settings', {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({ settings: toSave })
+          });
+
+          if (!res.ok) {
+            throw new Error(`Servidor respondió HTTP ${res.status}`);
+          }
+
+          const status = document.getElementById('save-status');
+          if (status) {
+            status.textContent = '✅ Guardado y sincronizado con orquestadores a las ' + new Date().toLocaleTimeString();
+            status.style.color = 'var(--blue)';
+            setTimeout(() => {
+              status.textContent = 'Los cambios se aplicarán automáticamente a todas las vistas y agentes.';
+              status.style.color = 'var(--muted)';
+            }, 3000);
+          }
+        } catch (e) {
+          alert('Error al guardar o sincronizar ajustes: ' + e);
+        }
+      }
+
+      function resetSettings() {
+        if (!confirm('¿Deseas restablecer todos los ajustes a los valores de fábrica?')) return;
+        localStorage.removeItem(STORAGE_KEY);
+        loadSettings();
+        const status = document.getElementById('save-status');
+        if (status) {
+          status.textContent = 'Valores de fábrica restablecidos.';
+        }
+      }
+
+      document.getElementById('btn-save-settings').addEventListener('click', saveSettings);
+      document.getElementById('btn-reset-settings').addEventListener('click', resetSettings);
+
+      // Cargar al iniciar
+      loadSettings();
+    })();
+  </script>
+</body>
+</html>

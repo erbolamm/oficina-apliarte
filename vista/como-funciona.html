@@ -1,0 +1,1072 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#005fa9">
+  <title>Cómo funciona · Guía de la Oficina ApliArte</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23005fa9%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2248%22%20font-size%3D%2242%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-weight%3D%22bold%22%20text-anchor%3D%22middle%22%20fill%3D%22%235ecef5%22%3E%3F%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../panel-shell.css">
+  <script>
+    try {
+      document.documentElement.dataset.theme =
+        localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
+      document.documentElement.dataset.sidebar =
+        localStorage.getItem("erbolamm-panel-sidebar") === "icons" ? "icons" : "full";
+    } catch (_) {}
+  </script>
+  <style>
+    :root {
+      --brand-blue: #005fa9;
+      --brand-sky: #5ecef5;
+      --brand-ink: #303030;
+      --brand-paper: #fdfdfd;
+    }
+    .guide-hero {
+      background: linear-gradient(135deg, rgba(0, 95, 169, 0.07) 0%, rgba(94, 206, 245, 0.12) 100%);
+      border: 1px solid rgba(0, 95, 169, 0.18);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .guide-hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .guide-title {
+      margin: 0 0 8px 0;
+      font-size: 1.55rem;
+      color: var(--text, var(--brand-ink));
+    }
+    .guide-subtitle {
+      margin: 0;
+      font-size: 0.98rem;
+      color: var(--text-subtle, #555);
+      max-width: 720px;
+      line-height: 1.5;
+    }
+    .live-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #c8e6c9;
+      white-space: nowrap;
+    }
+    [data-theme="dark"] .live-chip {
+      background: #1b3820;
+      color: #81c784;
+      border-color: #2e7d32;
+    }
+    .manual-cta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin: -8px 0 24px 0;
+      padding: 14px 18px;
+      background: linear-gradient(120deg, rgba(0, 95, 169, 0.08) 0%, rgba(94, 206, 245, 0.14) 100%);
+      border: 1px solid rgba(0, 95, 169, 0.22);
+      border-radius: 10px;
+    }
+    .manual-cta-copy {
+      flex: 1 1 auto;
+      min-width: 240px;
+    }
+    .manual-cta-copy strong {
+      display: block;
+      font-size: 0.98rem;
+      color: var(--brand-blue, #005fa9);
+      margin-bottom: 2px;
+    }
+    .manual-cta-copy span {
+      font-size: 0.86rem;
+      color: var(--text-subtle, #555);
+      line-height: 1.4;
+    }
+    .manual-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      background: #005fa9;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.92rem;
+      border-radius: 8px;
+      text-decoration: none;
+      border: 1px solid #005fa9;
+      transition: background 0.2s, transform 0.1s;
+      flex-shrink: 0;
+    }
+    .manual-cta-btn:hover {
+      background: #00467b;
+      border-color: #00467b;
+      transform: translateY(-1px);
+    }
+    .manual-cta-btn:focus-visible {
+      outline: 3px solid rgba(94, 206, 245, 0.6);
+      outline-offset: 2px;
+    }
+    [data-theme="dark"] .manual-cta {
+      background: linear-gradient(120deg, rgba(0, 70, 123, 0.45) 0%, rgba(94, 206, 245, 0.18) 100%);
+      border-color: rgba(94, 206, 245, 0.3);
+    }
+    [data-theme="dark"] .manual-cta-btn {
+      background: #5ecef5;
+      color: #003049;
+      border-color: #5ecef5;
+    }
+    [data-theme="dark"] .manual-cta-btn:hover {
+      background: #8fd5fa;
+      border-color: #8fd5fa;
+    }
+    .search-filter-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .search-box-wrapper {
+      position: relative;
+      width: 100%;
+    }
+    .search-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px 16px 12px 42px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border, #ccc);
+      background: var(--surface, #fff);
+      color: var(--text, var(--brand-ink));
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-input:focus {
+      outline: none;
+      border-color: var(--brand-blue);
+      box-shadow: 0 0 0 3px rgba(0, 95, 169, 0.15);
+    }
+    .search-icon-inside {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      color: #888;
+      pointer-events: none;
+    }
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border, #ccc);
+      background: var(--surface, #fff);
+      color: var(--text, var(--brand-ink));
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover {
+      border-color: var(--brand-blue);
+    }
+    .filter-btn.active {
+      background: var(--brand-blue);
+      color: #fff;
+      border-color: var(--brand-blue);
+    }
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    .module-card {
+      background: var(--surface, #fff);
+      border: 1px solid var(--border, #e0e4e8);
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.07);
+      border-color: rgba(0, 95, 169, 0.35);
+    }
+    .module-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .module-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .module-icon {
+      font-size: 1.4rem;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: rgba(0, 95, 169, 0.1);
+      color: var(--brand-blue);
+      flex-shrink: 0;
+    }
+    .module-name {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text, var(--brand-ink));
+    }
+    .open-view-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 10px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--brand-blue);
+      background: rgba(0, 95, 169, 0.08);
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .open-view-btn:hover {
+      background: var(--brand-blue);
+      color: #fff;
+    }
+    .module-summary {
+      font-weight: 600;
+      color: var(--brand-blue);
+      font-size: 0.92rem;
+      margin: 0 0 10px 0;
+      line-height: 1.4;
+    }
+    .module-body {
+      font-size: 0.92rem;
+      color: var(--text, var(--brand-ink));
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+    .module-actions-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-subtle, #666);
+      margin: 12px 0 6px 0;
+    }
+    .module-actions-list {
+      margin: 0 0 14px 0;
+      padding-left: 18px;
+      font-size: 0.88rem;
+      color: var(--text, var(--brand-ink));
+      line-height: 1.45;
+    }
+    .module-actions-list li {
+      margin-bottom: 4px;
+    }
+    .module-automation-chip {
+      background: var(--subtle, #f5f7fa);
+      border: 1px solid var(--border, #e5e9ef);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 0.82rem;
+      color: var(--text-subtle, #555);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .section-title {
+      font-size: 1.3rem;
+      color: var(--text, var(--brand-ink));
+      margin: 32px 0 16px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .secondary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .secondary-card {
+      background: var(--surface, #fff);
+      border: 1px solid var(--border, #e0e4e8);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .secondary-card h4 {
+      margin: 0 0 6px 0;
+      font-size: 1rem;
+      color: var(--brand-blue);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .secondary-card p {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--text-subtle, #555);
+      line-height: 1.4;
+    }
+    .cli-card {
+      background: var(--surface, #fff);
+      border: 1px solid var(--border, #e0e4e8);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .cli-code-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: #1e1e1e;
+      color: #dcdcdc;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.9rem;
+      overflow-x: auto;
+    }
+    .copy-cmd-btn {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .copy-cmd-btn:hover {
+      background: var(--brand-blue);
+    }
+    .consola-cmd-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: #1e1e1e;
+      color: #5ecef5;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+      overflow-x: auto;
+    }
+    .consola-artifacts-block {
+      background: var(--subtle, #f5f7fa);
+      border: 1px dashed var(--border, #d0d7de);
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin: 12px 0 14px 0;
+    }
+    [data-theme="dark"] .consola-artifacts-block {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .consola-artifacts-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-subtle, #666);
+      margin-bottom: 6px;
+    }
+    .consola-artifacts-list {
+      margin: 0;
+      padding-left: 18px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.82rem;
+      color: var(--text, var(--brand-ink));
+      line-height: 1.45;
+    }
+    .consola-artifacts-list li {
+      margin-bottom: 3px;
+    }
+    .guide-anchors {
+      display: grid;
+      gap: 0.5rem;
+      margin: 0 0 1rem;
+    }
+    .guide-anchor {
+      scroll-margin-top: 4.5rem;
+      padding: 0.5rem;
+      border: 1px solid var(--line, rgba(0, 95, 169, 0.18));
+      border-radius: 8px;
+    }
+    .guide-anchor h3 {
+      margin: 0 0 0.25rem;
+      font-size: 1rem;
+    }
+    .guide-anchor p {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="office-sidebar" id="office-sidebar" aria-label="Navegación de la oficina">
+      <div class="sidebar-brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+        </svg>
+        <span><strong>Oficina ApliArte</strong><small>Panel de control operativo ApliArte</small></span>
+        <button id="sidebar-toggle" class="sidebar-toggle" type="button"
+          aria-controls="office-sidebar" aria-expanded="true" aria-label="Plegar la barra lateral a solo iconos" title="Plegar la barra lateral">
+          <span class="chev" aria-hidden="true">‹</span>
+        </button>
+      </div>
+      <nav class="side-nav" aria-label="Secciones">
+        <a class="nav-card" href="/"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
+        <a class="nav-card" href="/vista/javier"><span class="nav-icon" aria-hidden="true">👤</span><span class="nav-copy"><strong>Espacio Javier</strong><small>Control personal y ja--</small></span></a>
+        <a class="nav-card" href="/vista/inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
+        <a class="nav-card" href="/vista/aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
+        <a class="nav-card" href="/vista/skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
+        <a class="nav-card" href="/vista/conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
+        <a class="nav-card" href="/vista/plugins"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
+        <a class="nav-card" href="/vista/reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
+        <a class="nav-card" href="/vista/propuestas"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
+        <a class="nav-card" href="/vista/diseno"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
+        <a class="nav-card" href="/vista/tiendas"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
+        <a class="nav-card" href="/vista/mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
+        <a class="nav-card" href="/vista/correos"><span class="nav-icon" aria-hidden="true">✉</span><span class="nav-copy"><strong>Correos y Alertas</strong><small>erbolamm y javier</small></span></a>
+        <a class="nav-card" href="/vista/pnl"><span class="nav-icon" aria-hidden="true">🧠</span><span class="nav-copy"><strong>Estudio PNL</strong><small>Enganche y microcopy</small></span></a>
+        <a class="nav-card" href="/vista/musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
+        <a class="nav-card" href="/vista/idiomas"><span class="nav-icon" aria-hidden="true">🌐</span><span class="nav-copy"><strong>Idiomas</strong><small>Traducción y locución</small></span></a>
+        <a class="nav-card" href="/vista/locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
+        <a class="nav-card" href="/vista/voicestudio"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
+        <a class="nav-card" href="/vista/terminales"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
+        <a class="nav-card" href="/vista/facturas"><span class="nav-icon" aria-hidden="true">€</span><span class="nav-copy"><strong>Facturas</strong><small>Gestor de facturas</small></span></a>
+        <a class="nav-card" href="/vista/blogger"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
+        <a class="nav-card" href="/vista/bitacora"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
+        <a class="nav-card" href="/vista/directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
+        <a class="nav-card" href="/resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
+        <a class="nav-card" href="/vista/como-funciona" aria-current="page"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
+      </nav>
+      <p class="sidebar-note"><strong>Privada y local</strong>No conecta la oficina pública, no consulta cuotas y no muestra historial.</p>
+    </aside>
+    <div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
+
+    <main class="office-content" id="office">
+      <header class="topbar">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+            <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+          </svg>
+          <h1>Cómo funciona</h1>
+        </div>
+        <span class="private-chip">Oficina local · privada</span>
+        <span class="connection" id="connection" data-kind="loading">Conectando</span>
+        <button id="refresh-btn" class="btn-refresh" type="button" onclick="window.location.reload()" aria-label="Actualizar vista" title="Actualizar">↻</button>
+        <button id="theme-toggle" type="button" aria-label="Activar modo oscuro" title="Cambiar tema">
+          <span id="theme-icon" aria-hidden="true">☾</span>
+        </button>
+      </header>
+
+      <section class="guide-hero">
+        <div class="guide-hero-top">
+          <div>
+            <h2 class="guide-title">Cómo funciona la Oficina ApliArte</h2>
+            <p class="guide-subtitle">Guía interactiva explicada en tu idioma y sin tecnicismos. Cada módulo se sincroniza en vivo con el servidor local para que nunca se desactualice.</p>
+          </div>
+          <span class="live-chip" id="live-status-indicator">
+            <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#2e7d32;"></span>
+            Documentación viva (/api/como-funciona)
+          </span>
+        </div>
+      </section>
+
+      <aside class="manual-cta" aria-label="Acceso al manual completo">
+        <div class="manual-cta-copy">
+          <strong>Manual vivo de ErBolamm</strong>
+          <span>Documentación canónica de la oficina, generada desde <code>DOCUMENTACION/manual/</code>. Sustituye a las guías dispersas y se regenera con cada capítulo nuevo.</span>
+        </div>
+        <a class="manual-cta-btn" href="/vista/manual" data-tip="Documentación canónica en Markdown" aria-label="Abrir el manual completo de ErBolamm en una pestaña nueva">Abrir manual completo →</a>
+      </aside>
+
+      <section id="guia-pestanas" aria-label="Sección de cada pestaña">
+        <h3 class="section-title">Cada pestaña</h3>
+        <div class="guide-anchors">
+          <section class="guide-anchor" id="oficina"><h3>Oficina</h3><p>El mapa visual de tu oficina con tus 8 agentes y el reloj oficial.</p></section>
+          <section class="guide-anchor" id="javier"><h3>Espacio Javier</h3><p>Centro de control personal con tarjetas ja--, workspace Herdr javier y accesos a las 8 pestañas.</p></section>
+          <section class="guide-anchor" id="inicio-dia"><h3>Inicio del día</h3><p>Radar de arranque matutino: estado de puertos locales, radar VPS y servicios.</p></section>
+          <section class="guide-anchor" id="aplichat"><h3>ApliChat</h3><p>Canal de chat accesible y limpio entre Javier y el Intérprete.</p></section>
+          <section class="guide-anchor" id="aplichat-pro"><h3>ApliChat Pro</h3><p>Hub de asistentes, con vuelta al ApliChat clásico.</p></section>
+          <section class="guide-anchor" id="skills"><h3>Skills</h3><p>Catálogo interactivo con las skills operativas del ecosistema en cuadrícula 3x3.</p></section>
+          <section class="guide-anchor" id="conectores"><h3>Conectores</h3><p>Los servicios externos del ecosistema: para qué se usa cada uno, qué credencial necesita y cómo comprobarlo.</p></section>
+          <section class="guide-anchor" id="plugins"><h3>Plugins</h3><p>Enciende o apaga las pestañas de la barra lateral para dejar a la vista solo los módulos que usas.</p></section>
+          <section class="guide-anchor" id="reflect"><h3>Reflect</h3><p>Las directivas consolidadas de la oficina y un cuaderno de notas de reflexión.</p></section>
+          <section class="guide-anchor" id="propuestas"><h3>Propuestas</h3><p>Bandeja visual de mejoras y aprendizajes emitidos por orquestadores locales.</p></section>
+          <section class="guide-anchor" id="diseno"><h3>Estudio de Diseño</h3><p>Estudio interactivo de creatividades, vídeos promocionales y efectos de sonido.</p></section>
+          <section class="guide-anchor" id="tiendas"><h3>Tiendas y ASO</h3><p>Auditoría de metadatos para App Store y Google Play y optimización de palabras clave en 6 idiomas.</p></section>
+          <section class="guide-anchor" id="mercado"><h3>Radar de Mercado</h3><p>Monitor de tendencias en vivo de Google News y generador de ganchos virales (Newsjacking).</p></section>
+          <section class="guide-anchor" id="correos"><h3>Correos y Alertas</h3><p>Buzón unificado de soporte a usuarios y alertas de producción.</p></section>
+          <section class="guide-anchor" id="pnl"><h3>Estudio PNL</h3><p>Auditoría de mensajes y reducción de fricción cognitiva en interfaces.</p></section>
+          <section class="guide-anchor" id="musica"><h3>Estudio Musical</h3><p>Generador de pistas de audio procedurales y algorítmicas con Strudel y Web Audio API sin derechos de autor.</p></section>
+          <section class="guide-anchor" id="locucion"><h3>Locución y Guiones</h3><p>Redacción y cronometraje de guiones para vídeo corto en 6 idiomas con preescucha neuronal y subtítulos.</p></section>
+          <section class="guide-anchor" id="voicestudio"><h3>Voice Studio</h3><p>Clonación zero-shot inmediata y síntesis de voz acelerada por Apple Silicon con OmniVoice.</p></section>
+          <section class="guide-anchor" id="terminales"><h3>Terminales</h3><p>Consolas protegidas para arrancar, vigilar y parar a los agentes.</p></section>
+          <section class="guide-anchor" id="facturas"><h3>Facturas</h3><p>Organizador automático de recibos, gastos, ingresos y trimestres.</p></section>
+          <section class="guide-anchor" id="blogger"><h3>Blogger</h3><p>El altavoz de tus proyectos: de la actualización a tus redes con 1 clic.</p></section>
+          <section class="guide-anchor" id="bitacora"><h3>Bitácora</h3><p>El inventario interactivo de tus 48 proyectos, dominios y enlaces.</p></section>
+          <section class="guide-anchor" id="directo"><h3>Directo</h3><p>Botonera de efectos, escenas de OBS, multi-chat y avisos para Twitch, YouTube y Kick.</p></section>
+          <section class="guide-anchor" id="diapositivas"><h3>Diapositivas</h3><p>Mazo interactivo de diapositivas y pistas de audio sincronizadas para directos.</p></section>
+          <section class="guide-anchor" id="shorts"><h3>Shorts</h3><p>Convierte un vídeo largo (por ejemplo un directo de una o dos horas) en un resumen acelerado de 60 segundos.</p></section>
+          <section class="guide-anchor" id="resenas"><h3>Reseñas</h3><p>Atención al usuario y respuestas automáticas para tus apps en Google Play.</p></section>
+          <section class="guide-anchor" id="historicas"><h3>Reseñas históricas</h3><p>Pega el texto copiado de Google Play Console y lo parte en tarjetas independientes.</p></section>
+          <section class="guide-anchor" id="como-funciona"><h3>Cómo funciona</h3><p>Documentación viva, explicaciones en lenguaje llano y buscador interactivo.</p></section>
+          <section class="guide-anchor" id="manual"><h3>Manual vivo</h3><p>Manual completo de ErBolamm generado desde DOCUMENTACION/manual.</p></section>
+          <section class="guide-anchor" id="agentes"><h3>Fichas de agentes</h3><p>Detalle individual de cada personaje, su rol asignado, modelo de IA y tareas completadas.</p></section>
+          <section class="guide-anchor" id="herdr"><h3>Herdr</h3><p>Consola táctil optimizada para gestionar Herdr desde el móvil por Tailscale.</p></section>
+          <section class="guide-anchor" id="tablero"><h3>Tablero de tareas</h3><p>Vista en columnas de todas las tarjetas: por-hacer, haciendo y hecho.</p></section>
+          <section class="guide-anchor" id="buzon"><h3>Buzón rápido</h3><p>Para apuntar ideas, notas y encargos rápidos que luego se pueden convertir en tareas formales.</p></section>
+          <section class="guide-anchor" id="informes"><h3>Informes del vigilante</h3><p>Buzón de auditorías técnicas y comprobaciones automáticas del sistema.</p></section>
+          <section class="guide-anchor" id="radar"><h3>Radar de Nodos</h3><p>Visualización física y elástica de los agentes, tareas y estados del ecosistema.</p></section>
+          <section class="guide-anchor" id="idiomas"><h3>Traducción y Locución</h3><p>Traducción con Google o MyMemory y locución con Qwen-TTS. Ningún modelo de IA se ejecuta en el navegador.</p></section>
+          <section class="guide-anchor" id="delegar"><h3>Delegar</h3><p>La tarea nace en Por hacer. El texto se guarda como dato y nunca se ejecuta.</p></section>
+          <section class="guide-anchor" id="recurrentes"><h3>Tareas recurrentes</h3><p>Tareas periódicas programadas en tareas/recurrentes/.</p></section>
+          <section class="guide-anchor" id="buscar"><h3>Buscar tareas</h3><p>Busca tarjetas en todo el historial y filtra por carpeta o por rol.</p></section>
+          <section class="guide-anchor" id="plano"><h3>Plano operativo</h3><p>Personajes, muebles y encargos conectados al tablero real en tiempo real.</p></section>
+          <section class="guide-anchor" id="megapromtista"><h3>MegaPromtista</h3><p>Portal de arquitectura, automatización y código abierto de prompts y agentes.</p></section>
+          <section class="guide-anchor" id="dictamen-tareas"><h3>Verificación y Dictamen de Tareas</h3><p>Panel interactivo para auditar, aprobar o reclamar cada tarea del tablero central de ErBolamm.</p></section>
+          <section class="guide-anchor" id="settings"><h3>Ajustes de Oficina</h3><p>Configuración centralizada y soberana por máquina de valores por defecto para todas las herramientas operativas.</p></section>
+          <section class="guide-anchor" id="dispositivos"><h3>Gestión de Dispositivos</h3><p>Control e instalación unificada de herramientas y dependencias en los distintos nodos y dispositivos del ecosistema.</p></section>
+        </div>
+      </section>
+
+      <section class="search-filter-bar" aria-label="Búsqueda y filtros">
+        <div class="search-box-wrapper">
+          <span class="search-icon-inside" aria-hidden="true">🔍</span>
+          <input type="search" id="search-modulos" class="search-input" placeholder="Buscar en la oficina: ej. facturas, directo, muñecos, difusión, terminales..." aria-label="Buscar en la oficina">
+        </div>
+        <div class="filter-pills" role="tablist">
+          <button type="button" class="filter-btn active" data-filter="all">Todos los apartados</button>
+          <button type="button" class="filter-btn" data-filter="novedades">Novedades</button>
+          <button type="button" class="filter-btn" data-filter="principales">Pestañas del menú</button>
+          <button type="button" class="filter-btn" data-filter="consola">Consola de proyectos</button>
+          <button type="button" class="filter-btn" data-filter="apoyo">Herramientas de apoyo</button>
+          <button type="button" class="filter-btn" data-filter="terminal">Comandos de consola</button>
+        </div>
+      </section>
+
+      <!-- Pestañas Principales -->
+      <section id="section-novedades">
+        <h3 class="section-title"><span>🆕</span> Novedades de la jornada</h3>
+        <div class="modules-grid" id="novedades-container">
+          <p style="color:#666; font-size:0.9rem;">Cargando novedades...</p>
+        </div>
+      </section>
+
+      <section id="section-principales">
+        <h3 class="section-title"><span>📌</span> Pestañas principales de la barra lateral</h3>
+        <div class="modules-grid" id="modules-container">
+          <!-- Renderizado dinámico vía JS desde /api/como-funciona -->
+          <p style="color:#666; font-size:0.9rem;">Cargando módulos interactivos...</p>
+        </div>
+      </section>
+
+      <!-- Consola de Herramientas de Proyectos (ADR-0013) -->
+      <section id="section-consola">
+        <h3 class="section-title"><span>🚀</span> Consola de herramientas de proyectos (ADR-0013)</h3>
+        <p style="margin:-8px 0 16px 0; font-size:0.92rem; color:var(--text-subtle, #555);">
+          Motores de automatización para auditar, monetizar y generar la suite canónica de cada repositorio en <code>control-erbolamm/</code>.
+        </p>
+        <div class="modules-grid" id="consola-container">
+          <!-- Renderizado dinámico vía JS desde /api/como-funciona -->
+          <p style="color:#666; font-size:0.9rem;">Cargando herramientas de proyecto...</p>
+        </div>
+      </section>
+
+      <!-- Herramientas de Apoyo -->
+      <section id="section-apoyo">
+        <h3 class="section-title"><span>🛠️</span> Herramientas de apoyo y vistas secundarias</h3>
+        <div class="secondary-grid" id="secondary-container">
+          <p style="color:#666; font-size:0.9rem;">Cargando herramientas...</p>
+        </div>
+      </section>
+
+      <!-- Comandos de Terminal -->
+      <section id="section-terminal">
+        <h3 class="section-title"><span>💻</span> Comandos útiles en la consola del Mac</h3>
+        <div id="cli-container">
+          <p style="color:#666; font-size:0.9rem;">Cargando comandos...</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="../panel-shell.js"></script>
+  <script src="../componentes/captura-real.js"></script>
+  <script>
+    (() => {
+      let catalogData = null;
+      let activeFilter = 'all';
+
+      async function loadCatalog() {
+        try {
+          const res = await fetch('/api/como-funciona');
+          if (!res.ok) throw new Error('Status: ' + res.status);
+          catalogData = await res.json();
+          renderModules();
+        } catch (err) {
+          console.warn('Error al cargar /api/como-funciona, usando respaldo local:', err);
+          // Intentar rescatar archivo directo si está en entorno estático
+          try {
+            const fallbackRes = await fetch('/tareas/oficina-modulos.json');
+            if (fallbackRes.ok) {
+              catalogData = await fallbackRes.json();
+              renderModules();
+              return;
+            }
+          } catch (_) {}
+          document.getElementById('live-status-indicator').innerHTML = '⚠️ Modo local sin conexión';
+        }
+      }
+
+      function renderModules() {
+        if (!catalogData) return;
+        const query = (document.getElementById('search-modulos').value || '').toLowerCase().trim();
+        renderNovedades(query);
+        renderPrincipales(query);
+        renderConsola(query);
+        renderApoyo(query);
+        renderTerminal(query);
+      }
+
+      function renderNovedades(query) {
+        const container = document.getElementById('novedades-container');
+        const section = document.getElementById('section-novedades');
+        if (activeFilter !== 'all' && activeFilter !== 'novedades') {
+          section.style.display = 'none';
+          return;
+        }
+        section.style.display = 'block';
+
+        const list = (catalogData.novedades || []).filter(n => {
+          if (!query) return true;
+          return n.titulo.toLowerCase().includes(query) || n.detalle.toLowerCase().includes(query);
+        });
+
+        while (container.firstChild) container.removeChild(container.firstChild);
+        if (list.length === 0) {
+          const empty = document.createElement('p');
+          empty.style.cssText = 'color:#888; font-style:italic;';
+          empty.textContent = 'No hay novedades que coincidan con la búsqueda.';
+          container.appendChild(empty);
+          return;
+        }
+        for (const n of list) {
+          const article = document.createElement('article');
+          article.className = 'module-card';
+          const inner = document.createElement('div');
+          const head = document.createElement('div');
+          head.className = 'module-head';
+          const name = document.createElement('h4');
+          name.className = 'module-name';
+          name.textContent = n.titulo;
+          head.appendChild(name);
+          inner.appendChild(head);
+          const summary = document.createElement('p');
+          summary.className = 'module-summary';
+          summary.textContent = n.fecha + ' · ' + (n.estado === 'hecho' ? 'Hecho' : 'En curso');
+          inner.appendChild(summary);
+          const body = document.createElement('div');
+          body.className = 'module-body';
+          body.textContent = n.detalle;
+          inner.appendChild(body);
+          article.appendChild(inner);
+          container.appendChild(article);
+        }
+      }
+
+      function renderPrincipales(query) {
+        const container = document.getElementById('modules-container');
+        const section = document.getElementById('section-principales');
+        if (activeFilter !== 'all' && activeFilter !== 'principales') {
+          section.style.display = 'none';
+          return;
+        }
+        section.style.display = 'block';
+
+        const list = (catalogData.modulos_principales || []).filter(m => {
+          if (!query) return true;
+          return m.titulo.toLowerCase().includes(query) ||
+                 m.resumen.toLowerCase().includes(query) ||
+                 m.para_que_sirve.toLowerCase().includes(query) ||
+                 (m.que_puedes_hacer && m.que_puedes_hacer.some(a => a.toLowerCase().includes(query)));
+        });
+
+        if (list.length === 0) {
+          container.innerHTML = '<p style="color:#888; font-style:italic;">No hay pestañas principales que coincidan con la búsqueda.</p>';
+          return;
+        }
+
+        // Construcción segura: createElement + textContent para evitar innerHTML
+        // sobre datos del catálogo (defensa en profundidad).
+        while (container.firstChild) container.removeChild(container.firstChild);
+        for (const m of list) {
+          const article = document.createElement('article');
+          article.className = 'module-card';
+
+          const inner = document.createElement('div');
+
+          const head = document.createElement('div');
+          head.className = 'module-head';
+          const titleGroup = document.createElement('div');
+          titleGroup.className = 'module-title-group';
+          const icon = document.createElement('span');
+          icon.className = 'module-icon';
+          icon.textContent = m.icono || '📄';
+          const name = document.createElement('h4');
+          name.className = 'module-name';
+          name.textContent = m.titulo;
+          titleGroup.appendChild(icon);
+          titleGroup.appendChild(name);
+          const open = document.createElement('a');
+          open.className = 'open-view-btn';
+          open.href = m.ruta;
+          open.textContent = 'Abrir pestaña ↗';
+          head.appendChild(titleGroup);
+          head.appendChild(open);
+          inner.appendChild(head);
+
+          const summary = document.createElement('p');
+          summary.className = 'module-summary';
+          summary.textContent = m.resumen;
+          inner.appendChild(summary);
+
+          const body = document.createElement('div');
+          body.className = 'module-body';
+          body.textContent = m.para_que_sirve;
+          inner.appendChild(body);
+
+          if (m.captura && window.OficinaComponentes && window.OficinaComponentes.capturaReal) {
+            window.OficinaComponentes.capturaReal.render(inner, {
+              archivo: m.captura.archivo,
+              fecha: m.captura.fecha,
+              origen: m.captura.origen,
+              alt: 'Captura real de la pestaña ' + m.titulo
+            });
+          }
+
+          if (Array.isArray(m.que_puedes_hacer) && m.que_puedes_hacer.length) {
+            const titleEl = document.createElement('div');
+            titleEl.className = 'module-actions-title';
+            titleEl.textContent = 'Qué puedes hacer aquí:';
+            const ul = document.createElement('ul');
+            ul.className = 'module-actions-list';
+            for (const act of m.que_puedes_hacer) {
+              const li = document.createElement('li');
+              li.textContent = act;
+              ul.appendChild(li);
+            }
+            inner.appendChild(titleEl);
+            inner.appendChild(ul);
+          }
+
+          if (m.automatizaciones) {
+            const chip = document.createElement('div');
+            chip.className = 'module-automation-chip';
+            const iconSpan = document.createElement('span');
+            iconSpan.textContent = '⚙️';
+            const labelSpan = document.createElement('span');
+            const strong = document.createElement('strong');
+            strong.textContent = 'Automatización: ';
+            labelSpan.appendChild(strong);
+            labelSpan.appendChild(document.createTextNode(m.automatizaciones));
+            chip.appendChild(iconSpan);
+            chip.appendChild(labelSpan);
+            article.appendChild(inner);
+            article.appendChild(chip);
+          } else {
+            article.appendChild(inner);
+          }
+
+          container.appendChild(article);
+        }
+      }
+
+      function renderConsola(query) {
+        const container = document.getElementById('consola-container');
+        const section = document.getElementById('section-consola');
+        if (activeFilter !== 'all' && activeFilter !== 'consola') {
+          section.style.display = 'none';
+          return;
+        }
+        section.style.display = 'block';
+
+        const list = (catalogData.consola_herramientas || []).filter(c => {
+          if (!query) return true;
+          return (c.titulo && c.titulo.toLowerCase().includes(query)) ||
+                 (c.comando && c.comando.toLowerCase().includes(query)) ||
+                 (c.resumen && c.resumen.toLowerCase().includes(query)) ||
+                 (c.para_que_sirve && c.para_que_sirve.toLowerCase().includes(query)) ||
+                 (Array.isArray(c.que_puedes_hacer) && c.que_puedes_hacer.some(a => a.toLowerCase().includes(query))) ||
+                 (Array.isArray(c.artefactos_generados) && c.artefactos_generados.some(art => art.toLowerCase().includes(query)));
+        });
+
+        if (list.length === 0) {
+          container.innerHTML = '<p style="color:#888; font-style:italic;">No hay herramientas de proyecto que coincidan con la búsqueda.</p>';
+          return;
+        }
+
+        while (container.firstChild) container.removeChild(container.firstChild);
+        for (const c of list) {
+          const article = document.createElement('article');
+          article.className = 'module-card';
+
+          const inner = document.createElement('div');
+
+          const head = document.createElement('div');
+          head.className = 'module-head';
+          const titleGroup = document.createElement('div');
+          titleGroup.className = 'module-title-group';
+          const icon = document.createElement('span');
+          icon.className = 'module-icon';
+          icon.textContent = c.icono || '🛠️';
+          const name = document.createElement('h4');
+          name.className = 'module-name';
+          name.textContent = c.titulo;
+          titleGroup.appendChild(icon);
+          titleGroup.appendChild(name);
+          head.appendChild(titleGroup);
+          inner.appendChild(head);
+
+          if (c.comando) {
+            const cmdBox = document.createElement('div');
+            cmdBox.className = 'consola-cmd-box';
+            const code = document.createElement('code');
+            code.textContent = c.comando;
+            const copyBtn = document.createElement('button');
+            copyBtn.type = 'button';
+            copyBtn.className = 'copy-cmd-btn';
+            copyBtn.textContent = 'Copiar';
+            copyBtn.addEventListener('click', () => {
+              navigator.clipboard.writeText(c.comando).then(() => {
+                copyBtn.textContent = '¡Copiado!';
+                setTimeout(() => { copyBtn.textContent = 'Copiar'; }, 2000);
+              });
+            });
+            cmdBox.appendChild(code);
+            cmdBox.appendChild(copyBtn);
+            inner.appendChild(cmdBox);
+          }
+
+          const summary = document.createElement('p');
+          summary.className = 'module-summary';
+          summary.textContent = c.resumen;
+          inner.appendChild(summary);
+
+          const body = document.createElement('div');
+          body.className = 'module-body';
+          body.textContent = c.para_que_sirve;
+          inner.appendChild(body);
+
+          if (Array.isArray(c.que_puedes_hacer) && c.que_puedes_hacer.length) {
+            const titleEl = document.createElement('div');
+            titleEl.className = 'module-actions-title';
+            titleEl.textContent = 'Qué puedes hacer con esta herramienta:';
+            const ul = document.createElement('ul');
+            ul.className = 'module-actions-list';
+            for (const act of c.que_puedes_hacer) {
+              const li = document.createElement('li');
+              li.textContent = act;
+              ul.appendChild(li);
+            }
+            inner.appendChild(titleEl);
+            inner.appendChild(ul);
+          }
+
+          if (Array.isArray(c.artefactos_generados) && c.artefactos_generados.length) {
+            const artBlock = document.createElement('div');
+            artBlock.className = 'consola-artifacts-block';
+            const artTitle = document.createElement('div');
+            artTitle.className = 'consola-artifacts-title';
+            artTitle.textContent = 'Artefactos que genera en el proyecto:';
+            const ul = document.createElement('ul');
+            ul.className = 'consola-artifacts-list';
+            for (const art of c.artefactos_generados) {
+              const li = document.createElement('li');
+              li.textContent = art;
+              ul.appendChild(li);
+            }
+            artBlock.appendChild(artTitle);
+            artBlock.appendChild(ul);
+            inner.appendChild(artBlock);
+          }
+
+          if (c.automatizaciones) {
+            const chip = document.createElement('div');
+            chip.className = 'module-automation-chip';
+            const iconSpan = document.createElement('span');
+            iconSpan.textContent = '⚙️';
+            const labelSpan = document.createElement('span');
+            const strong = document.createElement('strong');
+            strong.textContent = 'Automatización: ';
+            labelSpan.appendChild(strong);
+            labelSpan.appendChild(document.createTextNode(c.automatizaciones));
+            chip.appendChild(iconSpan);
+            chip.appendChild(labelSpan);
+            article.appendChild(inner);
+            article.appendChild(chip);
+          } else {
+            article.appendChild(inner);
+          }
+
+          container.appendChild(article);
+        }
+      }
+
+      function renderApoyo(query) {
+        const container = document.getElementById('secondary-container');
+        const section = document.getElementById('section-apoyo');
+        if (activeFilter !== 'all' && activeFilter !== 'apoyo') {
+          section.style.display = 'none';
+          return;
+        }
+        section.style.display = 'block';
+
+        const list = (catalogData.herramientas_apoyo || []).filter(h => {
+          if (!query) return true;
+          return h.titulo.toLowerCase().includes(query) || h.resumen.toLowerCase().includes(query);
+        });
+
+        if (list.length === 0) {
+          container.innerHTML = '<p style="color:#888; font-style:italic;">No hay herramientas de apoyo que coincidan.</p>';
+          return;
+        }
+
+        // Construcción segura para evitar innerHTML con datos del catálogo.
+        while (container.firstChild) container.removeChild(container.firstChild);
+        for (const h of list) {
+          const card = document.createElement('div');
+          card.className = 'secondary-card';
+          const heading = document.createElement('h4');
+          const label = document.createElement('span');
+          label.textContent = h.titulo;
+          const link = document.createElement('a');
+          link.className = 'open-view-btn';
+          link.style.fontSize = '0.75rem';
+          link.href = h.ruta;
+          link.textContent = 'Abrir ↗';
+          heading.appendChild(label);
+          heading.appendChild(link);
+          const desc = document.createElement('p');
+          desc.textContent = h.resumen;
+          card.appendChild(heading);
+          card.appendChild(desc);
+          container.appendChild(card);
+        }
+      }
+
+      function renderTerminal(query) {
+        const container = document.getElementById('cli-container');
+        const section = document.getElementById('section-terminal');
+        if (activeFilter !== 'all' && activeFilter !== 'terminal') {
+          section.style.display = 'none';
+          return;
+        }
+        section.style.display = 'block';
+
+        const list = (catalogData.comandos_terminal || []).filter(c => {
+          if (!query) return true;
+          return c.comando.toLowerCase().includes(query) || c.para_que_sirve.toLowerCase().includes(query);
+        });
+
+        if (list.length === 0) {
+          container.innerHTML = '<p style="color:#888; font-style:italic;">No hay comandos que coincidan.</p>';
+          return;
+        }
+
+        // Construcción segura para evitar innerHTML con datos del catálogo.
+        while (container.firstChild) container.removeChild(container.firstChild);
+        for (const c of list) {
+          const card = document.createElement('div');
+          card.className = 'cli-card';
+
+          const row = document.createElement('div');
+          row.className = 'cli-code-row';
+          const code = document.createElement('code');
+          code.textContent = c.comando;
+          const copyBtn = document.createElement('button');
+          copyBtn.type = 'button';
+          copyBtn.className = 'copy-cmd-btn';
+          copyBtn.textContent = 'Copiar';
+          copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(c.comando).then(() => {
+              copyBtn.textContent = '¡Copiado!';
+              setTimeout(() => { copyBtn.textContent = 'Copiar'; }, 2000);
+            });
+          });
+          row.appendChild(code);
+          row.appendChild(copyBtn);
+          card.appendChild(row);
+
+          const desc = document.createElement('p');
+          desc.style.margin = '4px 0 0 0';
+          desc.style.fontSize = '0.88rem';
+          desc.style.color = 'var(--text-subtle, #555)';
+          desc.textContent = c.para_que_sirve;
+          card.appendChild(desc);
+
+          container.appendChild(card);
+        }
+      }
+
+      // Event listeners
+      document.getElementById('search-modulos').addEventListener('input', () => {
+        renderModules();
+      });
+
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeFilter = btn.dataset.filter;
+          renderModules();
+        });
+      });
+
+      // Carga inicial
+      loadCatalog();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,894 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#005fa9">
+  <title>Propuestas y Aprendizajes · Oficina local de ErBolamm</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23005fa9%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2246%22%20font-size%3D%2234%22%20text-anchor%3D%22middle%22%20fill%3D%22%235ecef5%22%3E%F0%9F%92%A1%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../panel-shell.css">
+  <script>
+    try {
+      document.documentElement.dataset.theme =
+        localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
+      document.documentElement.dataset.sidebar =
+        localStorage.getItem("erbolamm-panel-sidebar") === "icons" ? "icons" : "full";
+    } catch (_) {}
+  </script>
+  <style>
+    .cz-page {
+      --cz-soft: color-mix(in srgb, var(--ink) 68%, transparent);
+      --cz-line: color-mix(in srgb, var(--ink) 18%, transparent);
+      --cz-accent: var(--blue);
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      padding-bottom: 3rem;
+    }
+    html[data-theme="dark"] .cz-page { --cz-accent: var(--cyan); }
+
+    .metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.75rem;
+    }
+    .metric-card {
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--cz-line);
+      border-radius: var(--radius-sm, 8px);
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .metric-val {
+      font-size: 1.6rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .metric-lbl {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--cz-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .filters-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.6rem 0.85rem;
+      border: 1px solid var(--cz-line);
+      border-radius: var(--radius-sm, 8px);
+      background: var(--subtle);
+    }
+    .tabs-group {
+      display: flex;
+      gap: 0.35rem;
+    }
+    .filter-tab {
+      padding: 0.4rem 0.75rem;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm, 6px);
+      background: transparent;
+      color: var(--cz-soft);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .filter-tab:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 5%, transparent); }
+    .filter-tab.active {
+      color: var(--ink);
+      background: var(--surface);
+      border-color: var(--cz-line);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .proposals-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .proposal-card {
+      border: 1px solid var(--cz-line);
+      border-radius: var(--radius-sm, 8px);
+      background: var(--surface);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.15s ease;
+    }
+    .proposal-card:hover {
+      border-color: color-mix(in srgb, var(--cz-accent) 50%, var(--cz-line));
+    }
+    .proposal-head {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      border-bottom: 1px solid var(--cz-line);
+    }
+    .proposal-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.2rem 0.5rem;
+      font-size: 0.76rem;
+      font-weight: 700;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .badge-repo { background: color-mix(in srgb, var(--blue) 15%, transparent); color: var(--blue); }
+    html[data-theme="dark"] .badge-repo { color: var(--cyan); }
+    .badge-type { background: color-mix(in srgb, var(--ink) 10%, transparent); color: var(--ink); }
+    .badge-pendiente { background: #fff3cd; color: #856404; }
+    html[data-theme="dark"] .badge-pendiente { background: #3d3106; color: #ffeeba; }
+    .badge-aprobada { background: #d4edda; color: #155724; }
+    html[data-theme="dark"] .badge-aprobada { background: #15381d; color: #d4edda; }
+    .badge-descartada { background: #e2e3e5; color: #383d41; }
+    html[data-theme="dark"] .badge-descartada { background: #2b2f33; color: #adb5bd; }
+
+    .proposal-title {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .proposal-meta {
+      font-size: 0.82rem;
+      color: var(--cz-soft);
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .proposal-body {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+    .section-row {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 0.5rem;
+    }
+    @media (max-width: 600px) {
+      .section-row { grid-template-columns: 1fr; }
+    }
+    .section-lbl {
+      font-weight: 700;
+      color: var(--cz-soft);
+      font-size: 0.84rem;
+    }
+    .section-val {
+      color: var(--ink);
+    }
+
+    .diff-box {
+      margin-top: 0.5rem;
+      background: var(--subtle);
+      border: 1px solid var(--cz-line);
+      border-radius: 4px;
+      padding: 0.75rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.84rem;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    .proposal-foot {
+      padding: 0.75rem 1rem;
+      background: color-mix(in srgb, var(--subtle) 50%, var(--surface));
+      border-top: 1px solid var(--cz-line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .actions-group {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .btn-approve {
+      padding: 0.45rem 0.85rem;
+      background: #198754;
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm, 6px);
+      font-weight: 600;
+      font-size: 0.86rem;
+      cursor: pointer;
+    }
+    .btn-approve:hover { background: #157347; }
+    .btn-discard {
+      padding: 0.45rem 0.85rem;
+      background: transparent;
+      color: #dc3545;
+      border: 1px solid #dc3545;
+      border-radius: var(--radius-sm, 6px);
+      font-weight: 600;
+      font-size: 0.86rem;
+      cursor: pointer;
+    }
+    .btn-discard:hover { background: #dc3545; color: white; }
+    .btn-secondary {
+      padding: 0.45rem 0.75rem;
+      background: transparent;
+      color: var(--cz-soft);
+      border: 1px solid var(--cz-line);
+      border-radius: var(--radius-sm, 6px);
+      font-size: 0.84rem;
+      cursor: pointer;
+    }
+    .btn-secondary:hover { color: var(--ink); border-color: var(--ink); }
+
+    .btn-edit {
+      padding: 0.45rem 0.85rem;
+      background: transparent;
+      color: var(--cz-accent);
+      border: 1px solid var(--cz-accent);
+      border-radius: var(--radius-sm, 6px);
+      font-weight: 600;
+      font-size: 0.86rem;
+      cursor: pointer;
+    }
+    .btn-edit:hover { background: color-mix(in srgb, var(--cz-accent) 12%, transparent); }
+
+    .btn-delete {
+      padding: 0.45rem 0.85rem;
+      background: transparent;
+      color: #dc3545;
+      border: 1px solid #dc3545;
+      border-radius: var(--radius-sm, 6px);
+      font-weight: 600;
+      font-size: 0.86rem;
+      cursor: pointer;
+    }
+    .btn-delete:hover { background: #dc3545; color: white; }
+
+    .btn-create {
+      padding: 0.45rem 0.9rem;
+      background: var(--cz-accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm, 6px);
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .btn-create:hover { opacity: 0.9; }
+
+    .empty-state {
+      padding: 3rem 1rem;
+      text-align: center;
+      color: var(--cz-soft);
+      border: 1px dashed var(--cz-line);
+      border-radius: var(--radius-sm, 8px);
+      font-size: 0.95rem;
+    }
+
+    /* Modal accesible de edición / creación */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+    .modal-backdrop[hidden] { display: none; }
+    .modal-dialog {
+      background: var(--surface);
+      border: 1px solid var(--cz-line);
+      border-radius: var(--radius-sm, 10px);
+      width: 100%;
+      max-width: 680px;
+      max-height: 90vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    .modal-head {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--cz-line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-head h3 { margin: 0; font-size: 1.15rem; color: var(--ink); }
+    .modal-close {
+      background: transparent;
+      border: none;
+      font-size: 1.2rem;
+      color: var(--cz-soft);
+      cursor: pointer;
+    }
+    .modal-body {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .form-group label {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--cz-line);
+      border-radius: var(--radius-sm, 6px);
+      background: var(--surface);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 0.9rem;
+    }
+    .form-group textarea { resize: vertical; min-height: 70px; }
+    .modal-foot {
+      padding: 1rem 1.25rem;
+      border-top: 1px solid var(--cz-line);
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      background: var(--subtle);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="office-sidebar" id="office-sidebar" aria-label="Navegación de la oficina">
+      <div class="sidebar-brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+        </svg>
+        <span><strong>Oficina ApliArte</strong><small>Panel de control operativo</small></span>
+        <button id="sidebar-toggle" class="sidebar-toggle" type="button"
+          aria-controls="office-sidebar" aria-expanded="true" aria-label="Plegar la barra lateral a solo iconos" title="Plegar la barra lateral">
+          <span class="chev" aria-hidden="true">‹</span>
+        </button>
+      </div>
+      <nav class="side-nav" aria-label="Secciones">
+        <a class="nav-card" href="/"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
+        <a class="nav-card" href="/vista/javier"><span class="nav-icon" aria-hidden="true">👤</span><span class="nav-copy"><strong>Espacio Javier</strong><small>Control personal y ja--</small></span></a>
+        <a class="nav-card" href="/vista/inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
+        <a class="nav-card" href="/vista/aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
+        <a class="nav-card" href="/vista/skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
+        <a class="nav-card" href="/vista/conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
+        <a class="nav-card" href="/vista/plugins"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
+        <a class="nav-card" href="/vista/reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
+        <a class="nav-card" href="/vista/propuestas" aria-current="page"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
+        <a class="nav-card" href="/vista/diseno"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
+        <a class="nav-card" href="/vista/tiendas"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
+        <a class="nav-card" href="/vista/mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
+        <a class="nav-card" href="/vista/correos"><span class="nav-icon" aria-hidden="true">✉</span><span class="nav-copy"><strong>Correos y Alertas</strong><small>erbolamm y javier</small></span></a>
+        <a class="nav-card" href="/vista/pnl"><span class="nav-icon" aria-hidden="true">🧠</span><span class="nav-copy"><strong>Estudio PNL</strong><small>Enganche y microcopy</small></span></a>
+        <a class="nav-card" href="/vista/musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
+        <a class="nav-card" href="/vista/idiomas"><span class="nav-icon" aria-hidden="true">🌐</span><span class="nav-copy"><strong>Idiomas</strong><small>Traducción y locución</small></span></a>
+        <a class="nav-card" href="/vista/locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
+        <a class="nav-card" href="/vista/voicestudio"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
+        <a class="nav-card" href="/vista/terminales"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
+        <a class="nav-card" href="/vista/facturas"><span class="nav-icon" aria-hidden="true">€</span><span class="nav-copy"><strong>Facturas</strong><small>Gestor de facturas</small></span></a>
+        <a class="nav-card" href="/vista/blogger"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
+        <a class="nav-card" href="/vista/bitacora"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
+        <a class="nav-card" href="/vista/directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
+        <a class="nav-card" href="/resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
+        <a class="nav-card" href="/vista/settings"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-copy"><strong>Ajustes</strong><small>Opciones por defecto</small></span></a>
+        <a class="nav-card" href="/vista/como-funciona"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
+      </nav>
+      <p class="sidebar-note"><strong>Soberanía federada</strong>Propuestas emitidas desde <code>control-erbolamm/aprendizajes/</code>.</p>
+    </aside>
+    <div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
+
+    <main class="office-content" id="office">
+      <header class="topbar">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+            <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+          </svg>
+          <h1>Propuestas y Aprendizajes</h1>
+        </div>
+        <span class="private-chip">Oficina local · soberanía federada</span>
+        <button type="button" class="btn-create" onclick="abrirModalNueva()" title="Crear nueva propuesta">＋ Nueva Propuesta</button>
+        <button id="refresh-btn" class="btn-refresh" type="button" onclick="cargarPropuestas()" aria-label="Actualizar propuestas" title="Actualizar">↻</button>
+        <button id="theme-toggle" type="button" aria-label="Activar modo oscuro" title="Cambiar tema">
+          <span id="theme-icon" aria-hidden="true">☾</span>
+        </button>
+      </header>
+
+      <div class="cz-page">
+        <header class="cz-head">
+          <h2>Bandeja Visual de Orquestadores Satélites</h2>
+          <p>Mejoras, patrones técnicos y lecciones aprendidas emitidas por los orquestadores locales (<code>or-*</code>). Revisa el contenido estructurado o diff y canonízalo en la Central con un clic.</p>
+        </header>
+
+        <!-- Barra de Métricas -->
+        <section class="metrics-bar" id="metrics-bar">
+          <div class="metric-card">
+            <span class="metric-val" id="metric-total">0</span>
+            <span class="metric-lbl">Total Propuestas</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-val" id="metric-pendientes" style="color: #b45309;">0</span>
+            <span class="metric-lbl">Pendientes</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-val" id="metric-aprobadas" style="color: #15803d;">0</span>
+            <span class="metric-lbl">Canonizadas</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-val" id="metric-descartadas" style="color: #64748b;">0</span>
+            <span class="metric-lbl">Descartadas</span>
+          </div>
+        </section>
+
+        <!-- Barra de Filtros -->
+        <div class="filters-bar">
+          <div class="tabs-group" role="tablist">
+            <button class="filter-tab active" data-estado="todas" onclick="cambiarFiltroEstado('todas')">Todas</button>
+            <button class="filter-tab" data-estado="pendiente" onclick="cambiarFiltroEstado('pendiente')">Pendientes</button>
+            <button class="filter-tab" data-estado="aprobada" onclick="cambiarFiltroEstado('aprobada')">Canonizadas</button>
+            <button class="filter-tab" data-estado="descartada" onclick="cambiarFiltroEstado('descartada')">Descartadas</button>
+          </div>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <label for="select-proyecto" style="font-size: 0.84rem; font-weight: 600; color: var(--cz-soft);">Proyecto:</label>
+            <select id="select-proyecto" onchange="cambiarFiltroProyecto(this.value)" style="padding: 0.35rem 0.6rem; border-radius: 6px; border: 1px solid var(--cz-line); background: var(--surface); color: var(--ink); font-size: 0.88rem;">
+              <option value="todos">Todos los proyectos</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Lista de Propuestas -->
+        <section class="proposals-list" id="proposals-container">
+          <div class="empty-state">Cargando propuestas federadas...</div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Accesible Crear / Editar Propuesta -->
+  <div class="modal-backdrop" id="modal-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-dialog">
+      <div class="modal-head">
+        <h3 id="modal-title">Nueva Propuesta</h3>
+        <button type="button" class="modal-close" onclick="cerrarModal()" aria-label="Cerrar modal">✕</button>
+      </div>
+      <form id="propuesta-form" onsubmit="guardarModal(event)">
+        <div class="modal-body">
+          <input type="hidden" id="form-id" name="id" value="">
+          
+          <div class="form-group">
+            <label for="form-proyecto">Proyecto / Orquestador origen *</label>
+            <input type="text" id="form-proyecto" name="proyecto" required placeholder="ej. erbolamm-trabajo, calca-app, asistente-apliarte">
+          </div>
+
+          <div class="form-group">
+            <label for="form-tipo">Tipo de Propuesta</label>
+            <select id="form-tipo" name="tipo">
+              <option value="leccion">Lección Aprendida</option>
+              <option value="plantilla">Mejora de Plantilla / Invariante</option>
+              <option value="regla">Regla Canónica</option>
+              <option value="herramienta">Herramienta / Script</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="form-titulo">Título descriptivo *</label>
+            <input type="text" id="form-titulo" name="titulo" required placeholder="ej. Verificación obligatoria de endpoints antes de dar por buena la UI">
+          </div>
+
+          <div class="form-group">
+            <label for="form-que">Qué se propone</label>
+            <textarea id="form-que" name="que" rows="2" placeholder="Descripción clara y directa de la mejora o patrón"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="form-porque">Por qué es necesario</label>
+            <textarea id="form-porque" name="porque" rows="2" placeholder="Problema real observado o beneficio concreto"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="form-donde">Dónde aplica / Archivo de destino</label>
+            <input type="text" id="form-donde" name="donde" placeholder="ej. roles/orquestador/memoria/lecciones.md o plantilla">
+          </div>
+
+          <div class="form-group">
+            <label for="form-aprendido">Lección aprendida / Consecuencia</label>
+            <textarea id="form-aprendido" name="aprendido" rows="2" placeholder="Qué regla o comportamiento se extrae para no repetir errores"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="form-diff">Diff o Fragmento propuesto (opcional)</label>
+            <textarea id="form-diff" name="diff" rows="3" placeholder="Código, markdown o diff exacto propuesto"></textarea>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn-secondary" onclick="cerrarModal()">Cancelar</button>
+          <button type="submit" class="btn-approve" id="modal-submit-btn">Guardar Propuesta</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../panel-shell.js"></script>
+  <script>
+    let estadoFiltro = 'todas';
+    let proyectoFiltro = 'todos';
+    let propuestasCargadas = [];
+    let actionToken = '';
+
+    async function obtenerToken() {
+      if (actionToken) return actionToken;
+      try {
+        const res = await fetch('/api/tasks');
+        const data = await res.json();
+        actionToken = String(data?.office?.actionToken || '');
+      } catch (_) {}
+      return actionToken;
+    }
+
+    async function cargarPropuestas() {
+      const container = document.getElementById('proposals-container');
+      try {
+        const url = `/api/propuestas?estado=${encodeURIComponent(estadoFiltro)}&proyecto=${encodeURIComponent(proyectoFiltro)}`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('Error al conectar con /api/propuestas');
+        const data = await res.json();
+
+        propuestasCargadas = data.propuestas || [];
+        renderMetricas(data.metricas);
+        renderProyectosSelector(data.metricas?.proyectos || {});
+        renderLista(propuestasCargadas);
+      } catch (err) {
+        container.innerHTML = `<div class="empty-state" style="color:#dc3545;">⚠️ No se pudieron cargar las propuestas: ${err.message}</div>`;
+      }
+    }
+
+    function renderMetricas(m) {
+      if (!m) return;
+      document.getElementById('metric-total').textContent = m.total || 0;
+      document.getElementById('metric-pendientes').textContent = m.pendientes || 0;
+      document.getElementById('metric-aprobadas').textContent = m.aprobadas || 0;
+      document.getElementById('metric-descartadas').textContent = m.descartadas || 0;
+    }
+
+    function renderProyectosSelector(proyectosMap) {
+      const select = document.getElementById('select-proyecto');
+      const valActual = select.value;
+      const keys = Object.keys(proyectosMap).sort();
+      let html = '<option value="todos">Todos los proyectos</option>';
+      for (const k of keys) {
+        const item = proyectosMap[k];
+        html += `<option value="${k}" ${k === proyectoFiltro ? 'selected' : ''}>${k} (${item.total})</option>`;
+      }
+      select.innerHTML = html;
+      if (valActual && keys.includes(valActual)) {
+        select.value = valActual;
+      }
+    }
+
+    function renderLista(lista) {
+      const container = document.getElementById('proposals-container');
+      if (!lista || lista.length === 0) {
+        container.innerHTML = '<div class="empty-state">No hay propuestas que coincidan con los filtros seleccionados.</div>';
+        return;
+      }
+
+      container.innerHTML = lista.map(p => {
+        const fecha = new Date(p.fecha).toLocaleString('es-ES', {
+          day: '2-digit', month: '2-digit', year: 'numeric',
+          hour: '2-digit', minute: '2-digit'
+        });
+
+        const badgeEstado = p.estado === 'pendiente' 
+          ? '<span class="badge badge-pendiente">⏳ Pendiente</span>'
+          : p.estado === 'aprobada'
+            ? '<span class="badge badge-aprobada">✓ Canonizada</span>'
+            : '<span class="badge badge-descartada">✕ Descartada</span>';
+
+        return `
+          <article class="proposal-card" id="card-${p.id}">
+            <div class="proposal-head">
+              <div class="proposal-badges">
+                <span class="badge badge-repo">${escapeHtml(p.proyecto)}</span>
+                <span class="badge badge-type">${escapeHtml(p.tipo || 'plantilla')}</span>
+                ${badgeEstado}
+              </div>
+              <h3 class="proposal-title">${escapeHtml(p.titulo)}</h3>
+              <div class="proposal-meta">
+                <span>Autor: <strong>${escapeHtml(p.autor || 'orquestador')}</strong></span>
+                <span>•</span>
+                <span>${fecha}</span>
+                ${p.archivoDestino ? `<span>•</span><span>Destino: <code>${escapeHtml(p.archivoDestino)}</code></span>` : ''}
+              </div>
+            </div>
+
+            <div class="proposal-body">
+              ${p.que ? `<div class="section-row"><div class="section-lbl">Qué:</div><div class="section-val">${escapeHtml(p.que)}</div></div>` : ''}
+              ${p.porque ? `<div class="section-row"><div class="section-lbl">Por qué:</div><div class="section-val">${escapeHtml(p.porque)}</div></div>` : ''}
+              ${p.donde ? `<div class="section-row"><div class="section-lbl">Dónde:</div><div class="section-val"><code>${escapeHtml(p.donde)}</code></div></div>` : ''}
+              ${p.aprendido ? `<div class="section-row"><div class="section-lbl">Aprendido:</div><div class="section-val">${escapeHtml(p.aprendido)}</div></div>` : ''}
+              
+              ${p.diff ? `
+                <div style="margin-top:0.25rem;">
+                  <div class="section-lbl" style="margin-bottom:0.25rem;">Diff o Contenido Propuesto:</div>
+                  <pre class="diff-box"><code>${escapeHtml(p.diff)}</code></pre>
+                </div>
+              ` : ''}
+
+              ${p.notas ? `
+                <div style="margin-top:0.25rem; font-size:0.86rem; color:var(--cz-soft); padding:0.5rem; background:var(--subtle); border-radius:4px;">
+                  <strong>Notas de resolución:</strong> ${escapeHtml(p.notas)}
+                </div>
+              ` : ''}
+            </div>
+
+            <div class="proposal-foot">
+              <div class="actions-group">
+                ${p.estado === 'pendiente' ? `
+                  <button type="button" class="btn-approve" onclick="aprobarPropuesta('${p.id}')">✓ Canonizar en Central</button>
+                  <button type="button" class="btn-discard" onclick="descartarPropuesta('${p.id}')">✕ Descartar</button>
+                ` : `
+                  <span style="font-size:0.85rem; color:var(--cz-soft);">Estado fijado: <strong>${p.estado}</strong></span>
+                `}
+                <button type="button" class="btn-edit" onclick="abrirModalEditar('${p.id}')" title="Editar propuesta">✏️ Editar</button>
+                <button type="button" class="btn-delete" onclick="eliminarPropuesta('${p.id}')" title="Eliminar propuesta">🗑️</button>
+              </div>
+              <div>
+                <button type="button" class="btn-secondary" onclick="copiarJson('${p.id}')">Copiar JSON</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function abrirModalNueva() {
+      document.getElementById('modal-title').textContent = 'Nueva Propuesta';
+      document.getElementById('modal-submit-btn').textContent = 'Guardar Propuesta';
+      document.getElementById('form-id').value = '';
+      document.getElementById('form-proyecto').value = proyectoFiltro !== 'todos' ? proyectoFiltro : 'erbolamm-trabajo';
+      document.getElementById('form-proyecto').removeAttribute('readonly');
+      document.getElementById('form-tipo').value = 'leccion';
+      document.getElementById('form-titulo').value = '';
+      document.getElementById('form-que').value = '';
+      document.getElementById('form-porque').value = '';
+      document.getElementById('form-donde').value = '';
+      document.getElementById('form-aprendido').value = '';
+      document.getElementById('form-diff').value = '';
+      document.getElementById('modal-backdrop').removeAttribute('hidden');
+      document.getElementById('form-titulo').focus();
+    }
+
+    function abrirModalEditar(id) {
+      const p = propuestasCargadas.find(item => item.id === id);
+      if (!p) return;
+      document.getElementById('modal-title').textContent = 'Editar Propuesta';
+      document.getElementById('modal-submit-btn').textContent = 'Guardar Cambios';
+      document.getElementById('form-id').value = p.id;
+      document.getElementById('form-proyecto').value = p.proyecto || '';
+      document.getElementById('form-proyecto').setAttribute('readonly', 'true');
+      document.getElementById('form-tipo').value = p.tipo || 'leccion';
+      document.getElementById('form-titulo').value = p.titulo || '';
+      document.getElementById('form-que').value = p.que || '';
+      document.getElementById('form-porque').value = p.porque || '';
+      document.getElementById('form-donde').value = p.donde || p.archivoDestino || '';
+      document.getElementById('form-aprendido').value = p.aprendido || '';
+      document.getElementById('form-diff').value = p.diff || '';
+      document.getElementById('modal-backdrop').removeAttribute('hidden');
+      document.getElementById('form-titulo').focus();
+    }
+
+    function cerrarModal() {
+      document.getElementById('modal-backdrop').setAttribute('hidden', 'true');
+    }
+
+    async function guardarModal(e) {
+      e.preventDefault();
+      const id = document.getElementById('form-id').value.trim();
+      const proyecto = document.getElementById('form-proyecto').value.trim();
+      const tipo = document.getElementById('form-tipo').value;
+      const titulo = document.getElementById('form-titulo').value.trim();
+      const que = document.getElementById('form-que').value.trim();
+      const porque = document.getElementById('form-porque').value.trim();
+      const donde = document.getElementById('form-donde').value.trim();
+      const aprendido = document.getElementById('form-aprendido').value.trim();
+      const diff = document.getElementById('form-diff').value.trim();
+
+      if (!proyecto || !titulo) {
+        alert('Proyecto y Título son obligatorios.');
+        return;
+      }
+
+      const token = await obtenerToken();
+      const esEdicion = Boolean(id);
+      const url = esEdicion ? '/api/propuestas/editar' : '/api/propuestas/crear';
+
+      const payload = {
+        id: esEdicion ? id : 'prop-' + Date.now(),
+        proyecto,
+        tipo,
+        titulo,
+        que,
+        porque,
+        donde,
+        archivoDestino: donde,
+        aprendido,
+        diff,
+        ...(esEdicion ? {} : { estado: 'pendiente', fecha: new Date().toISOString() })
+      };
+
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-ErBolamm-Action': token,
+          },
+          body: JSON.stringify(payload)
+        });
+        const resp = await res.json();
+        if (resp.ok) {
+          cerrarModal();
+          await cargarPropuestas();
+        } else {
+          alert('Error al guardar: ' + (resp.message || resp.error));
+        }
+      } catch (err) {
+        alert('Fallo de red al guardar: ' + err.message);
+      }
+    }
+
+    async function eliminarPropuesta(id) {
+      if (!confirm('¿Seguro que deseas eliminar definitivamente esta propuesta de mejora?')) return;
+      const token = await obtenerToken();
+      try {
+        const res = await fetch('/api/propuestas/eliminar', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-ErBolamm-Action': token,
+          },
+          body: JSON.stringify({ id })
+        });
+        const resp = await res.json();
+        if (resp.ok) {
+          await cargarPropuestas();
+        } else {
+          alert('Error al eliminar: ' + (resp.message || resp.error));
+        }
+      } catch (err) {
+        alert('Fallo de red al eliminar: ' + err.message);
+      }
+    }
+
+    async function aprobarPropuesta(id) {
+      const notas = prompt('¿Deseas agregar alguna nota de canonización? (Opcional):', 'Aprobada e incorporada a la plantilla');
+      if (notas === null) return;
+
+      const token = await obtenerToken();
+      try {
+        const res = await fetch('/api/propuestas/aprobar', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-ErBolamm-Action': token,
+          },
+          body: JSON.stringify({ id, notas })
+        });
+        const resp = await res.json();
+        if (resp.ok) {
+          alert('✓ Propuesta aprobada y canonizada en Central (roles/orquestador/memoria/lecciones.md)');
+          await cargarPropuestas();
+        } else {
+          alert('Error al aprobar: ' + (resp.message || resp.error));
+        }
+      } catch (err) {
+        alert('Fallo de red al aprobar: ' + err.message);
+      }
+    }
+
+    async function descartarPropuesta(id) {
+      if (!confirm('¿Seguro que deseas descartar esta propuesta de mejora?')) return;
+      const notas = prompt('Motivo del descarte (opcional):', 'Descartada por Javier');
+
+      const token = await obtenerToken();
+      try {
+        const res = await fetch('/api/propuestas/descartar', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-ErBolamm-Action': token,
+          },
+          body: JSON.stringify({ id, notas: notas || '' })
+        });
+        const resp = await res.json();
+        if (resp.ok) {
+          await cargarPropuestas();
+        } else {
+          alert('Error al descartar: ' + (resp.message || resp.error));
+        }
+      } catch (err) {
+        alert('Fallo de red al descartar: ' + err.message);
+      }
+    }
+
+    function copiarJson(id) {
+      const p = propuestasCargadas.find(item => item.id === id);
+      if (!p) return;
+      navigator.clipboard.writeText(JSON.stringify(p, null, 2))
+        .then(() => alert('JSON de la propuesta copiado al portapapeles'))
+        .catch(() => alert('No se pudo copiar al portapapeles'));
+    }
+
+    function cambiarFiltroEstado(nuevo) {
+      estadoFiltro = nuevo;
+      document.querySelectorAll('.filter-tab').forEach(t => {
+        t.classList.toggle('active', t.dataset.estado === nuevo);
+      });
+      cargarPropuestas();
+    }
+
+    function cambiarFiltroProyecto(nuevo) {
+      proyectoFiltro = nuevo;
+      cargarPropuestas();
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('modal-backdrop');
+        if (modal && !modal.hasAttribute('hidden')) {
+          cerrarModal();
+        }
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      cargarPropuestas();
+    });
+  </script>
+</body>
+</html>

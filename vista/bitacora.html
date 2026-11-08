@@ -1,0 +1,1365 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#005fa9">
+  <title>Bitácora y Metas · Oficina local de ErBolamm</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23005fa9%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2248%22%20font-size%3D%2238%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-weight%3D%22bold%22%20text-anchor%3D%22middle%22%20fill%3D%22%235ecef5%22%3E%E2%98%B0%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../panel-shell.css">
+  <script>
+    try {
+      document.documentElement.dataset.theme =
+        localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
+      document.documentElement.dataset.sidebar =
+        localStorage.getItem("erbolamm-panel-sidebar") === "icons" ? "icons" : "full";
+    } catch (_) {}
+  </script>
+  <style>
+    .bitacora-page {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      padding-bottom: 3rem;
+    }
+
+    /* Hero / Encabezado */
+    .hero-card {
+      background: linear-gradient(135deg, rgba(0, 95, 169, 0.08) 0%, rgba(94, 206, 245, 0.16) 100%);
+      border: 1px solid rgba(0, 95, 169, 0.18);
+      border-radius: var(--radius-md, 12px);
+      padding: 1.4rem 1.6rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    html[data-theme="dark"] .hero-card {
+      background: linear-gradient(135deg, rgba(0, 70, 123, 0.35) 0%, rgba(0, 95, 169, 0.25) 100%);
+      border-color: rgba(94, 206, 245, 0.25);
+    }
+    .hero-text h2 {
+      margin: 0 0 0.35rem 0;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .hero-text p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--ink-muted, #64748b);
+    }
+    .hero-badges {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: var(--surface);
+      border: 1px solid rgba(0, 95, 169, 0.2);
+      color: var(--blue, #005fa9);
+    }
+    html[data-theme="dark"] .pill {
+      color: var(--cyan, #5ecef5);
+      border-color: rgba(94, 206, 245, 0.2);
+    }
+
+    /* Grillas y Módulos */
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--line, rgba(0, 0, 0, 0.08));
+      border-radius: var(--radius-md, 12px);
+      padding: 1.4rem 1.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.05));
+    }
+    html[data-theme="dark"] .module-card {
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    .module-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--line, rgba(0, 0, 0, 0.08));
+      padding-bottom: 0.8rem;
+      margin-bottom: 0.2rem;
+    }
+    html[data-theme="dark"] .module-head {
+      border-color: rgba(255, 255, 255, 0.06);
+    }
+    .module-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0;
+    }
+
+    /* Toolbar de periodos tipo AdMob */
+    .admob-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      background: var(--surface-2, rgba(0, 95, 169, 0.02));
+      border: 1px solid var(--line, rgba(0, 0, 0, 0.06));
+      border-radius: var(--radius-sm, 8px);
+      padding: 0.6rem 0.8rem;
+    }
+    .period-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+    .period-btn {
+      background: var(--surface);
+      border: 1px solid var(--line, #cbd5e1);
+      color: var(--ink);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.16s ease;
+      white-space: nowrap;
+    }
+    .period-btn:hover {
+      border-color: var(--blue, #005fa9);
+      color: var(--blue, #005fa9);
+    }
+    .period-btn.active {
+      background: var(--blue, #005fa9);
+      color: #fff;
+      border-color: var(--blue, #005fa9);
+      box-shadow: 0 1px 3px rgba(0, 95, 169, 0.25);
+    }
+    html[data-theme="dark"] .period-btn.active {
+      background: #005fa9;
+      color: #fff;
+      border-color: #5ecef5;
+    }
+    .gran-toggle {
+      display: inline-flex;
+      background: var(--surface);
+      border: 1px solid var(--line, #cbd5e1);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .gran-btn {
+      background: transparent;
+      border: none;
+      padding: 0.35rem 0.7rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--ink-muted, #64748b);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .gran-btn.active {
+      background: var(--blue, #005fa9);
+      color: #fff;
+    }
+    html[data-theme="dark"] .gran-btn.active {
+      background: #005fa9;
+      color: #fff;
+    }
+
+    /* Gráfico interactivo SVG */
+    .chart-container {
+      position: relative;
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--line, rgba(0, 0, 0, 0.06));
+      border-radius: var(--radius-sm, 8px);
+      padding: 1rem 0.5rem 0.5rem 0.5rem;
+      overflow: hidden;
+    }
+    .chart-svg {
+      width: 100%;
+      height: 280px;
+      display: block;
+    }
+    .chart-legend {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--ink-muted, #64748b);
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      display: inline-block;
+    }
+    .chart-tooltip {
+      position: absolute;
+      pointer-events: none;
+      background: var(--surface);
+      border: 1px solid var(--line, #cbd5e1);
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.78rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      z-index: 10;
+      display: none;
+      min-width: 140px;
+    }
+
+    /* Módulo 1: Termómetro de Facturación */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .kpi-box {
+      background: var(--surface-2, rgba(0, 95, 169, 0.03));
+      border: 1px solid var(--line, rgba(0, 0, 0, 0.06));
+      border-radius: var(--radius-sm, 8px);
+      padding: 1rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .kpi-num {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--blue, #005fa9);
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      line-height: 1.1;
+    }
+    html[data-theme="dark"] .kpi-num {
+      color: var(--cyan, #5ecef5);
+    }
+    .kpi-lbl {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--ink-muted, #64748b);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .progress-bar-wrap {
+      width: 100%;
+      height: 14px;
+      background: rgba(0, 0, 0, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+    html[data-theme="dark"] .progress-bar-wrap {
+      background: rgba(255, 255, 255, 0.12);
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #005fa9, #5ecef5);
+      border-radius: 999px;
+      transition: width 0.4s ease;
+    }
+
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    .roadmap-item {
+      border: 1px solid var(--line, rgba(0, 0, 0, 0.06));
+      border-radius: var(--radius-sm, 8px);
+      padding: 0.9rem 1.1rem;
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .roadmap-item.completed {
+      border-left: 4px solid #10b981;
+    }
+    .roadmap-item.active {
+      border-left: 4px solid #005fa9;
+    }
+    html[data-theme="dark"] .roadmap-item.active {
+      border-left-color: #5ecef5;
+    }
+    .roadmap-item.planned {
+      border-left: 4px solid #f59e0b;
+    }
+
+    /* Módulo 2: Semáforo de 3 Días (72 Horas) */
+    .semaforo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 1rem;
+    }
+    .semaforo-card {
+      border: 1px solid var(--line, rgba(0, 0, 0, 0.08));
+      border-radius: var(--radius-sm, 8px);
+      padding: 1rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.8rem;
+      background: var(--surface);
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+    }
+    .semaforo-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm, 0 3px 8px rgba(0,0,0,0.06));
+    }
+    .semaforo-card.verde {
+      border-top: 4px solid #10b981;
+    }
+    .semaforo-card.amarillo {
+      border-top: 4px solid #f59e0b;
+    }
+    .semaforo-card.rojo {
+      border-top: 4px solid #ef4444;
+      background: rgba(239, 68, 68, 0.03);
+    }
+    .semaforo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .tab-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      text-decoration: none;
+    }
+    .tab-name:hover {
+      color: var(--blue, #005fa9);
+    }
+    html[data-theme="dark"] .tab-name:hover {
+      color: var(--cyan, #5ecef5);
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .status-badge.verde {
+      background: rgba(16, 185, 129, 0.12);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .status-badge.amarillo {
+      background: rgba(245, 158, 11, 0.12);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    .status-badge.rojo {
+      background: rgba(239, 68, 68, 0.14);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+    .semaforo-time {
+      font-size: 0.84rem;
+      color: var(--ink-muted, #64748b);
+      margin: 0;
+    }
+    .btn-check {
+      background: var(--surface-2, #f8fafc);
+      border: 1px solid var(--line, #cbd5e1);
+      color: var(--ink);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      transition: background 0.16s ease, border-color 0.16s ease;
+    }
+    .btn-check:hover {
+      border-color: #10b981;
+      color: #10b981;
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    /* Módulo 3 y 4: Dos Columnas (Salud y Horas) */
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 900px) {
+      .grid-2col { grid-template-columns: 1fr; }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin-bottom: 0.8rem;
+    }
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .form-group input, .form-group textarea {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--line, #cbd5e1);
+      border-radius: var(--radius-sm, 6px);
+      background: var(--surface);
+      color: var(--ink);
+    }
+    .form-row-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+    }
+    @media (max-width: 600px) {
+      .form-row-3 { grid-template-columns: 1fr; }
+    }
+    .btn-primary {
+      background: var(--blue, #005fa9);
+      color: #fff;
+      border: none;
+      font-weight: 700;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: opacity 0.16s;
+    }
+    .btn-primary:hover {
+      opacity: 0.92;
+    }
+
+    /* Módulo 5: Criba y Archivo */
+    .criba-accordion {
+      border: 1px solid var(--line, rgba(0, 0, 0, 0.1));
+      border-radius: var(--radius-md, 12px);
+      background: var(--surface);
+      overflow: hidden;
+    }
+    .criba-summary {
+      padding: 1.1rem 1.4rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--ink);
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--surface-2, rgba(0, 0, 0, 0.02));
+    }
+    .criba-summary:hover {
+      color: var(--blue, #005fa9);
+    }
+    html[data-theme="dark"] .criba-summary:hover {
+      color: var(--cyan, #5ecef5);
+    }
+    .criba-content {
+      padding: 1.2rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      border-top: 1px solid var(--line, rgba(0, 0, 0, 0.08));
+    }
+    .bitacora-frame {
+      width: 100%;
+      height: 600px;
+      border: 1px solid var(--line, #cbd5e1);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .historial-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+    .historial-table th, .historial-table td {
+      padding: 0.5rem 0.65rem;
+      border-bottom: 1px solid var(--line, rgba(0, 0, 0, 0.06));
+      text-align: left;
+    }
+    .historial-table th {
+      color: var(--ink-muted, #64748b);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="office-sidebar" id="office-sidebar" aria-label="Navegación de la oficina">
+      <div class="sidebar-brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+        </svg>
+        <span><strong>Oficina ApliArte</strong><small>Panel de control operativo ApliArte</small></span>
+        <button id="sidebar-toggle" class="sidebar-toggle" type="button"
+          aria-controls="office-sidebar" aria-expanded="true" aria-label="Plegar la barra lateral a solo iconos" title="Plegar la barra lateral">
+          <span class="chev" aria-hidden="true">‹</span>
+        </button>
+      </div>
+      <nav class="side-nav" aria-label="Secciones">
+        <a class="nav-card" href="/"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
+        <a class="nav-card" href="/vista/javier"><span class="nav-icon" aria-hidden="true">👤</span><span class="nav-copy"><strong>Espacio Javier</strong><small>Control personal y ja--</small></span></a>
+        <a class="nav-card" href="/vista/inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
+        <a class="nav-card" href="/vista/aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
+        <a class="nav-card" href="/vista/skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
+        <a class="nav-card" href="/vista/conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
+        <a class="nav-card" href="/vista/plugins"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
+        <a class="nav-card" href="/vista/reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
+        <a class="nav-card" href="/vista/propuestas"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
+        <a class="nav-card" href="/vista/diseno"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
+        <a class="nav-card" href="/vista/tiendas"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
+        <a class="nav-card" href="/vista/mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
+        <a class="nav-card" href="/vista/correos"><span class="nav-icon" aria-hidden="true">✉</span><span class="nav-copy"><strong>Correos y Alertas</strong><small>erbolamm y javier</small></span></a>
+        <a class="nav-card" href="/vista/pnl"><span class="nav-icon" aria-hidden="true">🧠</span><span class="nav-copy"><strong>Estudio PNL</strong><small>Enganche y microcopy</small></span></a>
+        <a class="nav-card" href="/vista/musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
+        <a class="nav-card" href="/vista/idiomas"><span class="nav-icon" aria-hidden="true">🌐</span><span class="nav-copy"><strong>Idiomas</strong><small>Traducción y locución</small></span></a>
+        <a class="nav-card" href="/vista/locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
+        <a class="nav-card" href="/vista/voicestudio"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
+        <a class="nav-card" href="/vista/terminales"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
+        <a class="nav-card" href="/vista/facturas"><span class="nav-icon" aria-hidden="true">€</span><span class="nav-copy"><strong>Facturas</strong><small>Gestor de facturas</small></span></a>
+        <a class="nav-card" href="/vista/blogger"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
+        <a class="nav-card" href="/vista/bitacora" aria-current="page"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Cuadro de mando y salud</small></span></a>
+        <a class="nav-card" href="/vista/directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
+        <a class="nav-card" href="/resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
+        <a class="nav-card" href="/vista/settings"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-copy"><strong>Ajustes</strong><small>Opciones por defecto</small></span></a>
+        <a class="nav-card" href="/vista/como-funciona"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
+      </nav>
+      <p class="sidebar-note"><strong>Privada y local</strong>Datos locales seguros en control-erbolamm/bitacora/.</p>
+    </aside>
+    <div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
+
+    <main class="office-content" id="office">
+      <header class="topbar">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+            <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+          </svg>
+          <h1>Bitácora y Metas</h1>
+        </div>
+        <span class="private-chip">Oficina local · privada</span>
+        <span class="connection" id="connection" data-kind="ok">Conectado</span>
+        <button id="refresh-btn" class="btn-refresh" type="button" onclick="cargarEstado()" aria-label="Actualizar datos" title="Actualizar">↻</button>
+        <button id="theme-toggle" type="button" aria-label="Activar modo oscuro" title="Cambiar tema">
+          <span id="theme-icon" aria-hidden="true">☾</span>
+        </button>
+      </header>
+
+      <div class="bitacora-page">
+
+        <!-- Hero Card -->
+        <section class="hero-card" aria-label="Resumen de metas y salud">
+          <div class="hero-text">
+            <h2>Cuadro de Mando de Metas, Rentabilidad y Salud</h2>
+            <p>Vigilancia de facturación, bienestar diario y auditoría periódica de las 9 áreas de La Oficina</p>
+          </div>
+          <div class="hero-badges">
+            <span class="pill" id="badge-meta-fact">Meta: 1.000 €/mes</span>
+            <span class="pill" id="badge-semaforo-resumen">Semáforo 72h: Cargando...</span>
+            <span class="pill" id="badge-salud-resumen">Salud: Cargando...</span>
+          </div>
+        </section>
+
+        <!-- Módulo 0: Informe de Mediación y Rendimiento (Estilo AdMob) -->
+        <section class="module-card" aria-labelledby="mod-admob-title">
+          <div class="module-head">
+            <h3 class="module-title" id="mod-admob-title">
+              <span>📈</span> Informe de Mediación y Rendimiento (AdMob + In-App)
+            </h3>
+            <span class="pill" id="admob-periodo-badge">Durante este mes</span>
+          </div>
+
+          <!-- Toolbar de periodos tipo AdMob -->
+          <div class="admob-toolbar">
+            <div class="period-group" role="tablist" aria-label="Filtro de periodo de mediación">
+              <button type="button" class="period-btn" data-periodo="de_siempre" onclick="seleccionarPeriodo('de_siempre')">De siempre</button>
+              <button type="button" class="period-btn" data-periodo="hoy" onclick="seleccionarPeriodo('hoy')">Hoy</button>
+              <button type="button" class="period-btn" data-periodo="ayer" onclick="seleccionarPeriodo('ayer')">Ayer</button>
+              <button type="button" class="period-btn" data-periodo="ultimos_7_dias" onclick="seleccionarPeriodo('ultimos_7_dias')">Últimos 7 días</button>
+              <button type="button" class="period-btn" data-periodo="ultimos_30_dias" onclick="seleccionarPeriodo('ultimos_30_dias')">Últimos 30 días</button>
+              <button type="button" class="period-btn active" data-periodo="este_mes" onclick="seleccionarPeriodo('este_mes')">Durante este mes</button>
+              <button type="button" class="period-btn" data-periodo="mes_pasado" onclick="seleccionarPeriodo('mes_pasado')">El mes pasado</button>
+            </div>
+            <div class="gran-toggle" role="group" aria-label="Granularidad temporal">
+              <button type="button" class="gran-btn active" id="gran-dias" onclick="seleccionarGranularidad('dias')">Días</button>
+              <button type="button" class="gran-btn" id="gran-meses" onclick="seleccionarGranularidad('meses')">Meses</button>
+            </div>
+          </div>
+
+          <!-- Métricas del Periodo Seleccionado -->
+          <div class="kpi-row" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+            <div class="kpi-box" style="padding: 0.85rem 1rem;">
+              <span class="kpi-lbl">Total Periodo</span>
+              <span class="kpi-num" style="font-size: 1.55rem;" id="admob-total-val">0,00 €</span>
+              <small style="color:var(--ink-muted);" id="admob-dias-sub">Cargando periodo...</small>
+            </div>
+            <div class="kpi-box" style="padding: 0.85rem 1rem;">
+              <span class="kpi-lbl">AdMob Mediación</span>
+              <span class="kpi-num" style="font-size: 1.55rem; color: #005fa9;" id="admob-pub-val">0,00 €</span>
+              <small style="color:var(--ink-muted);">Banners e intersticiales</small>
+            </div>
+            <div class="kpi-box" style="padding: 0.85rem 1rem;">
+              <span class="kpi-lbl">Suscripciones In-App</span>
+              <span class="kpi-num" style="font-size: 1.55rem; color: #10b981;" id="admob-inapp-val">0,00 €</span>
+              <small style="color:var(--ink-muted);">RevenueCat / Stores</small>
+            </div>
+            <div class="kpi-box" style="padding: 0.85rem 1rem;">
+              <span class="kpi-lbl">Promedio Diario</span>
+              <span class="kpi-num" style="font-size: 1.55rem;" id="admob-prom-val">0,00 €/día</span>
+              <small style="color:var(--ink-muted);" id="admob-meta-comp">Meta diaria: 33,33 €</small>
+            </div>
+          </div>
+
+          <!-- Gráfico SVG Interactivo -->
+          <div class="chart-container" id="admob-chart-box">
+            <div id="chart-tooltip" class="chart-tooltip"></div>
+            <svg id="admob-svg" class="chart-svg" viewBox="0 0 960 260" preserveAspectRatio="none">
+              <!-- Renderizado dinámico -->
+            </svg>
+            <div class="chart-legend">
+              <span class="legend-item"><span class="legend-dot" style="background:#005fa9;"></span> Total Ingresos</span>
+              <span class="legend-item"><span class="legend-dot" style="background:#5ecef5;"></span> AdMob</span>
+              <span class="legend-item"><span class="legend-dot" style="background:#10b981;"></span> In-App</span>
+              <span class="legend-item"><span class="legend-dot" style="background:#f59e0b; border-top: 2px dashed #f59e0b; height:0;"></span> Meta Referencia</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Módulo 1: Termómetro de Facturación y Metas -->
+        <section class="module-card" aria-labelledby="mod-facturacion-title">
+          <div class="module-head">
+            <h3 class="module-title" id="mod-facturacion-title">
+              <span>💶</span> Termómetro de Facturación y Metas de Publicación
+            </h3>
+            <span class="pill" id="facturacion-pct-badge">0% cumplido</span>
+          </div>
+          <div class="kpi-row">
+            <div class="kpi-box">
+              <span class="kpi-lbl">Meta Mensual Objetivo</span>
+              <span class="kpi-num" id="val-meta">1.000,00 €</span>
+              <small style="color:var(--ink-muted);">AdMob + Suscripciones in-app</small>
+            </div>
+            <div class="kpi-box">
+              <span class="kpi-lbl">Facturación Acumulada</span>
+              <span class="kpi-num" id="val-fact-actual">0,00 €</span>
+              <small style="color:var(--ink-muted);">Mes en curso</small>
+            </div>
+            <div class="kpi-box">
+              <span class="kpi-lbl">Restante para la Meta</span>
+              <span class="kpi-num" id="val-fact-restante">1.000,00 €</span>
+              <small style="color:var(--ink-muted);">Margen de crecimiento</small>
+            </div>
+          </div>
+
+          <div style="margin-top: 0.5rem;">
+            <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:600; color:var(--ink);">
+              <span>Progreso hacia la Meta de 1.000 €</span>
+              <span id="facturacion-pct-txt">0%</span>
+            </div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" id="facturacion-bar" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <h4 style="margin: 1rem 0 0.4rem 0; font-size: 0.95rem; font-weight: 700;">Hoja de Ruta de Lanzamientos y Mantenimiento</h4>
+          <div class="roadmap-grid">
+            <div class="roadmap-item completed">
+              <strong>Septiembre 2026</strong>
+              <small style="color:#10b981; font-weight:700;">✓ CUMPLIDO</small>
+              <p style="margin:0; font-size:0.85rem; color:var(--ink-muted);">Oficina ApliArte operativa (:8791) y base central de control.</p>
+            </div>
+            <div class="roadmap-item active">
+              <strong>Octubre - Noviembre 2026</strong>
+              <small style="color:var(--blue); font-weight:700;">EN MANTENIMIENTO ACTIVO</small>
+              <p style="margin:0; font-size:0.85rem; color:var(--ink-muted);">4 apps clave: Inem Sellar, CalcaApp, SOS ApliArte y Música ApliArte.</p>
+            </div>
+            <div class="roadmap-item planned">
+              <strong>Diciembre 2026</strong>
+              <small style="color:#f59e0b; font-weight:700;">PLANIFICADO</small>
+              <p style="margin:0; font-size:0.85rem; color:var(--ink-muted);">2 apps adicionales en tienda: ApliArte Directo móvil y Transcriptor.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Módulo 2: Semáforo de 3 Días (72 Horas) -->
+        <section class="module-card" aria-labelledby="mod-semaforo-title">
+          <div class="module-head">
+            <h3 class="module-title" id="mod-semaforo-title">
+              <span>🚦</span> Checklist Diario con Semáforo de 3 Días (72 Horas)
+            </h3>
+            <span class="pill" id="semaforo-count-badge">9 Pestañas Homologadas</span>
+          </div>
+          <p style="margin:0; font-size:0.9rem; color:var(--ink-muted);">
+            Ventana de tolerancia de 72 horas para auditar cada área de La Oficina. Verde: revisada en ≤ 48 h; Amarillo: atención (&gt; 48 h); Rojo: alarma si supera los 3 días (&gt; 72 h).
+          </p>
+
+          <div class="semaforo-grid" id="semaforo-container">
+            <!-- Pestañas inyectadas dinámicamente -->
+            <p style="color:var(--ink-muted);">Cargando semáforo de pestañas...</p>
+          </div>
+        </section>
+
+        <!-- Módulo 3 y 4: Dos Columnas (Salud y Horas) -->
+        <div class="grid-2col">
+
+          <!-- Módulo 3: Salud y Descanso -->
+          <section class="module-card" aria-labelledby="mod-salud-title">
+            <div class="module-head">
+              <h3 class="module-title" id="mod-salud-title">
+                <span>🛌</span> Registro Diario de Salud, Descanso y Tiempo
+              </h3>
+            </div>
+
+            <!-- Promedios 7 días -->
+            <div class="kpi-row" style="grid-template-columns: repeat(3, 1fr); gap: 0.6rem;">
+              <div class="kpi-box" style="padding: 0.75rem 0.85rem;">
+                <span class="kpi-lbl">Sueño (7d)</span>
+                <span class="kpi-num" style="font-size:1.4rem;" id="prom-sueno">0.0 h</span>
+              </div>
+              <div class="kpi-box" style="padding: 0.75rem 0.85rem;">
+                <span class="kpi-lbl">Trabajo (7d)</span>
+                <span class="kpi-num" style="font-size:1.4rem;" id="prom-trabajo">0.0 h</span>
+              </div>
+              <div class="kpi-box" style="padding: 0.75rem 0.85rem;">
+                <span class="kpi-lbl">Descanso (7d)</span>
+                <span class="kpi-num" style="font-size:1.4rem;" id="prom-descanso">0.0 h</span>
+              </div>
+            </div>
+
+            <!-- Formulario de Salud -->
+            <form id="form-salud" onsubmit="guardarSalud(event)" style="margin-top: 0.5rem;">
+              <div class="form-group">
+                <label for="salud-fecha">Fecha del registro</label>
+                <input type="date" id="salud-fecha" required>
+              </div>
+
+              <div class="form-row-3">
+                <div class="form-group">
+                  <label for="salud-sueno">Horas Sueño</label>
+                  <input type="number" id="salud-sueno" step="0.5" min="0" max="24" value="7.5" required>
+                </div>
+                <div class="form-group">
+                  <label for="salud-trabajo">Horas Trabajo</label>
+                  <input type="number" id="salud-trabajo" step="0.5" min="0" max="24" value="6.0" required>
+                </div>
+                <div class="form-group">
+                  <label for="salud-descanso">Horas Descanso</label>
+                  <input type="number" id="salud-descanso" step="0.5" min="0" max="24" value="4.0" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="salud-notas">Sensaciones y bienestar (opcional)</label>
+                <textarea id="salud-notas" rows="2" placeholder="Sensaciones del día, energía, descansado..."></textarea>
+              </div>
+
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <button type="submit" class="btn-primary">
+                  <span>💾</span> Guardar Parte Diario de Salud
+                </button>
+                <span id="salud-status" style="font-size:0.85rem; font-weight:600; color:#10b981;"></span>
+              </div>
+            </form>
+
+            <h4 style="margin: 0.8rem 0 0.3rem 0; font-size: 0.9rem; font-weight: 700;">Últimos registros</h4>
+            <div style="max-height: 200px; overflow-y: auto;">
+              <table class="historial-table">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Sueño</th>
+                    <th>Trabajo</th>
+                    <th>Descanso</th>
+                  </tr>
+                </thead>
+                <tbody id="historial-salud-body">
+                  <tr><td colspan="4" style="text-align:center; color:var(--ink-muted);">Sin registros</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Módulo 4: Horas Humano vs. Máquina/IA -->
+          <section class="module-card" aria-labelledby="mod-horas-title">
+            <div class="module-head">
+              <h3 class="module-title" id="mod-horas-title">
+                <span>⚡</span> Registro de Horas Humano vs. Máquina / IA
+              </h3>
+            </div>
+            <p style="margin:0; font-size:0.88rem; color:var(--ink-muted);">
+              Cómputo acumulado de tiempo invertido por Javier frente a horas de procesamiento ejecutadas por agentes autónomos de La Oficina.
+            </p>
+
+            <div class="kpi-row" style="grid-template-columns: 1fr 1fr;">
+              <div class="kpi-box">
+                <span class="kpi-lbl">Tiempo Humano Ahorrado</span>
+                <span class="kpi-num" id="horas-humano">5.483,5 h</span>
+                <small style="color:var(--ink-muted);" id="horas-humano-sub">Base histórica + tiempo activo</small>
+              </div>
+              <div class="kpi-box">
+                <span class="kpi-lbl">Tiempo Máquina (IA)</span>
+                <span class="kpi-num" id="horas-ia">230,6 h</span>
+                <small style="color:var(--ink-muted);" id="horas-ia-sub">Ejecución y cómputo de agentes</small>
+              </div>
+            </div>
+
+            <div class="kpi-box" style="margin-top:0.4rem; background:linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(56, 189, 248, 0.12) 100%); border-color:rgba(16, 185, 129, 0.2);">
+              <span class="kpi-lbl" style="color:#10b981;">Multiplicador de Eficiencia / Apalancamiento</span>
+              <span class="kpi-num" style="color:#10b981;" id="ratio-eficiencia">23.8x</span>
+              <small style="color:var(--ink-muted);" id="ratio-desc">Consolidado en 25 repositorios (3.459 commits sin lockfiles).</small>
+            </div>
+          </section>
+        </div>
+
+        <!-- Módulo 5: Histórico de la Criba -->
+        <details class="criba-accordion">
+          <summary class="criba-summary">
+            <span>🗄️</span> Ver histórico de la criba y repositorios archivados (106 → 84 → 48 repos)
+          </summary>
+          <div class="criba-content">
+            <p style="margin:0; font-size:0.9rem; color:var(--ink-muted);">
+              Archivo documental histórico que refleja la evolución de la criba del ecosistema ErBolamm y las aplicaciones depuradas. Se conserva para trazabilidad sin entorpecer el panel principal de metas.
+            </p>
+            <iframe class="bitacora-frame" src="/bitacora" title="Bitácora ErBolamm" loading="lazy"></iframe>
+          </div>
+        </details>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../panel-shell.js"></script>
+  <script>
+    // Inicialización al cargar la página
+    document.addEventListener("DOMContentLoaded", () => {
+      // Poner fecha de hoy en el formulario de salud
+      const hoy = new Date().toISOString().split("T")[0];
+      const campoFecha = document.getElementById("salud-fecha");
+      if (campoFecha) campoFecha.value = hoy;
+
+      cargarEstado();
+      // Refresco cada 60 segundos
+      setInterval(cargarEstado, 60000);
+    });
+
+    async function cargarEstado() {
+      try {
+        const res = await fetch("/api/bitacora/estado", { cache: "no-store" });
+        if (!res.ok) throw new Error("Error HTTP " + res.status);
+        const data = await res.json();
+        if (!data || !data.ok) return;
+
+        renderMetas(data.metas);
+        renderSerieTemporal(data.serie_temporal);
+        renderSemaforo(data.semaforo);
+        renderSalud(data.salud);
+        renderHoras(data.metricas_horas);
+
+        const conn = document.getElementById("connection");
+        if (conn) {
+          conn.dataset.kind = "ok";
+          conn.innerText = "Al día";
+        }
+      } catch (err) {
+        console.error("Error al cargar estado de bitácora:", err);
+        const conn = document.getElementById("connection");
+        if (conn) {
+          conn.dataset.kind = "error";
+          conn.innerText = "Error red";
+        }
+      }
+    }
+
+    function renderMetas(metas) {
+      if (!metas) return;
+      const meta = metas.meta_facturacion || 1000.0;
+      const actual = metas.facturacion_actual || 0.0;
+      const restante = Math.max(0, meta - actual);
+      const pct = metas.porcentaje_cumplido || 0.0;
+
+      const fEuro = (n) => n.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
+
+      document.getElementById("val-meta").innerText = fEuro(meta);
+      document.getElementById("val-fact-actual").innerText = fEuro(actual);
+      document.getElementById("val-fact-restante").innerText = fEuro(restante);
+      document.getElementById("facturacion-pct-badge").innerText = pct + "% cumplido";
+      document.getElementById("facturacion-pct-txt").innerText = pct + "% (" + fEuro(actual) + " de " + fEuro(meta) + ")";
+      document.getElementById("facturacion-bar").style.width = pct + "%";
+      document.getElementById("badge-meta-fact").innerText = "Meta: " + fEuro(meta);
+    }
+
+    let globalSerieTemporal = null;
+    let periodoActivo = "este_mes";
+    let granularidadActiva = "dias";
+
+    function renderSerieTemporal(serie) {
+      if (!serie) return;
+      globalSerieTemporal = serie;
+      actualizarGraficoPeriodo();
+    }
+
+    function seleccionarPeriodo(periodo) {
+      periodoActivo = periodo;
+      document.querySelectorAll(".period-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.periodo === periodo);
+      });
+
+      if (periodo === "de_siempre" && granularidadActiva === "dias") {
+        seleccionarGranularidad("meses", false);
+      } else if (periodo !== "de_siempre" && granularidadActiva === "meses") {
+        seleccionarGranularidad("dias", false);
+      }
+      actualizarGraficoPeriodo();
+    }
+
+    function seleccionarGranularidad(gran, actualizar = true) {
+      granularidadActiva = gran;
+      const btnDias = document.getElementById("gran-dias");
+      const btnMeses = document.getElementById("gran-meses");
+      if (btnDias) btnDias.classList.toggle("active", gran === "dias");
+      if (btnMeses) btnMeses.classList.toggle("active", gran === "meses");
+      if (actualizar) actualizarGraficoPeriodo();
+    }
+
+    function actualizarGraficoPeriodo() {
+      if (!globalSerieTemporal) return;
+
+      const mensual = globalSerieTemporal.mensual || [];
+      const diario = globalSerieTemporal.diario || [];
+      let puntos = [];
+      let metaRef = globalSerieTemporal.meta_diaria || 33.33;
+      let periodoTitulo = "Durante este mes";
+
+      if (granularidadActiva === "meses") {
+        metaRef = globalSerieTemporal.meta_mensual || 1000.0;
+        if (periodoActivo === "de_siempre") {
+          puntos = mensual;
+          periodoTitulo = "De siempre (histórico)";
+        } else if (periodoActivo === "este_mes") {
+          puntos = mensual.slice(-1);
+          periodoTitulo = "Durante este mes";
+        } else if (periodoActivo === "mes_pasado") {
+          puntos = mensual.length >= 2 ? [mensual[mensual.length - 2]] : mensual.slice(-1);
+          periodoTitulo = "El mes pasado";
+        } else {
+          puntos = mensual.slice(-3);
+          periodoTitulo = "Últimos meses";
+        }
+      } else {
+        metaRef = globalSerieTemporal.meta_diaria || 33.33;
+        if (periodoActivo === "hoy") {
+          puntos = diario.slice(-1);
+          periodoTitulo = "Hoy";
+        } else if (periodoActivo === "ayer") {
+          puntos = diario.length >= 2 ? [diario[diario.length - 2]] : diario.slice(-1);
+          periodoTitulo = "Ayer";
+        } else if (periodoActivo === "ultimos_7_dias") {
+          puntos = diario.slice(-7);
+          periodoTitulo = "Últimos 7 días";
+        } else if (periodoActivo === "ultimos_30_dias") {
+          puntos = diario.slice(-30);
+          periodoTitulo = "Últimos 30 días";
+        } else if (periodoActivo === "mes_pasado") {
+          puntos = diario.filter(d => (d.fecha || "").startsWith("2026-10"));
+          periodoTitulo = "El mes pasado (Octubre)";
+        } else if (periodoActivo === "este_mes") {
+          puntos = diario.filter(d => (d.fecha || "").startsWith("2026-11"));
+          periodoTitulo = "Durante este mes (Noviembre)";
+        } else {
+          puntos = diario;
+          periodoTitulo = "De siempre (días)";
+        }
+      }
+
+      const badge = document.getElementById("admob-periodo-badge");
+      if (badge) badge.innerText = periodoTitulo;
+
+      let total = 0, admob = 0, inapp = 0;
+      puntos.forEach(p => {
+        total += (p.total || 0);
+        admob += (p.admob || 0);
+        inapp += (p.inapp || 0);
+      });
+      const count = puntos.length > 0 ? puntos.length : 1;
+      const promDiario = total / count;
+
+      const fEuro = n => (n || 0).toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
+      const totalEl = document.getElementById("admob-total-val");
+      if (totalEl) totalEl.innerText = fEuro(total);
+      const pubEl = document.getElementById("admob-pub-val");
+      if (pubEl) pubEl.innerText = fEuro(admob);
+      const inappEl = document.getElementById("admob-inapp-val");
+      if (inappEl) inappEl.innerText = fEuro(inapp);
+      const promEl = document.getElementById("admob-prom-val");
+      if (promEl) promEl.innerText = fEuro(promDiario) + (granularidadActiva === "meses" ? "/mes" : "/día");
+      const subEl = document.getElementById("admob-dias-sub");
+      if (subEl) subEl.innerText = puntos.length + (granularidadActiva === "meses" ? " meses analizados" : " días analizados");
+      const compEl = document.getElementById("admob-meta-comp");
+      if (compEl) compEl.innerText = "Meta: " + fEuro(metaRef) + (granularidadActiva === "meses" ? "/mes" : "/día");
+
+      dibujarGraficoSvg(puntos, metaRef);
+    }
+
+    function dibujarGraficoSvg(puntos, metaRef) {
+      const svg = document.getElementById("admob-svg");
+      const container = document.getElementById("admob-chart-box");
+      if (!svg || !container) return;
+
+      const W = 960;
+      const H = 260;
+      const padLeft = 55;
+      const padRight = 35;
+      const padTop = 30;
+      const padBottom = 40;
+      const plotW = W - padLeft - padRight;
+      const plotH = H - padTop - padBottom;
+
+      if (!puntos || puntos.length === 0) {
+        svg.innerHTML = `<text x="${W/2}" y="${H/2}" fill="var(--ink-muted)" text-anchor="middle" font-size="14">Sin datos registrados para este periodo</text>`;
+        return;
+      }
+
+      let maxVal = metaRef * 1.15;
+      puntos.forEach(p => {
+        if (p.total && p.total > maxVal) maxVal = p.total * 1.2;
+      });
+      if (maxVal <= 0) maxVal = 10;
+
+      const getY = val => padTop + (1 - (val / maxVal)) * plotH;
+      const fEuro = n => (n || 0).toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
+
+      let html = "";
+
+      // Defs (Gradiente)
+      html += `
+        <defs>
+          <linearGradient id="area-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#005fa9" stop-opacity="0.28" />
+            <stop offset="100%" stop-color="#5ecef5" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      `;
+
+      // Cuadrícula horizontal (4 líneas)
+      const pasos = 4;
+      for (let i = 0; i <= pasos; i++) {
+        const valPaso = (maxVal / pasos) * i;
+        const yPos = getY(valPaso);
+        html += `<line x1="${padLeft}" y1="${yPos}" x2="${W - padRight}" y2="${yPos}" stroke="var(--line, rgba(0,0,0,0.08))" stroke-width="1" />`;
+        html += `<text x="${padLeft - 8}" y="${yPos + 4}" fill="var(--ink-muted, #64748b)" font-size="11" text-anchor="end">${Math.round(valPaso)} €</text>`;
+      }
+
+      // Línea de referencia de la Meta
+      const yMeta = getY(metaRef);
+      if (yMeta >= padTop && yMeta <= H - padBottom) {
+        html += `<line x1="${padLeft}" y1="${yMeta}" x2="${W - padRight}" y2="${yMeta}" stroke="#f59e0b" stroke-width="1.8" stroke-dasharray="5 4" opacity="0.85" />`;
+        html += `<text x="${W - padRight - 4}" y="${yMeta - 6}" fill="#f59e0b" font-size="11" font-weight="bold" text-anchor="end">Meta: ${fEuro(metaRef)}</text>`;
+      }
+
+      // Coordenadas
+      const coords = [];
+      const n = puntos.length;
+      const barW = Math.max(6, Math.min(34, (plotW / n) * 0.55));
+
+      puntos.forEach((p, idx) => {
+        let x;
+        if (n === 1) {
+          x = padLeft + plotW / 2;
+        } else {
+          x = padLeft + (idx / (n - 1)) * plotW;
+        }
+        const yTot = getY(p.total || 0);
+        const yPub = getY(p.admob || 0);
+        const yInp = getY(p.inapp || 0);
+        coords.push({ x, yTot, yPub, yInp, p });
+      });
+
+      // Barras AdMob e In-App
+      coords.forEach(c => {
+        const bHPub = (H - padBottom) - c.yPub;
+        const bHInp = (H - padBottom) - c.yInp;
+        const xBar = c.x - barW / 2;
+
+        html += `<rect x="${xBar}" y="${c.yPub}" width="${barW / 2 - 1}" height="${Math.max(0, bHPub)}" fill="#005fa9" rx="2" opacity="0.8" />`;
+        html += `<rect x="${xBar + barW / 2}" y="${c.yInp}" width="${barW / 2 - 1}" height="${Math.max(0, bHInp)}" fill="#10b981" rx="2" opacity="0.85" />`;
+      });
+
+      // Línea y Área de Total
+      if (coords.length > 1) {
+        const lineD = coords.map((c, i) => (i === 0 ? `M ${c.x} ${c.yTot}` : `L ${c.x} ${c.yTot}`)).join(" ");
+        const areaD = `${lineD} L ${coords[coords.length - 1].x} ${H - padBottom} L ${coords[0].x} ${H - padBottom} Z`;
+
+        html += `<path d="${areaD}" fill="url(#area-grad)" />`;
+        html += `<path d="${lineD}" fill="none" stroke="#005fa9" stroke-width="2.5" />`;
+      }
+
+      // Puntos y etiquetas X
+      const saltoEtiqueta = n > 16 ? Math.ceil(n / 10) : 1;
+      coords.forEach((c, i) => {
+        html += `<circle cx="${c.x}" cy="${c.yTot}" r="${n > 30 ? 2.5 : 4}" fill="#005fa9" stroke="#fff" stroke-width="2" />`;
+
+        if (i % saltoEtiqueta === 0 || i === n - 1) {
+          const txt = c.p.etiqueta || c.p.fecha || "";
+          html += `<text x="${c.x}" y="${H - padBottom + 18}" fill="var(--ink-muted, #64748b)" font-size="11" text-anchor="middle">${txt}</text>`;
+        }
+      });
+
+      // Zonas interactivas para Tooltip
+      const stepX = n > 1 ? plotW / n : plotW;
+      coords.forEach(c => {
+        const hoverX = c.x - stepX / 2;
+        const p = c.p;
+        const fechaTxt = p.etiqueta || p.fecha || "";
+        const totTxt = fEuro(p.total);
+        const admTxt = fEuro(p.admob);
+        const inpTxt = fEuro(p.inapp);
+
+        html += `
+          <rect x="${hoverX}" y="${padTop}" width="${stepX}" height="${plotH}" fill="transparent" style="cursor:pointer;"
+            onmouseenter="mostrarTooltipGrafico(event, '${fechaTxt}', '${totTxt}', '${admTxt}', '${inpTxt}')"
+            onmousemove="moverTooltipGrafico(event)"
+            onmouseleave="ocultarTooltipGrafico()" />
+        `;
+      });
+
+      svg.innerHTML = html;
+    }
+
+    function mostrarTooltipGrafico(e, fecha, total, admob, inapp) {
+      const tooltip = document.getElementById("chart-tooltip");
+      const box = document.getElementById("admob-chart-box");
+      if (!tooltip || !box) return;
+
+      tooltip.innerHTML = `
+        <div style="font-weight:700; margin-bottom:0.25rem; color:var(--ink);">${fecha}</div>
+        <div style="display:flex; justify-content:space-between; gap:0.6rem; color:#005fa9; font-weight:700;">
+          <span>Total:</span> <span>${total}</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; gap:0.6rem; color:var(--ink-muted); font-size:0.75rem;">
+          <span>AdMob:</span> <span>${admob}</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; gap:0.6rem; color:#10b981; font-size:0.75rem;">
+          <span>In-App:</span> <span>${inapp}</span>
+        </div>
+      `;
+      tooltip.style.display = "block";
+      posicionarTooltip(e);
+    }
+
+    function moverTooltipGrafico(e) {
+      posicionarTooltip(e);
+    }
+
+    function posicionarTooltip(e) {
+      const tooltip = document.getElementById("chart-tooltip");
+      const box = document.getElementById("admob-chart-box");
+      if (!tooltip || !box) return;
+      const rect = box.getBoundingClientRect();
+      const x = e.clientX - rect.left + 12;
+      const y = e.clientY - rect.top - 10;
+      tooltip.style.left = Math.min(x, rect.width - 150) + "px";
+      tooltip.style.top = Math.max(10, y) + "px";
+    }
+
+    function ocultarTooltipGrafico() {
+      const tooltip = document.getElementById("chart-tooltip");
+      if (tooltip) tooltip.style.display = "none";
+    }
+
+    function renderSemaforo(semaforo) {
+      if (!semaforo || !semaforo.pestanas) return;
+      const container = document.getElementById("semaforo-container");
+      if (!container) return;
+
+      const resumen = semaforo.resumen || {};
+      const badgeResumen = document.getElementById("badge-semaforo-resumen");
+      if (badgeResumen) {
+        badgeResumen.innerText = resumen.verdes + " al día · " + resumen.amarillos + " aviso · " + resumen.rojos + " alerta";
+      }
+
+      container.innerHTML = semaforo.pestanas.map(p => {
+        const estadoClass = p.estado || "rojo";
+        let tiempoTxt = "Sin revisar";
+        if (p.horas_sin_revision !== undefined) {
+          if (p.horas_sin_revision < 1) tiempoTxt = "Revisada hace menos de 1 h";
+          else if (p.horas_sin_revision < 24) tiempoTxt = "Revisada hace " + Math.round(p.horas_sin_revision) + " h";
+          else tiempoTxt = "Revisada hace " + p.dias_sin_revision + " días (" + Math.round(p.horas_sin_revision) + " h)";
+        }
+
+        return `
+          <div class="semaforo-card ${estadoClass}">
+            <div class="semaforo-header">
+              <a href="${p.ruta}" class="tab-name">
+                <span>${p.icono}</span>
+                <span>${p.nombre}</span>
+              </a>
+              <span class="status-badge ${estadoClass}">${p.etiqueta}</span>
+            </div>
+            <p class="semaforo-time">${tiempoTxt}</p>
+            <button type="button" class="btn-check" onclick="marcarPestana('${p.id}')">
+              <span>✓</span> Marcar revisada hoy
+            </button>
+          </div>
+        `;
+      }).join("");
+    }
+
+    async function marcarPestana(id) {
+      try {
+        const token = String((window.office && window.office.actionToken) || "");
+        const res = await fetch("/api/bitacora/check-pestana", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-ErBolamm-Action": token,
+          },
+          body: JSON.stringify({ pestana: id }),
+        });
+        const data = await res.json();
+        if (data && data.ok) {
+          if (data.semaforo) renderSemaforo(data.semaforo);
+          else cargarEstado();
+        } else {
+          alert("No se pudo marcar la pestaña: " + (data.mensaje || data.error));
+        }
+      } catch (err) {
+        console.error("Error al marcar pestaña:", err);
+      }
+    }
+
+    function renderSalud(salud) {
+      if (!salud) return;
+      const proms = salud.promedios_7d || {};
+      document.getElementById("prom-sueno").innerText = (proms.horas_sueno || 0) + " h";
+      document.getElementById("prom-trabajo").innerText = (proms.horas_trabajo || 0) + " h";
+      document.getElementById("prom-descanso").innerText = (proms.horas_descanso || 0) + " h";
+
+      const badgeSalud = document.getElementById("badge-salud-resumen");
+      if (badgeSalud) {
+        badgeSalud.innerText = "Sueño prom: " + (proms.horas_sueno || 0) + " h";
+      }
+
+      const tbody = document.getElementById("historial-salud-body");
+      if (tbody && salud.historial) {
+        if (salud.historial.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--ink-muted);">Sin registros</td></tr>';
+        } else {
+          tbody.innerHTML = salud.historial.slice(0, 7).map(h => `
+            <tr>
+              <td><strong>${h.fecha}</strong></td>
+              <td style="color:#10b981; font-weight:600;">${h.horas_sueno} h</td>
+              <td style="color:var(--blue); font-weight:600;">${h.horas_trabajo} h</td>
+              <td style="color:#f59e0b; font-weight:600;">${h.horas_descanso} h</td>
+            </tr>
+          `).join("");
+        }
+      }
+    }
+
+    async function guardarSalud(e) {
+      e.preventDefault();
+      const fecha = document.getElementById("salud-fecha").value;
+      const horasSueno = parseFloat(document.getElementById("salud-sueno").value) || 0;
+      const horasTrabajo = parseFloat(document.getElementById("salud-trabajo").value) || 0;
+      const horasDescanso = parseFloat(document.getElementById("salud-descanso").value) || 0;
+      const notas = document.getElementById("salud-notas").value;
+      const statusSpan = document.getElementById("salud-status");
+
+      try {
+        const token = String((window.office && window.office.actionToken) || "");
+        const res = await fetch("/api/bitacora/salud", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-ErBolamm-Action": token,
+          },
+          body: JSON.stringify({
+            fecha,
+            horas_sueno: horasSueno,
+            horas_trabajo: horasTrabajo,
+            horas_descanso: horasDescanso,
+            notas,
+          }),
+        });
+        const data = await res.json();
+        if (data && data.ok) {
+          if (statusSpan) {
+            statusSpan.innerText = "✓ Guardado con éxito";
+            setTimeout(() => { statusSpan.innerText = ""; }, 3000);
+          }
+          if (data.salud) renderSalud(data.salud);
+          else cargarEstado();
+        } else {
+          alert("Error al guardar: " + (data.mensaje || data.error));
+        }
+      } catch (err) {
+        console.error("Error al guardar salud:", err);
+      }
+    }
+
+    function renderHoras(horas) {
+      if (!horas) return;
+      document.getElementById("horas-humano").innerText = (horas.horas_humano_acumuladas || 0) + " h";
+      document.getElementById("horas-ia").innerText = (horas.horas_ia_acumuladas || 0) + " h";
+      document.getElementById("ratio-eficiencia").innerText = horas.multiplicador || (horas.ratio_eficiencia + "x");
+
+      if (horas.base_historica) {
+        const bh = horas.base_historica;
+        const ma = horas.medicion_activa || {};
+        const subH = document.getElementById("horas-humano-sub");
+        if (subH) {
+          subH.innerText = "Base: " + (bh.horas_humano_ahorradas_estimadas || 0) + " h · Medido: " + (ma.horas_humano_medidas || 0) + " h";
+        }
+        const subIa = document.getElementById("horas-ia-sub");
+        if (subIa) {
+          subIa.innerText = "Base: " + (bh.horas_computo_ia_estimadas || 0) + " h · Medido: " + (ma.horas_ia_medidas || 0) + " h";
+        }
+        const desc = document.getElementById("ratio-desc");
+        if (desc) {
+          desc.innerText = "Base histórica: " + (bh.repositorios_analizados || 25) + " repos y " + (bh.commits_totales || 0) + " commits (sin lockfiles).";
+        }
+      }
+    }
+  </script>
+</body>
+</html>

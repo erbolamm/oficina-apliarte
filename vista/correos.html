@@ -1,0 +1,1087 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#005fa9">
+  <title>Correos de Soporte de Usuarios · Oficina local de ErBolamm</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23005fa9%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2246%22%20font-size%3D%2234%22%20text-anchor%3D%22middle%22%20fill%3D%22%235ecef5%22%3E%E2%9C%89%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../panel-shell.css" />
+  <script>
+    try {
+      document.documentElement.dataset.theme =
+        localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
+      document.documentElement.dataset.sidebar =
+        localStorage.getItem("erbolamm-panel-sidebar") === "icons" ? "icons" : "full";
+    } catch (_) {}
+  </script>
+  <style>
+    .correos-hero {
+      background: linear-gradient(135deg, rgba(0, 95, 169, 0.08) 0%, rgba(94, 206, 245, 0.14) 100%);
+      border: 1px solid rgba(0, 95, 169, 0.18);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    html[data-theme="dark"] .correos-hero {
+      background: linear-gradient(135deg, rgba(0, 70, 123, 0.35) 0%, rgba(0, 95, 169, 0.25) 100%);
+      border-color: rgba(94, 206, 245, 0.22);
+    }
+    .correos-hero h2 {
+      margin: 0 0 0.35rem 0;
+      font-size: 1.35rem;
+      color: var(--ink);
+    }
+    .correos-hero p {
+      margin: 0;
+      font-size: 0.92rem;
+      color: var(--muted, #666);
+      line-height: 1.45;
+    }
+    .project-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1.2rem;
+      margin-bottom: 1.25rem;
+    }
+    .project-selector-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .project-selector-group label {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--ink);
+    }
+    .project-select {
+      padding: 0.45rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 0.85rem;
+      margin-bottom: 1.25rem;
+    }
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.9rem 1.1rem;
+    }
+    .kpi-card small {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+    .kpi-card strong {
+      font-size: 1.3rem;
+      color: var(--ink);
+    }
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.85rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1.2rem;
+      margin-bottom: 1.25rem;
+    }
+    .correo-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.15rem;
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .correo-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+    }
+    .badge-cuenta {
+      background: rgba(0, 95, 169, 0.12);
+      color: #005fa9;
+      border: 1px solid rgba(0, 95, 169, 0.3);
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.76rem;
+    }
+    html[data-theme="dark"] .badge-cuenta {
+      color: #5ecef5;
+      border-color: rgba(94, 206, 245, 0.35);
+    }
+    .subtabs-bar {
+      display: flex;
+      gap: 0.65rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .subtab-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.55rem 1.15rem;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s ease-in-out;
+    }
+    .subtab-btn:hover {
+      color: var(--ink);
+      border-color: var(--ink);
+    }
+    .subtab-btn.active {
+      background: var(--ink);
+      color: var(--surface);
+      border-color: var(--ink);
+    }
+    html[data-theme="dark"] .subtab-btn.active {
+      background: #5ecef5;
+      color: #00223d;
+      border-color: #5ecef5;
+    }
+    .badge-origen {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .origen-firebase {
+      background: rgba(255, 150, 0, 0.14);
+      color: #b35900;
+      border: 1px solid rgba(255, 150, 0, 0.4);
+    }
+    html[data-theme="dark"] .origen-firebase {
+      color: #ffaa33;
+      border-color: rgba(255, 170, 51, 0.5);
+    }
+    .origen-admob {
+      background: rgba(33, 150, 243, 0.14);
+      color: #0b6bc6;
+      border: 1px solid rgba(33, 150, 243, 0.4);
+    }
+    html[data-theme="dark"] .origen-admob {
+      color: #64b5f6;
+      border-color: rgba(100, 181, 246, 0.5);
+    }
+    .origen-adsense {
+      background: rgba(76, 175, 80, 0.14);
+      color: #2e7d32;
+      border: 1px solid rgba(76, 175, 80, 0.4);
+    }
+    html[data-theme="dark"] .origen-adsense {
+      color: #81c784;
+      border-color: rgba(129, 199, 132, 0.5);
+    }
+    .origen-usuario {
+      background: rgba(156, 39, 176, 0.12);
+      color: #7b1fa2;
+      border: 1px solid rgba(156, 39, 176, 0.35);
+    }
+    html[data-theme="dark"] .origen-usuario {
+      color: #ba68c8;
+      border-color: rgba(186, 104, 200, 0.5);
+    }
+    .origen-tiendas {
+      background: rgba(0, 150, 136, 0.14);
+      color: #00796b;
+      border: 1px solid rgba(0, 150, 136, 0.4);
+    }
+    html[data-theme="dark"] .origen-tiendas {
+      color: #4db6ac;
+      border-color: rgba(77, 182, 172, 0.5);
+    }
+    .correo-draft-box {
+      width: 100%;
+      min-height: 76px;
+      padding: 0.6rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="office-sidebar" id="office-sidebar" aria-label="Navegación de la oficina">
+      <div class="sidebar-brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+        </svg>
+        <span><strong>Oficina ApliArte</strong><small>Panel de control operativo ApliArte</small></span>
+        <button id="sidebar-toggle" class="sidebar-toggle" type="button"
+          aria-controls="office-sidebar" aria-expanded="true" aria-label="Plegar la barra lateral a solo iconos" title="Plegar la barra lateral">
+          <span class="chev" aria-hidden="true">‹</span>
+        </button>
+      </div>
+      <nav class="side-nav" aria-label="Secciones">
+        <a class="nav-card" href="/"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
+        <a class="nav-card" href="/vista/javier"><span class="nav-icon" aria-hidden="true">👤</span><span class="nav-copy"><strong>Espacio Javier</strong><small>Control personal y ja--</small></span></a>
+        <a class="nav-card" href="/vista/inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
+        <a class="nav-card" href="/vista/aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
+        <a class="nav-card" href="/vista/skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
+        <a class="nav-card" href="/vista/conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
+        <a class="nav-card" href="/vista/plugins"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
+        <a class="nav-card" href="/vista/reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
+        <a class="nav-card" href="/vista/propuestas"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
+        <a class="nav-card" href="/vista/diseno"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
+        <a class="nav-card" href="/vista/tiendas"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
+        <a class="nav-card" href="/vista/mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
+        <a class="nav-card" href="/vista/correos" aria-current="page"><span class="nav-icon" aria-hidden="true">✉</span><span class="nav-copy"><strong>Correos y Alertas</strong><small>erbolamm y javier</small></span></a>
+        <a class="nav-card" href="/vista/pnl"><span class="nav-icon" aria-hidden="true">🧠</span><span class="nav-copy"><strong>Estudio PNL</strong><small>Enganche y microcopy</small></span></a>
+        <a class="nav-card" href="/vista/musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
+        <a class="nav-card" href="/vista/idiomas"><span class="nav-icon" aria-hidden="true">🌐</span><span class="nav-copy"><strong>Idiomas</strong><small>Traducción y locución</small></span></a>
+        <a class="nav-card" href="/vista/locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
+        <a class="nav-card" href="/vista/voicestudio"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
+        <a class="nav-card" href="/vista/terminales"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
+        <a class="nav-card" href="/vista/facturas"><span class="nav-icon" aria-hidden="true">€</span><span class="nav-copy"><strong>Facturas</strong><small>Gestor de facturas</small></span></a>
+        <a class="nav-card" href="/vista/blogger"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
+        <a class="nav-card" href="/vista/bitacora"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
+        <a class="nav-card" href="/vista/directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
+        <a class="nav-card" href="/resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
+        <a class="nav-card" href="/vista/settings"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-copy"><strong>Ajustes</strong><small>Opciones por defecto</small></span></a>
+        <a class="nav-card" href="/vista/como-funciona"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
+      </nav>
+    </aside>
+    <div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
+
+    <main class="office-content" id="office">
+      <header class="topbar">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+            <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+          </svg>
+          <h1>Correos de Soporte de Usuarios</h1>
+        </div>
+        <span class="private-chip">erbolamm@gmail.com · javier@apliarte.com</span>
+        <span class="connection" id="connection" data-kind="loading">Conectando</span>
+        <button id="refresh-btn" class="btn-refresh" type="button" onclick="cargarBuzonSoporte(true)" aria-label="Actualizar buzón" title="Actualizar">↻</button>
+        <button id="theme-toggle" type="button" aria-label="Activar modo oscuro" title="Cambiar tema">
+          <span id="theme-icon" aria-hidden="true">☾</span>
+        </button>
+      </header>
+      <p class="updated" id="updated">Sincronizando buzón soberano de soporte de usuarios…</p>
+
+      <section class="correos-hero" aria-label="Resumen de Correos de Soporte y Alertas">
+        <h2>Buzón Federado de Correos y Alertas Técnicas por Aplicación</h2>
+        <p>Centraliza y responde los correos de soporte enviados a <strong>erbolamm@gmail.com</strong> y <strong>javier@apliarte.com</strong>, y monitorea las alertas técnicas de plataformas (Firebase Crashlytics, Google AdMob, Google AdSense y Tiendas Console). Separa los borradores y alertas pendientes del histórico tramitado, e inyecta tareas accionables en <code>control-erbolamm/INBOX.md</code>.</p>
+      </section>
+
+      <div class="project-bar" role="region" aria-label="Selector de repositorio soberano">
+        <div class="project-selector-group">
+          <label for="correos-project-select">Repositorio Soberano:</label>
+          <select id="correos-project-select" class="project-select" onchange="cambiarProyectoCorreos(this.value)">
+            <option value="calca_app">CalcaApp (calca_app)</option>
+            <option value="tts-apliarte">TTS ApliArte (tts-apliarte)</option>
+            <option value="apliarte-directo">ApliArte Directo (apliarte-directo)</option>
+            <option value="experto-google">Experto Google (experto-google)</option>
+            <option value="erbolamm-trabajo">ErBolamm Central (erbolamm-trabajo)</option>
+          </select>
+          <span id="correos-sovereign-badge" class="badge-cuenta">control-erbolamm/correo/buzon-usuarios.json</span>
+          <span id="correo-conector-semaforo" class="badge-cuenta" title="Estado del conector de solo lectura Gmail/IMAP (Zero Secrets)">Conector RO: comprobando…</span>
+        </div>
+        <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+          <button type="button" id="btn-sincronizar-imap" class="pill-btn" onclick="sincronizarConectorSoloLectura()">
+            📥 Sincronizar Gmail/IMAP (Solo Lectura)
+          </button>
+          <button type="button" id="btn-generar-plantillas-correo" class="pill-btn" onclick="generarPlantillasTransaccionales()">
+            Generar Plantillas Transaccionales HTML/TXT
+          </button>
+          <button type="button" id="btn-recargar-correos" class="pill-btn btn-action-start" onclick="cargarBuzonSoporte(true)">
+            Sincronizar Buzón y Tareas INBOX.md
+          </button>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <small>Total mensajes y alertas</small>
+          <strong id="kpi-correos-total">0</strong>
+        </div>
+        <div class="kpi-card">
+          <small>Borradores y alertas pendientes</small>
+          <strong id="kpi-correos-pendientes">0</strong>
+        </div>
+        <div class="kpi-card">
+          <small>Alertas Firebase / AdMob</small>
+          <strong id="kpi-correos-alertas">0</strong>
+        </div>
+        <div class="kpi-card">
+          <small>Contestados y archivados</small>
+          <strong id="kpi-correos-respondidos">0</strong>
+        </div>
+      </div>
+
+      <div class="subtabs-bar" role="tablist" aria-label="Bandejas de correos">
+        <button type="button" id="tab-pendientes" class="subtab-btn active" role="tab" aria-selected="true" onclick="cambiarBandeja('pendientes')">
+          1. Borradores y Alertas Pendientes (<span id="badge-count-pendientes">0</span>)
+        </button>
+        <button type="button" id="tab-historico" class="subtab-btn" role="tab" aria-selected="false" onclick="cambiarBandeja('historico')">
+          2. Histórico de Contestados / Archivados (<span id="badge-count-historico">0</span>)
+        </button>
+        <button type="button" id="tab-auditoria" class="subtab-btn" role="tab" aria-selected="false" onclick="cambiarBandeja('auditoria')">
+          3. Auditoría de Búsquedas & Drive (<span id="badge-count-auditoria">0</span>)
+        </button>
+      </div>
+
+      <!-- Barra de Perfiles de Consulta y Filtros por Experto (ADR-0013) -->
+      <div class="project-bar" style="background:var(--surface-sunken, rgba(0,0,0,0.02)); margin-bottom:1rem; border-style:dashed;">
+        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:0.75rem;">
+          <span style="font-size:0.85rem; font-weight:700;">🎯 Perfil Experto:</span>
+          <select id="correos-select-preset" class="project-select" onchange="seleccionarPresetExperto(this.value)">
+            <option value="">Cargando presets de repositorio…</option>
+          </select>
+          <span id="correos-preset-desc" style="font-size:0.8rem; color:var(--muted); max-width:380px;"></span>
+        </div>
+        <div style="display:flex; gap:0.5rem; align-items:center;">
+          <button type="button" class="pill-btn" onclick="sincronizarHistorialDrive()" style="font-size:0.8rem;">
+            ☁️ Sincronizar Historial con Drive
+          </button>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <div style="display:flex; gap:0.75rem; flex-wrap:wrap; align-items:center;">
+          <label style="font-size:0.85rem; font-weight:600;">
+            Origen:
+            <select id="correos-filtro-origen" class="project-select" onchange="aplicarFiltrosCorreos()">
+              <option value="todos">Todos los orígenes</option>
+              <option value="usuario">Usuarios finales</option>
+              <option value="firebase">Firebase Crashlytics</option>
+              <option value="admob">Google AdMob</option>
+              <option value="adsense">Google AdSense</option>
+              <option value="tiendas">Tiendas Console</option>
+            </select>
+          </label>
+          <label style="font-size:0.85rem; font-weight:600;">
+            Cuenta destino:
+            <select id="correos-filtro-cuenta" class="project-select" onchange="aplicarFiltrosCorreos()">
+              <option value="todas">Todas (erbolamm + javier)</option>
+              <option value="erbolamm@gmail.com">erbolamm@gmail.com</option>
+              <option value="javier@apliarte.com">javier@apliarte.com</option>
+            </select>
+          </label>
+        </div>
+        <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+          <input id="correos-busqueda" type="search" placeholder="Buscar por remitente, asunto, texto o acción…" oninput="aplicarFiltrosCorreos()" style="padding:0.45rem 0.85rem; border-radius:8px; border:1px solid var(--border); min-width:260px;">
+          <button type="button" class="pill-btn" onclick="ejecutarBusquedaConAuditoria()" style="font-size:0.82rem;">🔍 Registrar Búsqueda</button>
+        </div>
+      </div>
+
+      <section class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-head">
+          <div class="panel-head-title">
+            <h2 id="correos-seccion-titulo">Borradores y Alertas Pendientes de Respuesta</h2>
+            <p id="correos-status-banner">Mostrando mensajes aislados del repositorio seleccionado.</p>
+          </div>
+        </div>
+        <div id="lista-correos-soporte">
+          <p style="opacity:0.75;">Cargando correos de soporte…</p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-head-title">
+            <h2>Registrar Correo o Alerta Técnica en el Repositorio</h2>
+            <p>Registra o edita un mensaje o notificación recibida para esta app y sincronízala con <code>control-erbolamm/INBOX.md</code>.</p>
+          </div>
+        </div>
+        <form id="form-nuevo-correo-soporte" onsubmit="guardarCorreoSoporteFormulario(event)" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:0.85rem;">
+          <input type="hidden" id="correo-input-id" value="">
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.82rem; font-weight:600;">
+            Origen del mensaje / alerta
+            <select id="correo-input-origen" class="project-select">
+              <option value="usuario">Usuario final</option>
+              <option value="firebase">Firebase Crashlytics / Fallos</option>
+              <option value="admob">Google AdMob (Políticas / Ingresos)</option>
+              <option value="adsense">Google AdSense</option>
+              <option value="tiendas">Tiendas (Play Store / App Store)</option>
+            </select>
+          </label>
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.82rem; font-weight:600;">
+            Cuenta donde se recibió
+            <select id="correo-input-cuenta" class="project-select">
+              <option value="erbolamm@gmail.com">erbolamm@gmail.com</option>
+              <option value="javier@apliarte.com">javier@apliarte.com</option>
+            </select>
+          </label>
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.82rem; font-weight:600;">
+            Remitente
+            <input id="correo-input-remitente" type="text" placeholder="usuario@gmail.com o firebase-alerts-noreply@google.com" required style="padding:0.45rem; border-radius:6px; border:1px solid var(--border);">
+          </label>
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.82rem; font-weight:600;">
+            Categoría
+            <select id="correo-input-categoria" class="project-select">
+              <option value="fallo">Fallo / Bug reportado</option>
+              <option value="sugerencia">Sugerencia de mejora</option>
+              <option value="duda">Duda de uso</option>
+              <option value="facturacion_tienda">Facturación / Compra en tienda</option>
+              <option value="firebase">Alerta Crashlytics / Firebase</option>
+              <option value="admob">Aviso AdMob (Políticas / Mediación)</option>
+              <option value="adsense">Aviso AdSense</option>
+              <option value="tiendas">Aviso Tienda Console</option>
+            </select>
+          </label>
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.82rem; font-weight:600;">
+            Prioridad
+            <select id="correo-input-prioridad" class="project-select">
+              <option value="alta">Alta</option>
+              <option value="media" selected>Media</option>
+              <option value="baja">Baja</option>
+            </select>
+          </label>
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.82rem; font-weight:600; grid-column: 1 / -1;">
+            Asunto del mensaje o alerta
+            <input id="correo-input-asunto" type="text" placeholder="Asunto del correo o título de la alerta técnica…" required style="padding:0.45rem; border-radius:6px; border:1px solid var(--border);">
+          </label>
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.82rem; font-weight:600; grid-column: 1 / -1;">
+            Detalle del mensaje o alerta técnica
+            <textarea id="correo-input-mensaje" class="correo-draft-box" placeholder="Texto íntegro del correo o detalle de la incidencia técnica…" required></textarea>
+          </label>
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.82rem; font-weight:600; grid-column: 1 / -1;">
+            Acción técnica recomendada (se inyecta en control-erbolamm/INBOX.md)
+            <input id="correo-input-accion" type="text" placeholder="Ej: Revisar informe en control-erbolamm/firebase/crashlytics-estudios.json…" required style="padding:0.45rem; border-radius:6px; border:1px solid var(--border);">
+          </label>
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.82rem; font-weight:600; grid-column: 1 / -1;">
+            Borrador de respuesta / Nota de resolución
+            <textarea id="correo-input-respuesta" class="correo-draft-box" placeholder="Respuesta al usuario o nota técnica de resolución…"></textarea>
+          </label>
+          <div style="grid-column: 1 / -1; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem;">
+            <span id="correos-form-feedback" style="font-size:0.82rem; opacity:0.85;">Estado de trabajo persistido en el navegador de Javier.</span>
+            <button type="submit" class="pill-btn btn-action-start">
+              Guardar en control-erbolamm/correo/buzon-usuarios.json
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script src="../panel-shell.js" defer></script>
+  <script>
+    const STORAGE_KEY_CORREOS_JAVIER = 'erbolamm-correos-estado-javier';
+    let currentProject = 'calca_app';
+    let correosActuales = [];
+    let bandejaActiva = 'pendientes';
+
+    function guardarEstadoCorreosJavier() {
+      try {
+        const state = {
+          currentProject,
+          bandejaActiva,
+          origenFiltro: document.getElementById('correos-filtro-origen')?.value || 'todos',
+          cuentaFiltro: document.getElementById('correos-filtro-cuenta')?.value || 'todas',
+          busqueda: document.getElementById('correos-busqueda')?.value || '',
+          draftOrigen: document.getElementById('correo-input-origen')?.value || 'usuario',
+          draftCuenta: document.getElementById('correo-input-cuenta')?.value || 'erbolamm@gmail.com',
+          draftRemitente: document.getElementById('correo-input-remitente')?.value || '',
+          draftCategoria: document.getElementById('correo-input-categoria')?.value || 'fallo',
+          draftPrioridad: document.getElementById('correo-input-prioridad')?.value || 'media',
+          draftAsunto: document.getElementById('correo-input-asunto')?.value || '',
+          draftMensaje: document.getElementById('correo-input-mensaje')?.value || '',
+          draftAccion: document.getElementById('correo-input-accion')?.value || '',
+          draftRespuesta: document.getElementById('correo-input-respuesta')?.value || '',
+          updatedAt: new Date().toISOString()
+        };
+        localStorage.setItem(STORAGE_KEY_CORREOS_JAVIER, JSON.stringify(state));
+      } catch (_) {}
+    }
+
+    function restaurarEstadoCorreosJavier() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY_CORREOS_JAVIER);
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch (_) {
+        return null;
+      }
+    }
+
+    let presetsCargados = [];
+    let historialAuditoria = [];
+
+    async function cargarPresetsProyecto() {
+      try {
+        const res = await fetch(`/api/apps/correos/preferencias?app=${encodeURIComponent(currentProject)}`);
+        const json = await res.json();
+        const select = document.getElementById('correos-select-preset');
+        if (!select) return;
+        select.innerHTML = '<option value="">-- Seleccionar Perfil de Consulta --</option>';
+        if (json.ok && json.result && Array.isArray(json.result.preferencias)) {
+          presetsCargados = json.result.preferencias;
+          presetsCargados.forEach(p => {
+            const opt = document.createElement('option');
+            opt.value = p.id;
+            opt.textContent = `${p.nombre} [${p.experto}]`;
+            select.appendChild(opt);
+          });
+        }
+      } catch (_) {}
+    }
+
+    function seleccionarPresetExperto(presetId) {
+      const descEl = document.getElementById('correos-preset-desc');
+      if (!presetId) {
+        if (descEl) descEl.textContent = '';
+        return;
+      }
+      const preset = presetsCargados.find(p => p.id === presetId);
+      if (!preset) return;
+
+      if (descEl) descEl.textContent = preset.descripcion || '';
+
+      // Aplicar filtros automáticos del preset
+      if (preset.clasificacionesRemitente && preset.clasificacionesRemitente.length > 0) {
+        const origenSelect = document.getElementById('correos-filtro-origen');
+        if (origenSelect) origenSelect.value = preset.clasificacionesRemitente[0];
+      }
+      if (preset.cuentaFiltro) {
+        const cuentaSelect = document.getElementById('correos-filtro-cuenta');
+        if (cuentaSelect) cuentaSelect.value = preset.cuentaFiltro;
+      }
+      if (preset.patronesAsunto && preset.patronesAsunto.length > 0) {
+        const busquedaInput = document.getElementById('correos-busqueda');
+        if (busquedaInput) busquedaInput.value = preset.patronesAsunto[0];
+      }
+      aplicarFiltrosCorreos();
+    }
+
+    async function ejecutarBusquedaConAuditoria() {
+      const term = document.getElementById('correos-busqueda')?.value || '';
+      const presetId = document.getElementById('correos-select-preset')?.value || '';
+      const origen = document.getElementById('correos-filtro-origen')?.value || 'todos';
+      const cuenta = document.getElementById('correos-filtro-cuenta')?.value || 'todas';
+
+      try {
+        const res = await fetch(`/api/apps/correos/buscar?app=${encodeURIComponent(currentProject)}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            term,
+            preferenceId: presetId,
+            senderCategory: origen !== 'todos' ? origen : null,
+            cuenta: cuenta !== 'todas' ? cuenta : null,
+          }),
+        });
+        const json = await res.json();
+        if (json.ok && json.result) {
+          const banner = document.getElementById('correos-status-banner');
+          if (banner) {
+            banner.textContent = `Búsqueda registrada en auditoría soberana: ${json.result.total} mensajes coincidentes.`;
+          }
+          await cargarHistorialAuditoria();
+        }
+      } catch (_) {}
+    }
+
+    async function cargarHistorialAuditoria() {
+      try {
+        const res = await fetch(`/api/apps/correos/historial?app=${encodeURIComponent(currentProject)}`);
+        const json = await res.json();
+        if (json.ok && Array.isArray(json.historial)) {
+          historialAuditoria = json.historial;
+          const badgeCount = document.getElementById('badge-count-auditoria');
+          if (badgeCount) badgeCount.textContent = historialAuditoria.length;
+          if (bandejaActiva === 'auditoria') {
+            renderizarHistorialAuditoria();
+          }
+        }
+      } catch (_) {}
+    }
+
+    async function sincronizarHistorialDrive() {
+      const banner = document.getElementById('correos-status-banner');
+      if (banner) banner.textContent = 'Sincronizando historial de búsquedas con Google Drive…';
+      try {
+        const res = await fetch(`/api/apps/correos/historial?app=${encodeURIComponent(currentProject)}`, {
+          method: 'POST',
+        });
+        const json = await res.json();
+        if (json.ok && json.sync && json.sync.success) {
+          if (banner) banner.textContent = `Historial sincronizado con Drive en ${json.sync.drivePath}`;
+          await cargarHistorialAuditoria();
+        } else {
+          if (banner) banner.textContent = `Aviso Drive: ${(json.sync && json.sync.error) || 'Copia local realizada en control-erbolamm/correo/'}`;
+        }
+      } catch (err) {
+        if (banner) banner.textContent = 'Error al sincronizar con Drive.';
+      }
+    }
+
+    function renderizarHistorialAuditoria() {
+      const cont = document.getElementById('lista-correos-soporte');
+      if (!cont) return;
+      if (historialAuditoria.length === 0) {
+        cont.innerHTML = '<p style="padding:1.5rem; text-align:center; opacity:0.75;">No hay búsquedas registradas en el historial de auditoría de este repositorio.</p>';
+        return;
+      }
+      let html = '<div style="display:flex; flex-direction:column; gap:0.75rem;">';
+      historialAuditoria.forEach(h => {
+        const sincBadge = h.sincronizadoDrive ? '<span class="badge-tag" style="background:#e6f4ea; color:#137333;">☁️ Drive Sincronizado</span>' : '<span class="badge-tag">💾 Local</span>';
+        html += `
+          <div class="correo-card" style="border-left:4px solid var(--accent, #005fa9);">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.4rem;">
+              <span style="font-weight:700; font-size:0.88rem;">${h.timestamp} · Experto: <strong>${h.experto || 'general'}</strong></span>
+              <div>${sincBadge} <span class="badge-tag">${h.totalResultados} resultados</span></div>
+            </div>
+            <div style="font-size:0.85rem; color:var(--ink);">Término de consulta: <code>${h.term || '(filtro de preset)'}</code></div>
+            <div style="font-size:0.78rem; color:var(--muted); margin-top:0.25rem;">Filtros: <code>${JSON.stringify(h.filtros || {})}</code></div>
+          </div>
+        `;
+      });
+      html += '</div>';
+      cont.innerHTML = html;
+    }
+
+    function cambiarBandeja(bandeja) {
+      bandejaActiva = bandeja;
+      const btnPendientes = document.getElementById('tab-pendientes');
+      const btnHistorico = document.getElementById('tab-historico');
+      const btnAuditoria = document.getElementById('tab-auditoria');
+      const titulo = document.getElementById('correos-seccion-titulo');
+
+      btnPendientes?.classList.toggle('active', bandeja === 'pendientes');
+      btnHistorico?.classList.toggle('active', bandeja === 'historico');
+      btnAuditoria?.classList.toggle('active', bandeja === 'auditoria');
+
+      if (bandeja === 'pendientes') {
+        if (titulo) titulo.textContent = 'Borradores y Alertas Pendientes de Respuesta';
+        renderizarListaCorreos();
+      } else if (bandeja === 'historico') {
+        if (titulo) titulo.textContent = 'Histórico de Mensajes Contestados y Archivados';
+        renderizarListaCorreos();
+      } else if (bandeja === 'auditoria') {
+        if (titulo) titulo.textContent = 'Registro de Auditoría de Búsquedas por Experto y Drive';
+        renderizarHistorialAuditoria();
+      }
+      guardarEstadoCorreosJavier();
+    }
+
+    async function cambiarProyectoCorreos(proj) {
+      currentProject = proj;
+      guardarEstadoCorreosJavier();
+      await cargarPresetsProyecto();
+      await cargarHistorialAuditoria();
+      await cargarBuzonSoporte(false);
+    }
+
+    async function cargarBuzonSoporte(mostrarFeedback) {
+      const banner = document.getElementById('correos-status-banner');
+      try {
+        const res = await fetch(`/api/apps/correos?app=${encodeURIComponent(currentProject)}`);
+        const payload = await res.json();
+        if (!res.ok || !payload.ok) {
+          if (banner) banner.textContent = payload.error || 'No se pudo cargar el buzón soberano.';
+          return;
+        }
+        const data = payload.result || {};
+        correosActuales = Array.isArray(data.correos) ? data.correos : [];
+        actualizarKpisCorreos(data.resumen || {});
+        if (banner) {
+          banner.textContent = `Proyecto activo: ${data.proyecto || currentProject} · Archivo soberano: ${data.archivo_soberano || 'control-erbolamm/correo/buzon-usuarios.json'}`;
+        }
+        renderizarListaCorreos();
+        if (mostrarFeedback) {
+          const fb = document.getElementById('correos-form-feedback');
+          if (fb) fb.textContent = `Buzón sincronizado con ${currentProject}/control-erbolamm/INBOX.md`;
+        }
+      } catch (_) {
+        if (banner) banner.textContent = 'Error de red al consultar /api/apps/correos.';
+      }
+    }
+
+    function actualizarKpisCorreos(resumen) {
+      const porOrigen = resumen.porOrigen || {};
+      const pendientes = resumen.pendientes ?? correosActuales.filter(c => c.estado !== 'respondido' && c.estado !== 'convertido_tarea').length;
+      const respondidos = resumen.respondidos ?? correosActuales.filter(c => c.estado === 'respondido' || c.estado === 'convertido_tarea').length;
+      const alertas = (porOrigen.firebase || 0) + (porOrigen.admob || 0);
+
+      document.getElementById('kpi-correos-total').textContent = resumen.total ?? correosActuales.length;
+      document.getElementById('kpi-correos-pendientes').textContent = pendientes;
+      document.getElementById('kpi-correos-alertas').textContent = alertas;
+      document.getElementById('kpi-correos-respondidos').textContent = respondidos;
+
+      const badgePendientes = document.getElementById('badge-count-pendientes');
+      if (badgePendientes) badgePendientes.textContent = pendientes;
+      const badgeHistorico = document.getElementById('badge-count-historico');
+      if (badgeHistorico) badgeHistorico.textContent = respondidos;
+    }
+
+    function aplicarFiltrosCorreos() {
+      guardarEstadoCorreosJavier();
+      renderizarListaCorreos();
+    }
+
+    function renderizarListaCorreos() {
+      const container = document.getElementById('lista-correos-soporte');
+      if (!container) return;
+      const origenFiltro = document.getElementById('correos-filtro-origen')?.value || 'todos';
+      const cuentaFiltro = document.getElementById('correos-filtro-cuenta')?.value || 'todas';
+      const q = (document.getElementById('correos-busqueda')?.value || '').toLowerCase().trim();
+
+      const filtrados = correosActuales.filter((c) => {
+        const esRespondido = c.estado === 'respondido' || c.estado === 'convertido_tarea';
+        const matchBandeja = bandejaActiva === 'pendientes' ? !esRespondido : esRespondido;
+        const origen = c.origen || 'usuario';
+        const matchOrigen = origenFiltro === 'todos' || origen === origenFiltro;
+        const matchCuenta = cuentaFiltro === 'todas' || c.cuentaDestino === cuentaFiltro;
+        const texto = `${c.id || ''} ${c.remitente || ''} ${c.asunto || ''} ${c.mensaje || ''} ${c.accionRecomendada || ''} ${c.respuestaBorrador || ''}`.toLowerCase();
+        const matchQ = q === '' || texto.includes(q);
+        return matchBandeja && matchOrigen && matchCuenta && matchQ;
+      });
+
+      if (filtrados.length === 0) {
+        const msg = bandejaActiva === 'pendientes'
+          ? 'No hay borradores ni alertas pendientes que coincidan con los filtros actuales.'
+          : 'No hay mensajes en el histórico de contestados/archivados para los filtros actuales.';
+        container.innerHTML = `<p style="opacity:0.75; padding:1rem 0;">${msg}</p>`;
+        return;
+      }
+
+      container.innerHTML = '';
+      filtrados.forEach((c) => {
+        const card = document.createElement('article');
+        card.className = 'correo-card';
+        const origen = c.origen || 'usuario';
+        const origenClass = `origen-${origen}`;
+        const esPendiente = c.estado !== 'respondido' && c.estado !== 'convertido_tarea';
+
+        card.innerHTML = `
+          <div class="correo-meta">
+            <div style="display:flex; align-items:center; gap:0.45rem; flex-wrap:wrap;">
+              <span class="badge-origen ${origenClass}">${escapeHtml(origen)}</span>
+              <span class="badge-cuenta">Para: ${escapeHtml(c.cuentaDestino || 'erbolamm@gmail.com')}</span>
+              <strong>[${escapeHtml(c.id)}] ${escapeHtml(c.asunto)}</strong>
+            </div>
+            <span>De: <code>${escapeHtml(c.remitente)}</code> · ${escapeHtml(c.fecha || '')} · Prioridad: <strong>${escapeHtml(c.prioridad || 'media')}</strong></span>
+          </div>
+          <p style="margin:0.25rem 0 0.5rem 0; font-size:0.92rem; line-height:1.45;">${escapeHtml(c.mensaje)}</p>
+          <div style="font-size:0.83rem; padding:0.5rem 0.75rem; border-radius:6px; background:rgba(0,95,169,0.06); border-left:3px solid var(--ink);">
+            <strong>Acción en INBOX.md:</strong> ${escapeHtml(c.accionRecomendada || '')}
+          </div>
+          ${esPendiente ? `
+            <label style="font-size:0.82rem; font-weight:600; display:block; margin-top:0.4rem;">
+              Borrador de respuesta / Nota de resolución para ${escapeHtml(c.remitente)}:
+              <textarea class="correo-draft-box" id="draft-${escapeHtml(c.id)}" placeholder="Escribe la respuesta o nota técnica...">${escapeHtml(c.respuestaBorrador || '')}</textarea>
+            </label>
+            <div style="display:flex; justify-content:flex-end; align-items:center; flex-wrap:wrap; gap:0.6rem; margin-top:0.35rem;">
+              <button type="button" class="pill-btn" onclick="guardarBorradorCorreo('${escapeHtml(c.id)}')">
+                Guardar Borrador
+              </button>
+              <button type="button" class="pill-btn" style="border-color:rgba(0,95,169,0.35); font-weight:600;" title="Abrir Gmail web con destinatario, asunto y borrador listos" onclick="abrirRespuestaCorreo('${escapeHtml(c.id)}', 'gmail')">
+                Responder en Gmail
+              </button>
+              <button type="button" class="pill-btn" title="Abrir cliente nativo (Apple Mail) con el borrador" onclick="abrirRespuestaCorreo('${escapeHtml(c.id)}', 'mailto')">
+                Abrir en Mail (mailto:)
+              </button>
+              <button type="button" class="pill-btn" onclick="convertirEnTareaCorreo('${escapeHtml(c.id)}')">
+                Convertir en Tarea INBOX.md
+              </button>
+              <button type="button" class="pill-btn btn-action-start" onclick="archivarComoRespondido('${escapeHtml(c.id)}')">
+                Marcar como Respondido y Archivar
+              </button>
+            </div>
+          ` : `
+            <div style="font-size:0.85rem; padding:0.65rem 0.85rem; border-radius:6px; background:rgba(76,175,80,0.1); border:1px solid rgba(76,175,80,0.3); margin-top:0.4rem;">
+              <strong>Respuesta / Resolución registrada (${escapeHtml(c.estado)}):</strong>
+              <p style="margin:0.35rem 0 0 0; white-space:pre-wrap;">${escapeHtml(c.respuestaBorrador || '(Sin texto de respuesta)')}</p>
+            </div>
+            <div style="display:flex; justify-content:flex-end; align-items:center; flex-wrap:wrap; gap:0.6rem; margin-top:0.4rem;">
+              <button type="button" class="pill-btn" onclick="abrirRespuestaCorreo('${escapeHtml(c.id)}', 'gmail')">
+                Ver en Gmail
+              </button>
+              <button type="button" class="pill-btn" onclick="reabrirCorreo('${escapeHtml(c.id)}')">
+                Reabrir / Devolver a Pendientes
+              </button>
+            </div>
+          `}
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    async function abrirRespuestaCorreo(id, canal = 'gmail') {
+      const original = correosActuales.find((c) => c.id === id);
+      if (!original) return;
+      const draftEl = document.getElementById(`draft-${id}`);
+      const respuestaBorrador = draftEl ? draftEl.value : (original.respuestaBorrador || '');
+      
+      // Si estamos en la vista de pendientes y hay borrador, lo persistimos primero
+      if (draftEl) {
+        await enviarActualizacionCorreo(Object.assign({}, original, { respuestaBorrador }));
+      }
+
+      const destinatario = original.remitente || '';
+      const rawAsunto = original.asunto || 'Consulta de soporte';
+      const asunto = rawAsunto.toLowerCase().startsWith('re:') ? rawAsunto : `Re: ${rawAsunto}`;
+      const cuerpo = respuestaBorrador;
+
+      if (canal === 'gmail') {
+        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(destinatario)}&su=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
+        window.open(gmailUrl, '_blank', 'noopener,noreferrer');
+        const fb = document.getElementById('correos-form-feedback');
+        if (fb) fb.textContent = `Abriendo Gmail para [${id}] con destinatario y borrador pre-rellenados.`;
+      } else {
+        const mailtoUrl = `mailto:${encodeURIComponent(destinatario)}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
+        window.location.href = mailtoUrl;
+        const fb = document.getElementById('correos-form-feedback');
+        if (fb) fb.textContent = `Abriendo cliente de correo nativo (Mail) para [${id}].`;
+      }
+    }
+
+    async function guardarBorradorCorreo(id) {
+      const original = correosActuales.find((c) => c.id === id);
+      if (!original) return;
+      const respuestaBorrador = document.getElementById(`draft-${id}`)?.value || '';
+      await enviarActualizacionCorreo(Object.assign({}, original, { respuestaBorrador }));
+      document.getElementById('correos-form-feedback').textContent = `Borrador guardado para [${id}].`;
+    }
+
+    async function archivarComoRespondido(id) {
+      const original = correosActuales.find((c) => c.id === id);
+      if (!original) return;
+      const respuestaBorrador = document.getElementById(`draft-${id}`)?.value || original.respuestaBorrador;
+      await enviarActualizacionCorreo(Object.assign({}, original, { respuestaBorrador, estado: 'respondido' }));
+      document.getElementById('correos-form-feedback').textContent = `Mensaje [${id}] marcado como respondido y trasladado al histórico.`;
+    }
+
+    async function convertirEnTareaCorreo(id) {
+      const original = correosActuales.find((c) => c.id === id);
+      if (!original) return;
+      const respuestaBorrador = document.getElementById(`draft-${id}`)?.value || original.respuestaBorrador;
+      await enviarActualizacionCorreo(Object.assign({}, original, { respuestaBorrador, estado: 'convertido_tarea' }));
+      document.getElementById('correos-form-feedback').textContent = `Mensaje [${id}] convertido en tarea y trasladado al histórico.`;
+    }
+
+    async function reabrirCorreo(id) {
+      const original = correosActuales.find((c) => c.id === id);
+      if (!original) return;
+      await enviarActualizacionCorreo(Object.assign({}, original, { estado: 'pendiente' }));
+      document.getElementById('correos-form-feedback').textContent = `Mensaje [${id}] reabierto y devuelto a pendientes.`;
+    }
+
+    async function enviarActualizacionCorreo(correoObj) {
+      const res = await fetch(`/api/apps/correos?app=${encodeURIComponent(currentProject)}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(correoObj)
+      });
+      const payload = await res.json();
+      if (res.ok && payload.ok) {
+        correosActuales = payload.result.correos || [];
+        actualizarKpisCorreos(payload.result.resumen || {});
+        renderizarListaCorreos();
+      }
+    }
+
+    async function guardarCorreoSoporteFormulario(ev) {
+      ev.preventDefault();
+      const body = {
+        id: document.getElementById('correo-input-id')?.value || undefined,
+        origen: document.getElementById('correo-input-origen')?.value || 'usuario',
+        cuentaDestino: document.getElementById('correo-input-cuenta')?.value || 'erbolamm@gmail.com',
+        remitente: document.getElementById('correo-input-remitente')?.value || '',
+        categoria: document.getElementById('correo-input-categoria')?.value || 'fallo',
+        prioridad: document.getElementById('correo-input-prioridad')?.value || 'media',
+        asunto: document.getElementById('correo-input-asunto')?.value || '',
+        mensaje: document.getElementById('correo-input-mensaje')?.value || '',
+        accionRecomendada: document.getElementById('correo-input-accion')?.value || '',
+        respuestaBorrador: document.getElementById('correo-input-respuesta')?.value || '',
+        estado: 'pendiente'
+      };
+      await enviarActualizacionCorreo(body);
+      document.getElementById('correo-input-id').value = '';
+      document.getElementById('correo-input-asunto').value = '';
+      document.getElementById('correo-input-mensaje').value = '';
+      document.getElementById('correo-input-accion').value = '';
+      document.getElementById('correo-input-respuesta').value = '';
+      guardarEstadoCorreosJavier();
+      document.getElementById('correos-form-feedback').textContent =
+        `Mensaje guardado en ${currentProject}/control-erbolamm/correo/buzon-usuarios.json y sincronizado en INBOX.md.`;
+    }
+
+    async function generarPlantillasTransaccionales() {
+      const res = await fetch(`/api/apps/correos?app=${encodeURIComponent(currentProject)}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'generate_templates' })
+      });
+      const payload = await res.json();
+      if (res.ok && payload.ok) {
+        document.getElementById('correos-form-feedback').textContent =
+          `Plantillas HTML/TXT y buzón de soporte generados en ${currentProject}/control-erbolamm/correo/.`;
+      }
+    }
+
+    async function cargarEstadoConectorCorreo() {
+      const badge = document.getElementById('correo-conector-semaforo');
+      if (!badge) return;
+      try {
+        const res = await fetch('/api/conectores/correo');
+        const json = await res.json();
+        if (res.ok && json.ok && json.conector) {
+          const c = json.conector;
+          if (c.configured) {
+            badge.textContent = `🟢 Conector RO activo (${c.mode})`;
+            badge.style.borderColor = 'rgba(19,115,51,0.45)';
+          } else {
+            badge.textContent = `🟡 Conector RO (${c.mode} · sin clave en ~/.erbolamm/secrets/)`;
+          }
+        }
+      } catch (_) {
+        badge.textContent = '⚪ Conector RO sin conexión';
+      }
+    }
+
+    async function sincronizarConectorSoloLectura() {
+      const banner = document.getElementById('correos-status-banner');
+      const fb = document.getElementById('correos-form-feedback');
+      if (banner) {
+        banner.textContent = `Sincronizando mensajes entrantes en solo lectura para ${currentProject}…`;
+      }
+      try {
+        const res = await fetch(`/api/apps/correos/sincronizar?app=${encodeURIComponent(currentProject)}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ limit: 50 }),
+        });
+        const payload = await res.json();
+        if (!res.ok || !payload.ok) {
+          if (banner) banner.textContent = payload.error || 'Error al sincronizar conector de solo lectura.';
+          return;
+        }
+        const data = payload.result || {};
+        correosActuales = Array.isArray(data.correos) ? data.correos : [];
+        actualizarKpisCorreos(data.resumen || {});
+        renderizarListaCorreos();
+        const msg = `Sincronización RO completada (${payload.conector?.activeProvider || 'readonly'}): ${payload.nuevosInsertados ?? 0} nuevos insertados, ${payload.duplicadosOmitidos ?? 0} duplicados omitidos en ${currentProject}.`;
+        if (banner) banner.textContent = msg;
+        if (fb) fb.textContent = msg;
+      } catch (_) {
+        if (banner) banner.textContent = 'Error de red al invocar /api/apps/correos/sincronizar.';
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const saved = restaurarEstadoCorreosJavier();
+      const params = new URLSearchParams(window.location.search);
+      const appParam = params.get('app') || params.get('proyecto') || (saved && saved.currentProject);
+      if (appParam) {
+        currentProject = appParam;
+        const sel = document.getElementById('correos-project-select');
+        if (sel) sel.value = currentProject;
+      }
+      if (saved) {
+        if (saved.bandejaActiva) {
+          cambiarBandeja(saved.bandejaActiva);
+        }
+        if (saved.origenFiltro && document.getElementById('correos-filtro-origen')) {
+          document.getElementById('correos-filtro-origen').value = saved.origenFiltro;
+        }
+        if (saved.cuentaFiltro && document.getElementById('correos-filtro-cuenta')) {
+          document.getElementById('correos-filtro-cuenta').value = saved.cuentaFiltro;
+        }
+        if (saved.busqueda !== undefined && document.getElementById('correos-busqueda')) {
+          document.getElementById('correos-busqueda').value = saved.busqueda;
+        }
+        if (saved.draftOrigen && document.getElementById('correo-input-origen')) {
+          document.getElementById('correo-input-origen').value = saved.draftOrigen;
+        }
+        if (saved.draftCuenta && document.getElementById('correo-input-cuenta')) {
+          document.getElementById('correo-input-cuenta').value = saved.draftCuenta;
+        }
+        if (saved.draftRemitente && document.getElementById('correo-input-remitente')) {
+          document.getElementById('correo-input-remitente').value = saved.draftRemitente;
+        }
+        if (saved.draftCategoria && document.getElementById('correo-input-categoria')) {
+          document.getElementById('correo-input-categoria').value = saved.draftCategoria;
+        }
+        if (saved.draftPrioridad && document.getElementById('correo-input-prioridad')) {
+          document.getElementById('correo-input-prioridad').value = saved.draftPrioridad;
+        }
+        if (saved.draftAsunto && document.getElementById('correo-input-asunto')) {
+          document.getElementById('correo-input-asunto').value = saved.draftAsunto;
+        }
+        if (saved.draftMensaje && document.getElementById('correo-input-mensaje')) {
+          document.getElementById('correo-input-mensaje').value = saved.draftMensaje;
+        }
+        if (saved.draftAccion && document.getElementById('correo-input-accion')) {
+          document.getElementById('correo-input-accion').value = saved.draftAccion;
+        }
+        if (saved.draftRespuesta && document.getElementById('correo-input-respuesta')) {
+          document.getElementById('correo-input-respuesta').value = saved.draftRespuesta;
+        }
+      }
+
+      [
+        'correo-input-origen',
+        'correo-input-cuenta',
+        'correo-input-remitente',
+        'correo-input-categoria',
+        'correo-input-prioridad',
+        'correo-input-asunto',
+        'correo-input-mensaje',
+        'correo-input-accion',
+        'correo-input-respuesta'
+      ].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('input', guardarEstadoCorreosJavier);
+          el.addEventListener('change', guardarEstadoCorreosJavier);
+        }
+      });
+
+      cargarEstadoConectorCorreo();
+      cargarPresetsProyecto();
+      cargarHistorialAuditoria();
+      cargarBuzonSoporte(false);
+    });
+  </script>
+</body>
+</html>

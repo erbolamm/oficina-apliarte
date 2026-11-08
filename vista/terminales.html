@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#005fa9">
+  <title>Terminales · Cuadrícula y Lanzadores · Oficina ErBolamm</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23005fa9%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2247%22%20font-size%3D%2236%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-weight%3D%22bold%22%20text-anchor%3D%22middle%22%20fill%3D%22%235ecef5%22%3E%E2%96%A3%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../panel-shell.css">
+  <link rel="stylesheet" href="/terminales.css">
+  <link rel="stylesheet" href="/herdr-movil.css">
+  <script>
+    try {
+      document.documentElement.dataset.theme =
+        localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
+      document.documentElement.dataset.sidebar =
+        localStorage.getItem("erbolamm-panel-sidebar") === "icons" ? "icons" : "full";
+    } catch (_) {}
+  </script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="office-sidebar" id="office-sidebar" aria-label="Navegación de la oficina">
+      <div class="sidebar-brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/><polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/></svg>
+        <span><strong>Oficina ApliArte</strong><small>Panel de control operativo ApliArte</small></span>
+        <button id="sidebar-toggle" class="sidebar-toggle" type="button" aria-controls="office-sidebar" aria-expanded="true" aria-label="Plegar la barra lateral a solo iconos" title="Plegar la barra lateral"><span class="chev" aria-hidden="true">‹</span></button>
+      </div>
+      <nav class="side-nav" aria-label="Secciones">
+        <a class="nav-card" href="/"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
+        <a class="nav-card" href="/vista/javier"><span class="nav-icon" aria-hidden="true">👤</span><span class="nav-copy"><strong>Espacio Javier</strong><small>Control personal y ja--</small></span></a>
+        <a class="nav-card" href="/vista/inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
+        <a class="nav-card" href="/vista/aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
+        <a class="nav-card" href="/vista/skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
+        <a class="nav-card" href="/vista/conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
+        <a class="nav-card" href="/vista/plugins"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
+        <a class="nav-card" href="/vista/reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
+        <a class="nav-card" href="/vista/propuestas"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
+        <a class="nav-card" href="/vista/diseno"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
+        <a class="nav-card" href="/vista/tiendas"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
+        <a class="nav-card" href="/vista/mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
+        <a class="nav-card" href="/vista/correos"><span class="nav-icon" aria-hidden="true">✉</span><span class="nav-copy"><strong>Correos y Alertas</strong><small>erbolamm y javier</small></span></a>
+        <a class="nav-card" href="/vista/pnl"><span class="nav-icon" aria-hidden="true">🧠</span><span class="nav-copy"><strong>Estudio PNL</strong><small>Enganche y microcopy</small></span></a>
+        <a class="nav-card" href="/vista/musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
+        <a class="nav-card" href="/vista/idiomas"><span class="nav-icon" aria-hidden="true">🌐</span><span class="nav-copy"><strong>Idiomas</strong><small>Traducción y locución</small></span></a>
+        <a class="nav-card" href="/vista/locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
+        <a class="nav-card" href="/vista/voicestudio"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
+        <a class="nav-card" href="/vista/terminales" aria-current="page"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
+        <a class="nav-card" href="/vista/facturas"><span class="nav-icon" aria-hidden="true">€</span><span class="nav-copy"><strong>Facturas</strong><small>Gestor de facturas</small></span></a>
+        <a class="nav-card" href="/vista/blogger"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
+        <a class="nav-card" href="/vista/bitacora"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
+        <a class="nav-card" href="/vista/directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
+        <a class="nav-card" href="/resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
+        <a class="nav-card" href="/vista/settings"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-copy"><strong>Ajustes</strong><small>Opciones por defecto</small></span></a>
+        <a class="nav-card" href="/vista/como-funciona"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
+      </nav>
+      <p class="sidebar-note"><strong>Privada y local</strong>Solo lanza procesos en este Mac. No expone secretos ni ejecuta tareas sin confirmación.</p>
+    </aside>
+    <div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
+
+    <main class="office-content" id="office">
+      <header class="topbar">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/><polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/></svg>
+          <h1>Terminales y Equipos</h1>
+        </div>
+        <span class="private-chip">Solo este Mac</span>
+        <span class="connection" id="connection" data-kind="loading">Conectando</span>
+        <button id="refresh-btn" class="btn-refresh" type="button" onclick="window.location.reload()" aria-label="Actualizar vista" title="Actualizar">↻</button>
+        <button id="theme-toggle" type="button" aria-label="Activar modo oscuro" title="Cambiar tema"><span id="theme-icon" aria-hidden="true">☾</span></button>
+      </header>
+
+      <p class="updated" id="updated">Listo para operar</p>
+
+      <!-- Selector de sub-vistas principales (3 pestañas limpias sin anidamiento) -->
+      <div class="subvista-tabs" role="tablist" aria-label="Sub-vistas de Terminales">
+        <button type="button" class="pill-btn active" id="subvista-tab-herdr" data-subvista="herdr" role="tab" aria-selected="true">⚡ Agentes y Consolas</button>
+        <button type="button" class="pill-btn" id="subvista-tab-externas" data-subvista="externas" role="tab" aria-selected="false">📱 Herramientas Externas</button>
+        <button type="button" class="pill-btn" id="subvista-tab-botonera" data-subvista="botonera" role="tab" aria-selected="false">🛠️ Botonera de Comandos</button>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           SUB-VISTA 1: Herdr · Agentes y Consola Móvil Unificada
+           ══════════════════════════════════════════════════════════════════════ -->
+      <section class="panel herdr-panel" id="subvista-herdr" aria-labelledby="herdr-movil-title">
+        <div class="panel-head">
+          <div>
+            <h2 id="herdr-movil-title">⚡ Herdr · Consola Móvil Táctil</h2>
+            <p class="panel-desc">Visualiza y controla en tiempo real todas las consolas y agentes de Herdr con botones optimizados para el pulgar.</p>
+          </div>
+          <div class="head-actions">
+            <button type="button" id="refresh-herdr-btn" class="secondary" title="Actualizar workspaces y paneles de Herdr">Actualizar</button>
+          </div>
+        </div>
+
+        <div class="herdr-movil-app">
+          <div id="herdr-notice" class="herdr-notice-banner" role="status" hidden></div>
+
+          <!-- 1. Workspaces (selector flexible táctil con disposición wrap) -->
+          <section aria-labelledby="workspaces-heading" id="herdr-workspaces-section">
+            <div class="section-label" id="workspaces-heading">Workspaces activos</div>
+            <div class="workspaces-scroll workspaces-wrap" id="workspaces-list" role="tablist" aria-label="Workspaces de Herdr"></div>
+          </section>
+
+          <!-- 2. Paneles del Workspace en Cuadrícula Compacta (Grid de 4) -->
+          <section aria-labelledby="panes-heading" id="herdr-panes-section">
+            <div class="section-label" id="panes-heading">Terminales y Equipos (Grid de 4)</div>
+            <div class="panes-grid grid-4" id="panes-list" role="list" aria-label="Paneles disponibles"></div>
+          </section>
+
+          <!-- 3. Subvista Drill-Down de Terminal Seleccionada -->
+          <section class="herdr-drilldown-view" id="herdr-drilldown-view" aria-labelledby="drilldown-pane-title" hidden>
+            <div class="drilldown-header">
+              <button type="button" class="drilldown-back-btn" id="btn-herdr-drilldown-back">
+                ← Volver a Cuadrícula
+              </button>
+              <div class="drilldown-title-box">
+                <div class="drilldown-title" id="drilldown-pane-title">Panel</div>
+                <div class="drilldown-subtitle" id="drilldown-pane-subtitle">idle · Cargando…</div>
+              </div>
+              <div class="drilldown-header-actions">
+                <button type="button" class="pill-btn active btn-pane-cmds" id="btn-drilldown-cmds" title="Comandos ejecutables">
+                  ⚡ Comandos ▼
+                </button>
+              </div>
+            </div>
+
+            <!-- Visor de Terminal en Vivo -->
+            <div class="terminal-viewer-wrap" id="terminal-viewer-wrap" aria-labelledby="terminal-view-heading">
+              <div class="terminal-header">
+                <div class="terminal-info">
+                  <span class="terminal-pane-tag" id="current-pane-tag">Panel</span>
+                  <span id="current-status-chip" class="herdr-chip chip-idle">idle</span>
+                  <span id="terminal-lines-count" class="herdr-subtitle">0 líneas</span>
+                </div>
+                <div class="terminal-controls">
+                  <button type="button" id="btn-live-toggle" class="term-btn active" title="Alternar actualización en vivo">
+                    <span class="live-indicator-dot" aria-hidden="true"></span>
+                    <span id="live-label">En vivo</span>
+                  </button>
+                  <button type="button" id="btn-autoscroll" class="term-btn active" title="Alternar auto-scroll">⬇ Auto-scroll</button>
+                  <button type="button" id="btn-copiar" class="term-btn" title="Copiar salida al portapapeles">Copiar</button>
+                  <button type="button" id="btn-zoom-out" class="term-btn" title="Disminuir tamaño de letra">A-</button>
+                  <button type="button" id="btn-zoom-in" class="term-btn" title="Aumentar tamaño de letra">A+</button>
+                </div>
+              </div>
+              <pre id="terminal-output" class="terminal-box" tabindex="0">Cargando consola de Herdr…</pre>
+
+              <!-- Teclas Rápidas de Terminal -->
+              <div class="quick-keys-strip" aria-label="Teclas rápidas de terminal">
+                <button type="button" class="quick-key-btn btn-ctrl-c" data-key="ctrl-c" title="Detener proceso actual con Ctrl+C">🛑 Ctrl+C</button>
+                <button type="button" class="quick-key-btn" data-key="enter" title="Enviar tecla Enter">↵ Enter</button>
+                <button type="button" class="quick-key-btn" data-key="esc" title="Enviar tecla Escape">⎋ Esc</button>
+                <button type="button" class="quick-key-btn" data-key="tab" title="Enviar tecla Tab">Tab</button>
+                <button type="button" class="quick-key-btn" data-key="clear" title="Limpiar buffer en pantalla">Limpiar</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Desplegable Flotante de Comandos de Terminal -->
+          <div class="terminal-cmds-dropdown" id="terminal-cmds-dropdown" hidden>
+            <div class="dropdown-header">
+              <span class="dropdown-title">⚡ Comandos de Terminal</span>
+              <button type="button" class="dropdown-close" id="btn-close-cmds-dropdown" aria-label="Cerrar">✕</button>
+            </div>
+            <div class="dropdown-list" id="dropdown-cmds-list"></div>
+          </div>
+
+          <!-- Diálogo Modal de Confirmación Previa -->
+          <div class="terminal-confirm-overlay" id="terminal-confirm-overlay" hidden>
+            <div class="terminal-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
+              <div class="confirm-modal-header">
+                <span class="confirm-icon">⚡</span>
+                <h3 class="confirm-title" id="confirm-modal-title">Confirmar Ejecución</h3>
+              </div>
+              <p class="confirm-modal-body" id="confirm-modal-body">
+                ¿Deseas ejecutar este comando en la terminal seleccionada?
+              </p>
+              <div class="confirm-modal-preview">
+                <code id="confirm-modal-cmd">git status</code>
+                <span class="confirm-modal-target" id="confirm-modal-target">Terminal: w3M:p1</span>
+              </div>
+              <div class="confirm-modal-actions">
+                <button type="button" class="touch-btn touch-btn-primary" id="btn-confirm-exec">
+                  ✓ Confirmar Ejecución
+                </button>
+                <button type="button" class="touch-btn" id="btn-confirm-cancel">
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           SUB-VISTA 2: Herramientas Externas & Dispositivos
+           ══════════════════════════════════════════════════════════════════════ -->
+      <section class="panel herramientas-externas-panel" id="subvista-externas" aria-labelledby="ext-tools-heading" hidden>
+        <div class="panel-head">
+          <div>
+            <h2 id="ext-tools-heading">📱 Herramientas Externas &amp; Dispositivos</h2>
+            <p class="panel-desc">Espejo de pantallas de móvil (Android / iPhone) y CLIs locales independientes de Herdr.</p>
+          </div>
+          <div class="head-actions">
+            <button id="refresh-externas" class="primary" type="button" title="Refrescar estado de herramientas externas">Actualizar</button>
+          </div>
+        </div>
+
+        <!-- Rejilla plana de herramientas externas (scrcpy, iPhone, mmx) -->
+        <div id="herramientas-externas-grid" class="herramientas-externas-grid" aria-live="polite"></div>
+
+        <!-- Módulo MiniMax integrado (sin anidamiento) -->
+        <div class="minimax-recurrente-card er-card" id="minimax-recurrente-card">
+          <div class="card-status-row">
+            <div class="status-meta">
+              <span class="er-chip chip-idle">🔄 Tarea Periódica Programada</span>
+              <strong id="mmx-rec-titulo">mmx--actualizacion-periodica</strong>
+            </div>
+            <button id="btn-ejecutar-recurrente-mmx" class="pill-btn" type="button" title="Ejecutar tarea recurrente de actualización ahora">▶ Actualizar Cuota Ahora</button>
+            <span id="mmx-rec-estado-chip" class="er-chip chip-idle">Comprobando…</span>
+          </div>
+          <p id="mmx-rec-desc" class="panel-desc">Supervisión periódica de cuota y disponibilidad de modelos de MiniMax.</p>
+          <div class="meta-pills">
+            <span class="meta-pill" id="mmx-rec-dias">Días: Lunes, Miércoles, Viernes</span>
+            <span class="meta-pill" id="mmx-rec-hora">Hora: 09:00</span>
+            <span class="meta-pill" id="mmx-rec-ultima">Última ejecución: Comprobando…</span>
+          </div>
+        </div>
+
+        <!-- Rejilla de opciones rápidas de MiniMax -->
+        <div class="minimax-grid" id="minimax-grid" aria-live="polite"></div>
+
+        <!-- Consola de Resultados Herramientas Externas -->
+        <section class="consola-panel" aria-labelledby="consola-minimax-titulo">
+          <div class="consola-head">
+            <div class="consola-info">
+              <h3 id="consola-minimax-titulo">Consola de Salida</h3>
+              <span id="consola-minimax-estado" class="er-chip chip-idle">En espera</span>
+              <span id="consola-minimax-duracion" class="consola-duracion"></span>
+            </div>
+            <div class="consola-actions">
+              <button type="button" id="btn-copiar-minimax" class="consola-btn" title="Copiar salida al portapapeles">Copiar resultado</button>
+              <button type="button" id="btn-limpiar-minimax" class="consola-btn" title="Limpiar la salida actual">Limpiar consola</button>
+            </div>
+          </div>
+          <div class="consola-body">
+            <div id="consola-minimax-comando-actual" class="consola-comando-linea" hidden>
+              <span class="consola-prompt-symbol">&gt;</span>
+              <code id="consola-minimax-comando-texto"></code>
+            </div>
+            <pre id="consola-minimax-texto" class="consola-caja" tabindex="0">Pulsa cualquier opción para ver la respuesta aquí.</pre>
+          </div>
+        </section>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           SUB-VISTA 3: Botonera General y Comandos
+           ══════════════════════════════════════════════════════════════════════ -->
+      <section class="panel botonera-panel" id="subvista-botonera" aria-labelledby="botonera-title" hidden>
+        <div class="panel-head">
+          <div>
+            <h2 id="botonera-title">Acciones Rápidas con Prompts y Parámetros</h2>
+            <p class="panel-desc">Botonera modular inspirada en los comandos de Twitch. Escribe tus prompts, ajusta parámetros y ejecuta CLIs locales (MiniMax <code>mmx</code>, espejo Android <code>scrcpy</code>, etc.) recibiendo la respuesta directa en pantalla.</p>
+          </div>
+          <div class="head-actions">
+            <button id="open-start-folder" class="secondary" type="button" title="Abrir carpeta bin en Finder">Carpeta bin</button>
+            <button id="refresh-view" data-refresh="panel" class="primary" type="button">Actualizar</button>
+          </div>
+        </div>
+
+        <!-- Filtros por categoría y barra de búsqueda -->
+        <div class="botonera-filtros-bar">
+          <div class="categoria-pills" id="categoria-pills" role="tablist" aria-label="Categorías de comandos">
+            <button type="button" class="pill-btn active" data-cat="todas" role="tab" aria-selected="true">🌟 Todas</button>
+            <button type="button" class="pill-btn" data-cat="mmx" role="tab" aria-selected="false">🧠 MiniMax (mmx)</button>
+            <button type="button" class="pill-btn" data-cat="moviles" role="tab" aria-selected="false">📱 Móviles (Android / iPhone)</button>
+            <button type="button" class="pill-btn" data-cat="sistema" role="tab" aria-selected="false">⚡ Sistema &amp; Shell</button>
+          </div>
+          <div class="busqueda-wrapper">
+            <input type="search" id="busqueda-input" class="busqueda-input" placeholder="Buscar comando por nombre, acción o descripción…" aria-label="Buscar comando">
+          </div>
+        </div>
+
+        <p id="botonera-notice" class="terminal-notice" role="status">Haz clic en cualquier acción para ejecutarla o añade texto al cuadro de prompt correspondiente.</p>
+
+        <!-- Rejilla de tarjetas de comandos -->
+        <div id="botonera-grid" class="botonera-grid" aria-live="polite"></div>
+
+        <!-- Consola de Resultados Integrada -->
+        <section class="consola-panel" aria-labelledby="consola-titulo">
+          <div class="consola-head">
+            <div class="consola-info">
+              <h3 id="consola-titulo">Consola de Resultados</h3>
+              <span id="consola-estado" class="consola-chip chip-idle">En espera</span>
+              <span id="consola-duracion" class="consola-duracion"></span>
+            </div>
+            <div class="consola-actions">
+              <button type="button" id="btn-copiar-consola" class="consola-btn" title="Copiar salida al portapapeles">Copiar resultado</button>
+              <button type="button" id="btn-limpiar-consola" class="consola-btn" title="Limpiar la salida actual">Limpiar consola</button>
+            </div>
+          </div>
+          <div class="consola-body">
+            <div id="consola-comando-actual" class="consola-comando-linea" hidden>
+              <span class="consola-prompt-symbol">&gt;</span>
+              <code id="consola-comando-texto"></code>
+            </div>
+            <pre id="consola-texto" class="consola-caja" tabindex="0">Pulsa cualquier botón de la botonera para ejecutar un comando y ver la salida aquí en tiempo real.</pre>
+          </div>
+        </section>
+      </section>
+
+      <!-- Barra Fija Inferior Adaptada para el Pulgar (Activa en la sub-vista Herdr) -->
+      <footer class="herdr-thumb-bar" id="herdr-thumb-bar">
+        <div class="thumb-bar-inner">
+          <div class="quick-commands-carousel" aria-label="Comandos frecuentes sugeridos">
+            <button type="button" class="cmd-pill" data-cmd="git status">git status</button>
+            <button type="button" class="cmd-pill" data-cmd="git diff">git diff</button>
+            <button type="button" class="cmd-pill" data-cmd="dart test">dart test</button>
+            <button type="button" class="cmd-pill" data-cmd="dart analyze">dart analyze</button>
+            <button type="button" class="cmd-pill" data-cmd="herdr agent list">agent list</button>
+            <button type="button" class="cmd-pill" data-cmd="herdr pane list">pane list</button>
+          </div>
+
+          <form id="herdr-input-form" class="input-row">
+            <button type="button" id="btn-mode-toggle" class="mode-toggle-btn" title="Cambiar modo de envío">💬 Prompt</button>
+            <textarea id="herdr-input-text" class="herdr-textarea" rows="1" placeholder="Instrucción o prompt para el agente…" enterkeyhint="send" maxlength="2000"></textarea>
+            <button type="button" id="btn-herdr-dictate" class="mic-dictate-btn" title="Dictar por voz" aria-label="Dictar por voz">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5-3c0 2.76-2.24 5-5 5s-5-2.76-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+            </button>
+            <button type="submit" id="btn-send" class="send-action-btn" title="Enviar">Enviar</button>
+          </form>
+        </div>
+      </footer>
+
+      <p class="public-note">Oficina privada local · Central ErBolamm · Responsive Smartphone &amp; Desktop</p>
+    </main>
+  </div>
+  <p class="sr-only" id="announcer" aria-live="polite"></p>
+  <script src="../panel-shell.js"></script>
+  <script src="/terminales.js"></script>
+  <script src="/herdr-movil.js"></script>
+</body>
+</html>

@@ -1,0 +1,1492 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#005fa9">
+  <title>Facturas · Oficina local de ErBolamm</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23005fa9%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2248%22%20font-size%3D%2240%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-weight%3D%22bold%22%20text-anchor%3D%22middle%22%20fill%3D%22%235ecef5%22%3E%E2%82%AC%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../panel-shell.css">
+  <style>
+    .pill-btn {
+      border: 1px solid #94a3b8;
+      background: var(--surface, #ffffff);
+      color: var(--ink, #1e293b);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+    .pill-btn:hover {
+      background: #e2e8f0;
+      border-color: #64748b;
+    }
+    .btn-table-ready {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid #16a34a;
+      background: #f0fdf4;
+      color: #15803d;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .btn-table-ready:hover {
+      background: #dcfce7;
+      border-color: #15803d;
+    }
+    .btn-table-del {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid #dc2626;
+      background: #fef2f2;
+      color: #b91c1c;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .btn-table-del:hover {
+      background: #fee2e2;
+      border-color: #991b1b;
+    }
+    #btn-limpiar-borrador-factura {
+      border: 1px solid #94a3b8;
+      background: #f8fafc;
+      color: #334155;
+      font-weight: 600;
+    }
+    #btn-limpiar-borrador-factura:hover {
+      background: #e2e8f0;
+      border-color: #64748b;
+    }
+    .pill-btn.btn-action-start,
+    #btn-guardar-factura,
+    #btn-exportar-gestoria,
+    #btn-arrancar-facturas-head {
+      border: 1px solid #1b5e20 !important;
+      background: #2e7d32 !important;
+      color: #ffffff !important;
+      font-weight: 700 !important;
+      box-shadow: 0 2px 6px rgba(46, 125, 50, 0.28) !important;
+    }
+    .pill-btn.btn-action-start:hover,
+    #btn-guardar-factura:hover,
+    #btn-exportar-gestoria:hover,
+    #btn-arrancar-facturas-head:hover {
+      background: #1b5e20 !important;
+      border-color: #0e3813 !important;
+      color: #ffffff !important;
+    }
+    .pill-btn.btn-action-stop,
+    #btn-apagar-facturas-head {
+      border: 1px solid #8e0000 !important;
+      background: #c62828 !important;
+      color: #ffffff !important;
+      font-weight: 700 !important;
+      box-shadow: 0 2px 6px rgba(198, 40, 40, 0.28) !important;
+    }
+    .pill-btn.btn-action-stop:hover,
+    #btn-apagar-facturas-head:hover {
+      background: #b71c1c !important;
+      border-color: #7f0000 !important;
+      color: #ffffff !important;
+    }
+    html[data-theme="dark"] .pill-btn {
+      border-color: #475569;
+      background: #1e293b;
+      color: #f1f5f9;
+    }
+    html[data-theme="dark"] .pill-btn:hover {
+      background: #334155;
+      border-color: #64748b;
+    }
+    html[data-theme="dark"] .btn-table-ready {
+      border-color: #22c55e;
+      background: #052e16;
+      color: #86efac;
+    }
+    html[data-theme="dark"] .btn-table-ready:hover {
+      background: #14532d;
+    }
+    html[data-theme="dark"] .btn-table-del {
+      border-color: #ef4444;
+      background: #450a0a;
+      color: #fca5a5;
+    }
+    html[data-theme="dark"] .btn-table-del:hover {
+      background: #7f1d1d;
+    }
+    html[data-theme="dark"] #btn-limpiar-borrador-factura {
+      border-color: #475569;
+      background: #1e293b;
+      color: #e2e8f0;
+    }
+    html[data-theme="dark"] #btn-limpiar-borrador-factura:hover {
+      background: #334155;
+    }
+    html[data-theme="dark"] .pill-btn.btn-action-start,
+    html[data-theme="dark"] #btn-guardar-factura,
+    html[data-theme="dark"] #btn-exportar-gestoria,
+    html[data-theme="dark"] #btn-arrancar-facturas-head {
+      border-color: #166534 !important;
+      background: #15803d !important;
+      color: #ffffff !important;
+    }
+    html[data-theme="dark"] .pill-btn.btn-action-start:hover,
+    html[data-theme="dark"] #btn-guardar-factura:hover,
+    html[data-theme="dark"] #btn-exportar-gestoria:hover,
+    html[data-theme="dark"] #btn-arrancar-facturas-head:hover {
+      background: #14532d !important;
+      border-color: #052e16 !important;
+    }
+    html[data-theme="dark"] .pill-btn.btn-action-stop,
+    html[data-theme="dark"] #btn-apagar-facturas-head {
+      border-color: #991b1b !important;
+      background: #b91c1c !important;
+      color: #ffffff !important;
+    }
+    html[data-theme="dark"] .pill-btn.btn-action-stop:hover,
+    html[data-theme="dark"] #btn-apagar-facturas-head:hover {
+      background: #7f1d1d !important;
+      border-color: #450a0a !important;
+    }
+  </style>
+  <script>
+    try {
+      document.documentElement.dataset.theme =
+        localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
+      document.documentElement.dataset.sidebar =
+        localStorage.getItem("erbolamm-panel-sidebar") === "icons" ? "icons" : "full";
+    } catch (_) {}
+  </script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="office-sidebar" id="office-sidebar" aria-label="Navegación de la oficina">
+      <div class="sidebar-brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+        </svg>
+        <span><strong>Oficina ApliArte</strong><small>Panel de control operativo ApliArte</small></span>
+        <button id="sidebar-toggle" class="sidebar-toggle" type="button"
+          aria-controls="office-sidebar" aria-expanded="true" aria-label="Plegar la barra lateral a solo iconos" title="Plegar la barra lateral">
+          <span class="chev" aria-hidden="true">‹</span>
+        </button>
+      </div>
+      <nav class="side-nav" aria-label="Secciones">
+        <a class="nav-card" href="/"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
+        <a class="nav-card" href="/vista/javier"><span class="nav-icon" aria-hidden="true">👤</span><span class="nav-copy"><strong>Espacio Javier</strong><small>Control personal y ja--</small></span></a>
+        <a class="nav-card" href="/vista/inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
+        <a class="nav-card" href="/vista/aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
+        <a class="nav-card" href="/vista/skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
+        <a class="nav-card" href="/vista/conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
+        <a class="nav-card" href="/vista/plugins"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
+        <a class="nav-card" href="/vista/reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
+        <a class="nav-card" href="/vista/propuestas"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
+        <a class="nav-card" href="/vista/diseno"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
+        <a class="nav-card" href="/vista/tiendas"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
+        <a class="nav-card" href="/vista/mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
+        <a class="nav-card" href="/vista/correos"><span class="nav-icon" aria-hidden="true">✉</span><span class="nav-copy"><strong>Correos y Alertas</strong><small>erbolamm y javier</small></span></a>
+        <a class="nav-card" href="/vista/pnl"><span class="nav-icon" aria-hidden="true">🧠</span><span class="nav-copy"><strong>Estudio PNL</strong><small>Enganche y microcopy</small></span></a>
+        <a class="nav-card" href="/vista/musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
+        <a class="nav-card" href="/vista/idiomas"><span class="nav-icon" aria-hidden="true">🌐</span><span class="nav-copy"><strong>Idiomas</strong><small>Traducción y locución</small></span></a>
+        <a class="nav-card" href="/vista/locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
+        <a class="nav-card" href="/vista/voicestudio"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
+        <a class="nav-card" href="/vista/terminales"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
+        <a class="nav-card" href="/vista/facturas" aria-current="page"><span class="nav-icon" aria-hidden="true">€</span><span class="nav-copy"><strong>Facturas</strong><small>Gestor de facturas</small></span></a>
+        <a class="nav-card" href="/vista/blogger"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
+        <a class="nav-card" href="/vista/bitacora"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
+        <a class="nav-card" href="/vista/directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
+        <a class="nav-card" href="/resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
+        <a class="nav-card" href="/vista/settings"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-copy"><strong>Ajustes</strong><small>Opciones por defecto</small></span></a>
+        <a class="nav-card" href="/vista/como-funciona"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
+      </nav>
+      <div class="sidebar-facturas-control">
+        <button id="btn-arrancar-facturas" class="btn-arrancar-panel" type="button" aria-label="Arrancar panel de facturas" title="Arrancar panel de facturas">
+          <span class="arrancar-icon" aria-hidden="true">▶</span>
+          <span>Arrancar panel</span>
+        </button>
+        <button id="btn-apagar-facturas" class="btn-apagar-panel" type="button" aria-label="Apagar panel de facturas" title="Apagar panel de facturas">
+          <span class="apagar-icon" aria-hidden="true">⏻</span>
+          <span>Apagar panel</span>
+        </button>
+        <div class="sidebar-robot-note">
+          <span class="robot-icon" aria-hidden="true">ℹ</span>
+          <span>El robot solo trabaja cuando pulsas «Empezar».</span>
+        </div>
+      </div>
+    </aside>
+    <div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
+
+    <main class="office-content" id="office">
+    <header class="topbar">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+        </svg>
+        <h1>Facturas</h1>
+      </div>
+      <span class="private-chip">Oficina local · privada</span>
+      <span class="connection" id="connection" data-kind="loading">Conectando</span>
+      <button id="refresh-btn" class="btn-refresh" type="button" onclick="window.location.reload()" aria-label="Actualizar vista" title="Actualizar">↻</button>
+      <button id="theme-toggle" type="button" aria-label="Activar modo oscuro" title="Cambiar tema">
+        <span id="theme-icon" aria-hidden="true">☾</span>
+      </button>
+    </header>
+    <p class="updated" id="updated">Esperando la primera lectura</p>
+
+    <div id="facturas-app-blocked-banner" role="alert" style="display:none; background:#fef2f2; color:#991b1b; border:2px solid #dc2626; border-radius:12px; padding:14px 18px; margin-bottom:16px; font-weight:600;">
+      🚫 Bloqueo de Seguridad: La pestaña <strong>Facturas</strong> es de uso personal y exclusivo de <strong>Javier Mateo</strong>. Ningún repositorio de app ni orquestador de proyecto tiene permiso para consultar, modificar o exportar facturas o documentación de gestoría.
+    </div>
+
+    <!-- Conmutador de Módulos de Facturación y Presupuestos -->
+    <nav class="facturas-subnav" aria-label="Subsecciones de Facturación" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px;">
+      <button type="button" id="tab-btn-organizador" class="pill-btn primary btn-subnav-active" onclick="cambiarSubseccionFacturas('organizador')" style="padding:8px 16px; border-radius:999px; font-weight:700; cursor:pointer;">
+        📑 Organizador Trimestral (Facturas)
+      </button>
+      <button type="button" id="tab-btn-presupuestos" class="pill-btn" onclick="cambiarSubseccionFacturas('presupuestos')" style="padding:8px 16px; border-radius:999px; font-weight:700; cursor:pointer;">
+        💼 Motor de Presupuestos y Cotizaciones
+      </button>
+      <button type="button" id="tab-btn-legado" class="pill-btn" onclick="cambiarSubseccionFacturas('legado')" style="padding:8px 16px; border-radius:999px; font-weight:700; cursor:pointer;">
+        ⚙️ Gestor de Facturas (:8787)
+      </button>
+    </nav>
+
+    <section class="panel" id="organizador-trimestral-javier" aria-labelledby="organizador-trimestral-title" style="margin-bottom: 18px;">
+      <div class="panel-head" style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; gap:12px;">
+        <div class="panel-head-title">
+          <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(0,95,169,0.12); color:#005fa9; border:1px solid rgba(0,95,169,0.3); border-radius:999px; padding:4px 12px; font-size:0.78rem; font-weight:700; margin-bottom:6px;">
+            🔒 Uso exclusivo de Javier Mateo · Workspace Herdr: javier · Sin acceso para repositorios de apps
+          </div>
+          <h2 id="organizador-trimestral-title">Organizador Trimestral y Pack para Gestoría</h2>
+          <p>Clasifica las facturas de cada trimestre, calcula automáticamente IVA e IRPF y genera la hoja de cálculo CSV junto con el resumen ordenado listo para enviar a la gestoría.</p>
+        </div>
+        <div class="panel-head-actions" style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+          <label style="font-size:0.85rem; font-weight:600;">
+            Ejercicio
+            <select id="facturas-ejercicio" style="margin-left:4px; padding:6px 10px; border-radius:8px; border:1px solid rgba(128,128,128,0.35);">
+              <option value="2026">2026</option>
+              <option value="2025">2025</option>
+            </select>
+          </label>
+          <label style="font-size:0.85rem; font-weight:600;">
+            Trimestre
+            <select id="facturas-trimestre" style="margin-left:4px; padding:6px 10px; border-radius:8px; border:1px solid rgba(128,128,128,0.35);">
+              <option value="1T">1T (Ene–Mar)</option>
+              <option value="2T">2T (Abr–Jun)</option>
+              <option value="3T">3T (Jul–Sep)</option>
+              <option value="4T" selected>4T (Oct–Dic)</option>
+            </select>
+          </label>
+          <input id="facturas-busqueda" type="search" placeholder="Buscar proveedor, concepto o NIF…" aria-label="Buscar facturas por proveedor, concepto o NIF" style="padding:6px 12px; border-radius:8px; border:1px solid rgba(128,128,128,0.35); min-width:220px;">
+          <button type="button" id="btn-exportar-gestoria" class="pill-btn btn-action-start" onclick="exportarPackGestoria()" title="Generar hoja de cálculo CSV y resumen ordenado para la gestoría">
+            📊 Exportar Hoja de Cálculo CSV y Resumen para Gestoría
+          </button>
+        </div>
+      </div>
+
+      <div class="facturas-kpi-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:10px; margin:14px 0;">
+        <div style="padding:10px 14px; border-radius:10px; border:1px solid rgba(128,128,128,0.25); background:rgba(0,95,169,0.04);">
+          <small style="display:block; opacity:0.75; font-size:0.78rem;">Facturas del trimestre</small>
+          <strong id="kpi-num-facturas" style="font-size:1.25rem;">0</strong>
+        </div>
+        <div style="padding:10px 14px; border-radius:10px; border:1px solid rgba(128,128,128,0.25); background:rgba(0,95,169,0.04);">
+          <small style="display:block; opacity:0.75; font-size:0.78rem;">Base imponible total</small>
+          <strong id="kpi-base" style="font-size:1.25rem;">0.00 €</strong>
+        </div>
+        <div style="padding:10px 14px; border-radius:10px; border:1px solid rgba(128,128,128,0.25); background:rgba(0,95,169,0.04);">
+          <small style="display:block; opacity:0.75; font-size:0.78rem;">Cuota IVA acumulada</small>
+          <strong id="kpi-iva" style="font-size:1.25rem;">0.00 €</strong>
+        </div>
+        <div style="padding:10px 14px; border-radius:10px; border:1px solid rgba(128,128,128,0.25); background:rgba(0,95,169,0.04);">
+          <small style="display:block; opacity:0.75; font-size:0.78rem;">Retención IRPF</small>
+          <strong id="kpi-irpf" style="font-size:1.25rem;">0.00 €</strong>
+        </div>
+        <div style="padding:10px 14px; border-radius:10px; border:1px solid rgba(0,95,169,0.4); background:rgba(0,95,169,0.1);">
+          <small style="display:block; opacity:0.85; font-size:0.78rem;">Total líquido trimestre</small>
+          <strong id="kpi-total" style="font-size:1.25rem; color:#005fa9;">0.00 €</strong>
+        </div>
+      </div>
+
+      <form id="form-factura-trimestre" onsubmit="guardarFacturaTrimestre(event)" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(155px, 1fr)); gap:10px; padding:14px; border-radius:12px; border:1px solid rgba(128,128,128,0.25); margin-bottom:14px;">
+        <input type="hidden" id="factura-id" value="">
+        <label style="display:flex; flex-direction:column; gap:4px; font-size:0.8rem; font-weight:600;">
+          Fecha
+          <input id="factura-fecha" type="date" required style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35);">
+        </label>
+        <label style="display:flex; flex-direction:column; gap:4px; font-size:0.8rem; font-weight:600;">
+          Nº Factura
+          <input id="factura-numero" type="text" placeholder="F-2026-001" required style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35);">
+        </label>
+        <label style="display:flex; flex-direction:column; gap:4px; font-size:0.8rem; font-weight:600;">
+          Proveedor / Emisor
+          <input id="factura-proveedor" type="text" placeholder="Proveedor S.L." required style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35);">
+        </label>
+        <label style="display:flex; flex-direction:column; gap:4px; font-size:0.8rem; font-weight:600;">
+          NIF / CIF
+          <input id="factura-nif" type="text" placeholder="B12345678" style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35);">
+        </label>
+        <label style="display:flex; flex-direction:column; gap:4px; font-size:0.8rem; font-weight:600;">
+          Concepto
+          <input id="factura-concepto" type="text" placeholder="Hosting, licencias, suministro…" required style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35);">
+        </label>
+        <label style="display:flex; flex-direction:column; gap:4px; font-size:0.8rem; font-weight:600;">
+          Categoría
+          <select id="factura-categoria" style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35);">
+            <option value="gasto_deducible">Gasto deducible</option>
+            <option value="infraestructura_cloud">Infraestructura / Cloud</option>
+            <option value="software_ia">Suscripciones Software / IA</option>
+            <option value="servicios_profesionales">Servicios profesionales</option>
+            <option value="ingreso_emitida">Factura emitida (Ingreso)</option>
+          </select>
+        </label>
+        <label style="display:flex; flex-direction:column; gap:4px; font-size:0.8rem; font-weight:600;">
+          Base Imponible (€)
+          <input id="factura-base" type="number" step="0.01" placeholder="100.00" required style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35);">
+        </label>
+        <label style="display:flex; flex-direction:column; gap:4px; font-size:0.8rem; font-weight:600;">
+          IVA (%)
+          <input id="factura-iva" type="number" step="0.01" value="21" style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35);">
+        </label>
+        <label style="display:flex; flex-direction:column; gap:4px; font-size:0.8rem; font-weight:600;">
+          IRPF (%)
+          <input id="factura-irpf" type="number" step="0.01" value="0" style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35);">
+        </label>
+        <label style="display:flex; flex-direction:column; gap:4px; font-size:0.8rem; font-weight:600;">
+          Estado para Gestoría
+          <select id="factura-estado" style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35);">
+            <option value="pendiente">Pendiente de revisar</option>
+            <option value="revisada">Revisada</option>
+            <option value="lista_gestoria">Lista para gestoría</option>
+          </select>
+        </label>
+        <label style="display:flex; flex-direction:column; gap:4px; font-size:0.8rem; font-weight:600; grid-column: span 2;">
+          Notas de la factura
+          <input id="factura-notas" type="text" placeholder="Observaciones para el cierre trimestral…" style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35);">
+        </label>
+        <label style="display:flex; flex-direction:column; gap:4px; font-size:0.8rem; font-weight:600; grid-column: 1 / -1;">
+          Notas generales del trimestre para la Gestoría
+          <input id="facturas-notas-gestoria" type="text" placeholder="Indicaciones para la gestoría sobre este trimestre (modelo 303 / 130)…" style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35);">
+        </label>
+        <div style="grid-column: 1 / -1; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-top:4px;">
+          <span id="facturas-feedback-status" style="font-size:0.83rem; opacity:0.85;">Estado persistido automáticamente en el perfil de Javier Mateo.</span>
+          <div style="display:flex; gap:8px;">
+            <button type="button" id="btn-limpiar-borrador-factura" class="pill-btn" onclick="limpiarFormularioFactura()">Limpiar formulario</button>
+            <button type="submit" id="btn-guardar-factura" class="pill-btn btn-action-start">Añadir / Guardar Factura en Trimestre</button>
+          </div>
+        </div>
+      </form>
+
+      <div style="overflow-x:auto;">
+        <table id="tabla-facturas-trimestre" style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+          <thead>
+            <tr style="border-bottom:2px solid rgba(128,128,128,0.3); text-align:left;">
+              <th style="padding:8px;">Fecha</th>
+              <th style="padding:8px;">Nº Factura</th>
+              <th style="padding:8px;">Proveedor</th>
+              <th style="padding:8px;">NIF/CIF</th>
+              <th style="padding:8px;">Concepto</th>
+              <th style="padding:8px; text-align:right;">Base (€)</th>
+              <th style="padding:8px; text-align:right;">IVA (€)</th>
+              <th style="padding:8px; text-align:right;">IRPF (€)</th>
+              <th style="padding:8px; text-align:right;">Total (€)</th>
+              <th style="padding:8px;">Estado</th>
+              <th style="padding:8px;">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-facturas-trimestre">
+            <tr>
+              <td colspan="11" style="padding:12px; opacity:0.75;">Cargando facturas del trimestre…</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Motor Transversal de Presupuestos y Cotizaciones -->
+    <section class="panel" id="motor-presupuestos-apliarte" aria-labelledby="presupuestos-title" style="display:none; margin-bottom: 18px;">
+      <div class="panel-head" style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; gap:12px;">
+        <div class="panel-head-title">
+          <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(0,95,169,0.12); color:#005fa9; border:1px solid rgba(0,95,169,0.3); border-radius:999px; padding:4px 12px; font-size:0.78rem; font-weight:700; margin-bottom:6px;">
+            💼 Motor Transversal de Presupuestos · ApliArte
+          </div>
+          <h2 id="presupuestos-title">Presupuestos y Cotizaciones de Servicios</h2>
+          <p>Tarificación oficial en tres niveles de servicio más software por hitos, cálculos deterministas con desglose de IVA (21%), pago fraccionado 50%/50%, cláusula de confidencialidad NDA y generación de documentos imprimibles según APLIARTE_BRAND_KIT.md.</p>
+        </div>
+        <div class="panel-head-actions" style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+          <button type="button" id="btn-nuevo-presupuesto-head" class="pill-btn btn-action-start" onclick="nuevoPresupuesto()" title="Crear un nuevo presupuesto">
+            + Nuevo Presupuesto
+          </button>
+        </div>
+      </div>
+
+      <!-- Tarjetas de Tarifas Oficiales -->
+      <div class="tarifas-cards-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px; margin:14px 0;">
+        <div style="padding:10px 14px; border-radius:10px; border:1px solid rgba(0,95,169,0.25); background:rgba(0,95,169,0.04);">
+          <div style="font-size:0.75rem; font-weight:700; color:#005fa9; text-transform:uppercase;">Nivel 1 · Pericial / Forense</div>
+          <div style="font-size:1.25rem; font-weight:800; color:#00467b; margin:2px 0;">35.00 € <small style="font-size:0.75rem; font-weight:normal;">/ hora</small></div>
+          <div style="font-size:0.75rem; color:var(--ink-muted, #64748b);">Evidencias judiciales, cadena de custodia y cotejo de voz.</div>
+        </div>
+        <div style="padding:10px 14px; border-radius:10px; border:1px solid rgba(0,95,169,0.25); background:rgba(0,95,169,0.04);">
+          <div style="font-size:0.75rem; font-weight:700; color:#005fa9; text-transform:uppercase;">Nivel 2 · Editorial / Audiovisual</div>
+          <div style="font-size:1.25rem; font-weight:800; color:#00467b; margin:2px 0;">20.00 € <small style="font-size:0.75rem; font-weight:normal;">/ hora</small></div>
+          <div style="font-size:0.75rem; color:var(--ink-muted, #64748b);">Creadores, podcasts, transcripción y subtitulado.</div>
+        </div>
+        <div style="padding:10px 14px; border-radius:10px; border:1px solid rgba(0,95,169,0.25); background:rgba(0,95,169,0.04);">
+          <div style="font-size:0.75rem; font-weight:700; color:#005fa9; text-transform:uppercase;">Nivel 3 · Reuniones / Actas</div>
+          <div style="font-size:1.25rem; font-weight:800; color:#00467b; margin:2px 0;">12.00 € <small style="font-size:0.75rem; font-weight:normal;">/ hora</small></div>
+          <div style="font-size:0.75rem; color:var(--ink-muted, #64748b);">Juntas directivas, actas y conferencias corporativas.</div>
+        </div>
+        <div style="padding:10px 14px; border-radius:10px; border:1px solid rgba(0,95,169,0.25); background:rgba(0,95,169,0.04);">
+          <div style="font-size:0.75rem; font-weight:700; color:#005fa9; text-transform:uppercase;">Desarrollo Software</div>
+          <div style="font-size:1.25rem; font-weight:800; color:#00467b; margin:2px 0;">Por Hitos <small style="font-size:0.75rem; font-weight:normal;">/ alcance</small></div>
+          <div style="font-size:0.75rem; color:var(--ink-muted, #64748b);">Arquitectura, sprints técnicos, QA y despliegue.</div>
+        </div>
+      </div>
+
+      <!-- Formulario de Presupuesto -->
+      <form id="form-presupuesto" onsubmit="guardarPresupuestoForm(event)" style="padding:16px; border-radius:12px; border:1px solid rgba(128,128,128,0.25); margin-bottom:18px;">
+        <input type="hidden" id="presupuesto-id" value="">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-bottom:16px;">
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.8rem; font-weight:600;">
+            Nº Presupuesto
+            <input id="presupuesto-numero" type="text" placeholder="P-2026-001" required style="padding:7px 10px; border-radius:6px; border:1px solid rgba(128,128,128,0.35);">
+          </label>
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.8rem; font-weight:600;">
+            Título / Asunto
+            <input id="presupuesto-titulo" type="text" placeholder="Servicio Pericial y Audiovisual" required style="padding:7px 10px; border-radius:6px; border:1px solid rgba(128,128,128,0.35);">
+          </label>
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.8rem; font-weight:600;">
+            Fecha Emisión
+            <input id="presupuesto-fecha-emision" type="date" required style="padding:7px 10px; border-radius:6px; border:1px solid rgba(128,128,128,0.35);">
+          </label>
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.8rem; font-weight:600;">
+            Validez oferta (días)
+            <input id="presupuesto-validez-dias" type="number" value="30" min="1" required style="padding:7px 10px; border-radius:6px; border:1px solid rgba(128,128,128,0.35);">
+          </label>
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.8rem; font-weight:600;">
+            Plazo garantizado (días)
+            <input id="presupuesto-plazo-dias" type="number" value="15" min="1" required style="padding:7px 10px; border-radius:6px; border:1px solid rgba(128,128,128,0.35);">
+          </label>
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.8rem; font-weight:600;">
+            Estado
+            <select id="presupuesto-estado" style="padding:7px 10px; border-radius:6px; border:1px solid rgba(128,128,128,0.35);">
+              <option value="borrador">Borrador</option>
+              <option value="emitido" selected>Emitido</option>
+              <option value="aceptado">Aceptado</option>
+              <option value="rechazado">Rechazado</option>
+              <option value="facturado">Facturado</option>
+            </select>
+          </label>
+        </div>
+
+        <!-- Emisor vs Cliente -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+          <!-- Emisor ApliArte -->
+          <div style="padding:12px; border-radius:8px; border:1px solid rgba(0,95,169,0.25); background:rgba(0,95,169,0.03);">
+            <div style="font-size:0.8rem; font-weight:700; color:#005fa9; text-transform:uppercase; margin-bottom:8px;">Identificación Fiscal Emisor (ApliArte)</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+              <input id="presupuesto-emisor-nombre" type="text" value="ApliArte · Javier Mateo" placeholder="Nombre emisor" required style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35); font-size:0.82rem;">
+              <input id="presupuesto-emisor-cif" type="text" value="ES51069698R" placeholder="NIF/CIF" required style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35); font-size:0.82rem;">
+              <input id="presupuesto-emisor-direccion" type="text" value="Madrid, España" placeholder="Dirección" style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35); font-size:0.82rem;">
+              <input id="presupuesto-emisor-email" type="email" value="contacto@apliarte.com" placeholder="Email" style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35); font-size:0.82rem;">
+              <input id="presupuesto-emisor-telefono" type="text" value="+34 600 000 000" placeholder="Teléfono" style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35); font-size:0.82rem;">
+              <input id="presupuesto-emisor-web" type="text" value="https://apliarte.com" placeholder="Web" style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35); font-size:0.82rem;">
+            </div>
+          </div>
+          <!-- Cliente Receptor -->
+          <div style="padding:12px; border-radius:8px; border:1px solid rgba(128,128,128,0.25); background:rgba(128,128,128,0.03);">
+            <div style="font-size:0.8rem; font-weight:700; color:#303030; text-transform:uppercase; margin-bottom:8px;">Identificación Fiscal Receptor (Cliente)</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+              <input id="presupuesto-cliente-nombre" type="text" placeholder="Razón social o Nombre cliente" required style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35); font-size:0.82rem;">
+              <input id="presupuesto-cliente-cif" type="text" placeholder="NIF / CIF" style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35); font-size:0.82rem;">
+              <input id="presupuesto-cliente-direccion" type="text" placeholder="Dirección fiscal" style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35); font-size:0.82rem;">
+              <input id="presupuesto-cliente-email" type="email" placeholder="Email contacto" style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35); font-size:0.82rem;">
+              <input id="presupuesto-cliente-telefono" type="text" placeholder="Teléfono" style="padding:6px 8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35); font-size:0.82rem;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Partidas del Presupuesto -->
+        <div style="margin-bottom:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <strong style="font-size:0.88rem; color:#00467b;">Desglose Detallado de Partidas</strong>
+            <button type="button" class="pill-btn" onclick="agregarPartidaPresupuesto()" style="font-size:0.8rem; font-weight:600;">
+              + Añadir Partida
+            </button>
+          </div>
+          <table style="width:100%; border-collapse:collapse; font-size:0.84rem;">
+            <thead>
+              <tr style="border-bottom:2px solid rgba(128,128,128,0.3); text-align:left;">
+                <th style="padding:8px; width:35%;">Concepto / Descripción</th>
+                <th style="padding:8px; width:22%;">Nivel de Tarifa</th>
+                <th style="padding:8px; width:12%; text-align:center;">Unidades</th>
+                <th style="padding:8px; width:13%; text-align:right;">Precio Unitario (€)</th>
+                <th style="padding:8px; width:13%; text-align:right;">Subtotal (€)</th>
+                <th style="padding:8px; width:5%; text-align:center;">Acción</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-presupuesto-items">
+              <!-- Renderizado dinámico -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Totales y Fraccionamiento 50/50 -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:10px; margin-bottom:16px; padding:12px; border-radius:8px; background:rgba(0,95,169,0.05); border:1px solid rgba(0,95,169,0.2);">
+          <div>
+            <small style="display:block; opacity:0.75; font-size:0.75rem;">Base Imponible</small>
+            <strong id="pre-resumen-base" style="font-size:1.15rem;">0.00 €</strong>
+          </div>
+          <div>
+            <small style="display:block; opacity:0.75; font-size:0.75rem;">IVA 21%</small>
+            <strong id="pre-resumen-iva" style="font-size:1.15rem;">0.00 €</strong>
+          </div>
+          <div>
+            <small style="display:block; opacity:0.85; font-size:0.75rem; color:#005fa9;">Total Presupuesto</small>
+            <strong id="pre-resumen-total" style="font-size:1.25rem; color:#005fa9;">0.00 €</strong>
+          </div>
+          <div style="border-left:1px dashed rgba(0,95,169,0.3); padding-left:10px;">
+            <small style="display:block; opacity:0.75; font-size:0.75rem;">1º Pago (50% Aceptación / Inicio)</small>
+            <strong id="pre-resumen-anticipo" style="font-size:1.15rem; color:#15803d;">0.00 €</strong>
+          </div>
+          <div>
+            <small style="display:block; opacity:0.75; font-size:0.75rem;">2º Pago (50% Entrega / Validación)</small>
+            <strong id="pre-resumen-entrega" style="font-size:1.15rem; color:#15803d;">0.00 €</strong>
+          </div>
+        </div>
+
+        <!-- Condiciones Legales y NDA -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:16px;">
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.8rem; font-weight:600;">
+            Condiciones de Pago Fraccionado
+            <textarea id="presupuesto-condiciones" rows="3" style="padding:8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35); font-family:inherit; font-size:0.8rem;"></textarea>
+          </label>
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.8rem; font-weight:600;">
+            Cláusula de Confidencialidad y Secreto Profesional (NDA)
+            <textarea id="presupuesto-nda" rows="3" style="padding:8px; border-radius:6px; border:1px solid rgba(128,128,128,0.35); font-family:inherit; font-size:0.8rem;"></textarea>
+          </label>
+        </div>
+
+        <label style="display:flex; flex-direction:column; gap:4px; font-size:0.8rem; font-weight:600; margin-bottom:14px;">
+          Observaciones adicionales
+          <input id="presupuesto-notas" type="text" placeholder="Detalles de entrega, especificaciones técnicas de formatos…" style="padding:7px 10px; border-radius:6px; border:1px solid rgba(128,128,128,0.35);">
+        </label>
+
+        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px;">
+          <span id="presupuesto-feedback" style="font-size:0.83rem; opacity:0.85;">Listo para presupuestar.</span>
+          <div style="display:flex; gap:8px;">
+            <button type="button" id="btn-limpiar-presupuesto" class="pill-btn" onclick="limpiarFormularioPresupuesto()">Limpiar / Nuevo</button>
+            <button type="button" id="btn-ver-doc-presupuesto" class="pill-btn" onclick="verDocumentoPresupuestoActual()" style="border-color:#005fa9; color:#005fa9;">🖨️ Ver Documento Oficial (Brand Kit)</button>
+            <button type="submit" id="btn-guardar-presupuesto" class="pill-btn btn-action-start">💾 Guardar Presupuesto</button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Tabla de Presupuestos Guardados -->
+      <div style="margin-top:20px;">
+        <h3 style="margin:0 0 10px 0; font-size:1rem; color:#00467b;">Histórico de Presupuestos</h3>
+        <div style="overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:0.84rem;">
+            <thead>
+              <tr style="border-bottom:2px solid rgba(128,128,128,0.3); text-align:left;">
+                <th style="padding:8px;">Fecha</th>
+                <th style="padding:8px;">Nº Presupuesto</th>
+                <th style="padding:8px;">Título / Asunto</th>
+                <th style="padding:8px;">Cliente</th>
+                <th style="padding:8px; text-align:right;">Base (€)</th>
+                <th style="padding:8px; text-align:right;">Total (€)</th>
+                <th style="padding:8px; text-align:right;">50% Anticipo</th>
+                <th style="padding:8px;">Estado</th>
+                <th style="padding:8px; text-align:center;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-presupuestos-lista">
+              <tr>
+                <td colspan="9" style="padding:12px; opacity:0.75;">Cargando presupuestos…</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel facturas" id="facturas" aria-labelledby="facturas-title">
+      <div class="panel-head">
+        <div class="panel-head-title">
+          <h2 id="facturas-title">Gestor de facturas</h2>
+          <p>Es el gestor de siempre, dentro de la oficina. Si no carga, arráncalo con «Arrancar panel» o con <code>panel_facturas/arrancar.sh</code>.</p>
+        </div>
+        <div class="panel-head-actions">
+          <span class="status-chip chip-idle" id="chip-servidor-facturas">
+            <span class="chip-dot"></span> <span id="text-servidor-facturas">:8787 Comprobando…</span>
+          </span>
+          <button type="button" id="btn-arrancar-facturas-head" class="pill-btn btn-action-start" title="Arrancar gestor de facturas (:8787)">
+            <span aria-hidden="true">▶</span> Arrancar Facturas
+          </button>
+          <button type="button" id="btn-apagar-facturas-head" class="pill-btn btn-action-stop" title="Apagar gestor de facturas (:8787)" style="display:none;">
+            <span aria-hidden="true">⏻</span> Apagar Facturas
+          </button>
+        </div>
+      </div>
+      <iframe class="facturas-frame" id="facturas-frame" title="Gestor de facturas"></iframe>
+    </section>
+
+    <p class="public-note">Oficina pública (nube): sin conectar · tarea aparte</p>
+    </main>
+  </div>
+
+  <p class="sr-only" id="announcer" aria-live="polite"></p>
+
+  <script src="../panel-shell.js"></script>
+  <script>
+    const STORAGE_KEY_FACTURAS_JAVIER = 'erbolamm-facturas-estado-javier';
+    let facturasTrimestreActual = [];
+
+    function leerEstadoLocalFacturas() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY_FACTURAS_JAVIER);
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch (_) {
+        return null;
+      }
+    }
+
+    function guardarEstadoLocalFacturas() {
+      const estado = {
+        ejercicio: document.getElementById('facturas-ejercicio')?.value || '2026',
+        trimestre: document.getElementById('facturas-trimestre')?.value || '4T',
+        busqueda: document.getElementById('facturas-busqueda')?.value || '',
+        notasGestoria: document.getElementById('facturas-notas-gestoria')?.value || '',
+        form: {
+          id: document.getElementById('factura-id')?.value || '',
+          fecha: document.getElementById('factura-fecha')?.value || '',
+          numero: document.getElementById('factura-numero')?.value || '',
+          proveedor: document.getElementById('factura-proveedor')?.value || '',
+          nif: document.getElementById('factura-nif')?.value || '',
+          concepto: document.getElementById('factura-concepto')?.value || '',
+          categoria: document.getElementById('factura-categoria')?.value || 'gasto_deducible',
+          base: document.getElementById('factura-base')?.value || '',
+          iva: document.getElementById('factura-iva')?.value || '21',
+          irpf: document.getElementById('factura-irpf')?.value || '0',
+          estado: document.getElementById('factura-estado')?.value || 'pendiente',
+          notas: document.getElementById('factura-notas')?.value || ''
+        }
+      };
+      try {
+        localStorage.setItem(STORAGE_KEY_FACTURAS_JAVIER, JSON.stringify(estado));
+      } catch (_) {}
+      fetch('/api/facturas/trimestre', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'save_draft', draft: estado })
+      }).catch(() => {});
+      return estado;
+    }
+
+    function restaurarEstadoLocalFacturas(borradorRemoto) {
+      const local = leerEstadoLocalFacturas();
+      const source = local || borradorRemoto || {};
+      if (source.ejercicio && document.getElementById('facturas-ejercicio')) {
+        document.getElementById('facturas-ejercicio').value = String(source.ejercicio);
+      }
+      if (source.trimestre && document.getElementById('facturas-trimestre')) {
+        document.getElementById('facturas-trimestre').value = String(source.trimestre);
+      }
+      if (typeof source.busqueda === 'string' && document.getElementById('facturas-busqueda')) {
+        document.getElementById('facturas-busqueda').value = source.busqueda;
+      }
+      if (typeof source.notasGestoria === 'string' && document.getElementById('facturas-notas-gestoria')) {
+        document.getElementById('facturas-notas-gestoria').value = source.notasGestoria;
+      }
+      const f = source.form || {};
+      const mapFields = {
+        'factura-id': f.id || '',
+        'factura-fecha': f.fecha || new Date().toISOString().slice(0, 10),
+        'factura-numero': f.numero || '',
+        'factura-proveedor': f.proveedor || '',
+        'factura-nif': f.nif || '',
+        'factura-concepto': f.concepto || '',
+        'factura-categoria': f.categoria || 'gasto_deducible',
+        'factura-base': f.base !== undefined ? f.base : '',
+        'factura-iva': f.iva !== undefined && f.iva !== '' ? f.iva : '21',
+        'factura-irpf': f.irpf !== undefined && f.irpf !== '' ? f.irpf : '0',
+        'factura-estado': f.estado || 'pendiente',
+        'factura-notas': f.notas || ''
+      };
+      Object.entries(mapFields).forEach(([id, val]) => {
+        const el = document.getElementById(id);
+        if (el) el.value = val;
+      });
+    }
+
+    function limpiarFormularioFactura() {
+      document.getElementById('factura-id').value = '';
+      document.getElementById('factura-fecha').value = new Date().toISOString().slice(0, 10);
+      document.getElementById('factura-numero').value = '';
+      document.getElementById('factura-proveedor').value = '';
+      document.getElementById('factura-nif').value = '';
+      document.getElementById('factura-concepto').value = '';
+      document.getElementById('factura-categoria').value = 'gasto_deducible';
+      document.getElementById('factura-base').value = '';
+      document.getElementById('factura-iva').value = '21';
+      document.getElementById('factura-irpf').value = '0';
+      document.getElementById('factura-estado').value = 'pendiente';
+      document.getElementById('factura-notas').value = '';
+      guardarEstadoLocalFacturas();
+    }
+
+    function pintarResumenYTablaFacturas(data) {
+      const summary = (data && data.summary) || {};
+      document.getElementById('kpi-num-facturas').textContent = String(summary.numFacturas || 0);
+      document.getElementById('kpi-base').textContent = Number(summary.totalBase || 0).toFixed(2) + ' €';
+      document.getElementById('kpi-iva').textContent = Number(summary.totalIva || 0).toFixed(2) + ' €';
+      document.getElementById('kpi-irpf').textContent = Number(summary.totalIrpf || 0).toFixed(2) + ' €';
+      document.getElementById('kpi-total').textContent = Number(summary.totalLiquido || 0).toFixed(2) + ' €';
+
+      facturasTrimestreActual = Array.isArray(data?.facturas) ? data.facturas : [];
+      const filtro = (document.getElementById('facturas-busqueda')?.value || '').trim().toLowerCase();
+      const filtradas = facturasTrimestreActual.filter((item) => {
+        if (!filtro) return true;
+        const texto = [item.numero, item.proveedor, item.nif, item.concepto, item.notas].join(' ').toLowerCase();
+        return texto.includes(filtro);
+      });
+
+      const tbody = document.getElementById('tbody-facturas-trimestre');
+      if (!tbody) return;
+      tbody.textContent = '';
+
+      if (filtradas.length === 0) {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = 11;
+        td.style.padding = '12px';
+        td.style.opacity = '0.75';
+        td.textContent = 'No hay facturas registradas en este trimestre para el filtro seleccionado.';
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+        return;
+      }
+
+      filtradas.forEach((f) => {
+        const tr = document.createElement('tr');
+        tr.style.borderBottom = '1px solid rgba(128,128,128,0.18)';
+
+        const cols = [
+          { text: f.fecha || '' },
+          { text: f.numero || '' },
+          { text: f.proveedor || '' },
+          { text: f.nif || '' },
+          { text: f.concepto || '' },
+          { text: Number(f.baseImponible || 0).toFixed(2), align: 'right' },
+          { text: Number(f.cuotaIva || 0).toFixed(2), align: 'right' },
+          { text: Number(f.cuotaIrpf || 0).toFixed(2), align: 'right' },
+          { text: Number(f.totalFactura || 0).toFixed(2), align: 'right', bold: true },
+          { text: f.estado || 'pendiente' }
+        ];
+
+        cols.forEach((c) => {
+          const td = document.createElement('td');
+          td.style.padding = '8px';
+          if (c.align) td.style.textAlign = c.align;
+          if (c.bold) td.style.fontWeight = '700';
+          td.textContent = c.text;
+          tr.appendChild(td);
+        });
+
+        const tdActions = document.createElement('td');
+        tdActions.style.padding = '8px';
+        tdActions.style.display = 'flex';
+        tdActions.style.gap = '6px';
+
+        const btnReady = document.createElement('button');
+        btnReady.type = 'button';
+        btnReady.className = 'btn-table-ready';
+        btnReady.textContent = '✓ Lista gestoría';
+        btnReady.onclick = () => marcarFacturaListaGestoria(f);
+
+        const btnDel = document.createElement('button');
+        btnDel.type = 'button';
+        btnDel.className = 'btn-table-del';
+        btnDel.textContent = 'Eliminar';
+        btnDel.onclick = () => eliminarFacturaTrimestre(f.id);
+
+        tdActions.appendChild(btnReady);
+        tdActions.appendChild(btnDel);
+        tr.appendChild(tdActions);
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function cargarTrimestreFacturas() {
+      const ejercicio = document.getElementById('facturas-ejercicio')?.value || '2026';
+      const trimestre = document.getElementById('facturas-trimestre')?.value || '4T';
+      try {
+        const res = await fetch(`/api/facturas/trimestre?ejercicio=${encodeURIComponent(ejercicio)}&trimestre=${encodeURIComponent(trimestre)}`, {
+          cache: 'no-store'
+        });
+        const payload = await res.json();
+        if (!res.ok || !payload.ok) {
+          document.getElementById('facturas-feedback-status').textContent = payload.error || 'Acceso denegado';
+          return;
+        }
+        if (!leerEstadoLocalFacturas() && payload.borrador) {
+          restaurarEstadoLocalFacturas(payload.borrador);
+        }
+        pintarResumenYTablaFacturas(payload.data);
+      } catch (_) {}
+    }
+
+    async function guardarFacturaTrimestre(event) {
+      if (event) event.preventDefault();
+      const ejercicio = Number(document.getElementById('facturas-ejercicio')?.value || 2026);
+      const trimestre = document.getElementById('facturas-trimestre')?.value || '4T';
+      const factura = {
+        id: document.getElementById('factura-id')?.value || undefined,
+        fecha: document.getElementById('factura-fecha')?.value || '',
+        numero: document.getElementById('factura-numero')?.value || '',
+        proveedor: document.getElementById('factura-proveedor')?.value || '',
+        nif: document.getElementById('factura-nif')?.value || '',
+        concepto: document.getElementById('factura-concepto')?.value || '',
+        categoria: document.getElementById('factura-categoria')?.value || 'gasto_deducible',
+        baseImponible: Number(document.getElementById('factura-base')?.value || 0),
+        ivaPct: Number(document.getElementById('factura-iva')?.value || 21),
+        irpfPct: Number(document.getElementById('factura-irpf')?.value || 0),
+        estado: document.getElementById('factura-estado')?.value || 'pendiente',
+        notas: document.getElementById('factura-notas')?.value || '',
+        notasGestoria: document.getElementById('facturas-notas-gestoria')?.value || ''
+      };
+      const res = await fetch('/api/facturas/trimestre', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'upsert',
+          ejercicio,
+          trimestre,
+          factura
+        })
+      });
+      const payload = await res.json();
+      if (res.ok && payload.ok) {
+        limpiarFormularioFactura();
+        pintarResumenYTablaFacturas(payload.data);
+        document.getElementById('facturas-feedback-status').textContent =
+          'Factura guardada y hoja de cálculo trimestral actualizada.';
+      } else {
+        document.getElementById('facturas-feedback-status').textContent =
+          payload.error || 'No se pudo guardar la factura.';
+      }
+    }
+
+    async function marcarFacturaListaGestoria(factura) {
+      const ejercicio = Number(document.getElementById('facturas-ejercicio')?.value || 2026);
+      const trimestre = document.getElementById('facturas-trimestre')?.value || '4T';
+      const res = await fetch('/api/facturas/trimestre', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'upsert',
+          ejercicio,
+          trimestre,
+          factura: Object.assign({}, factura, { estado: 'lista_gestoria' })
+        })
+      });
+      const payload = await res.json();
+      if (res.ok && payload.ok) {
+        pintarResumenYTablaFacturas(payload.data);
+      }
+    }
+
+    async function eliminarFacturaTrimestre(id) {
+      const ejercicio = Number(document.getElementById('facturas-ejercicio')?.value || 2026);
+      const trimestre = document.getElementById('facturas-trimestre')?.value || '4T';
+      const res = await fetch('/api/facturas/trimestre', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'delete',
+          ejercicio,
+          trimestre,
+          id
+        })
+      });
+      const payload = await res.json();
+      if (res.ok && payload.ok) {
+        pintarResumenYTablaFacturas(payload.data);
+        document.getElementById('facturas-feedback-status').textContent =
+          'Factura eliminada del trimestre.';
+      }
+    }
+
+    async function exportarPackGestoria() {
+      const ejercicio = Number(document.getElementById('facturas-ejercicio')?.value || 2026);
+      const trimestre = document.getElementById('facturas-trimestre')?.value || '4T';
+      const notasGestoria = document.getElementById('facturas-notas-gestoria')?.value || '';
+      const res = await fetch('/api/facturas/trimestre', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'export_gestoria',
+          ejercicio,
+          trimestre,
+          notasGestoria
+        })
+      });
+      const payload = await res.json();
+      if (res.ok && payload.ok) {
+        document.getElementById('facturas-feedback-status').textContent =
+          `Pack Gestoría generado: ${payload.pack.csvPath}`;
+        window.location.href = `/api/facturas/trimestre/csv?ejercicio=${encodeURIComponent(ejercicio)}&trimestre=${encodeURIComponent(trimestre)}`;
+      }
+    }
+
+    // ==========================================
+    // Conmutador de Subsecciones y Motor de Presupuestos
+    // ==========================================
+    function cambiarSubseccionFacturas(subseccion) {
+      const secOrganizador = document.getElementById('organizador-trimestral-javier');
+      const secPresupuestos = document.getElementById('motor-presupuestos-apliarte');
+      const secLegado = document.getElementById('facturas');
+
+      const btnOrg = document.getElementById('tab-btn-organizador');
+      const btnPre = document.getElementById('tab-btn-presupuestos');
+      const btnLeg = document.getElementById('tab-btn-legado');
+
+      [btnOrg, btnPre, btnLeg].forEach(b => {
+        if (b) {
+          b.classList.remove('primary', 'btn-subnav-active');
+        }
+      });
+
+      if (secOrganizador) secOrganizador.style.display = 'none';
+      if (secPresupuestos) secPresupuestos.style.display = 'none';
+      if (secLegado) secLegado.style.display = 'none';
+
+      if (subseccion === 'presupuestos') {
+        if (secPresupuestos) secPresupuestos.style.display = 'block';
+        if (btnPre) btnPre.classList.add('primary', 'btn-subnav-active');
+        cargarPresupuestos();
+      } else if (subseccion === 'legado') {
+        if (secLegado) secLegado.style.display = 'block';
+        if (btnLeg) btnLeg.classList.add('primary', 'btn-subnav-active');
+      } else {
+        if (secOrganizador) secOrganizador.style.display = 'block';
+        if (btnOrg) btnOrg.classList.add('primary', 'btn-subnav-active');
+      }
+    }
+
+    let listaPresupuestosGuardados = [];
+    let itemsPresupuestoActual = [];
+
+    const TARIFAS_PRESET = {
+      'nivel1_forense': { nombre: 'Nivel 1 (Pericial / Forense)', tarifa: 35.0, unidad: 'horas' },
+      'nivel2_audiovisual': { nombre: 'Nivel 2 (Editorial / Audiovisual)', tarifa: 20.0, unidad: 'horas' },
+      'nivel3_reuniones': { nombre: 'Nivel 3 (Reuniones / Actas)', tarifa: 12.0, unidad: 'horas' },
+      'desarrollo_software': { nombre: 'Desarrollo Software por hitos', tarifa: 1200.0, unidad: 'hitos' },
+      'personalizado': { nombre: 'Personalizado', tarifa: 0.0, unidad: 'horas' }
+    };
+
+    function agregarPartidaPresupuesto(item) {
+      const nuevo = item || {
+        id: 'it-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+        concepto: 'Servicio pericial / técnico',
+        tierId: 'nivel1_forense',
+        unidades: 10,
+        unidadTipo: 'horas',
+        precioUnitario: 35.0,
+        subtotal: 350.0
+      };
+      itemsPresupuestoActual.push(nuevo);
+      renderizarTablaPartidasPresupuesto();
+      recalcularTotalesPresupuesto();
+    }
+
+    function eliminarPartidaPresupuesto(idx) {
+      itemsPresupuestoActual.splice(idx, 1);
+      if (itemsPresupuestoActual.length === 0) {
+        agregarPartidaPresupuesto();
+      } else {
+        renderizarTablaPartidasPresupuesto();
+        recalcularTotalesPresupuesto();
+      }
+    }
+
+    function actualizarPartidaPresupuesto(idx, field, val) {
+      if (!itemsPresupuestoActual[idx]) return;
+      if (field === 'tierId') {
+        itemsPresupuestoActual[idx].tierId = val;
+        if (TARIFAS_PRESET[val] && TARIFAS_PRESET[val].tarifa > 0) {
+          itemsPresupuestoActual[idx].precioUnitario = TARIFAS_PRESET[val].tarifa;
+          itemsPresupuestoActual[idx].unidadTipo = TARIFAS_PRESET[val].unidad;
+        }
+      } else if (field === 'concepto') {
+        itemsPresupuestoActual[idx].concepto = val;
+      } else if (field === 'unidades') {
+        itemsPresupuestoActual[idx].unidades = parseFloat(val) || 0;
+      } else if (field === 'unidadTipo') {
+        itemsPresupuestoActual[idx].unidadTipo = val;
+      } else if (field === 'precioUnitario') {
+        itemsPresupuestoActual[idx].precioUnitario = parseFloat(val) || 0;
+      }
+      const u = itemsPresupuestoActual[idx].unidades;
+      const p = itemsPresupuestoActual[idx].precioUnitario;
+      itemsPresupuestoActual[idx].subtotal = Math.round(u * p * 100) / 100;
+      renderizarTablaPartidasPresupuesto();
+      recalcularTotalesPresupuesto();
+    }
+
+    function renderizarTablaPartidasPresupuesto() {
+      const tbody = document.getElementById('tbody-presupuesto-items');
+      if (!tbody) return;
+      tbody.textContent = '';
+
+      itemsPresupuestoActual.forEach((it, idx) => {
+        const tr = document.createElement('tr');
+        tr.style.borderBottom = '1px solid rgba(128,128,128,0.2)';
+
+        // 1. Concepto
+        const tdConcepto = document.createElement('td');
+        tdConcepto.style.padding = '6px';
+        const inConcepto = document.createElement('input');
+        inConcepto.type = 'text';
+        inConcepto.value = it.concepto || '';
+        inConcepto.placeholder = 'Descripción detallada de la partida o hito…';
+        inConcepto.style.width = '100%';
+        inConcepto.style.padding = '6px 8px';
+        inConcepto.style.borderRadius = '6px';
+        inConcepto.style.border = '1px solid rgba(128,128,128,0.3)';
+        inConcepto.oninput = (e) => { itemsPresupuestoActual[idx].concepto = e.target.value; };
+        tdConcepto.appendChild(inConcepto);
+        tr.appendChild(tdConcepto);
+
+        // 2. Nivel / Tier
+        const tdTier = document.createElement('td');
+        tdTier.style.padding = '6px';
+        const selTier = document.createElement('select');
+        selTier.style.width = '100%';
+        selTier.style.padding = '6px 8px';
+        selTier.style.borderRadius = '6px';
+        selTier.style.border = '1px solid rgba(128,128,128,0.3)';
+        Object.entries(TARIFAS_PRESET).forEach(([tid, tdata]) => {
+          const opt = document.createElement('option');
+          opt.value = tid;
+          opt.textContent = tdata.nombre + (tdata.tarifa > 0 ? ` (${tdata.tarifa}€)` : '');
+          if (it.tierId === tid) opt.selected = true;
+          selTier.appendChild(opt);
+        });
+        selTier.onchange = (e) => actualizarPartidaPresupuesto(idx, 'tierId', e.target.value);
+        tdTier.appendChild(selTier);
+        tr.appendChild(tdTier);
+
+        // 3. Unidades
+        const tdUnidades = document.createElement('td');
+        tdUnidades.style.padding = '6px';
+        tdUnidades.style.textAlign = 'center';
+        const inUnidades = document.createElement('input');
+        inUnidades.type = 'number';
+        inUnidades.step = '0.1';
+        inUnidades.value = it.unidades;
+        inUnidades.style.width = '70px';
+        inUnidades.style.padding = '6px 8px';
+        inUnidades.style.borderRadius = '6px';
+        inUnidades.style.border = '1px solid rgba(128,128,128,0.3)';
+        inUnidades.oninput = (e) => actualizarPartidaPresupuesto(idx, 'unidades', e.target.value);
+        tdUnidades.appendChild(inUnidades);
+        tr.appendChild(tdUnidades);
+
+        // 4. Precio Unitario
+        const tdPrecio = document.createElement('td');
+        tdPrecio.style.padding = '6px';
+        tdPrecio.style.textAlign = 'right';
+        const inPrecio = document.createElement('input');
+        inPrecio.type = 'number';
+        inPrecio.step = '0.01';
+        inPrecio.value = it.precioUnitario;
+        inPrecio.style.width = '85px';
+        inPrecio.style.padding = '6px 8px';
+        inPrecio.style.borderRadius = '6px';
+        inPrecio.style.border = '1px solid rgba(128,128,128,0.3)';
+        inPrecio.style.textAlign = 'right';
+        inPrecio.oninput = (e) => actualizarPartidaPresupuesto(idx, 'precioUnitario', e.target.value);
+        tdPrecio.appendChild(inPrecio);
+        tr.appendChild(tdPrecio);
+
+        // 5. Subtotal
+        const tdSubtotal = document.createElement('td');
+        tdSubtotal.style.padding = '6px 8px';
+        tdSubtotal.style.textAlign = 'right';
+        tdSubtotal.style.fontWeight = '700';
+        tdSubtotal.textContent = (it.subtotal || 0).toFixed(2) + ' €';
+        tr.appendChild(tdSubtotal);
+
+        // 6. Eliminar
+        const tdAccion = document.createElement('td');
+        tdAccion.style.padding = '6px';
+        tdAccion.style.textAlign = 'center';
+        const btnDel = document.createElement('button');
+        btnDel.type = 'button';
+        btnDel.className = 'btn-table-del';
+        btnDel.textContent = '✕';
+        btnDel.title = 'Eliminar partida';
+        btnDel.onclick = () => eliminarPartidaPresupuesto(idx);
+        tdAccion.appendChild(btnDel);
+        tr.appendChild(tdAccion);
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    function recalcularTotalesPresupuesto() {
+      let base = 0;
+      itemsPresupuestoActual.forEach(it => {
+        base += (it.subtotal || 0);
+      });
+      base = Math.round(base * 100) / 100;
+      const iva = Math.round(base * 0.21 * 100) / 100;
+      const total = Math.round((base + iva) * 100) / 100;
+      const anticipo = Math.round(total * 0.50 * 100) / 100;
+      const entrega = Math.round((total - anticipo) * 100) / 100;
+
+      document.getElementById('pre-resumen-base').textContent = base.toFixed(2) + ' €';
+      document.getElementById('pre-resumen-iva').textContent = iva.toFixed(2) + ' €';
+      document.getElementById('pre-resumen-total').textContent = total.toFixed(2) + ' €';
+      document.getElementById('pre-resumen-anticipo').textContent = anticipo.toFixed(2) + ' €';
+      document.getElementById('pre-resumen-entrega').textContent = entrega.toFixed(2) + ' €';
+    }
+
+    function limpiarFormularioPresupuesto() {
+      const year = new Date().getFullYear();
+      const randNum = Math.floor(100 + Math.random() * 900);
+      document.getElementById('presupuesto-id').value = '';
+      document.getElementById('presupuesto-numero').value = `P-${year}-${randNum}`;
+      document.getElementById('presupuesto-titulo').value = 'Servicio Pericial y Audiovisual ApliArte';
+      document.getElementById('presupuesto-fecha-emision').value = new Date().toISOString().slice(0, 10);
+      document.getElementById('presupuesto-validez-dias').value = '30';
+      document.getElementById('presupuesto-plazo-dias').value = '15';
+      document.getElementById('presupuesto-estado').value = 'emitido';
+
+      document.getElementById('presupuesto-emisor-nombre').value = 'ApliArte · Javier Mateo';
+      document.getElementById('presupuesto-emisor-cif').value = 'ES51069698R';
+      document.getElementById('presupuesto-emisor-direccion').value = 'Madrid, España';
+      document.getElementById('presupuesto-emisor-email').value = 'contacto@apliarte.com';
+      document.getElementById('presupuesto-emisor-telefono').value = '+34 600 000 000';
+      document.getElementById('presupuesto-emisor-web').value = 'https://apliarte.com';
+
+      document.getElementById('presupuesto-cliente-nombre').value = '';
+      document.getElementById('presupuesto-cliente-cif').value = '';
+      document.getElementById('presupuesto-cliente-direccion').value = '';
+      document.getElementById('presupuesto-cliente-email').value = '';
+      document.getElementById('presupuesto-cliente-telefono').value = '';
+
+      document.getElementById('presupuesto-condiciones').value =
+        'Condiciones de Pago Fraccionado: 50% a la aceptación del presupuesto e inicio de los trabajos en concepto de provisión de fondos, y 50% restante a la entrega final y validación técnica del dictamen, hito o entrega acordada.';
+
+      document.getElementById('presupuesto-nda').value =
+        'Cláusula de Confidencialidad y Secreto Profesional (NDA): Ambas partes convienen guardar estricta reserva de toda información, material probatorio, archivos de audio/vídeo y documentación técnica o comercial intercambiada durante la prestación. Las evidencias periciales o forenses mantendrán rigurosa cadena de custodia y no podrán ser divulgadas ni cedidas a terceros sin consentimiento expreso por escrito o requerimiento judicial firme.';
+
+      document.getElementById('presupuesto-notas').value = '';
+      document.getElementById('presupuesto-feedback').textContent = 'Formulario limpio para nuevo presupuesto.';
+
+      itemsPresupuestoActual = [
+        {
+          id: 'it-1',
+          concepto: 'Peritaje forense de evidencias acústicas y cotejo espectrográfico',
+          tierId: 'nivel1_forense',
+          unidades: 8,
+          unidadTipo: 'horas',
+          precioUnitario: 35.0,
+          subtotal: 280.0
+        }
+      ];
+      renderizarTablaPartidasPresupuesto();
+      recalcularTotalesPresupuesto();
+    }
+
+    function nuevoPresupuesto() {
+      limpiarFormularioPresupuesto();
+      cambiarSubseccionFacturas('presupuestos');
+      document.getElementById('presupuesto-numero')?.focus();
+    }
+
+    async function cargarPresupuestos() {
+      try {
+        const res = await fetch('/api/presupuestos', { cache: 'no-store' });
+        const payload = await res.json();
+        if (res.ok && payload.ok) {
+          listaPresupuestosGuardados = payload.presupuestos || [];
+          pintarTablaPresupuestos(listaPresupuestosGuardados);
+        }
+      } catch (_) {}
+    }
+
+    function pintarTablaPresupuestos(lista) {
+      const tbody = document.getElementById('tbody-presupuestos-lista');
+      if (!tbody) return;
+      tbody.textContent = '';
+
+      if (!lista || lista.length === 0) {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = 9;
+        td.style.padding = '14px';
+        td.style.opacity = '0.75';
+        td.textContent = 'No hay presupuestos registrados todavía. Pulsa «+ Nuevo Presupuesto» para crear el primero.';
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+        return;
+      }
+
+      lista.forEach((p) => {
+        const tr = document.createElement('tr');
+        tr.style.borderBottom = '1px solid rgba(128,128,128,0.18)';
+
+        const cols = [
+          { text: p.fechaEmision || '' },
+          { text: p.numero || '', bold: true },
+          { text: p.titulo || '' },
+          { text: (p.cliente && p.cliente.nombre) ? p.cliente.nombre : '—' },
+          { text: Number(p.baseImponible || 0).toFixed(2) + ' €', align: 'right' },
+          { text: Number(p.total || 0).toFixed(2) + ' €', align: 'right', bold: true },
+          { text: Number(p.pagoAnticipoImporte || 0).toFixed(2) + ' €', align: 'right' },
+          { text: (p.estado || 'emitido').toUpperCase() }
+        ];
+
+        cols.forEach(c => {
+          const td = document.createElement('td');
+          td.style.padding = '8px';
+          if (c.align) td.style.textAlign = c.align;
+          if (c.bold) td.style.fontWeight = '700';
+          td.textContent = c.text;
+          tr.appendChild(td);
+        });
+
+        const tdActions = document.createElement('td');
+        tdActions.style.padding = '8px';
+        tdActions.style.display = 'flex';
+        tdActions.style.gap = '6px';
+        tdActions.style.justifyContent = 'center';
+
+        const btnEdit = document.createElement('button');
+        btnEdit.type = 'button';
+        btnEdit.className = 'pill-btn';
+        btnEdit.style.fontSize = '0.78rem';
+        btnEdit.style.padding = '4px 8px';
+        btnEdit.textContent = '✏️ Editar';
+        btnEdit.onclick = () => cargarPresupuestoEnFormulario(p);
+
+        const btnDoc = document.createElement('button');
+        btnDoc.type = 'button';
+        btnDoc.className = 'pill-btn';
+        btnDoc.style.fontSize = '0.78rem';
+        btnDoc.style.padding = '4px 8px';
+        btnDoc.style.borderColor = '#005fa9';
+        btnDoc.style.color = '#005fa9';
+        btnDoc.textContent = '🖨️ Documento';
+        btnDoc.onclick = () => verDocumentoPresupuesto(p.id);
+
+        const btnDel = document.createElement('button');
+        btnDel.type = 'button';
+        btnDel.className = 'btn-table-del';
+        btnDel.style.fontSize = '0.78rem';
+        btnDel.style.padding = '4px 8px';
+        btnDel.textContent = '🗑️';
+        btnDel.title = 'Eliminar presupuesto';
+        btnDel.onclick = () => eliminarPresupuesto(p.id);
+
+        tdActions.appendChild(btnEdit);
+        tdActions.appendChild(btnDoc);
+        tdActions.appendChild(btnDel);
+        tr.appendChild(tdActions);
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    function cargarPresupuestoEnFormulario(p) {
+      document.getElementById('presupuesto-id').value = p.id || '';
+      document.getElementById('presupuesto-numero').value = p.numero || '';
+      document.getElementById('presupuesto-titulo').value = p.titulo || '';
+      document.getElementById('presupuesto-fecha-emision').value = p.fechaEmision || '';
+      document.getElementById('presupuesto-validez-dias').value = p.validezDias || 30;
+      document.getElementById('presupuesto-plazo-dias').value = p.plazoGarantizadoDias || 15;
+      document.getElementById('presupuesto-estado').value = p.estado || 'emitido';
+
+      const em = p.emisor || {};
+      document.getElementById('presupuesto-emisor-nombre').value = em.nombre || 'ApliArte · Javier Mateo';
+      document.getElementById('presupuesto-emisor-cif').value = em.cifNif || 'ES51069698R';
+      document.getElementById('presupuesto-emisor-direccion').value = em.direccion || 'Madrid, España';
+      document.getElementById('presupuesto-emisor-email').value = em.email || 'contacto@apliarte.com';
+      document.getElementById('presupuesto-emisor-telefono').value = em.telefono || '+34 600 000 000';
+      document.getElementById('presupuesto-emisor-web').value = em.web || 'https://apliarte.com';
+
+      const cl = p.cliente || {};
+      document.getElementById('presupuesto-cliente-nombre').value = cl.nombre || '';
+      document.getElementById('presupuesto-cliente-cif').value = cl.cifNif || '';
+      document.getElementById('presupuesto-cliente-direccion').value = cl.direccion || '';
+      document.getElementById('presupuesto-cliente-email').value = cl.email || '';
+      document.getElementById('presupuesto-cliente-telefono').value = cl.telefono || '';
+
+      document.getElementById('presupuesto-condiciones').value = p.condicionesPago || '';
+      document.getElementById('presupuesto-nda').value = p.clausulaNda || '';
+      document.getElementById('presupuesto-notas').value = p.notas || '';
+
+      itemsPresupuestoActual = Array.isArray(p.items) ? JSON.parse(JSON.stringify(p.items)) : [];
+      if (itemsPresupuestoActual.length === 0) {
+        agregarPartidaPresupuesto();
+      } else {
+        renderizarTablaPartidasPresupuesto();
+        recalcularTotalesPresupuesto();
+      }
+
+      cambiarSubseccionFacturas('presupuestos');
+      document.getElementById('presupuesto-feedback').textContent = `Presupuesto ${p.numero} cargado en el formulario.`;
+      window.scrollTo({ top: document.getElementById('motor-presupuestos-apliarte').offsetTop - 20, behavior: 'smooth' });
+    }
+
+    async function guardarPresupuestoForm(event) {
+      if (event) event.preventDefault();
+      const id = document.getElementById('presupuesto-id').value.trim() || `pre-${Date.now()}`;
+      const payload = {
+        id,
+        numero: document.getElementById('presupuesto-numero').value.trim(),
+        titulo: document.getElementById('presupuesto-titulo').value.trim(),
+        estado: document.getElementById('presupuesto-estado').value,
+        fechaEmision: document.getElementById('presupuesto-fecha-emision').value,
+        validezDias: parseInt(document.getElementById('presupuesto-validez-dias').value) || 30,
+        plazoGarantizadoDias: parseInt(document.getElementById('presupuesto-plazo-dias').value) || 15,
+        emisor: {
+          nombre: document.getElementById('presupuesto-emisor-nombre').value.trim(),
+          cifNif: document.getElementById('presupuesto-emisor-cif').value.trim(),
+          direccion: document.getElementById('presupuesto-emisor-direccion').value.trim(),
+          email: document.getElementById('presupuesto-emisor-email').value.trim(),
+          telefono: document.getElementById('presupuesto-emisor-telefono').value.trim(),
+          web: document.getElementById('presupuesto-emisor-web').value.trim(),
+        },
+        cliente: {
+          nombre: document.getElementById('presupuesto-cliente-nombre').value.trim(),
+          cifNif: document.getElementById('presupuesto-cliente-cif').value.trim(),
+          direccion: document.getElementById('presupuesto-cliente-direccion').value.trim(),
+          email: document.getElementById('presupuesto-cliente-email').value.trim(),
+          telefono: document.getElementById('presupuesto-cliente-telefono').value.trim(),
+        },
+        items: itemsPresupuestoActual,
+        condicionesPago: document.getElementById('presupuesto-condiciones').value.trim(),
+        clausulaNda: document.getElementById('presupuesto-nda').value.trim(),
+        notas: document.getElementById('presupuesto-notas').value.trim(),
+      };
+
+      try {
+        const res = await fetch('/api/presupuestos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'upsert', presupuesto: payload })
+        });
+        const data = await res.json();
+        if (res.ok && data.ok) {
+          document.getElementById('presupuesto-id').value = data.presupuesto.id;
+          document.getElementById('presupuesto-feedback').textContent = `Presupuesto ${data.presupuesto.numero} guardado correctamente.`;
+          cargarPresupuestos();
+        } else {
+          document.getElementById('presupuesto-feedback').textContent = data.error || 'Error al guardar presupuesto.';
+        }
+      } catch (err) {
+        document.getElementById('presupuesto-feedback').textContent = 'Error de conexión con el backend: ' + err;
+      }
+    }
+
+    function verDocumentoPresupuesto(id) {
+      window.open(`/api/presupuestos/documento?id=${encodeURIComponent(id)}`, '_blank');
+    }
+
+    async function verDocumentoPresupuestoActual() {
+      let id = document.getElementById('presupuesto-id').value.trim();
+      if (!id) {
+        await guardarPresupuestoForm();
+        id = document.getElementById('presupuesto-id').value.trim();
+      }
+      if (id) {
+        verDocumentoPresupuesto(id);
+      }
+    }
+
+    async function eliminarPresupuesto(id) {
+      if (!confirm(`¿Eliminar el presupuesto con ID ${id}?`)) return;
+      try {
+        const res = await fetch(`/api/presupuestos?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (res.ok && data.ok) {
+          document.getElementById('presupuesto-feedback').textContent = `Presupuesto ${id} eliminado.`;
+          cargarPresupuestos();
+        }
+      } catch (_) {}
+    }
+
+    (function initOrganizadorFacturasJavier() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('app') || params.get('proyecto')) {
+        const banner = document.getElementById('facturas-app-blocked-banner');
+        if (banner) banner.style.display = 'block';
+      }
+      restaurarEstadoLocalFacturas();
+      const watchedIds = [
+        'facturas-ejercicio',
+        'facturas-trimestre',
+        'facturas-busqueda',
+        'facturas-notas-gestoria',
+        'factura-fecha',
+        'factura-numero',
+        'factura-proveedor',
+        'factura-nif',
+        'factura-concepto',
+        'factura-categoria',
+        'factura-base',
+        'factura-iva',
+        'factura-irpf',
+        'factura-estado',
+        'factura-notas'
+      ];
+      watchedIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('input', () => {
+          guardarEstadoLocalFacturas();
+          if (id === 'facturas-busqueda') {
+            pintarResumenYTablaFacturas({
+              summary: {
+                numFacturas: document.getElementById('kpi-num-facturas')?.textContent,
+                totalBase: parseFloat(document.getElementById('kpi-base')?.textContent || '0'),
+                totalIva: parseFloat(document.getElementById('kpi-iva')?.textContent || '0'),
+                totalIrpf: parseFloat(document.getElementById('kpi-irpf')?.textContent || '0'),
+                totalLiquido: parseFloat(document.getElementById('kpi-total')?.textContent || '0')
+              },
+              facturas: facturasTrimestreActual
+            });
+          }
+        });
+        el.addEventListener('change', () => {
+          guardarEstadoLocalFacturas();
+          if (id === 'facturas-ejercicio' || id === 'facturas-trimestre') {
+            cargarTrimestreFacturas();
+          }
+        });
+      });
+      cargarTrimestreFacturas();
+      limpiarFormularioPresupuesto();
+      if (window.location.hash === '#presupuestos') {
+        cambiarSubseccionFacturas('presupuestos');
+      } else if (window.location.hash === '#gestor' || window.location.hash === '#legado') {
+        cambiarSubseccionFacturas('legado');
+      }
+    })();
+  </script>
+</body>
+</html>

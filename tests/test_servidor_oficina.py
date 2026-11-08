@@ -184,22 +184,21 @@ class TestServidorOficina(unittest.TestCase):
             slugs_publicos = [p["slug"] for p in datos["pestanas"] if p["publica"]]
             self.assertEqual(set(slugs_publicos), {"skills", "resenas", "instala-tu-oficina"})
 
-    def test_vista_pestana_privada_bloqueada(self):
-        for ruta in ("/vista/aplichat", "/vista/propuestas", "/vista/facturas"):
+    def test_vistas_autenticas_oficina(self):
+        for ruta in ("/vista/aplichat", "/vista/propuestas", "/vista/facturas", "/vista/javier"):
             with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
                 self.assertEqual(resp.status, 200)
                 self.assertIn("text/html", resp.headers.get("Content-Type", ""))
                 html = resp.read().decode("utf-8")
-                self.assertIn("blurred-content", html)
-                self.assertIn("Instala tu Oficina en Hostinger", html)
-                self.assertIn("Pestaña Privada", html)
+                self.assertIn("Oficina ApliArte", html)
 
-    def test_archivo_escaparate_js(self):
-        with urllib.request.urlopen(f"{self.base_url}/vistas/escaparate.js") as resp:
+    def test_archivos_panel_shell(self):
+        with urllib.request.urlopen(f"{self.base_url}/panel-shell.css") as resp:
+            self.assertEqual(resp.status, 200)
+            self.assertIn("text/css", resp.headers.get("Content-Type", ""))
+        with urllib.request.urlopen(f"{self.base_url}/panel-shell.js") as resp:
             self.assertEqual(resp.status, 200)
             self.assertIn("javascript", resp.headers.get("Content-Type", ""))
-            js = resp.read().decode("utf-8")
-            self.assertIn("PESTANAS_ECOSISTEMA", js)
 
     def test_vista_raiz_index(self):
         for ruta in ("/", "/index.html"):
@@ -208,7 +207,8 @@ class TestServidorOficina(unittest.TestCase):
                 self.assertIn("text/html", resp.headers.get("Content-Type", ""))
                 html = resp.read().decode("utf-8")
                 self.assertIn("Oficina ApliArte", html)
-                self.assertIn("Suite Soberana", html)
+                self.assertIn("Tablero de tareas", html)
+                self.assertIn("panel-shell.css", html)
 
     def test_paridad_rutas_html_directas(self):
         for ruta in ("/vistas/skills.html", "/vistas/resenas.html", "/vistas/instala-tu-oficina.html"):

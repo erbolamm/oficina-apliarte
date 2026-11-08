@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#005fa9">
+  <title>ApliChat Pro · Hub de Asistentes · Oficina ApliArte</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23005fa9%22/%3E%3Cpath%20d%3D%22M46%2018H18c-2.2%200-4%201.8-4%204v24l8-8h24c2.2%200%204-1.8%204-4V22c0-2.2-1.8-4-4-4z%22%20fill%3D%22%23ffffff%22/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../panel-shell.css">
+  <link rel="stylesheet" href="/aplichat.css?v=20261011-2310">
+  <link rel="stylesheet" href="/asistente-terminal.css">
+  <link rel="stylesheet" href="/aplichat-pro.css">
+  <script>
+    try {
+      document.documentElement.dataset.theme =
+        localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
+      document.documentElement.dataset.sidebar =
+        localStorage.getItem("erbolamm-panel-sidebar") === "icons" ? "icons" : "full";
+      const savedFontSize =
+        localStorage.getItem("erbolamm-aplichat-font-size") || "16px";
+      document.documentElement.dataset.fontSize = savedFontSize;
+    } catch (_) {}
+  </script>
+</head>
+<body data-chat-view="aplichat-pro">
+  <div class="app-shell">
+    <aside class="office-sidebar" id="office-sidebar" aria-label="Navegación de la oficina">
+      <div class="sidebar-brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/><polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/></svg>
+        <span><strong>Oficina ApliArte</strong><small>Panel de control operativo ApliArte</small></span>
+        <button id="sidebar-toggle" class="sidebar-toggle" type="button" aria-controls="office-sidebar" aria-expanded="true" aria-label="Plegar la barra lateral a solo iconos" title="Plegar la barra lateral">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+      </div>
+      <nav class="side-nav" aria-label="Secciones">
+        <a class="nav-card" href="/"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
+        <a class="nav-card" href="/vista/javier"><span class="nav-icon" aria-hidden="true">👤</span><span class="nav-copy"><strong>Espacio Javier</strong><small>Control personal y ja--</small></span></a>
+        <a class="nav-card" href="/vista/inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
+        <a class="nav-card" href="/vista/aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
+        <a class="nav-card" href="/vista/skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
+        <a class="nav-card" href="/vista/conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
+        <a class="nav-card" href="/vista/plugins"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
+        <a class="nav-card" href="/vista/reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
+        <a class="nav-card" href="/vista/propuestas"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
+        <a class="nav-card" href="/vista/diseno"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
+        <a class="nav-card" href="/vista/tiendas"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
+        <a class="nav-card" href="/vista/mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
+        <a class="nav-card" href="/vista/correos"><span class="nav-icon" aria-hidden="true">✉</span><span class="nav-copy"><strong>Correos y Alertas</strong><small>erbolamm y javier</small></span></a>
+        <a class="nav-card" href="/vista/pnl"><span class="nav-icon" aria-hidden="true">🧠</span><span class="nav-copy"><strong>Estudio PNL</strong><small>Enganche y microcopy</small></span></a>
+        <a class="nav-card" href="/vista/musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
+        <a class="nav-card" href="/vista/idiomas"><span class="nav-icon" aria-hidden="true">🌐</span><span class="nav-copy"><strong>Idiomas</strong><small>Traducción y locución</small></span></a>
+        <a class="nav-card" href="/vista/locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
+        <a class="nav-card" href="/vista/voicestudio"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
+        <a class="nav-card" href="/vista/terminales"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
+        <a class="nav-card" href="/vista/facturas"><span class="nav-icon" aria-hidden="true">€</span><span class="nav-copy"><strong>Facturas</strong><small>Gestor de facturas</small></span></a>
+        <a class="nav-card" href="/vista/blogger"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
+        <a class="nav-card" href="/vista/bitacora"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
+        <a class="nav-card" href="/vista/directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
+        <a class="nav-card" href="/resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
+        <a class="nav-card" href="/vista/settings"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-copy"><strong>Ajustes</strong><small>Opciones por defecto</small></span></a>
+        <a class="nav-card" href="/vista/como-funciona"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
+      </nav>
+      <p class="sidebar-note"><strong>ApliChat Pro</strong>Hub centralizado con selector de asistentes y control táctil de terminales.</p>
+    </aside>
+    <div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
+
+    <main class="office-content office-content-aplichat" id="office">
+      <header class="topbar">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/><polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/></svg>
+          <h1 class="topbar-title">ApliChat Pro <small style="font-size: 0.8rem; font-weight: normal; color: var(--text-2, #64748b);">Hub de Asistentes</small></h1>
+        </div>
+        <div class="topbar-tools">
+          <a id="btn-go-aplichat" href="/vista/aplichat" class="btn-topbar-tool" aria-label="Volver a ApliChat clásico" title="Volver a ApliChat clásico" style="text-decoration: none;">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+          </a>
+          <button id="settings-drawer-toggle" class="btn-topbar-tool settings-drawer-btn" type="button" aria-expanded="false" aria-controls="topbar-settings-drawer" aria-label="Ajustes de visualización y tema" title="Ajustes">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+          </button>
+          <div id="topbar-settings-drawer" class="topbar-settings-drawer" hidden role="region" aria-label="Ajustes de visualización y voz">
+            <div class="settings-drawer-inner">
+              <button id="theme-toggle" class="sidebar-tool-btn btn-topbar-tool" type="button" aria-label="Cambiar tema" title="Cambiar tema">
+                <span id="theme-icon" aria-hidden="true" style="font-size: 0.95rem; line-height: 1;">☾</span>
+              </button>
+              <button id="font-size-toggle" class="sidebar-tool-btn btn-topbar-tool font-size-btn chat-font-size-btn" type="button" aria-label="Cambiar tamaño de letra (actual: 16px)" title="Cambiar tamaño de letra (actual: 16px)">16px</button>
+              <button id="autoscroll-toggle" class="sidebar-tool-btn btn-topbar-tool autoscroll-btn chat-scroll-bottom scroll-to-bottom-btn active" data-testid="scroll-to-bottom-btn" type="button" aria-label="Guardar scroll: activado (auto-scroll al fondo)" title="Guardar scroll: activado (auto-scroll al fondo)">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M16 13h-3V3h-2v10H8l4 4 4-4zM4 19v2h16v-2H4z"/></svg>
+              </button>
+              <button id="refresh-btn" class="sidebar-tool-btn btn-topbar-tool btn-refresh chat-refresh-btn" type="button" onclick="window.location.reload()" aria-label="Actualizar vista" title="Actualizar" data-symbol="↻">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+              </button>
+              <button id="tutor-mode-toggle" class="sidebar-tool-btn btn-topbar-tool tutor-toggle-btn" type="button" aria-pressed="false" aria-label="Modo Tutor (inactivo)" title="Activar Modo Tutor">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
+              </button>
+              <div class="drawer-divider" aria-hidden="true"></div>
+              <div class="drawer-tts-controls" role="group" aria-label="Controles de lectura por voz">
+                <button id="drawer-tts-prev" class="sidebar-tool-btn btn-topbar-tool drawer-tts-btn" type="button" aria-label="Párrafo anterior" title="Párrafo anterior">◀</button>
+                <button id="drawer-tts-speed-minus" class="sidebar-tool-btn btn-topbar-tool drawer-tts-btn" type="button" aria-label="Disminuir velocidad de voz" title="Disminuir velocidad">−</button>
+                <span id="drawer-tts-speed-badge" class="drawer-tts-badge" title="Velocidad de voz">1.0x</span>
+                <button id="drawer-tts-speed-plus" class="sidebar-tool-btn btn-topbar-tool drawer-tts-btn" type="button" aria-label="Aumentar velocidad de voz" title="Aumentar velocidad">+</button>
+                <button id="drawer-tts-next" class="sidebar-tool-btn btn-topbar-tool drawer-tts-btn" type="button" aria-label="Párrafo siguiente" title="Párrafo siguiente">▶</button>
+                <div class="topbar-voice-dropdown drawer-tts-voice-dropdown" id="topbar-voice-dropdown">
+                  <button id="topbar-voice-btn" class="sidebar-tool-btn btn-topbar-tool voice-btn drawer-tts-voice-btn" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Seleccionar voz en español" title="Seleccionar voz">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M9 13c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0-6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 8c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm-6 4c.22-.72 3.31-2 6-2 2.7 0 5.8 1.29 6 2H3zm13.08-9.08l1.41-1.41C18.66 7.68 19.34 9.27 19.34 11s-.68 3.32-1.85 4.49l-1.41-1.41C16.89 13.27 17.34 12.18 17.34 11s-.45-2.27-1.26-3.08zm2.83-2.83l1.41-1.41C21.84 5.2 23 7.97 23 11s-1.16 5.8-2.68 7.32l-1.41-1.41C20.17 15.65 21 13.43 21 11s-.83-4.65-2.09-5.91z"/></svg>
+                  </button>
+                  <div id="topbar-voice-menu" class="topbar-voice-menu drawer-tts-voice-menu" role="listbox" aria-label="Voces en español disponibles" hidden></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Barra Hub de Selección de Asistente Activo -->
+      <section class="pro-hub-bar" aria-label="Control de Asistentes">
+        <div class="pro-hub-selector-wrap">
+          <label for="assistant-selector" class="pro-hub-label">Terminal:</label>
+          <select id="assistant-selector" class="assistant-selector" aria-label="Seleccionar terminal activa"></select>
+        </div>
+        <div class="pro-hub-actions">
+          <button type="button" id="btn-copy-pane" class="btn-topbar-tool" aria-label="Copiar esta terminal" data-tip="Copiar al portapapeles el texto reciente de esta terminal">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11z"/></svg>
+          </button>
+          <span id="copy-pane-status" role="status" aria-live="polite" hidden></span>
+          <span id="assistant-status-chip" class="asistente-chip chip-idle">idle</span>
+          <button type="button" id="btn-close-assistant" class="btn-close-assistant" title="Cerrar y liberar terminal">✕ Cerrar terminal</button>
+        </div>
+      </section>
+
+      <!-- Indicador Circular de Progreso -->
+      <div id="assistant-loader" class="assistant-loader" style="display:none;" role="status">
+        <div class="circular-spinner"></div>
+        <span id="assistant-loader-text">Cargando estado de la terminal...</span>
+      </div>
+
+      <p id="aplichat-notice" class="aplichat-notice" role="status" hidden></p>
+
+      <section class="chat-room" id="chat-room" aria-label="Canal de conversación">
+        <div id="chat-messages" class="chat-messages" role="log" aria-live="polite" aria-label="Historial de mensajes">
+          <div class="chat-empty-state" id="chat-empty-state">
+            <div class="empty-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+            </div>
+            <h2 id="empty-state-title">Hub de Terminales y Asistentes</h2>
+            <p id="empty-state-desc">Selecciona una terminal activa en el desplegable superior para comunicarte directamente con ella.</p>
+          </div>
+        </div>
+
+        <!-- Barra inferior ergonómica de redacción -->
+        <div class="aplichat-composer-area" id="composer-area" data-quillbot-ignore="true" data-gramm="false" data-enable-grammarly="false" spellcheck="false">
+          <form id="aplichat-form" class="aplichat-composer" autocomplete="off" data-quillbot-ignore="true" data-gramm="false" data-enable-grammarly="false" spellcheck="false">
+            <div class="composer-actions-left">
+              <button id="attach-btn" type="button" class="btn-circle-action btn-attach" aria-label="Adjuntar archivo o imagen" title="Adjuntar">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+              </button>
+              <input type="file" id="file-input" class="sr-only" accept="image/*,video/*,audio/*,.pdf,.txt,.md,*" aria-hidden="true">
+            </div>
+
+            <div class="composer-input-wrapper">
+              <textarea id="aplichat-input" class="aplichat-textarea" placeholder="Escribe tu mensaje aquí..." rows="1" enterkeyhint="enter" aria-label="Mensaje para el asistente" data-testid="chat-input" data-quillbot-ignore="true" data-gramm="false" data-enable-grammarly="false" spellcheck="false"></textarea>
+            </div>
+
+            <div class="composer-actions-right">
+              <button id="mic-dictate-btn" type="button" class="btn-circle-action btn-mic" aria-label="Dictar mensaje por voz" title="Dictar por voz">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5-3c0 2.76-2.24 5-5 5s-5-2.76-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+              </button>
+              <button id="send-btn" type="submit" class="btn-circle-action btn-send chat-send-btn primary" data-testid="chat-submit-btn" aria-label="Enviar mensaje" title="Enviar">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Menú emergente de adjuntos limpio: Galería / Archivo y Pegar -->
+      <div id="attach-modal" class="attach-modal" hidden role="dialog" aria-modal="true" aria-labelledby="attach-modal-title">
+        <div class="attach-modal-backdrop" id="attach-modal-backdrop"></div>
+        <div class="attach-modal-sheet">
+          <div class="modal-sheet-head" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.85rem;">
+            <h3 id="attach-modal-title" class="attach-modal-title" style="margin: 0;">Adjuntar contenido y contexto</h3>
+            <button type="button" id="btn-attach-modal-x" class="btn-modal-x" aria-label="Cerrar modal" title="Cerrar" style="background: none; border: none; display: inline-flex; align-items: center; justify-content: center; padding: 0.25rem; cursor: pointer; color: var(--muted); border-radius: var(--radius-sm);">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+            </button>
+          </div>
+          <div class="attach-options-grid">
+            <div class="project-selector-wrapper" style="margin-bottom: 0.5rem;">
+              <label for="project-context-select" style="display:block; font-size: 0.85rem; font-weight:700; margin-bottom: 0.3rem; color: var(--ink);">
+                Proyecto de contexto (repos/):
+              </label>
+              <select id="project-context-select" style="width: 100%; min-height: 44px; padding: 0.5rem; font-size: 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--page); color: var(--ink);">
+                <option value="">(Selecciona un proyecto...)</option>
+                <option value="calca_app">calca_app</option>
+                <option value="afinar_de_oido">afinar_de_oido</option>
+                <option value="apliarte-remote-control">apliarte-remote-control</option>
+                <option value="tts-apliarte">tts-apliarte</option>
+                <option value="erbolamm-trabajo">erbolamm-trabajo (central)</option>
+              </select>
+            </div>
+            <div class="attach-actions-row" style="display: flex; gap: 1.25rem; justify-content: center; align-items: center; margin: 1rem 0;">
+              <button type="button" id="btn-attach-gallery" class="btn-circle-action attach-icon-btn" aria-label="Galería / Archivo" title="Galería / Archivo">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M22 16V4c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2zm-11-4l2.03 2.71L16 11l4 5H8l3-4zM2 6v14c0 1.1.9 2 2 2h14v-2H4V6H2z"/></svg>
+              </button>
+              <button type="button" id="btn-attach-paste" class="btn-circle-action attach-icon-btn" aria-label="Pegar" title="Pegar">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M19 2h-4.18C14.4 0.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 18H5V4h2v3h10V4h2v16z"/></svg>
+              </button>
+              <button type="button" id="btn-attach-close" class="btn-circle-action attach-icon-btn" aria-label="Cerrar modal" title="Cerrar">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <p class="sr-only" id="announcer" aria-live="polite"></p>
+  <script src="../panel-shell.js?v=20260927-2325"></script>
+  <script src="/aplichat-pro.js?v=20261011-2310"></script>
+</body>
+</html>

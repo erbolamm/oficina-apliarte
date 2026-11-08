@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#005fa9">
+  <title>Verificación y Dictamen de Tareas · Oficina ApliArte</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23005fa9%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2246%22%20font-size%3D%2234%22%20text-anchor%3D%22middle%22%20fill%3D%22%235ecef5%22%3E%E2%9C%93%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../panel-shell.css" />
+  <script src="../panel-shell.js" defer></script>
+  <script>
+    try {
+      document.documentElement.dataset.theme =
+        localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
+      document.documentElement.dataset.sidebar =
+        localStorage.getItem("erbolamm-panel-sidebar") === "icons" ? "icons" : "full";
+    } catch (_) {}
+  </script>
+  <style>
+    .dictamen-page {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      padding: 1.5rem 1rem 3rem;
+    }
+    .dictamen-hero {
+      background: linear-gradient(135deg, rgba(0, 95, 169, 0.08) 0%, rgba(94, 206, 245, 0.14) 100%);
+      border: 1px solid rgba(0, 95, 169, 0.18);
+      border-radius: var(--radius-md, 12px);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    html[data-theme="dark"] .dictamen-hero {
+      background: linear-gradient(135deg, rgba(0, 70, 123, 0.35) 0%, rgba(0, 95, 169, 0.25) 100%);
+      border-color: rgba(94, 206, 245, 0.22);
+    }
+    .hero-title h1 {
+      margin: 0 0 0.25rem 0;
+      font-size: 1.5rem;
+      color: var(--blue);
+    }
+    html[data-theme="dark"] .hero-title h1 {
+      color: var(--cyan);
+    }
+    .hero-title p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .stats-bar {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .task-card {
+      background: var(--surface);
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: 10px;
+      padding: 1.25rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      transition: all 0.2s ease;
+    }
+    html[data-theme="dark"] .task-card {
+      background: #1e293b;
+      border-color: #334155;
+    }
+    .task-card.aprobada {
+      border-left: 6px solid #10b981;
+    }
+    .task-card.reclamada {
+      border-left: 6px solid #ef4444;
+      background: rgba(239, 68, 68, 0.03);
+    }
+    .task-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .task-tag {
+      font-weight: 800;
+      color: var(--blue);
+      margin-right: 0.5rem;
+    }
+    html[data-theme="dark"] .task-tag {
+      color: var(--cyan);
+    }
+    .task-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 0;
+      display: inline;
+    }
+    .task-commit {
+      font-family: ui-monospace, monospace;
+      font-size: 0.85rem;
+      background: rgba(0, 95, 169, 0.08);
+      color: var(--blue);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    html[data-theme="dark"] .task-commit {
+      background: rgba(94, 206, 245, 0.15);
+      color: var(--cyan);
+    }
+    .task-desc {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin: 0.5rem 0 1rem;
+      line-height: 1.5;
+    }
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-act {
+      padding: 0.45rem 0.9rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border: 1px solid var(--border, #cbd5e1);
+      background: var(--surface);
+      color: var(--ink);
+      transition: all 0.15s ease;
+    }
+    html[data-theme="dark"] .btn-act {
+      background: #0f172a;
+      color: #f8fafc;
+      border-color: #475569;
+    }
+    .btn-act.btn-aprobar {
+      color: #10b981;
+      border-color: #10b981;
+    }
+    .btn-act.btn-aprobar:hover {
+      background: rgba(16, 185, 129, 0.1);
+    }
+    .btn-act.btn-reclamar {
+      color: #ef4444;
+      border-color: #ef4444;
+    }
+    .btn-act.btn-reclamar:hover {
+      background: rgba(239, 68, 68, 0.1);
+    }
+    .status-badge {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+    }
+    .status-badge.aprobada {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+    }
+    .status-badge.reclamada {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+    }
+    .dictamen-alert {
+      display: none;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      font-weight: 500;
+      border: 1px solid transparent;
+    }
+    .dictamen-alert.visible {
+      display: flex;
+    }
+    .dictamen-alert.warning {
+      background: rgba(245, 158, 11, 0.12);
+      border-color: rgba(245, 158, 11, 0.4);
+      color: #d97706;
+    }
+    .dictamen-alert.error {
+      background: rgba(239, 68, 68, 0.12);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #dc2626;
+    }
+    .reclamacion-box {
+      margin-top: 1rem;
+      padding-top: 0.75rem;
+      border-top: 1px dashed rgba(239, 68, 68, 0.3);
+      display: none;
+    }
+    .reclamacion-box textarea {
+      width: 100%;
+      border: 1px solid #ef4444;
+      border-radius: 6px;
+      padding: 0.5rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      background: var(--surface);
+      color: var(--ink);
+      box-sizing: border-box;
+    }
+    html[data-theme="dark"] .reclamacion-box textarea {
+      background: #0f172a;
+      color: #f8fafc;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="office-sidebar" id="office-sidebar" aria-label="Navegación de la oficina">
+      <div class="sidebar-brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+        </svg>
+        <span><strong>Oficina ApliArte</strong><small>Panel de control operativo ApliArte</small></span>
+        <button id="sidebar-toggle" class="sidebar-toggle" type="button"
+          aria-controls="office-sidebar" aria-expanded="true" aria-label="Plegar la barra lateral a solo iconos" title="Plegar la barra lateral">
+          <span class="chev" aria-hidden="true">‹</span>
+        </button>
+      </div>
+      <nav class="side-nav" aria-label="Secciones">
+        <a class="nav-card" href="/"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
+        <a class="nav-card" href="/vista/javier"><span class="nav-icon" aria-hidden="true">👤</span><span class="nav-copy"><strong>Espacio Javier</strong><small>Control personal y ja--</small></span></a>
+        <a class="nav-card" href="/vista/inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
+        <a class="nav-card" href="/vista/aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
+        <a class="nav-card" href="/vista/skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
+        <a class="nav-card" href="/vista/conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
+        <a class="nav-card" href="/vista/plugins"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
+        <a class="nav-card" href="/vista/reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
+        <a class="nav-card" href="/vista/propuestas"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
+        <a class="nav-card" href="/vista/diseno"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
+        <a class="nav-card" href="/vista/tiendas"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
+        <a class="nav-card" href="/vista/mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
+        <a class="nav-card" href="/vista/correos"><span class="nav-icon" aria-hidden="true">✉</span><span class="nav-copy"><strong>Correos y Alertas</strong><small>erbolamm y javier</small></span></a>
+        <a class="nav-card" href="/vista/pnl"><span class="nav-icon" aria-hidden="true">🧠</span><span class="nav-copy"><strong>Estudio PNL</strong><small>Enganche y microcopy</small></span></a>
+        <a class="nav-card" href="/vista/musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
+        <a class="nav-card" href="/vista/locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
+        <a class="nav-card" href="/vista/voicestudio"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
+        <a class="nav-card" href="/vista/terminales"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
+        <a class="nav-card" href="/vista/facturas"><span class="nav-icon" aria-hidden="true">€</span><span class="nav-copy"><strong>Facturas</strong><small>Gestor de facturas</small></span></a>
+        <a class="nav-card" href="/vista/blogger"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
+        <a class="nav-card" href="/vista/bitacora"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
+        <a class="nav-card" href="/vista/directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
+        <a class="nav-card" href="/vista/diapositivas"><span class="nav-icon" aria-hidden="true">⎘</span><span class="nav-copy"><strong>Diapositivas</strong><small>Presentaciones y difusión</small></span></a>
+        <a class="nav-card" href="/vista/shorts"><span class="nav-icon" aria-hidden="true">⏩</span><span class="nav-copy"><strong>Shorts</strong><small>Vídeo acelerado a 60 s</small></span></a>
+        <a class="nav-card" href="/resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
+        <a class="nav-card" href="/vista/settings"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-copy"><strong>Ajustes</strong><small>Opciones por defecto</small></span></a>
+        <a class="nav-card" href="/vista/como-funciona"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
+      </nav>
+    </aside>
+
+    <main class="office-main" id="office-main">
+      <div class="dictamen-page">
+        <header class="dictamen-hero">
+          <div class="hero-title">
+            <h1>Verificación y Dictamen de Tareas</h1>
+            <p>Auditoría de las tareas completadas en la central con aprobación o reclamación individual.</p>
+          </div>
+          <div class="stats-bar">
+            <span id="stats">Cargando tareas...</span>
+            <button class="btn-act" onclick="aprobarTodas()">✓ Aprobar todas</button>
+            <button class="btn-act" onclick="exportarDictamen()">⬇ Descargar informe JSON</button>
+          </div>
+        </header>
+
+        <div id="dictamen-alert" class="dictamen-alert" role="alert" aria-live="polite">
+          <span id="dictamen-alert-icon" aria-hidden="true">⚠️</span>
+          <span id="dictamen-alert-msg">Aviso de sincronización</span>
+        </div>
+
+        <section id="task-list" style="display:flex; flex-direction:column; gap:1rem;">
+          <!-- Tareas generadas por script -->
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const tareas = [
+      { id: "T8", commit: "f57a852", titulo: "Rutas absolutas de macOS sustituidas por variables", desc: "Sustitución de rutas fijas en VoiceStudio y Office 3D ($APLIARTE_REPOS y $HOME). CentralLocator actualizado para resolver dinámicamente según $HOME." },
+      { id: "T9", commit: "b94c6bd", titulo: "Adopción de runtime_config en lanzadores", desc: "Integración de runtime_config_resolver.dart y runtime_helper.py. Unificación de los 7 runtimes y comando erbolamm runtime." },
+      { id: "T10", commit: "78016e7", titulo: "Compuerta de arranque en lanzador Dart", desc: "Invocación de arrancar-orquestador.sh con fallo cerrado antes de tocar Herdr. Tests de simulación y compuerta en verde." },
+      { id: "T11", commit: "5aa4dd4", titulo: "Respaldo por cuota para cualquier runtime", desc: "fallback_cuota_agy conectado a runtime_config para respetar banderas y modelos dinámicos en toda la cadena." },
+      { id: "T12", commit: "751f61e", titulo: "Disparador diario de tareas recurrentes", desc: "Verificación del script de launchd (09:00) y visualización enriquecida con timestamps reales en el radar de inicio-dia." },
+      { id: "T13", commit: "8f2bf0b", titulo: "Auditoría de pestañas sin función real (solo cierre de tarjeta)", desc: "Esta tarea solo cierra la tarjeta tras verificar la consolidación de pestañas estáticas y compuerta de servidor en registro-modulos.json con respuesta 404 controlada." },
+      { id: "T14", commit: "546b907", titulo: "Oficina en Drive con raíz por dispositivo", desc: "Módulo multi-nodo OficinaDriveStorage con rutas relativas a Drive (videos, imagenes, voces) e historial por repositorio." },
+      { id: "T15", commit: "145ac4e", titulo: "Sincronización de contexto Drive híbrida (solo cierre de tarjeta)", desc: "Esta tarea solo cierra la tarjeta tras verificar la sincronización de contexto para Gemini Web (POST /api/contexto/sincronizar y 23 tests en verde)." },
+      { id: "T20", commit: "8bbb516", titulo: "Comprensión de Skills para usuario de a pie", desc: "Reorganización visual del catálogo con pasos claros y plegado del estudio avanzado de SVG (commit 8bbb516)." },
+      { id: "T21", commit: "6a99090", titulo: "Validador de Shorts y narración modular", desc: "Validador puro en Dart (duración, ratio, narración) y extracción del componente narracionControl a tareas/componentes/ (commits 6a99090 y c20f6db)." },
+      { id: "T22", commit: "b706e90", titulo: "Ajuste de cabecera en Shorts (1440px)", desc: "Resolución del solapamiento de títulos y botones en resoluciones de escritorio con estilos responsivos." }
+    ];
+
+    let estado = {};
+    let pendingRetryTimer = null;
+
+    function mostrarAviso(msg, tipo = 'warning') {
+      const alertEl = document.getElementById('dictamen-alert');
+      const msgEl = document.getElementById('dictamen-alert-msg');
+      const iconEl = document.getElementById('dictamen-alert-icon');
+      if (!alertEl || !msgEl) return;
+      msgEl.innerText = msg;
+      iconEl.innerText = tipo === 'error' ? '❌' : '⚠️';
+      alertEl.className = `dictamen-alert visible ${tipo}`;
+    }
+
+    function ocultarAviso() {
+      const alertEl = document.getElementById('dictamen-alert');
+      if (alertEl) {
+        alertEl.className = 'dictamen-alert';
+      }
+    }
+
+    async function cargarEstado() {
+      try {
+        const res = await fetch('/api/dictamen');
+        if (res.ok) {
+          const remote = await res.json();
+          if (remote && typeof remote === 'object' && Object.keys(remote).length > 0) {
+            estado = remote;
+            localStorage.setItem('erbolamm-dictamen-tareas', JSON.stringify(estado));
+            renderTasks();
+            return;
+          }
+        }
+      } catch (_) {}
+      estado = JSON.parse(localStorage.getItem('erbolamm-dictamen-tareas') || '{}');
+      renderTasks();
+    }
+
+    async function persistirEstado() {
+      localStorage.setItem('erbolamm-dictamen-tareas', JSON.stringify(estado));
+      const token = window.Oficina?.office?.actionToken || '';
+
+      if (!token) {
+        mostrarAviso('El token de la Oficina aún no ha cargado. Guardado provisional en navegador; reintentando conexión...', 'warning');
+        programarReintento();
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/dictamen', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-erbolamm-action': token
+          },
+          body: JSON.stringify(estado)
+        });
+
+        if (!res.ok) {
+          mostrarAviso(`Error al sincronizar con la Oficina (${res.status}). Guardado en navegador; reintentando...`, 'error');
+          programarReintento();
+        } else {
+          ocultarAviso();
+          if (pendingRetryTimer) {
+            clearInterval(pendingRetryTimer);
+            pendingRetryTimer = null;
+          }
+        }
+      } catch (err) {
+        mostrarAviso('Fallo de red al conectar con la Oficina. Guardado en navegador; reintentando...', 'error');
+        programarReintento();
+      }
+    }
+
+    function programarReintento() {
+      if (pendingRetryTimer) return;
+      pendingRetryTimer = setInterval(() => {
+        const token = window.Oficina?.office?.actionToken || '';
+        if (token) {
+          persistirEstado();
+        }
+      }, 2000);
+    }
+
+    function renderTasks() {
+      const container = document.getElementById('task-list');
+      container.replaceChildren();
+      let aprobadas = 0;
+      let reclamadas = 0;
+
+      tareas.forEach(t => {
+        const est = estado[t.id] || { status: 'pendiente', nota: '' };
+        if (est.status === 'aprobada') aprobadas++;
+        if (est.status === 'reclamada') reclamadas++;
+
+        const card = document.createElement('article');
+        card.className = `task-card ${est.status}`;
+        card.id = `card-${t.id}`;
+        card.innerHTML = `
+          <div class="task-head">
+            <div>
+              <span class="task-tag">${t.id}</span>
+              <h2 class="task-title">${t.titulo}</h2>
+            </div>
+            <span class="task-commit">${t.commit}</span>
+          </div>
+          <p class="task-desc">${t.desc}</p>
+          <div class="actions">
+            <button class="btn-act btn-aprobar" onclick="marcar('${t.id}', 'aprobada')">✓ Aprobar</button>
+            <button class="btn-act btn-reclamar" onclick="toggleReclamar('${t.id}')">✗ Reclamar / Ajustar</button>
+            ${est.status !== 'pendiente' ? `<span class="status-badge ${est.status}">${est.status}</span>` : ''}
+          </div>
+          <div class="reclamacion-box" id="box-${t.id}" style="${est.status === 'reclamada' ? 'display:block;' : ''}">
+            <p style="font-size:0.85rem; font-weight:600; margin:0.5rem 0 0.2rem; color:#ef4444;">Motivo o requerimiento de reclamo:</p>
+            <textarea rows="2" placeholder="Escribe aquí qué falta, qué falla o qué hay que ajustar..." oninput="guardarNota('${t.id}', this.value)">${est.nota || ''}</textarea>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      document.getElementById('stats').innerText = `${aprobadas} aprobadas · ${reclamadas} reclamadas · ${tareas.length - aprobadas - reclamadas} pendientes`;
+    }
+
+    function marcar(id, status) {
+      if (!estado[id]) estado[id] = {};
+      estado[id].status = status;
+      persistirEstado();
+      renderTasks();
+    }
+
+    function toggleReclamar(id) {
+      if (!estado[id]) estado[id] = {};
+      estado[id].status = 'reclamada';
+      persistirEstado();
+      renderTasks();
+      setTimeout(() => {
+        const txt = document.querySelector(`#box-${id} textarea`);
+        if (txt) txt.focus();
+      }, 50);
+    }
+
+    let notaTimers = {};
+    function guardarNota(id, nota) {
+      if (!estado[id]) estado[id] = {};
+      estado[id].nota = nota;
+      if (notaTimers[id]) clearTimeout(notaTimers[id]);
+      notaTimers[id] = setTimeout(() => {
+        persistirEstado();
+      }, 300);
+    }
+
+    function aprobarTodas() {
+      tareas.forEach(t => {
+        if (!estado[t.id]) estado[t.id] = {};
+        estado[t.id].status = 'aprobada';
+      });
+      persistirEstado();
+      renderTasks();
+    }
+
+    function exportarDictamen() {
+      const blob = new Blob([JSON.stringify(estado, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `dictamen-tareas-${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+    }
+
+    cargarEstado();
+  </script>
+</body>
+</html>

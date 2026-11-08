@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voice Studio · Oficina local de ErBolamm</title>
+  <link rel="stylesheet" href="../panel-shell.css">
+  <script>
+    document.documentElement.dataset.theme =
+      localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
+  </script>
+  <style>
+    .vs-container {
+      max-width: 980px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      padding-bottom: 4rem;
+    }
+
+    .vs-card {
+      background: var(--surface, #ffffff);
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: var(--radius-lg, 12px);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.06));
+    }
+    html[data-theme="dark"] .vs-card {
+      background: #1e293b;
+      border-color: #334155;
+    }
+
+    .vs-card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ink, #0f172a);
+      margin: 0 0 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    html[data-theme="dark"] .vs-card-title {
+      color: #f8fafc;
+    }
+
+    .vs-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(14, 165, 233, 0.12);
+      color: #0284c7;
+      border: 1px solid rgba(14, 165, 233, 0.25);
+    }
+    html[data-theme="dark"] .vs-badge {
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border-color: rgba(56, 189, 248, 0.3);
+    }
+
+    .vs-banner-hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: var(--radius-lg, 12px);
+      padding: 1.25rem 1.5rem;
+    }
+    html[data-theme="dark"] .vs-banner-hero {
+      background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(30, 41, 59, 0.9) 100%);
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+    @media (max-width: 768px) {
+      .vs-banner-hero {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .vs-control-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .vs-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--muted, #64748b);
+      margin-bottom: 0.35rem;
+      display: block;
+    }
+    html[data-theme="dark"] .vs-label {
+      color: #94a3b8;
+    }
+
+    .vs-input, .vs-select {
+      width: 100%;
+      padding: 0.6rem 0.8rem;
+      border-radius: 8px;
+      border: 1px solid var(--border, #cbd5e1);
+      background: var(--surface, #ffffff);
+      color: var(--ink, #0f172a);
+      font-size: 0.9rem;
+      box-sizing: border-box;
+    }
+    html[data-theme="dark"] .vs-input,
+    html[data-theme="dark"] .vs-select {
+      background: #0f172a;
+      border-color: #334155;
+      color: #f8fafc;
+    }
+
+    .vs-textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border, #cbd5e1);
+      background: var(--surface, #ffffff);
+      color: var(--ink, #0f172a);
+      font-family: inherit;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+    html[data-theme="dark"] .vs-textarea {
+      background: #0f172a;
+      border-color: #334155;
+      color: #f8fafc;
+    }
+
+    .vs-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.6rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      background: #0284c7;
+      color: #ffffff;
+      transition: background 0.15s ease, transform 0.05s ease;
+    }
+    .vs-btn-primary:hover {
+      background: #0369a1;
+    }
+    .vs-btn-primary:active {
+      transform: scale(0.99);
+    }
+    .vs-btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .vs-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: 8px;
+      border: 1px solid var(--border, #cbd5e1);
+      background: transparent;
+      color: var(--muted, #64748b);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .vs-btn-secondary:hover {
+      background: rgba(148, 163, 184, 0.12);
+      color: var(--ink, #0f172a);
+    }
+    html[data-theme="dark"] .vs-btn-secondary {
+      border-color: #334155;
+      color: #94a3b8;
+    }
+    html[data-theme="dark"] .vs-btn-secondary:hover {
+      color: #f8fafc;
+      border-color: #475569;
+    }
+
+    .vs-terminal-box {
+      background: #0b0f19;
+      color: #38bdf8;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      border: 1px solid #1e293b;
+    }
+
+    /* Pestañas de Modos de Síntesis */
+    .vs-tab-bar {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 2px solid var(--border, #e2e8f0);
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.25rem;
+      overflow-x: auto;
+    }
+    html[data-theme="dark"] .vs-tab-bar {
+      border-color: #334155;
+    }
+    .vs-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.6rem 1.1rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px 8px 0 0;
+      background: transparent;
+      color: var(--muted, #64748b);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .vs-tab-btn:hover {
+      color: var(--ink, #0f172a);
+      background: rgba(148, 163, 184, 0.1);
+    }
+    html[data-theme="dark"] .vs-tab-btn {
+      color: #94a3b8;
+    }
+    html[data-theme="dark"] .vs-tab-btn:hover {
+      color: #f8fafc;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .vs-tab-btn.active {
+      color: #0284c7;
+      border-bottom: 3px solid #0284c7;
+      background: rgba(2, 132, 199, 0.08);
+    }
+    html[data-theme="dark"] .vs-tab-btn.active {
+      color: #38bdf8;
+      border-bottom-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.12);
+    }
+    .vs-mode-panel {
+      display: none;
+      margin-bottom: 1.2rem;
+      padding: 1rem;
+      border-radius: 8px;
+      background: rgba(148, 163, 184, 0.06);
+      border: 1px solid var(--border, #e2e8f0);
+    }
+    html[data-theme="dark"] .vs-mode-panel {
+      background: rgba(15, 23, 42, 0.6);
+      border-color: #334155;
+    }
+    .vs-mode-panel.active {
+      display: block;
+    }
+    .vs-chip-btn {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border, #cbd5e1);
+      font-size: 0.75rem;
+      background: transparent;
+      color: var(--muted, #64748b);
+      cursor: pointer;
+      margin-right: 0.35rem;
+      margin-top: 0.35rem;
+      transition: all 0.15s ease;
+    }
+    .vs-chip-btn:hover {
+      border-color: #0284c7;
+      color: #0284c7;
+    }
+    html[data-theme="dark"] .vs-chip-btn {
+      border-color: #475569;
+      color: #94a3b8;
+    }
+    html[data-theme="dark"] .vs-chip-btn:hover {
+      border-color: #38bdf8;
+      color: #38bdf8;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="office-sidebar" id="office-sidebar" aria-label="Navegación de la oficina">
+      <div class="sidebar-brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+        </svg>
+        <span><strong>Oficina ApliArte</strong><small>Panel de control operativo ApliArte</small></span>
+        <button id="sidebar-toggle" class="sidebar-toggle" type="button"
+          aria-controls="office-sidebar" aria-expanded="true" aria-label="Plegar la barra lateral a solo iconos" title="Plegar la barra lateral">
+          <span class="chev" aria-hidden="true">‹</span>
+        </button>
+      </div>
+      <nav class="side-nav" aria-label="Secciones">
+        <a class="nav-card" href="/"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
+        <a class="nav-card" href="/vista/javier"><span class="nav-icon" aria-hidden="true">👤</span><span class="nav-copy"><strong>Espacio Javier</strong><small>Control personal y ja--</small></span></a>
+        <a class="nav-card" href="/vista/inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
+        <a class="nav-card" href="/vista/aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
+        <a class="nav-card" href="/vista/skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
+        <a class="nav-card" href="/vista/conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
+        <a class="nav-card" href="/vista/plugins"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
+        <a class="nav-card" href="/vista/reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
+        <a class="nav-card" href="/vista/propuestas"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
+        <a class="nav-card" href="/vista/diseno"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
+        <a class="nav-card" href="/vista/tiendas"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
+        <a class="nav-card" href="/vista/mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
+        <a class="nav-card" href="/vista/correos"><span class="nav-icon" aria-hidden="true">✉</span><span class="nav-copy"><strong>Correos y Alertas</strong><small>erbolamm y javier</small></span></a>
+        <a class="nav-card" href="/vista/pnl"><span class="nav-icon" aria-hidden="true">🧠</span><span class="nav-copy"><strong>Estudio PNL</strong><small>Enganche y microcopy</small></span></a>
+        <a class="nav-card" href="/vista/musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
+        <a class="nav-card" href="/vista/idiomas"><span class="nav-icon" aria-hidden="true">🌐</span><span class="nav-copy"><strong>Idiomas</strong><small>Traducción y locución</small></span></a>
+        <a class="nav-card" href="/vista/locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
+        <a class="nav-card" href="/vista/voicestudio" aria-current="page"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
+        <a class="nav-card" href="/vista/terminales"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
+        <a class="nav-card" href="/vista/facturas"><span class="nav-icon" aria-hidden="true">€</span><span class="nav-copy"><strong>Facturas</strong><small>Gestor de facturas</small></span></a>
+        <a class="nav-card" href="/vista/blogger"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
+        <a class="nav-card" href="/vista/bitacora"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
+        <a class="nav-card" href="/vista/directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
+        <a class="nav-card" href="/vista/diapositivas"><span class="nav-icon" aria-hidden="true">⎘</span><span class="nav-copy"><strong>Diapositivas</strong><small>Presentaciones y difusión</small></span></a>
+        <a class="nav-card" href="/resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
+        <a class="nav-card" href="/vista/settings"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-copy"><strong>Ajustes</strong><small>Opciones por defecto</small></span></a>
+        <a class="nav-card" href="/vista/como-funciona"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
+      </nav>
+      <p class="sidebar-note"><strong>Privada y local</strong>No conecta la oficina pública, no consulta cuotas y no muestra historial.</p>
+    </aside>
+    <div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
+
+    <main class="office-content" id="office">
+      <header class="topbar">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+            <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+          </svg>
+          <h1>Voice Studio · Clonación Ultrarrápida</h1>
+        </div>
+        <span class="private-chip">Oficina local · privada</span>
+        <span class="connection" id="connection" data-kind="loading">Conectando</span>
+        <button id="refresh-btn" class="btn-refresh" type="button" onclick="window.location.reload()" aria-label="Actualizar vista" title="Actualizar">↻</button>
+        <button id="theme-toggle" type="button" aria-label="Activar modo oscuro" title="Cambiar tema">
+          <span id="theme-icon" aria-hidden="true">☾</span>
+        </button>
+      </header>
+
+      <p class="updated" id="updated">Inferencia neuronal de alta velocidad con qwentts.cpp Q8_0 (1.7B) acelerado por Metal en Apple Silicon</p>
+
+      <div class="vs-container">
+
+          <!-- Aviso de unificación con Locución y Guiones -->
+          <div class="unification-banner-card" style="background: linear-gradient(135deg, rgba(2, 132, 199, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%); border: 1.5px solid rgba(2, 132, 199, 0.35); border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div style="max-width: 680px;">
+              <span style="display: inline-block; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; background: #0284c7; color: #ffffff; padding: 0.2rem 0.55rem; border-radius: 4px; margin-bottom: 0.4rem;">Pestaña Unificada</span>
+              <h2 style="font-size: 1.15rem; font-weight: 800; color: var(--ink, #0f172a); margin: 0 0 0.35rem 0;">
+                Voice Studio ahora está integrado en «Locución y Guiones»
+              </h2>
+              <p style="font-size: 0.88rem; color: var(--muted, #64748b); margin: 0; line-height: 1.5;">
+                Hemos integrado toda la potencia de <strong>Voice Studio</strong> (clonación zero-shot, 9 voces de estudio y diseño textual con <em>qwentts.cpp</em>) en el Estudio Maestro de Locución, añadiendo además escaletas por escenas, sincronización multilingüe y subida automática a Google Drive.
+              </p>
+            </div>
+            <a href="/vista/locucion" style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #0284c7, #0369a1); color: #ffffff; text-decoration: none; padding: 0.75rem 1.25rem; border-radius: 8px; font-weight: 700; font-size: 0.92rem; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25); transition: transform 0.15s, box-shadow 0.15s;">
+              <span>Abrir Locución y Guiones</span>
+              <span aria-hidden="true">&rarr;</span>
+            </a>
+          </div>
+
+          <!-- Cabecera de estado -->
+          <div class="vs-banner-hero">
+            <div>
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                <span class="vs-badge">qwentts.cpp Q8_0 (Metal)</span>
+                <span class="vs-badge">Apple Silicon Metal Nativo</span>
+                <span class="vs-badge">100% Local y Soberano</span>
+              </div>
+              <h1 style="font-size: 1.4rem; font-weight: 800; margin: 0 0 0.5rem 0; color: var(--ink, #0f172a);">
+                VoiceStudio · Motor de Síntesis Ultrarrápida
+              </h1>
+              <p style="font-size: 0.88rem; color: var(--muted, #64748b); margin: 0;">
+                Inferencia en C++ nativo sobre Metal en Apple Silicon (&lt;10s). Unifica en una sola pestaña: clonación zero-shot, 9 voces de estudio y diseño de voz por descripción textual.
+              </p>
+            </div>
+            <div style="display: flex; flex-direction: column; justify-content: center; gap: 0.6rem; border-left: 1px solid rgba(56, 189, 248, 0.2); padding-left: 1.5rem;">
+              <span class="vs-label">Modo activo y motor:</span>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span id="vs-active-mode-label" style="font-weight: 700; font-size: 0.95rem;">Clonación Zero-Shot (Voz de Javier)</span>
+              </div>
+              <span id="vs-active-mode-desc" style="font-size: 0.78rem; color: var(--muted, #64748b);">
+                Muestra: <code>mi_voz/clean/javier_mateo_calibracion.wav</code>
+              </span>
+            </div>
+          </div>
+
+          <!-- Selector de los 3 Modos Unificados -->
+          <div class="vs-tab-bar" role="tablist" aria-label="Modos de Inferencia TTS">
+            <button id="tab-clonacion" class="vs-tab-btn active" type="button" role="tab" aria-selected="true" data-mode="clonacion">
+              1. Clonación Zero-Shot
+            </button>
+            <button id="tab-customvoice" class="vs-tab-btn" type="button" role="tab" aria-selected="false" data-mode="customvoice">
+              2. Voces de Estudio (9)
+            </button>
+            <button id="tab-voicedesign" class="vs-tab-btn" type="button" role="tab" aria-selected="false" data-mode="voicedesign">
+              3. Diseño de Voz por Texto
+            </button>
+          </div>
+
+          <!-- Paneles de configuración según modo activo -->
+          <div id="panel-clonacion" class="vs-mode-panel active">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+              <div>
+                <strong style="font-size: 0.9rem; color: #0284c7;">Muestra de Calibración de Javier Mateo</strong>
+                <p style="font-size: 0.8rem; color: var(--muted, #64748b); margin: 0.2rem 0 0 0;">
+                  Clonación zero-shot nativa a partir del archivo maestro <code>$APLIARTE_REPOS/erbolamm-studio/mi_voz/clean/javier_mateo_calibracion.wav</code>.
+                </p>
+              </div>
+              <span class="vs-badge">Modelo: Base 1.7B Q8_0</span>
+            </div>
+          </div>
+
+          <div id="panel-customvoice" class="vs-mode-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
+              <strong style="font-size: 0.9rem; color: #0284c7;">Selección de Locutor de Estudio (9 voces integradas)</strong>
+              <span class="vs-badge">Modelo: CustomVoice 1.7B Q8_0</span>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0.8rem;">
+              <div>
+                <label class="vs-label" for="vs-speaker-select">Voz de Estudio:</label>
+                <select id="vs-speaker-select" class="vs-select">
+                  <option value="vivian" selected>Vivian · Femenina clara y profesional</option>
+                  <option value="serena">Serena · Femenina cálida y pausada</option>
+                  <option value="ryan">Ryan · Masculina enérgica y dinámica</option>
+                  <option value="aiden">Aiden · Masculina joven y cercana</option>
+                  <option value="uncle_fu">Uncle Fu · Masculina madura y autoritaria</option>
+                  <option value="ono_anna">Ono Anna · Femenina suave y dulce</option>
+                  <option value="sohee">Sohee · Femenina expresiva</option>
+                  <option value="eric">Eric · Masculina (Dialecto Sichuan)</option>
+                  <option value="dylan">Dylan · Masculina (Dialecto Beijing)</option>
+                </select>
+              </div>
+              <div>
+                <label class="vs-label" for="vs-custom-instruct">Estilo o instrucción adicional (opcional):</label>
+                <input id="vs-custom-instruct" class="vs-input" type="text" placeholder="Ej: hablar con entusiasmo y tono comercial..." />
+              </div>
+            </div>
+          </div>
+
+          <div id="panel-voicedesign" class="vs-mode-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
+              <strong style="font-size: 0.9rem; color: #0284c7;">✨ Diseño de Voz Sintética por Descripción Textual</strong>
+              <span class="vs-badge">Modelo: VoiceDesign 1.7B Q8_0</span>
+            </div>
+            <label class="vs-label" for="vs-instruct-input">Descripción de timbre, edad y personalidad de la voz:</label>
+            <input
+              id="vs-instruct-input"
+              class="vs-input"
+              type="text"
+              value="male, young adult, warm and calm tone, podcast host"
+              placeholder="Ej: female, young adult, cheerful and clear commercial tone..."
+            />
+            <div style="margin-top: 0.5rem;">
+              <span style="font-size: 0.75rem; color: var(--muted, #64748b); margin-right: 0.4rem;">Presets rápidos:</span>
+              <button type="button" class="vs-chip-btn" data-preset="male, young adult, warm and calm tone, podcast host">Podcast Masculino</button>
+              <button type="button" class="vs-chip-btn" data-preset="female, young adult, cheerful and clear commercial tone">Comercial Femenina</button>
+              <button type="button" class="vs-chip-btn" data-preset="male, middle-aged, deep resonant voice, authoritative documentary style">Documental Grave</button>
+              <button type="button" class="vs-chip-btn" data-preset="female, young adult, soft, friendly and warm voice">Asistente Cálida</button>
+            </div>
+          </div>
+
+          <!-- Editor de síntesis -->
+          <section class="vs-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+              <h2 class="vs-card-title" id="vs-form-title" style="margin: 0;">
+                <span>🎙️</span> Generar Locución con Voz de Javier
+              </h2>
+              <button id="vs-btn-reset" type="button" class="vs-btn-secondary" title="Restablecer valores y texto por defecto">
+                <span>↺</span> Restablecer
+              </button>
+            </div>
+
+            <label class="vs-label" for="vs-text-input">Texto a sintetizar:</label>
+            <textarea
+              id="vs-text-input"
+              class="vs-textarea"
+              placeholder="Escribe aquí el texto que deseas que el motor pronuncie..."
+            >Hola Javier, soy el orquestador de ErBolamm Trabajo sintetizando este mensaje con tu propia voz clonada mediante Voice Studio en el Mac mini M2 Pro.</textarea>
+
+            <div class="vs-control-group">
+              <div>
+                <label class="vs-label" for="vs-lang-select">Idioma:</label>
+                <select id="vs-lang-select" class="vs-select">
+                  <option value="es" selected>Español (es)</option>
+                  <option value="en">Inglés (en)</option>
+                  <option value="fr">Francés (fr)</option>
+                  <option value="de">Alemán (de)</option>
+                  <option value="pt">Portugués (pt)</option>
+                  <option value="it">Italiano (it)</option>
+                  <option value="zh">Chino (zh)</option>
+                  <option value="ja">Japonés (ja)</option>
+                  <option value="ru">Ruso (ru)</option>
+                  <option value="auto">Auto (Detección automática)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="vs-label" for="vs-speed-input">Velocidad:</label>
+                <select id="vs-speed-input" class="vs-select">
+                  <option value="0.9">0.9x (Pausado)</option>
+                  <option value="1.0" selected>1.0x (Natural)</option>
+                  <option value="1.15">1.15x (Dinámico)</option>
+                  <option value="1.3">1.3x (Rápido)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="vs-label" for="vs-temp-select">Temperatura / Expresividad:</label>
+                <select id="vs-temp-select" class="vs-select">
+                  <option value="0.7">0.7 (Fiel y consistente)</option>
+                  <option value="0.8" selected>0.8 (Equilibrado natural)</option>
+                  <option value="0.95">0.95 (Alta expresividad)</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+              <button id="vs-btn-generate" class="vs-btn-primary">
+                <span>⚡</span> Sintetizar con Voz de Javier
+              </button>
+              <div id="vs-status-box" style="font-size: 0.85rem; color: var(--muted, #64748b);">
+                Listo para sintetizar con qwentts.cpp sobre Metal.
+              </div>
+            </div>
+          </section>
+
+          <!-- Reproductor de audio -->
+          <section class="vs-card" id="vs-card-result">
+            <h2 class="vs-card-title">
+              <span>🔊</span> Audio Generado con Voz de Javier
+            </h2>
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+              <audio id="vs-audio-player" src="/difusion/locucion/audios/voicestudio_ultimo.wav" controls style="width: 100%; border-radius: 8px;"></audio>
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem;">
+                <span id="vs-metrics" style="font-size: 0.85rem; color: var(--muted, #64748b);">
+                  Muestra activa: 24 kHz · Inferencia Zero-Shot en Apple Silicon (Metal/MPS)
+                </span>
+                <a id="vs-download-link" href="/difusion/locucion/audios/voicestudio_ultimo.wav" download="voicestudio_javier.wav" class="vs-btn-primary" style="text-decoration: none; padding: 0.5rem 1rem; font-size: 0.85rem;">
+                  💾 Descargar archivo .WAV
+                </a>
+              </div>
+            </div>
+          </section>
+
+          <!-- Consola y comandos CLI -->
+          <section class="vs-card">
+            <h2 class="vs-card-title">
+              <span>💻</span> Invocación Directa por Terminal y MCP
+            </h2>
+            <p style="font-size: 0.85rem; color: var(--muted, #64748b); margin: 0 0 0.8rem 0;">
+              Puedes sintetizar en segundo plano o integrar la voz en scripts de la central ejecutando directamente:
+            </p>
+            <div class="vs-terminal-box" id="vs-cli-box">
+/Volumes/ModelosIA/speech-env/bin/python scripts/voicestudio_tts.py \
+  --mode clonacion \
+  --text "Texto para sintetizar con la voz de Javier" \
+  --language es \
+  --output salida.wav
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../panel-shell.js?v=20261013-1730"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const STORAGE_KEY = "erbolamm_voicestudio_state";
+      const DEFAULT_TEXT = "Hola Javier, soy el orquestador de ErBolamm Trabajo sintetizando este mensaje con tu propia voz clonada mediante Voice Studio en el Mac mini M2 Pro.";
+
+      let currentMode = "clonacion";
+
+      const btn = document.getElementById("vs-btn-generate");
+      const btnReset = document.getElementById("vs-btn-reset");
+      const textInput = document.getElementById("vs-text-input");
+      const langSelect = document.getElementById("vs-lang-select");
+      const speedInput = document.getElementById("vs-speed-input");
+      const tempSelect = document.getElementById("vs-temp-select");
+      const statusBox = document.getElementById("vs-status-box");
+      const cardResult = document.getElementById("vs-card-result");
+      const audioPlayer = document.getElementById("vs-audio-player");
+      const metricsSpan = document.getElementById("vs-metrics");
+      const downloadLink = document.getElementById("vs-download-link");
+      const cliBox = document.getElementById("vs-cli-box");
+
+      const speakerSelect = document.getElementById("vs-speaker-select");
+      const customInstructInput = document.getElementById("vs-custom-instruct");
+      const instructInput = document.getElementById("vs-instruct-input");
+      const formTitle = document.getElementById("vs-form-title");
+      const activeModeLabel = document.getElementById("vs-active-mode-label");
+      const activeModeDesc = document.getElementById("vs-active-mode-desc");
+
+      const tabClonacion = document.getElementById("tab-clonacion");
+      const tabCustomvoice = document.getElementById("tab-customvoice");
+      const tabVoicedesign = document.getElementById("tab-voicedesign");
+
+      const panelClonacion = document.getElementById("panel-clonacion");
+      const panelCustomvoice = document.getElementById("panel-customvoice");
+      const panelVoicedesign = document.getElementById("panel-voicedesign");
+
+      function updateMode(mode, save = true) {
+        currentMode = mode || "clonacion";
+
+        // Actualizar pestañas
+        [tabClonacion, tabCustomvoice, tabVoicedesign].forEach(tab => {
+          const isActive = tab.dataset.mode === currentMode;
+          tab.classList.toggle("active", isActive);
+          tab.setAttribute("aria-selected", isActive ? "true" : "false");
+        });
+
+        // Actualizar paneles
+        panelClonacion.classList.toggle("active", currentMode === "clonacion");
+        panelCustomvoice.classList.toggle("active", currentMode === "customvoice");
+        panelVoicedesign.classList.toggle("active", currentMode === "voicedesign");
+
+        // Actualizar etiquetas y botones según modo
+        if (currentMode === "customvoice") {
+          const spkName = speakerSelect ? speakerSelect.options[speakerSelect.selectedIndex].text.split("·")[0].trim() : "Vivian";
+          activeModeLabel.textContent = `🎭 Voces de Estudio (${spkName})`;
+          activeModeDesc.innerHTML = `Modelo: <code>qwen-talker-1.7b-customvoice-Q8_0.gguf</code> · 9 voces`;
+          formTitle.innerHTML = `<span>🎭</span> Generar Locución con Voz de Estudio (${spkName})`;
+          btn.innerHTML = `<span>🎭</span> Sintetizar con Voz de ${spkName}`;
+        } else if (currentMode === "voicedesign") {
+          activeModeLabel.textContent = `✨ Diseño de Voz por Descripción Textual`;
+          activeModeDesc.innerHTML = `Modelo: <code>qwen-talker-1.7b-voicedesign-Q8_0.gguf</code>`;
+          formTitle.innerHTML = `<span>✨</span> Generar Locución con Voz Diseñada`;
+          btn.innerHTML = `<span>✨</span> Diseñar y Sintetizar Voz`;
+        } else {
+          // clonacion
+          activeModeLabel.textContent = `🎙️ Clonación Zero-Shot (Voz de Javier)`;
+          activeModeDesc.innerHTML = `Muestra: <code>mi_voz/clean/javier_mateo_calibracion.wav</code>`;
+          formTitle.innerHTML = `<span>🎙️</span> Generar Locución con Voz de Javier`;
+          btn.innerHTML = `<span>⚡</span> Sintetizar con Voz de Javier`;
+        }
+
+        updateCliSnippet();
+        if (save) saveState();
+      }
+
+      function updateCliSnippet() {
+        if (!cliBox) return;
+        const textSample = (textInput.value || "Texto para sintetizar").replace(/"/g, '\\"').slice(0, 40) + "...";
+        const lang = langSelect.value;
+        let extraFlags = "";
+        if (currentMode === "customvoice") {
+          extraFlags = `  --speaker ${speakerSelect.value} \\\n`;
+          if (customInstructInput.value.trim()) {
+            extraFlags += `  --instruct "${customInstructInput.value.trim().replace(/"/g, '\\"')}" \\\n`;
+          }
+        } else if (currentMode === "voicedesign") {
+          const inst = instructInput.value.trim() || "male, young adult, warm tone";
+          extraFlags = `  --instruct "${inst.replace(/"/g, '\\"')}" \\\n`;
+        }
+        cliBox.textContent =
+`/Volumes/ModelosIA/speech-env/bin/python scripts/voicestudio_tts.py \\
+  --mode ${currentMode} \\
+  --text "${textSample}" \\
+${extraFlags}  --language ${lang} \\
+  --speed ${speedInput.value} \\
+  --output salida.wav`;
+      }
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          return raw ? JSON.parse(raw) : null;
+        } catch (_) {
+          return null;
+        }
+      }
+
+      function saveState(lastAudioData) {
+        try {
+          const current = loadState() || {};
+          const nextState = {
+            mode: currentMode,
+            speaker: speakerSelect ? speakerSelect.value : "vivian",
+            customInstruct: customInstructInput ? customInstructInput.value : "",
+            instruct: instructInput ? instructInput.value : "",
+            text: textInput.value,
+            lang: langSelect.value,
+            speed: speedInput.value,
+            temp: tempSelect ? tempSelect.value : "0.8",
+            lastAudio: lastAudioData !== undefined ? lastAudioData : current.lastAudio,
+            updatedAt: Date.now()
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(nextState));
+        } catch (_) {}
+      }
+
+      function restoreUI(state) {
+        if (!state) return;
+        if (state.mode) {
+          currentMode = state.mode;
+        }
+        if (state.text !== undefined && state.text.trim()) {
+          textInput.value = state.text;
+        }
+        if (state.lang) langSelect.value = state.lang;
+        if (state.speed) speedInput.value = state.speed;
+        if (state.temp && tempSelect) tempSelect.value = state.temp;
+        if (state.speaker && speakerSelect) speakerSelect.value = state.speaker;
+        if (state.customInstruct && customInstructInput) customInstructInput.value = state.customInstruct;
+        if (state.instruct && instructInput) instructInput.value = state.instruct;
+
+        updateMode(currentMode, false);
+
+        if (state.lastAudio && state.lastAudio.url) {
+          audioPlayer.src = state.lastAudio.url + (state.lastAudio.url.includes("?") ? "" : "?t=" + (state.lastAudio.timestamp || Date.now()));
+          downloadLink.href = state.lastAudio.url;
+          if (state.lastAudio.metrics) {
+            metricsSpan.textContent = state.lastAudio.metrics;
+          }
+          cardResult.style.display = "block";
+          const dateStr = state.lastAudio.timestamp ? new Date(state.lastAudio.timestamp).toLocaleTimeString() : "";
+          statusBox.textContent = `✓ Sesión preservada (${dateStr || "guardada"}). Listo para sintetizar.`;
+        }
+      }
+
+      // Event listeners para pestañas de modo
+      tabClonacion.addEventListener("click", () => updateMode("clonacion"));
+      tabCustomvoice.addEventListener("click", () => updateMode("customvoice"));
+      tabVoicedesign.addEventListener("click", () => updateMode("voicedesign"));
+
+      // Chips de presets para diseño de voz
+      document.querySelectorAll(".vs-chip-btn").forEach(chip => {
+        chip.addEventListener("click", () => {
+          const preset = chip.dataset.preset;
+          if (preset && instructInput) {
+            instructInput.value = preset;
+            updateCliSnippet();
+            saveState();
+          }
+        });
+      });
+
+      // 1. Restaurar de inmediato desde localStorage (persistencia desacoplada)
+      const localState = loadState();
+      if (localState) {
+        restoreUI(localState);
+      } else {
+        updateMode("clonacion", false);
+      }
+
+      // Sincronizar defaults desde Settings (/api/settings)
+      try {
+        const sRes = await fetch("/api/settings", { cache: "no-store" });
+        if (sRes.ok) {
+          const sData = await sRes.json();
+          const s = sData.settings || {};
+          if (s["locucion.velocidad"] && (!localState || !localState.speed)) {
+            speedInput.value = s["locucion.velocidad"];
+          }
+          if (s["locucion.voz_defecto"] && (!localState || !localState.speaker)) {
+            if (speakerSelect) speakerSelect.value = s["locucion.voz_defecto"];
+          }
+        }
+      } catch (_) {}
+
+      // 2. Sincronizar estado del servidor si el cliente no tenía audio previo
+      try {
+        const resp = await fetch("/api/voicestudio/estado");
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && data.estado && data.estado.audio_url) {
+            if (!localState || !localState.lastAudio || !localState.lastAudio.url) {
+              const serverAudio = {
+                url: data.estado.audio_url,
+                metrics: data.estado.metrics || "Audio generado con qwentts.cpp sobre Apple Silicon Metal",
+                timestamp: data.estado.timestamp ? new Date(data.estado.timestamp).getTime() : Date.now()
+              };
+              if (data.estado.texto && (!textInput.value || textInput.value === DEFAULT_TEXT)) {
+                textInput.value = data.estado.texto;
+              }
+              if (data.estado.idioma) langSelect.value = data.estado.idioma;
+              if (data.estado.speed) speedInput.value = String(data.estado.speed);
+              if (data.estado.mode) updateMode(data.estado.mode, false);
+              if (data.estado.speaker && speakerSelect) speakerSelect.value = data.estado.speaker;
+              restoreUI({ lastAudio: serverAudio });
+              saveState(serverAudio);
+            }
+          }
+        }
+      } catch (_) {}
+
+      // Auto-guardado en tiempo real ante cualquier cambio del usuario
+      textInput.addEventListener("input", () => { updateCliSnippet(); saveState(); });
+      langSelect.addEventListener("change", () => { updateCliSnippet(); saveState(); });
+      speedInput.addEventListener("change", () => { updateCliSnippet(); saveState(); });
+      if (tempSelect) tempSelect.addEventListener("change", () => saveState());
+      if (speakerSelect) speakerSelect.addEventListener("change", () => { updateMode("customvoice"); });
+      if (customInstructInput) customInstructInput.addEventListener("input", () => { updateCliSnippet(); saveState(); });
+      if (instructInput) instructInput.addEventListener("input", () => { updateCliSnippet(); saveState(); });
+
+      // Botón de restablecer
+      if (btnReset) {
+        btnReset.addEventListener("click", () => {
+          if (confirm("¿Restablecer los campos a sus valores por defecto?")) {
+            textInput.value = DEFAULT_TEXT;
+            langSelect.value = "es";
+            speedInput.value = "1.0";
+            if (tempSelect) tempSelect.value = "0.8";
+            if (speakerSelect) speakerSelect.value = "vivian";
+            if (customInstructInput) customInstructInput.value = "";
+            if (instructInput) instructInput.value = "male, young adult, warm and calm tone, podcast host";
+            updateMode("clonacion", true);
+            cardResult.style.display = "none";
+            audioPlayer.removeAttribute("src");
+            statusBox.textContent = "Valores restablecidos. Listo para sintetizar.";
+          }
+        });
+      }
+
+      btn.addEventListener("click", async () => {
+        const text = textInput.value.trim();
+        if (!text) {
+          alert("Por favor, introduce un texto para sintetizar.");
+          return;
+        }
+
+        btn.disabled = true;
+        const prevBtnHtml = btn.innerHTML;
+        btn.innerHTML = "<span>⏳</span> Sintetizando en GPU Metal...";
+        statusBox.textContent = "Iniciando qwentts.cpp e infiriendo tokens de audio en Metal...";
+
+        const startTime = performance.now();
+        try {
+          const payload = {
+            texto: text,
+            idioma: langSelect.value,
+            speed: parseFloat(speedInput.value),
+            temperature: tempSelect ? parseFloat(tempSelect.value) : 0.8,
+            mode: currentMode,
+            speaker: speakerSelect ? speakerSelect.value : "vivian",
+            instruct: currentMode === "voicedesign" ? instructInput.value : customInstructInput.value,
+            engine: "voicestudio"
+          };
+
+          const resp = await fetch("/api/voicestudio/sintetizar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          const data = await resp.json();
+          const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
+
+          if (data && (data.ok || data.audio_url || data.url)) {
+            const audioUrl = data.audio_url || data.url || "/difusion/locucion/audios/voicestudio_ultimo.wav";
+            const metricsText = data.metrics || `Generado en ${elapsed}s con qwentts.cpp sobre Metal · 24 kHz`;
+            const ts = Date.now();
+
+            audioPlayer.src = audioUrl + "?t=" + ts;
+            downloadLink.href = audioUrl;
+            cardResult.style.display = "block";
+            metricsSpan.textContent = metricsText;
+            statusBox.textContent = `✓ Síntesis completada con éxito en ${elapsed}s.`;
+
+            // Persistir de inmediato para que ningún cambio de pestaña lo borre
+            saveState({
+              url: audioUrl,
+              metrics: metricsText,
+              timestamp: ts
+            });
+
+            audioPlayer.play().catch(() => null);
+          } else {
+            const errMsg = data && data.error ? data.error : "Respuesta desconocida del servidor";
+            statusBox.textContent = "Aviso: " + errMsg;
+          }
+        } catch (err) {
+          statusBox.textContent = "Error al conectar con la API: " + err.message;
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = prevBtnHtml;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

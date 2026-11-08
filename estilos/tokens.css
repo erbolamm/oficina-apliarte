@@ -1,0 +1,47 @@
+/* Design tokens of the Oficina. Served at /estilos/tokens.css and imported first
+ * by panel-shell.css. Colors moved verbatim from the former :root and
+ * html[data-theme="dark"] blocks of panel-shell.css; the sizing tokens follow
+ * the flat minimalist rule (8 px unit, 1 px borders, 16 px icons, 28 px controls). */
+
+:root {
+  color-scheme: light;
+  --blue: #005fa9;
+  --navy: #00467b;
+  --cyan: #5ecef5;
+  --glow: #8fd5fa;
+  --paper: #fdfdfd;
+  --ink: #303030;
+  --light: #d9d9d9;
+  --muted: #bebbb9;
+  --border: #a6a6a6;
+  --warm: #e8955e;
+  --brown: #b46734;
+  --surface: #ffffff;
+  --subtle: rgba(217, 217, 217, 0.34);
+  --page: #fdfdfd;
+  --sidebar: #ffffff;
+  --shadow-sm: 0 2px 8px rgba(0, 70, 123, 0.07);
+  --shadow-md: 0 12px 30px rgba(0, 70, 123, 0.12);
+  --radius-lg: 1rem;
+  --radius-md: 0.75rem;
+  --radius-sm: 0.55rem;
+  --space-unit: 0.5rem;
+  --border-width: 1px;
+  --icon-size: 16px;
+  --control-size: 28px;
+  --focus-ring: 0 0 0 2px var(--glow);
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --surface: #00467b;
+  --subtle: rgba(253, 253, 253, 0.08);
+  --page: #303030;
+  --sidebar: #303030;
+  --paper: #303030;
+  --ink: #fdfdfd;
+  --border: #bebbb9;
+  --light: #a6a6a6;
+  --shadow-sm: 0 2px 9px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 15px 34px rgba(0, 0, 0, 0.28);
+}

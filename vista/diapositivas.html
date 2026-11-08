@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#005fa9">
+  <title>Diapositivas y Difusion Multilingue · Oficina local de ErBolamm</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23005fa9%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2246%22%20font-size%3D%2234%22%20text-anchor%3D%22middle%22%20fill%3D%22%235ecef5%22%3E%E2%8E%98%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../panel-shell.css">
+  <script>
+    try {
+      document.documentElement.dataset.theme =
+        localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
+      document.documentElement.dataset.sidebar =
+        localStorage.getItem("erbolamm-panel-sidebar") === "icons" ? "icons" : "full";
+    } catch (_) {}
+  </script>
+  <style>
+    .slides-hero {
+      background: linear-gradient(135deg, rgba(0, 95, 169, 0.08) 0%, rgba(94, 206, 245, 0.14) 100%);
+      border: 1px solid rgba(0, 95, 169, 0.18);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    html[data-theme="dark"] .slides-hero {
+      background: linear-gradient(135deg, rgba(0, 70, 123, 0.35) 0%, rgba(0, 95, 169, 0.25) 100%);
+      border-color: rgba(94, 206, 245, 0.22);
+    }
+    .slides-hero h2 {
+      margin: 0 0 0.4rem 0;
+      font-size: 1.45rem;
+      color: var(--ink);
+    }
+    .slides-hero p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--muted, #666);
+      line-height: 1.4;
+    }
+
+    /* Selector de aplicaciones */
+    .app-selector-bar {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      margin-bottom: 1rem;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+    }
+    .app-pill {
+      background: var(--surface);
+      border: 1px solid var(--subtle);
+      border-radius: 9999px;
+      padding: 0.4rem 0.9rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--ink);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.16s ease;
+      white-space: nowrap;
+    }
+    .app-pill:hover {
+      border-color: var(--cyan);
+      color: var(--blue);
+    }
+    .app-pill.active {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+    html[data-theme="dark"] .app-pill.active {
+      background: var(--cyan);
+      color: #070b14;
+      border-color: var(--cyan);
+    }
+
+    /* Panel de control de la presentacion */
+    .slides-control-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 1.25rem;
+      align-items: start;
+    }
+    @media (max-width: 1024px) {
+      .slides-control-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Visor de diapositivas */
+    .frame-container {
+      background: #070b14;
+      border: 1px solid var(--subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      position: relative;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+    .frame-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* Barra de reproduccion y controles */
+    .playback-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      border: 1px solid var(--subtle);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem;
+      margin-top: 0.75rem;
+    }
+    .playback-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .ctrl-btn {
+      background: var(--surface);
+      border: 1px solid var(--subtle);
+      border-radius: 6px;
+      padding: 0.45rem 0.85rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--ink);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.14s ease;
+    }
+    .ctrl-btn:hover {
+      border-color: var(--cyan);
+      color: var(--blue);
+    }
+    .ctrl-btn.primary {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+    html[data-theme="dark"] .ctrl-btn.primary {
+      background: var(--cyan);
+      color: #070b14;
+      border-color: var(--cyan);
+    }
+
+    .lang-badge-group {
+      display: flex;
+      gap: 0.3rem;
+      align-items: center;
+    }
+    .lang-badge {
+      border: 1px solid var(--subtle);
+      border-radius: 4px;
+      padding: 0.3rem 0.55rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--muted);
+      cursor: pointer;
+      text-transform: uppercase;
+      background: transparent;
+      transition: all 0.12s ease;
+    }
+    .lang-badge:hover {
+      color: var(--ink);
+      border-color: var(--cyan);
+    }
+    .lang-badge.active {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+    html[data-theme="dark"] .lang-badge.active {
+      background: var(--cyan);
+      color: #070b14;
+      border-color: var(--cyan);
+    }
+
+    /* Panel lateral: Escaleta tecnica y audios */
+    .sidebar-panel {
+      background: var(--surface);
+      border: 1px solid var(--subtle);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .sidebar-panel h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: var(--ink);
+      border-bottom: 1px solid var(--subtle);
+      padding-bottom: 0.5rem;
+    }
+    .metrics-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+    .metric-card {
+      background: var(--bg);
+      border: 1px solid var(--subtle);
+      border-radius: 6px;
+      padding: 0.6rem;
+      text-align: center;
+    }
+    .metric-num {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--blue);
+      display: block;
+    }
+    html[data-theme="dark"] .metric-num {
+      color: var(--cyan);
+    }
+    .metric-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .guion-container {
+      max-height: 380px;
+      overflow-y: auto;
+      background: var(--bg);
+      border: 1px solid var(--subtle);
+      border-radius: 6px;
+      padding: 0.85rem;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: var(--ink);
+      white-space: pre-wrap;
+      font-family: var(--font-mono, monospace);
+    }
+
+    .empty-state {
+      padding: 3rem 1.5rem;
+      text-align: center;
+      background: var(--surface);
+      border: 1px dashed var(--subtle);
+      border-radius: var(--radius-md);
+    }
+    .empty-state h3 {
+      margin: 0 0 0.5rem 0;
+      color: var(--ink);
+    }
+    .empty-state p {
+      margin: 0 0 1.25rem 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+  </style>
+</head>
+<body class="shell-layout">
+  <div class="shell-container">
+    <div id="office-sidebar"></div>
+
+    <main class="shell-main" id="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button id="sidebar-toggle" class="sidebar-toggle-btn" type="button"
+            aria-controls="office-sidebar" aria-expanded="true"
+            aria-label="Plegar la barra lateral a solo iconos" title="Plegar la barra lateral">
+            <span class="chev" aria-hidden="true">&lsaquo;</span>
+          </button>
+          <div class="topbar-title">
+            <span class="topbar-icon" aria-hidden="true">&#9648;</span>
+            <div>
+              <h1 class="topbar-h1">Diapositivas y Difusion Multilingue</h1>
+              <p class="topbar-sub">Mazo soberano de presentaciones interactivas y pistas de audio para directos</p>
+            </div>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <button class="topbar-action-btn" type="button" id="refresh-btn" title="Recargar datos">
+            <span aria-hidden="true">&#8635;</span> Actualizar
+          </button>
+          <button class="theme-toggle-btn" type="button" id="theme-toggle" aria-label="Cambiar tema">
+            <span id="theme-icon" aria-hidden="true">&#9788;</span>
+          </button>
+        </div>
+      </header>
+
+      <section class="slides-hero">
+        <h2>Suite Soberana de Presentaciones (ADR-0013 / ADR-0014)</h2>
+        <p>
+          Visor interactivo y multilingue de diapositivas generado autonomamente por repositorio.
+          Aloja escaletas tecnicas, locuciones sintetizadas y vistas standalone sin tocar el codigo de produccion de las aplicaciones.
+        </p>
+      </section>
+
+      <!-- Selector reactivo de aplicaciones -->
+      <nav class="app-selector-bar" aria-label="Seleccionar aplicacion" id="app-selector">
+        <button class="app-pill active" data-app="calca_app">calca_app</button>
+        <button class="app-pill" data-app="tts-apliarte">tts-apliarte</button>
+        <button class="app-pill" data-app="apliarte-directo">apliarte-directo</button>
+      </nav>
+
+      <!-- Estado cargando / error -->
+      <div id="status-banner" style="display:none; padding:0.75rem 1rem; border-radius:6px; margin-bottom:1rem;"></div>
+
+      <!-- Contenedor principal cuando hay mazo -->
+      <div id="deck-view-container" style="display:none;">
+        <div class="slides-control-grid">
+          <div>
+            <div class="frame-container">
+              <iframe id="presentation-frame" title="Visor de Diapositivas" allow="fullscreen"></iframe>
+            </div>
+
+            <div class="playback-bar">
+              <div class="playback-group">
+                <button class="ctrl-btn" id="prev-slide-btn" title="Diapositiva anterior">&#8249; Anterior</button>
+                <span id="slide-indicator" style="font-weight:700; font-size:0.9rem; padding:0 0.5rem;">1 / 10</span>
+                <button class="ctrl-btn" id="next-slide-btn" title="Diapositiva siguiente">Siguiente &#8250;</button>
+              </div>
+
+              <div class="playback-group">
+                <span style="font-size:0.8rem; color:var(--muted); font-weight:600;">IDIOMA:</span>
+                <div class="lang-badge-group" id="lang-badges">
+                  <!-- Inyectados dinamicamente: ES, EN, DE, FR, IT, PT, RU -->
+                </div>
+              </div>
+
+              <div class="playback-group">
+                <button class="ctrl-btn primary" id="audio-toggle-btn" title="Reproducir audio">&#9654; Audio</button>
+                <button class="ctrl-btn" id="fullscreen-btn" title="Pantalla completa">&#9974; Pantalla completa</button>
+              </div>
+            </div>
+          </div>
+
+          <aside class="sidebar-panel">
+            <h3 id="deck-title">Metadatos del Mazo</h3>
+            <div class="metrics-list">
+              <div class="metric-card">
+                <span class="metric-num" id="metric-slides">0</span>
+                <span class="metric-label">Diapositivas</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-num" id="metric-audios">0</span>
+                <span class="metric-label">Pistas Audio</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-num" id="metric-languages">0</span>
+                <span class="metric-label">Idiomas</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-num" id="metric-sovereign">OK</span>
+                <span class="metric-label">Soberania</span>
+              </div>
+            </div>
+
+            <div>
+              <h4 style="margin:0 0 0.4rem 0; font-size:0.92rem; color:var(--ink);">Escaleta Tecnica (guion-directo.md)</h4>
+              <div class="guion-container" id="guion-content">Cargando escaleta...</div>
+            </div>
+
+            <div style="font-size:0.75rem; color:var(--muted); line-height:1.4;">
+              <strong>Ruta Soberana:</strong><br>
+              <code id="deck-sovereign-path" style="font-size:0.72rem; word-break:break-all;"></code>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <!-- Estado vacio cuando no hay mazo en el proyecto -->
+      <div id="deck-empty-container" class="empty-state" style="display:none;">
+        <h3>No se ha encontrado un mazo soberano en este proyecto</h3>
+        <p>El repositorio seleccionado aun no dispone de la suite en <code>control-erbolamm/difusion/directo/presentacion/</code>.</p>
+        <button class="ctrl-btn primary" id="init-deck-btn">
+          Inicializar Mazo de Diapositivas Soberano
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <audio id="slide-audio-player" preload="none"></audio>
+
+  <script src="../panel-shell.js"></script>
+  <script>
+    (() => {
+      let currentApp = 'calca_app';
+      let currentSlide = 1;
+      let totalSlides = 10;
+      let currentLang = 'es';
+      let deckData = null;
+      let isPlayingAudio = false;
+
+      const audioPlayer = document.getElementById('slide-audio-player');
+      const frame = document.getElementById('presentation-frame');
+      const statusBanner = document.getElementById('status-banner');
+      const deckView = document.getElementById('deck-view-container');
+      const deckEmpty = document.getElementById('deck-empty-container');
+
+      // Leer parametro URL ?app=<proyecto>
+      const urlParams = new URLSearchParams(window.location.search);
+      const appParam = urlParams.get('app');
+      if (appParam) {
+        currentApp = appParam;
+      }
+
+      function updateAppPills() {
+        document.querySelectorAll('.app-pill').forEach(pill => {
+          const isCurrent = pill.getAttribute('data-app') === currentApp;
+          pill.classList.toggle('active', isCurrent);
+        });
+      }
+
+      async function loadDeckData() {
+        showStatus('Cargando mazo soberano de ' + currentApp + '...', 'info');
+        updateAppPills();
+
+        try {
+          const res = await fetch('/api/apps/diapositivas?app=' + encodeURIComponent(currentApp));
+          if (!res.ok) {
+            throw new Error('HTTP ' + res.status);
+          }
+          const data = await res.json();
+          if (!data.ok || !data.result || !data.result.hasDeck) {
+            showEmptyState(data.result);
+            return;
+          }
+
+          deckData = data.result;
+          renderDeckView();
+          hideStatus();
+        } catch (err) {
+          showStatus('Error al conectar con /api/apps/diapositivas: ' + err.message, 'error');
+          deckView.style.display = 'none';
+          deckEmpty.style.display = 'block';
+        }
+      }
+
+      function renderDeckView() {
+        deckEmpty.style.display = 'none';
+        deckView.style.display = 'block';
+
+        totalSlides = deckData.totalSlides || 1;
+        currentSlide = 1;
+
+        // Metadatos
+        document.getElementById('deck-title').textContent = deckData.title || 'Presentacion';
+        document.getElementById('metric-slides').textContent = totalSlides;
+        document.getElementById('metric-audios').textContent = deckData.audioCount || 0;
+        document.getElementById('metric-languages').textContent = (deckData.languages || []).length;
+        document.getElementById('deck-sovereign-path').textContent = deckData.deckPath || '';
+
+        // Escaleta
+        const guionEl = document.getElementById('guion-content');
+        if (deckData.guionMarkdown) {
+          guionEl.textContent = deckData.guionMarkdown;
+        } else {
+          guionEl.textContent = 'No se encontro guion-directo.md en este mazo.';
+        }
+
+        // Pestañas de idioma
+        const langContainer = document.getElementById('lang-badges');
+        langContainer.innerHTML = '';
+        const langs = deckData.languages && deckData.languages.length ? deckData.languages : ['es'];
+        if (!langs.includes(currentLang)) {
+          currentLang = langs[0];
+        }
+
+        langs.forEach(lang => {
+          const btn = document.createElement('button');
+          btn.className = 'lang-badge' + (lang === currentLang ? ' active' : '');
+          btn.textContent = lang.toUpperCase();
+          btn.onclick = () => selectLanguage(lang);
+          langContainer.appendChild(btn);
+        });
+
+        // Cargar iframe con ruta segura /frame/<app>/diapositivas.html
+        frame.src = '/api/apps/diapositivas/frame/' + encodeURIComponent(currentApp) + '/diapositivas.html?auto=0';
+        updateSlideIndicator();
+      }
+
+      function selectLanguage(lang) {
+        currentLang = lang;
+        document.querySelectorAll('.lang-badge').forEach(b => {
+          b.classList.toggle('active', b.textContent.toLowerCase() === lang);
+        });
+        if (isPlayingAudio) {
+          playCurrentSlideAudio();
+        }
+      }
+
+      function updateSlideIndicator() {
+        document.getElementById('slide-indicator').textContent = currentSlide + ' / ' + totalSlides;
+      }
+
+      function nextSlide() {
+        if (currentSlide < totalSlides) {
+          currentSlide++;
+          updateSlideIndicator();
+          notifyFrameSlide();
+          if (isPlayingAudio) playCurrentSlideAudio();
+        }
+      }
+
+      function prevSlide() {
+        if (currentSlide > 1) {
+          currentSlide--;
+          updateSlideIndicator();
+          notifyFrameSlide();
+          if (isPlayingAudio) playCurrentSlideAudio();
+        }
+      }
+
+      function notifyFrameSlide() {
+        try {
+          if (frame.contentWindow) {
+            frame.contentWindow.postMessage({ type: 'setSlide', slide: currentSlide }, '*');
+          }
+        } catch (_) {}
+      }
+
+      function playCurrentSlideAudio() {
+        const audioSrc = '/api/apps/diapositivas/frame/' + encodeURIComponent(currentApp) +
+          '/assets/audio/' + currentLang + '-slide-' + currentSlide + '.mp3';
+
+        audioPlayer.src = audioSrc;
+        audioPlayer.play().then(() => {
+          isPlayingAudio = true;
+          document.getElementById('audio-toggle-btn').innerHTML = '&#10074;&#10074; Pausar';
+        }).catch(err => {
+          console.warn('Audio no disponible para esta diapositiva/idioma:', err.message);
+          isPlayingAudio = false;
+          document.getElementById('audio-toggle-btn').innerHTML = '&#9654; Audio';
+        });
+      }
+
+      function toggleAudio() {
+        if (isPlayingAudio) {
+          audioPlayer.pause();
+          isPlayingAudio = false;
+          document.getElementById('audio-toggle-btn').innerHTML = '&#9654; Audio';
+        } else {
+          playCurrentSlideAudio();
+        }
+      }
+
+      audioPlayer.onended = () => {
+        isPlayingAudio = false;
+        document.getElementById('audio-toggle-btn').innerHTML = '&#9654; Audio';
+      };
+
+      function showEmptyState(result) {
+        deckView.style.display = 'none';
+        deckEmpty.style.display = 'block';
+        hideStatus();
+      }
+
+      async function initializeDeck() {
+        showStatus('Inicializando mazo soberano en ' + currentApp + '...', 'info');
+        try {
+          const res = await fetch('/api/apps/diapositivas?app=' + encodeURIComponent(currentApp), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'init', title: 'Presentacion de ' + currentApp, slidesCount: 5 })
+          });
+          const data = await res.json();
+          if (data.ok) {
+            showStatus('Mazo inicializado con exito.', 'success');
+            setTimeout(loadDeckData, 500);
+          } else {
+            showStatus('Error al inicializar mazo: ' + (data.error || 'Desconocido'), 'error');
+          }
+        } catch (err) {
+          showStatus('Error de conexion: ' + err.message, 'error');
+        }
+      }
+
+      function showStatus(msg, type) {
+        statusBanner.style.display = 'block';
+        statusBanner.textContent = msg;
+        statusBanner.style.background = type === 'error' ? 'rgba(239, 68, 68, 0.15)' : 'rgba(0, 95, 169, 0.12)';
+        statusBanner.style.color = type === 'error' ? '#ef4444' : 'var(--blue)';
+        statusBanner.style.border = '1px solid ' + (type === 'error' ? '#ef4444' : 'var(--blue)');
+      }
+
+      function hideStatus() {
+        statusBanner.style.display = 'none';
+      }
+
+      // Handlers de botones
+      document.getElementById('prev-slide-btn').onclick = prevSlide;
+      document.getElementById('next-slide-btn').onclick = nextSlide;
+      document.getElementById('audio-toggle-btn').onclick = toggleAudio;
+      document.getElementById('refresh-btn').onclick = loadDeckData;
+      document.getElementById('init-deck-btn').onclick = initializeDeck;
+
+      document.getElementById('fullscreen-btn').onclick = () => {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+          if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+        }
+      };
+
+      // App pill switching
+      document.querySelectorAll('.app-pill').forEach(pill => {
+        pill.onclick = () => {
+          const app = pill.getAttribute('data-app');
+          if (app && app !== currentApp) {
+            currentApp = app;
+            const newUrl = window.location.pathname + '?app=' + encodeURIComponent(currentApp);
+            window.history.pushState({}, '', newUrl);
+            loadDeckData();
+          }
+        };
+      });
+
+      // Teclado
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+          nextSlide();
+        } else if (e.key === 'ArrowLeft') {
+          prevSlide();
+        }
+      });
+
+      // Arranque
+      loadDeckData();
+    })();
+  </script>
+</body>
+</html>

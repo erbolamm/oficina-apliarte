@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oficina ApliArte — Instala tu Oficina</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface-hover: #334155;
+      --border: #475569;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --primary-hover: #0284c7;
+      --success: #34d399;
+      --warning: #fbbf24;
+      --accent: #a855f7;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 1.5rem;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    h1 { font-size: 1.6rem; font-weight: 700; color: var(--primary); }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background-color: rgba(56, 189, 248, 0.2);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+      overflow-x: auto;
+    }
+    .nav-tab {
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: 0.375rem;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-tab:hover {
+      background-color: var(--surface-hover);
+      color: var(--text);
+    }
+    .nav-tab.active {
+      background-color: var(--surface);
+      color: var(--primary);
+      border: 1px solid var(--border);
+    }
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .hero {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .hero h2 {
+      font-size: 1.75rem;
+      color: #fff;
+      margin-bottom: 0.75rem;
+    }
+    .hero p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto;
+    }
+    .step-card {
+      background-color: var(--surface);
+      border-radius: 0.75rem;
+      padding: 1.75rem;
+      border: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .step-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 9999px;
+      background-color: var(--primary);
+      color: #0f172a;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+    .step-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .alert-box {
+      background-color: rgba(251, 191, 36, 0.1);
+      border: 1px solid var(--warning);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin: 1rem 0;
+      color: #fef3c7;
+      font-size: 0.9rem;
+    }
+    .actions-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 1.25rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.65rem 1.25rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+    .btn-primary {
+      background-color: var(--primary);
+      color: #0f172a;
+    }
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+    .btn-secondary {
+      background-color: var(--surface-hover);
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .btn-secondary:hover {
+      background-color: var(--border);
+    }
+    .btn-sm {
+      background-color: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.6rem;
+      border-radius: 0.375rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-sm:hover {
+      background-color: var(--surface-hover);
+      border-color: var(--primary);
+    }
+    .btn-success {
+      background-color: var(--success);
+      color: #0f172a;
+    }
+    .btn-success:hover {
+      background-color: #059669;
+    }
+    .step-locked {
+      display: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .step-unlocked {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .prompt-box {
+      background-color: #020617;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--primary);
+      border-radius: 0.5rem;
+      padding: 1.25rem;
+      color: #cbd5e1;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin: 1rem 0;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+    .note-footer {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-top: 1px dashed var(--border);
+      padding-top: 1rem;
+      margin-top: 1.5rem;
+    }
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <h1>Oficina ApliArte — Instala tu Oficina</h1>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
+        Despliegue Soberano de tu Suite Completa en Servidor Privado Virtual
+      </p>
+    </div>
+    <div id="connection-bar"></div>
+  </header>
+
+  <nav class="nav-tabs" id="escaparate-nav">
+    <a href="../index.html" class="nav-tab">Inicio</a>
+    <a href="skills.html" class="nav-tab">Banco de Habilidades</a>
+    <a href="resenas.html" class="nav-tab">Resenas de Tiendas</a>
+    <a href="instala-tu-oficina.html" class="nav-tab active">Instala tu Oficina</a>
+  </nav>
+
+  <div class="container">
+    <div class="hero">
+      <h2>Pasa del Escaparate a tu Suite Privada</h2>
+      <p>
+        Activa las 27 pestañas completas del ecosistema ErBolamm y ApliArte en tu propio servidor soberano, con total control sobre tus datos y sin intermediarios.
+      </p>
+    </div>
+
+    <!-- Paso 1 -->
+    <section class="step-card">
+      <div class="step-header">
+        <div class="step-number">1</div>
+        <div class="step-title">Contrata tu Servidor Privado Virtual en Hostinger</div>
+      </div>
+      <p>
+        Para alojar tu Oficina con sus 27 herramientas activas, recomendamos el servidor privado virtual de Hostinger (plan KVM 1 o superior). Cuenta con recursos dedicados, cortafuegos integrado y soporte nativo para contenedores Docker.
+      </p>
+      <div class="alert-box">
+        <strong>Importante:</strong> Al tramitar tu pedido, asegurate de verificar en el resumen del carrito que el cupon <strong>APLIARTE</strong> este aplicado para disfrutar del descuento maximo.
+      </div>
+      <div class="actions-row">
+        <a href="https://www.hostinger.es/vps/servidor-vps" target="_blank" class="btn btn-primary" rel="noopener">
+          Contratar Servidor VPS en Hostinger
+        </a>
+        <button class="btn btn-secondary" id="btn-copy-cupon">
+          Copiar Cupon APLIARTE
+        </button>
+      </div>
+    </section>
+
+    <!-- Paso 2 -->
+    <section class="step-card">
+      <div class="step-header">
+        <div class="step-number">2</div>
+        <div class="step-title">Confirma tu Servidor Activo</div>
+      </div>
+      <p>
+        Una vez finalizado el alta de tu servidor y cuando tengas acceso a tu panel de control hPanel en Hostinger, pulsa el boton inferior para desplegar las instrucciones de instalacion automatica.
+      </p>
+      <div class="actions-row">
+        <button class="btn btn-success" id="btn-confirm-server">
+          Ya tengo mi servidor en Hostinger
+        </button>
+      </div>
+    </section>
+
+    <!-- Paso 3 (Desplegable) -->
+    <section class="step-card step-locked" id="step-3-container">
+      <div class="step-header">
+        <div class="step-number">3</div>
+        <div class="step-title">Instalacion en 1 Toque con Kodee (IA de Hostinger)</div>
+      </div>
+      <p>
+        Entra en el panel de tu servidor en Hostinger, abre el asistente de inteligencia artificial <strong>Kodee</strong> y pega este encargo integral. Kodee se encargara de instalar Docker, configurar el cortafuegos y levantar tu Oficina automaticamente:
+      </p>
+
+      <div class="prompt-box" id="kodee-prompt-text">Hola Kodee, necesito configurar este servidor privado virtual paso a paso sin que me pidas confirmaciones intermedias. Primero, verifica si Docker y Docker Compose están instalados en el sistema y, si no lo están, instálalos de forma oficial y actívalos en el arranque. Segundo, clona en una carpeta de trabajo el repositorio oficial de GitHub https://github.com/erbolamm/oficina-apliarte.git y levanta el servicio en segundo plano con reinicio automático ejecutando docker compose up -d --build, manteniendo los volúmenes persistentes en modo de lectura segura. Tercero, abre el puerto 8791 en el cortafuegos del servidor y del panel de Hostinger. Cuarto, cuando termines, comprueba que el contenedor está activo consultando la ruta de estado y dime cuál es el enlace exacto con la dirección de mi servidor seguida de :8791 para abrir mi Oficina en el navegador.</div>
+
+      <div class="actions-row">
+        <button class="btn btn-primary" id="btn-copy-prompt">
+          Copiar Encargo Completo para Kodee
+        </button>
+      </div>
+
+      <div class="note-footer">
+        <strong>Alternativa para Gestor de Docker de Hostinger:</strong> Si prefieres prescindir del asistente, puedes abrir la seccion <em>Docker</em> en tu hPanel de Hostinger, pulsar en <em>Componer desde direccion web</em> e introducir la direccion de este repositorio oficial de GitHub para arrancar el servicio.
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    Oficina ApliArte Soberana · Conecta tu propio nodo independiente
+  </footer>
+
+  <script>
+    document.getElementById('btn-copy-cupon').onclick = () => {
+      navigator.clipboard.writeText('APLIARTE').then(() => {
+        alert('Cupon APLIARTE copiado al portapapeles. Aplicalo en el carrito.');
+      });
+    };
+
+    document.getElementById('btn-confirm-server').onclick = () => {
+      const step3 = document.getElementById('step-3-container');
+      step3.classList.remove('step-locked');
+      step3.classList.add('step-unlocked');
+      step3.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    document.getElementById('btn-copy-prompt').onclick = () => {
+      const text = document.getElementById('kodee-prompt-text').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Encargo para Kodee copiado con exito. Pegalo en el asistente de Hostinger.');
+      });
+    };
+  </script>
+  <script src="escaparate.js"></script>
+  <script>
+    renderizarBarraConexion('connection-bar');
+    if (typeof renderizarBarraEscaparate === 'function') {
+      renderizarBarraEscaparate('escaparate-nav', 'instala-tu-oficina');
+    }
+  </script>
+</body>
+</html>

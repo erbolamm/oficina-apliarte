@@ -1,0 +1,2702 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#005fa9">
+  <title>Estudio de Diseño y Vídeo · Oficina local de ErBolamm</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23005fa9%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2246%22%20font-size%3D%2234%22%20text-anchor%3D%22middle%22%20fill%3D%22%235ecef5%22%3E%F0%9F%8E%A8%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../panel-shell.css">
+  <script>
+    try {
+      document.documentElement.dataset.theme =
+        localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
+      document.documentElement.dataset.sidebar =
+        localStorage.getItem("erbolamm-panel-sidebar") === "icons" ? "icons" : "full";
+    } catch (_) {}
+  </script>
+  <style>
+    /* Estilos del Estudio de Diseño y Vídeo */
+    .diseno-hero {
+      background: linear-gradient(135deg, rgba(0, 95, 169, 0.08) 0%, rgba(94, 206, 245, 0.14) 100%);
+      border: 1px solid rgba(0, 95, 169, 0.18);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    html[data-theme="dark"] .diseno-hero {
+      background: linear-gradient(135deg, rgba(0, 70, 123, 0.35) 0%, rgba(0, 95, 169, 0.25) 100%);
+      border-color: rgba(94, 206, 245, 0.22);
+    }
+    .diseno-hero h2 {
+      margin: 0 0 0.4rem 0;
+      font-size: 1.45rem;
+      color: var(--ink);
+    }
+    .diseno-hero p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--muted, #666);
+      line-height: 1.4;
+    }
+
+    /* Pestañas de sección interna */
+    .subnav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 2px solid var(--subtle);
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+    }
+    .subnav-tab {
+      padding: 0.65rem 1.1rem;
+      border: none;
+      border-bottom: 3px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 0;
+      white-space: nowrap;
+      transition: all 0.16s ease;
+    }
+    .subnav-tab:hover {
+      color: var(--ink);
+      border-color: var(--cyan);
+      transform: none;
+      box-shadow: none;
+    }
+    .subnav-tab.active {
+      color: var(--blue);
+      border-color: var(--blue);
+      background: rgba(0, 95, 169, 0.05);
+    }
+    html[data-theme="dark"] .subnav-tab.active {
+      color: var(--cyan);
+      border-color: var(--cyan);
+      background: rgba(94, 206, 245, 0.08);
+    }
+
+    /* Sección de Trabajo (Plantillas / Marcos / SFX / Scripts) */
+    .tab-section {
+      display: none;
+    }
+    .tab-section.active {
+      display: block;
+      animation: fadeIn 0.2s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Layout Plantillas: Configuración + Simulador */
+    .studio-layout {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+    @media (max-width: 960px) {
+      .studio-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .studio-config-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .config-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .config-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--muted);
+    }
+    .config-input, .config-select {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 0.9rem;
+    }
+    .config-input:focus, .config-select:focus {
+      border-color: var(--blue);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(94, 206, 245, 0.3);
+    }
+
+    .color-presets {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.25rem;
+    }
+    .color-swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      padding: 0;
+      min-height: auto;
+      transition: transform 0.15s ease;
+    }
+    .color-swatch:hover {
+      transform: scale(1.15);
+    }
+    .color-swatch.active {
+      border-color: var(--ink);
+      transform: scale(1.15);
+    }
+
+    /* Simulador / Preview */
+    .studio-preview-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .preview-controls {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .preview-stage-wrap {
+      background: #0d1117;
+      border-radius: var(--radius-sm);
+      padding: 2rem 1rem;
+      min-height: 480px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Dispositivo iPhone en simulador */
+    .device-mockup {
+      width: 260px;
+      height: 520px;
+      background: #111;
+      border: 8px solid #2a2c30;
+      border-radius: 44px;
+      position: relative;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .device-mockup.mode-16-9 {
+      width: 580px;
+      height: 340px;
+      border-radius: 20px;
+    }
+    .dynamic-island {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 76px;
+      height: 20px;
+      background: #000;
+      border-radius: 12px;
+      z-index: 10;
+    }
+    .screen-content {
+      flex: 1;
+      background: #18191c;
+      color: #fff;
+      padding: 2rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+      position: relative;
+    }
+    .screen-badge {
+      align-self: center;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 1rem;
+    }
+    .screen-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin: 0.5rem 0;
+      line-height: 1.2;
+    }
+    .screen-subtitle {
+      font-size: 0.8rem;
+      opacity: 0.8;
+      line-height: 1.4;
+      margin-bottom: 1rem;
+    }
+    .screen-features {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin: 1rem 0;
+      text-align: left;
+    }
+    .screen-feat-item {
+      background: rgba(255, 255, 255, 0.07);
+      padding: 0.45rem 0.7rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      border-left: 3px solid #5ecef5;
+    }
+    .screen-cta {
+      background: #005fa9;
+      color: #fff;
+      padding: 0.55rem;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      margin-top: auto;
+    }
+
+    /* Sección Marcos de Dispositivos */
+    .frames-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+    .frame-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .frame-card h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: var(--ink);
+    }
+    .frame-card p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .frame-sample-box {
+      background: var(--subtle);
+      border-radius: var(--radius-sm);
+      min-height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    /* Marco macOS Window */
+    .macos-frame {
+      width: 100%;
+      background: #1e1e1e;
+      border-radius: 10px;
+      border: 1px solid #333;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    .macos-header {
+      background: #2a2a2a;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+    .dot-red { background: #ff5f56; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green { background: #27c93f; }
+    .macos-title {
+      margin: 0 auto;
+      font-size: 0.72rem;
+      color: #aaa;
+      font-family: system-ui;
+    }
+    .macos-body {
+      padding: 1.5rem;
+      color: #e0e0e0;
+      font-family: monospace;
+      font-size: 0.8rem;
+    }
+
+    /* Sección SFX Soundboard */
+    .sfx-controls {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .sfx-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+    .sfx-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: all 0.16s ease;
+    }
+    .sfx-card:hover {
+      border-color: var(--cyan);
+      box-shadow: var(--shadow-sm);
+    }
+    .sfx-card.playing {
+      border-color: var(--blue);
+      box-shadow: 0 0 12px rgba(94, 206, 245, 0.4);
+      background: var(--subtle);
+    }
+    .sfx-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+    .sfx-badge {
+      color: var(--blue);
+      text-transform: uppercase;
+    }
+    html[data-theme="dark"] .sfx-badge {
+      color: var(--cyan);
+    }
+    .sfx-time {
+      color: var(--muted);
+    }
+    .sfx-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .sfx-title {
+      margin: 0;
+      font-size: 0.92rem;
+      font-family: monospace;
+      color: var(--ink);
+    }
+    .sfx-play-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--blue);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      min-height: auto;
+      transition: all 0.15s ease;
+    }
+    .sfx-play-btn:hover {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+      transform: scale(1.1);
+    }
+    .sfx-use {
+      margin: 0;
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+    .sfx-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-top: auto;
+      padding-top: 0.35rem;
+      border-top: 1px dashed var(--border);
+    }
+    .sfx-path {
+      font-size: 0.68rem;
+      color: var(--muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .sfx-copy-btn {
+      font-size: 0.72rem;
+      padding: 0.2rem 0.45rem;
+      min-height: auto;
+    }
+
+    /* Sección Scripts y Producción */
+    .scripts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+    .script-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .script-card h3 {
+      margin: 0;
+      font-size: 1.05rem;
+      color: var(--ink);
+    }
+    .script-card p {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .script-cmd-box {
+      background: #0d1117;
+      color: #79c0ff;
+      padding: 0.75rem;
+      border-radius: var(--radius-sm);
+      font-family: monospace;
+      font-size: 0.82rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .script-cmd-box code {
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #00467b;
+      color: #ffffff;
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      box-shadow: var(--shadow-md);
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      pointer-events: none;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Historial de Sesiones y Google Drive */
+    .history-card-box {
+      background: var(--surface, #ffffff);
+      border: 1px solid var(--border, #cbd5e1);
+      border-radius: var(--radius-md, 12px);
+      padding: 1.15rem 1.35rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.2s;
+    }
+    html[data-theme="dark"] .history-card-box {
+      background: #0f172a;
+      border-color: #334155;
+    }
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+    .history-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink, #0f172a);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0;
+    }
+    html[data-theme="dark"] .history-title {
+      color: #f8fafc;
+    }
+    .history-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .session-item {
+      background: var(--bg, #f8fafc);
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      transition: border-color 0.15s;
+    }
+    html[data-theme="dark"] .session-item {
+      background: #090d16;
+      border-color: #1e293b;
+    }
+    .session-item:hover {
+      border-color: #38bdf8;
+    }
+    .session-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--muted, #64748b);
+    }
+    .session-item-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--ink, #0f172a);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.4;
+    }
+    html[data-theme="dark"] .session-item-title {
+      color: #e2e8f0;
+    }
+    .session-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+    .session-tag {
+      font-size: 0.72rem;
+      padding: 0.15rem 0.45rem;
+      background: rgba(0, 95, 169, 0.12);
+      color: #005fa9;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    html[data-theme="dark"] .session-tag {
+      color: #5ecef5;
+      background: rgba(94, 206, 245, 0.15);
+    }
+    .cloud-tag {
+      font-size: 0.72rem;
+      padding: 0.15rem 0.45rem;
+      background: rgba(16, 185, 129, 0.12);
+      color: #059669;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    html[data-theme="dark"] .cloud-tag {
+      color: #34d399;
+    }
+
+    /* Galeria reactiva de activos */
+    .gallery-card-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      margin-top: 1.5rem;
+    }
+    .gallery-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .gallery-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .gallery-item-preview {
+      aspect-ratio: 9 / 16;
+      max-height: 240px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .gallery-item-preview.mode-horizontal {
+      aspect-ratio: 16 / 9;
+    }
+    .gallery-item-preview canvas,
+    .gallery-item-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .gallery-item-body {
+      padding: 0.6rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .gallery-item-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .gallery-item-meta {
+      font-size: 0.72rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Barra de Federación Multi-Repositorio y Suite Modular ArtCraft */
+    .project-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.85rem 1.1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin-bottom: 1.25rem;
+    }
+    .project-bar-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.45rem;
+    }
+    .project-pill {
+      padding: 0.35rem 0.78rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--subtle);
+      color: var(--ink);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .project-pill.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #ffffff;
+    }
+    .javier-space-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.75rem;
+      border: 1px solid rgba(0, 95, 169, 0.35);
+      border-radius: var(--radius-sm);
+      background: rgba(0, 95, 169, 0.08);
+      color: var(--blue);
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    html[data-theme="dark"] .javier-space-link {
+      color: var(--cyan);
+      border-color: rgba(94, 206, 245, 0.35);
+      background: rgba(94, 206, 245, 0.12);
+    }
+    .artcraft-subtabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-bottom: 1.15rem;
+    }
+    .artcraft-subtab-pill {
+      padding: 0.4rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .artcraft-subtab-pill.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #ffffff;
+    }
+    .artcraft-layout {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 1.25rem;
+      align-items: start;
+    }
+    @media (max-width: 960px) {
+      .artcraft-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    .artcraft-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+    .artcraft-item-row {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 0.9rem;
+      background: var(--subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="office-sidebar" id="office-sidebar" aria-label="Navegación de la oficina">
+      <div class="sidebar-brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+        </svg>
+        <span><strong>Oficina ApliArte</strong><small>Panel de control operativo ApliArte</small></span>
+        <button id="sidebar-toggle" class="sidebar-toggle" type="button"
+          aria-controls="office-sidebar" aria-expanded="true" aria-label="Plegar la barra lateral a solo iconos" title="Plegar la barra lateral">
+          <span class="chev" aria-hidden="true">‹</span>
+        </button>
+      </div>
+      <nav class="side-nav" aria-label="Secciones">
+        <a class="nav-card" href="/"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
+        <a class="nav-card" href="/vista/javier"><span class="nav-icon" aria-hidden="true">👤</span><span class="nav-copy"><strong>Espacio Javier</strong><small>Control personal y ja--</small></span></a>
+        <a class="nav-card" href="/vista/inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
+        <a class="nav-card" href="/vista/aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
+        <a class="nav-card" href="/vista/skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
+        <a class="nav-card" href="/vista/conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
+        <a class="nav-card" href="/vista/plugins"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
+        <a class="nav-card" href="/vista/reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
+        <a class="nav-card" href="/vista/propuestas"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
+        <a class="nav-card" href="/vista/diseno" aria-current="page"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
+        <a class="nav-card" href="/vista/tiendas"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
+        <a class="nav-card" href="/vista/mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
+        <a class="nav-card" href="/vista/correos"><span class="nav-icon" aria-hidden="true">✉</span><span class="nav-copy"><strong>Correos y Alertas</strong><small>erbolamm y javier</small></span></a>
+        <a class="nav-card" href="/vista/pnl"><span class="nav-icon" aria-hidden="true">🧠</span><span class="nav-copy"><strong>Estudio PNL</strong><small>Enganche y microcopy</small></span></a>
+        <a class="nav-card" href="/vista/musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
+        <a class="nav-card" href="/vista/idiomas"><span class="nav-icon" aria-hidden="true">🌐</span><span class="nav-copy"><strong>Idiomas</strong><small>Traducción y locución</small></span></a>
+        <a class="nav-card" href="/vista/locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
+        <a class="nav-card" href="/vista/voicestudio"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
+        <a class="nav-card" href="/vista/terminales"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
+        <a class="nav-card" href="/vista/facturas"><span class="nav-icon" aria-hidden="true">€</span><span class="nav-copy"><strong>Facturas</strong><small>Gestor de facturas</small></span></a>
+        <a class="nav-card" href="/vista/blogger"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
+        <a class="nav-card" href="/vista/bitacora"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
+        <a class="nav-card" href="/vista/directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
+        <a class="nav-card" href="/resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
+        <a class="nav-card" href="/vista/settings"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-copy"><strong>Ajustes</strong><small>Opciones por defecto</small></span></a>
+        <a class="nav-card" href="/vista/como-funciona"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
+      </nav>
+      <p class="sidebar-note"><strong>Privada y local</strong>No conecta la oficina pública, no consulta cuotas y no muestra historial.</p>
+    </aside>
+    <div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
+
+    <main class="office-content" id="office">
+      <header class="topbar">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+            <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+          </svg>
+          <h1>Estudio de Diseño y Vídeo</h1>
+        </div>
+        <span class="private-chip">Oficina local · privada</span>
+        <span class="connection" id="connection" data-kind="loading">Conectando</span>
+        <button id="refresh-btn" class="btn-refresh" type="button" onclick="window.location.reload()" aria-label="Actualizar vista" title="Actualizar">↻</button>
+        <button id="theme-toggle" type="button" aria-label="Activar modo oscuro" title="Cambiar tema">
+          <span id="theme-icon" aria-hidden="true">☾</span>
+        </button>
+      </header>
+      <p class="updated" id="updated">Estudio cargado (4 plantillas, 4 marcos, 37 efectos SFX y 8 sub-pestañas ArtCraft listos)</p>
+
+      <section class="diseno-hero">
+        <h2>Estudio de Creatividades y Multimedia (erbolamm-studio + reposDrive:/artcraft)</h2>
+        <p>Entorno interactivo para componer vídeos promocionales, previsualizar en marcos de dispositivos reales, probar el banco sonoro de 37 efectos SFX y operar las 8 sub-pestañas modulares de ArtCraft con soberanía por repositorio.</p>
+      </section>
+
+      <!-- Barra de Federación Multi-Repositorio Soberana + Enlace Espacio Personal de Javier -->
+      <section class="project-bar" aria-label="Selector de repositorio soberano">
+        <div class="project-bar-group" id="diseno-project-pills">
+          <strong style="font-size:0.84rem;">Repositorio activo:</strong>
+          <button type="button" class="project-pill active" data-project="calca_app" onclick="selectDisenoProject('calca_app')">calca_app</button>
+          <button type="button" class="project-pill" data-project="tts-apliarte" onclick="selectDisenoProject('tts-apliarte')">tts-apliarte</button>
+          <button type="button" class="project-pill" data-project="apliarte-directo" onclick="selectDisenoProject('apliarte-directo')">apliarte-directo</button>
+          <button type="button" class="project-pill" data-project="erbolamm-trabajo" onclick="selectDisenoProject('erbolamm-trabajo')">erbolamm-trabajo</button>
+        </div>
+        <div class="project-bar-group">
+          <code id="diseno-sovereign-path" style="font-size:0.78rem; padding:0.2rem 0.5rem; border:1px solid var(--border); border-radius:4px; background:var(--subtle);">control-erbolamm/difusion/diseno/sora-video/</code>
+          <button type="button" class="btn-action-tool" onclick="loadArtcraftStudio()">↻ Sincronizar ArtCraft</button>
+          <a href="/vista/javier" class="javier-space-link" title="Abrir Espacio Personal de Javier">Espacio Personal de Javier · Workspace Herdr: javier</a>
+        </div>
+      </section>
+
+      <!-- Historial de Sesiones Guardadas (Google Drive y Local) -->
+      <div class="history-card-box" id="box-historial">
+        <div class="history-header" onclick="toggleHistoryDrawer()">
+          <h3 class="history-title">
+            <span>Historial de Sesiones (Google Drive y Local)</span>
+            <span id="badge-history-count" style="font-size:0.75rem; padding:0.15rem 0.45rem; background:rgba(94,206,245,0.2); color:var(--blue); border-radius:10px;">0 guardadas</span>
+          </h3>
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <button type="button" class="btn-action-tool" onclick="event.stopPropagation(); fetchHistorial();" title="Recargar historial">
+              Refrescar
+            </button>
+            <span id="history-toggle-icon" style="font-size:0.85rem; color:var(--muted); transition:transform 0.2s;">[+]</span>
+          </div>
+        </div>
+        <div id="history-content-container" style="display:none;">
+          <div class="history-grid" id="history-list-grid">
+            <div style="font-size:0.85rem; color:var(--muted); padding:0.8rem 0;">Cargando sesiones...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navegación por pestañas internas -->
+      <nav class="subnav-tabs" role="tablist">
+        <button type="button" class="subnav-tab active" data-sec="plantillas" onclick="switchSection('plantillas', this)" role="tab" aria-selected="true">1. Plantillas de Vídeo (9:16 y 16:9)</button>
+        <button type="button" class="subnav-tab" data-sec="marcos" onclick="switchSection('marcos', this)" role="tab" aria-selected="false">2. Marcos de Dispositivos</button>
+        <button type="button" class="subnav-tab" data-sec="sfx" onclick="switchSection('sfx', this)" role="tab" aria-selected="false">3. Soundboard SFX (37 Efectos)</button>
+        <button type="button" class="subnav-tab" data-sec="scripts" onclick="switchSection('scripts', this)" role="tab" aria-selected="false">4. Comandos de Render y Producción</button>
+        <button type="button" class="subnav-tab" data-sec="artcraft" onclick="switchSection('artcraft', this)" role="tab" aria-selected="false">5. Suite Modular ArtCraft (8 Sub-pestañas)</button>
+      </nav>
+
+      <!-- Subsección 1: Plantillas de Vídeo -->
+      <div class="tab-section active" id="sec-plantillas">
+        <div class="studio-layout">
+          <!-- Configuración -->
+          <div class="studio-config-card">
+            <h3>Parámetros de Vídeo</h3>
+            
+            <div class="config-group">
+              <label class="config-label" for="cfg-project">Proyecto de origen</label>
+              <select id="cfg-project" class="config-select" onchange="applyProjectPreset(this.value)">
+                <option value="calca_app" selected>CalcaApp (Dibujo AR)</option>
+                <option value="apliarte-directo">ApliArte Directo (Streaming)</option>
+                <option value="tts-apliarte">TTS ApliArte (Voces)</option>
+                <option value="erbolamm-trabajo">ErBolamm Trabajo (Central)</option>
+                <option value="custom">Personalizado</option>
+              </select>
+            </div>
+
+            <div class="config-group">
+              <label class="config-label" for="cfg-template">Formato y plantilla</label>
+              <select id="cfg-template" class="config-select" onchange="changeTemplate(this.value)">
+                <option value="vertical-promo" selected>Vertical Promo (9:16 - 1080x1920) · TikTok/Reels</option>
+                <option value="app-showcase">App Showcase (16:9 - 1920x1080) · Horizontal</option>
+                <option value="feature-reel">Feature Reel (16:9 - 1920x1080) · Dinámico</option>
+                <option value="screenshot-set">Screenshot Set · Tiendas App Store / Play</option>
+              </select>
+            </div>
+
+            <div class="config-group">
+              <label class="config-label" for="cfg-title">Título comercial</label>
+              <input type="text" id="cfg-title" class="config-input" value="CalcaApp" oninput="updateLivePreview()">
+            </div>
+
+            <div class="config-group">
+              <label class="config-label" for="cfg-tagline">Subtítulo / Tagline</label>
+              <input type="text" id="cfg-tagline" class="config-input" value="Dibuja y calca sobre papel con realidad aumentada" oninput="updateLivePreview()">
+            </div>
+
+            <div class="config-group">
+              <label class="config-label">Color de pilar de marca</label>
+              <div class="color-presets">
+                <button type="button" class="color-swatch active" style="background: #005fa9;" data-color="#005fa9" onclick="setColor('#005fa9', this)"></button>
+                <button type="button" class="color-swatch" style="background: #e8955e;" data-color="#e8955e" onclick="setColor('#e8955e', this)"></button>
+                <button type="button" class="color-swatch" style="background: #2e7d32;" data-color="#2e7d32" onclick="setColor('#2e7d32', this)"></button>
+                <button type="button" class="color-swatch" style="background: #7b1fa2;" data-color="#7b1fa2" onclick="setColor('#7b1fa2', this)"></button>
+                <button type="button" class="color-swatch" style="background: #5ecef5;" data-color="#5ecef5" onclick="setColor('#5ecef5', this)"></button>
+              </div>
+            </div>
+
+            <div class="config-group">
+              <label class="config-label">Características clave (Features)</label>
+              <input type="text" id="cfg-feat-1" class="config-input" value="Filtros artísticos en tiempo real" oninput="updateLivePreview()">
+              <input type="text" id="cfg-feat-2" class="config-input" value="Bloqueo de pantalla y linterna integrada" oninput="updateLivePreview()" style="margin-top: 4px;">
+              <input type="text" id="cfg-feat-3" class="config-input" value="Exportación instantánea sin marcas de agua" oninput="updateLivePreview()" style="margin-top: 4px;">
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:0.5rem; margin-top:0.4rem;">
+              <button type="button" class="panel-action-btn primary" onclick="copyRenderCommand()">
+                Copiar comando de render
+              </button>
+              <button type="button" class="panel-action-btn" id="btn-save-diseno-cloud" onclick="saveCurrentDisenoSession()" style="background:#059669; color:#ffffff; border:none;">
+                Guardar sesion en Google Drive
+              </button>
+            </div>
+          </div>
+
+          <!-- Simulador / Previsualizador -->
+          <div class="studio-preview-card">
+            <div class="preview-header">
+              <div>
+                <strong id="preview-mode-name">Vertical Promo (9:16)</strong>
+                <small style="color: var(--muted); display: block;">Simulación interactiva de animación</small>
+              </div>
+              <div class="preview-controls">
+                <button type="button" class="btn-action-tool" onclick="restartAnimation()">Reiniciar</button>
+                <button type="button" class="btn-action-tool" onclick="toggleAspectRatio()">Cambiar formato (9:16 / 16:9)</button>
+                <button type="button" class="btn-action-tool" onclick="captureStageSnapshot()">Guardar fotograma a galeria</button>
+              </div>
+            </div>
+
+            <div class="preview-stage-wrap">
+              <div class="device-mockup" id="stage-device">
+                <div class="dynamic-island"></div>
+                <div class="screen-content" id="screen-content">
+                  <div>
+                    <span class="screen-badge" id="screen-badge" style="background: rgba(0,95,169,0.3); color: #5ecef5;">NUEVA VERSIÓN</span>
+                    <h2 class="screen-title" id="screen-title">CalcaApp</h2>
+                    <p class="screen-subtitle" id="screen-subtitle">Dibuja y calca sobre papel con realidad aumentada</p>
+                  </div>
+                  
+                  <div class="screen-features">
+                    <div class="screen-feat-item" id="sf-1">Filtros artísticos en tiempo real</div>
+                    <div class="screen-feat-item" id="sf-2">Bloqueo de pantalla y linterna</div>
+                    <div class="screen-feat-item" id="sf-3">Exportación sin marcas de agua</div>
+                  </div>
+
+                  <div class="screen-cta" id="screen-cta" style="background: #005fa9;">
+                    Descargar en App Store & Play Store
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="font-size: 0.8rem; color: var(--muted); display: flex; justify-content: space-between;">
+              <span>Plantilla: <code>design-engine/templates/vertical-promo.html</code></span>
+              <span>Renderizador: Node + Puppeteer 60fps</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Galeria Reactiva de Activos Generados -->
+        <div class="gallery-card-box">
+          <div class="gallery-header">
+            <div>
+              <strong style="font-size:1.05rem; color:var(--ink);">Galeria de Activos Acumulados (Sesion Actual)</strong>
+              <small style="color:var(--muted); display:block;">Los fotogramas, composiciones y clips permanecen en pantalla sin borrarse al crear nuevos elementos.</small>
+            </div>
+            <div style="display:flex; gap:0.5rem; align-items:center;">
+              <span id="gallery-count-badge" style="font-size:0.75rem; padding:0.15rem 0.45rem; background:rgba(0,95,169,0.1); color:var(--blue); border-radius:10px;">0 activos</span>
+              <button type="button" class="btn-action-tool" onclick="clearCurrentGallery()">Limpiar activos</button>
+            </div>
+          </div>
+          <div class="gallery-grid" id="gallery-activos-grid">
+            <div style="grid-column: 1 / -1; font-size:0.85rem; color:var(--muted); padding:1rem 0;">
+              No hay activos generados en esta sesion. Pulsa «Guardar fotograma a galeria» para acumular creatividades aqui.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subsección 2: Marcos de Dispositivos -->
+      <div class="tab-section" id="sec-marcos">
+        <div class="frames-grid">
+          <!-- iPhone 16 Pro -->
+          <div class="frame-card">
+            <h3>iPhone 16 Pro (Titanio Natural)</h3>
+            <p>Marco de teléfono con Dynamic Island, bisel simétrico ultra fino y esquinas redondeadas R=44px.</p>
+            <div class="frame-sample-box">
+              <div style="width: 140px; height: 260px; background: #000; border: 4px solid #3a3b3e; border-radius: 28px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+                <div style="position: absolute; top: 6px; width: 42px; height: 11px; background: #000; border-radius: 8px;"></div>
+                <span style="font-size: 0.72rem; color: #5ecef5; font-weight: 700;">CalcaApp</span>
+              </div>
+            </div>
+            <button type="button" class="btn-action-tool" onclick="copyText('design-engine/assets/ios_frame.jsx', this)">Copiar asset JSX</button>
+          </div>
+
+          <!-- Samsung Galaxy Android -->
+          <div class="frame-card">
+            <h3>Samsung Galaxy / Android Moderno</h3>
+            <p>Marco con orificio de cámara punch-hole centrado, ratio 20:9 y cristal frontal pulido.</p>
+            <div class="frame-sample-box">
+              <div style="width: 135px; height: 265px; background: #000; border: 3px solid #222; border-radius: 18px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+                <div style="position: absolute; top: 8px; width: 8px; height: 8px; background: #111; border-radius: 50%; border: 1px solid #333;"></div>
+                <span style="font-size: 0.72rem; color: #e8955e; font-weight: 700;">Android AR</span>
+              </div>
+            </div>
+            <button type="button" class="btn-action-tool" onclick="copyText('design-engine/assets/android_frame.jsx', this)">Copiar asset JSX</button>
+          </div>
+
+          <!-- macOS Window -->
+          <div class="frame-card">
+            <h3>Ventana macOS (Apple Desktop)</h3>
+            <p>Contenedor de aplicación de escritorio con barra superior y botones de control de ventana.</p>
+            <div class="frame-sample-box">
+              <div class="macos-frame" style="max-width: 260px;">
+                <div class="macos-header">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                  <span class="macos-title">ApliArte Directo</span>
+                </div>
+                <div class="macos-body">
+                  <code>$ erbolamm directo status<br>&gt; OBS conectado :8790</code>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="btn-action-tool" onclick="copyText('design-engine/assets/macos_window.jsx', this)">Copiar asset JSX</button>
+          </div>
+
+          <!-- Browser Window -->
+          <div class="frame-card">
+            <h3>Navegador Web Chrome</h3>
+            <p>Pestaña y barra de URL segura para presentar landings, SaaS o webapps responsive.</p>
+            <div class="frame-sample-box">
+              <div class="macos-frame" style="max-width: 260px;">
+                <div class="macos-header" style="justify-content: flex-start;">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                  <span style="font-size: 0.65rem; background: #1a1a1a; padding: 2px 10px; border-radius: 4px; color: #aaa; margin-left: 6px;">https://apliarte.com</span>
+                </div>
+                <div class="macos-body" style="text-align: center;">
+                  <strong style="color: #5ecef5;">Oficina ApliArte</strong>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="btn-action-tool" onclick="copyText('design-engine/assets/browser_window.jsx', this)">Copiar asset JSX</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subsección 3: Soundboard SFX -->
+      <div class="tab-section" id="sec-sfx">
+        <div class="sfx-controls">
+          <input type="search" id="sfx-search" class="config-input" style="flex: 1 1 260px;" placeholder="Buscar efecto SFX (ej: click, whoosh, chime, typing...)" oninput="filterSfx(this.value)">
+          <div class="category-pills" id="sfx-cat-pills">
+            <button type="button" class="cat-pill active" onclick="filterSfxCat('Todas', this)">Todas (37)</button>
+            <button type="button" class="cat-pill" onclick="filterSfxCat('UI', this)">UI (6)</button>
+            <button type="button" class="cat-pill" onclick="filterSfxCat('Teclado', this)">Teclado (5)</button>
+            <button type="button" class="cat-pill" onclick="filterSfxCat('Transición', this)">Transición (5)</button>
+            <button type="button" class="cat-pill" onclick="filterSfxCat('Feedback', this)">Feedback (4)</button>
+            <button type="button" class="cat-pill" onclick="filterSfxCat('Impacto', this)">Impacto (4)</button>
+            <button type="button" class="cat-pill" onclick="filterSfxCat('Contenedores', this)">Contenedores (4)</button>
+            <button type="button" class="cat-pill" onclick="filterSfxCat('Terminal', this)">Terminal (3)</button>
+            <button type="button" class="cat-pill" onclick="filterSfxCat('Progreso', this)">Progreso (3)</button>
+            <button type="button" class="cat-pill" onclick="filterSfxCat('Magia e IA', this)">Magia e IA (3)</button>
+          </div>
+        </div>
+
+        <div class="sfx-grid" id="sfx-grid">
+          
+      <div class="sfx-card" data-cat="UI" data-search="click click.mp3 ui clic estándar de interfaz, botones primarios">
+        <div class="sfx-header">
+          <span class="sfx-badge">UI</span>
+          <span class="sfx-time">0.5s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">click.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('click', 'UI', this)" aria-label="Reproducir click.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Clic estándar de interfaz, botones primarios</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/ui/click.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/ui/click.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="UI" data-search="click-soft click-soft.mp3 ui clic suave para botones secundarios o enlaces">
+        <div class="sfx-header">
+          <span class="sfx-badge">UI</span>
+          <span class="sfx-time">0.5s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">click-soft.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('click-soft', 'UI', this)" aria-label="Reproducir click-soft.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Clic suave para botones secundarios o enlaces</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/ui/click-soft.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/ui/click-soft.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="UI" data-search="focus focus.mp3 ui elemento enfocado o seleccionado">
+        <div class="sfx-header">
+          <span class="sfx-badge">UI</span>
+          <span class="sfx-time">0.5s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">focus.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('focus', 'UI', this)" aria-label="Reproducir focus.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Elemento enfocado o seleccionado</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/ui/focus.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/ui/focus.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="UI" data-search="hover-subtle hover-subtle.mp3 ui respuesta háptica al pasar el ratón">
+        <div class="sfx-header">
+          <span class="sfx-badge">UI</span>
+          <span class="sfx-time">0.5s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">hover-subtle.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('hover-subtle', 'UI', this)" aria-label="Reproducir hover-subtle.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Respuesta háptica al pasar el ratón</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/ui/hover-subtle.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/ui/hover-subtle.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="UI" data-search="tap-finger tap-finger.mp3 ui toque táctil en pantalla móvil">
+        <div class="sfx-header">
+          <span class="sfx-badge">UI</span>
+          <span class="sfx-time">0.5s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">tap-finger.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('tap-finger', 'UI', this)" aria-label="Reproducir tap-finger.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Toque táctil en pantalla móvil</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/ui/tap-finger.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/ui/tap-finger.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="UI" data-search="toggle-on toggle-on.mp3 ui interruptor activado (switch on)">
+        <div class="sfx-header">
+          <span class="sfx-badge">UI</span>
+          <span class="sfx-time">0.5s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">toggle-on.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('toggle-on', 'UI', this)" aria-label="Reproducir toggle-on.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Interruptor activado (switch on)</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/ui/toggle-on.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/ui/toggle-on.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Teclado" data-search="type type.mp3 teclado pulsación de tecla mecánica individual">
+        <div class="sfx-header">
+          <span class="sfx-badge">Teclado</span>
+          <span class="sfx-time">0.5s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">type.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('type', 'Teclado', this)" aria-label="Reproducir type.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Pulsación de tecla mecánica individual</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/keyboard/type.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/keyboard/type.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Teclado" data-search="type-fast type-fast.mp3 teclado mecanografía rápida continua (escritura de prompt)">
+        <div class="sfx-header">
+          <span class="sfx-badge">Teclado</span>
+          <span class="sfx-time">1.5s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">type-fast.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('type-fast', 'Teclado', this)" aria-label="Reproducir type-fast.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Mecanografía rápida continua (escritura de prompt)</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/keyboard/type-fast.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/keyboard/type-fast.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Teclado" data-search="space-tap space-tap.mp3 teclado pulsación de barra espaciadora">
+        <div class="sfx-header">
+          <span class="sfx-badge">Teclado</span>
+          <span class="sfx-time">0.5s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">space-tap.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('space-tap', 'Teclado', this)" aria-label="Reproducir space-tap.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Pulsación de barra espaciadora</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/keyboard/space-tap.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/keyboard/space-tap.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Teclado" data-search="delete-key delete-key.mp3 teclado retroceso o borrado de carácter">
+        <div class="sfx-header">
+          <span class="sfx-badge">Teclado</span>
+          <span class="sfx-time">0.5s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">delete-key.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('delete-key', 'Teclado', this)" aria-label="Reproducir delete-key.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Retroceso o borrado de carácter</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/keyboard/delete-key.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/keyboard/delete-key.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Teclado" data-search="enter enter.mp3 teclado tecla enter / confirmación de comando">
+        <div class="sfx-header">
+          <span class="sfx-badge">Teclado</span>
+          <span class="sfx-time">0.5s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">enter.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('enter', 'Teclado', this)" aria-label="Reproducir enter.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Tecla Enter / Confirmación de comando</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/keyboard/enter.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/keyboard/enter.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Terminal" data-search="cursor-blink cursor-blink.mp3 terminal parpadeo rítmico de cursor en consola">
+        <div class="sfx-header">
+          <span class="sfx-badge">Terminal</span>
+          <span class="sfx-time">0.5s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">cursor-blink.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('cursor-blink', 'Terminal', this)" aria-label="Reproducir cursor-blink.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Parpadeo rítmico de cursor en consola</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/terminal/cursor-blink.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/terminal/cursor-blink.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Terminal" data-search="command-execute command-execute.mp3 terminal ejecución de script o comando en terminal">
+        <div class="sfx-header">
+          <span class="sfx-badge">Terminal</span>
+          <span class="sfx-time">0.5s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">command-execute.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('command-execute', 'Terminal', this)" aria-label="Reproducir command-execute.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Ejecución de script o comando en terminal</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/terminal/command-execute.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/terminal/command-execute.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Terminal" data-search="output-appear output-appear.mp3 terminal aparición de salida o resultado de comando">
+        <div class="sfx-header">
+          <span class="sfx-badge">Terminal</span>
+          <span class="sfx-time">0.6s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">output-appear.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('output-appear', 'Terminal', this)" aria-label="Reproducir output-appear.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Aparición de salida o resultado de comando</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/terminal/output-appear.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/terminal/output-appear.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Contenedores" data-search="modal-open modal-open.mp3 contenedores apertura de ventana modal o diálogo">
+        <div class="sfx-header">
+          <span class="sfx-badge">Contenedores</span>
+          <span class="sfx-time">0.6s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">modal-open.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('modal-open', 'Contenedores', this)" aria-label="Reproducir modal-open.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Apertura de ventana modal o diálogo</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/container/modal-open.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/container/modal-open.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Contenedores" data-search="card-snap card-snap.mp3 contenedores tarjeta que encaja en su posición">
+        <div class="sfx-header">
+          <span class="sfx-badge">Contenedores</span>
+          <span class="sfx-time">0.5s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">card-snap.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('card-snap', 'Contenedores', this)" aria-label="Reproducir card-snap.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Tarjeta que encaja en su posición</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/container/card-snap.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/container/card-snap.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Contenedores" data-search="card-flip card-flip.mp3 contenedores volteo de tarjeta 3d">
+        <div class="sfx-header">
+          <span class="sfx-badge">Contenedores</span>
+          <span class="sfx-time">0.6s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">card-flip.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('card-flip', 'Contenedores', this)" aria-label="Reproducir card-flip.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Volteo de tarjeta 3D</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/container/card-flip.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/container/card-flip.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Contenedores" data-search="stack-collapse stack-collapse.mp3 contenedores plegado de acordeón o lista de elementos">
+        <div class="sfx-header">
+          <span class="sfx-badge">Contenedores</span>
+          <span class="sfx-time">0.7s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">stack-collapse.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('stack-collapse', 'Contenedores', this)" aria-label="Reproducir stack-collapse.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Plegado de acordeón o lista de elementos</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/container/stack-collapse.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/container/stack-collapse.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Transición" data-search="whoosh whoosh.mp3 transición transición cinematográfica de aire estándar">
+        <div class="sfx-header">
+          <span class="sfx-badge">Transición</span>
+          <span class="sfx-time">0.5s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">whoosh.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('whoosh', 'Transición', this)" aria-label="Reproducir whoosh.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Transición cinematográfica de aire estándar</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/transition/whoosh.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/transition/whoosh.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Transición" data-search="whoosh-fast whoosh-fast.mp3 transición whoosh rápido para entrada veloz de títulos">
+        <div class="sfx-header">
+          <span class="sfx-badge">Transición</span>
+          <span class="sfx-time">0.6s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">whoosh-fast.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('whoosh-fast', 'Transición', this)" aria-label="Reproducir whoosh-fast.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Whoosh rápido para entrada veloz de títulos</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/transition/whoosh-fast.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/transition/whoosh-fast.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Transición" data-search="swipe-horizontal swipe-horizontal.mp3 transición deslizamiento horizontal de carrusel o pantalla">
+        <div class="sfx-header">
+          <span class="sfx-badge">Transición</span>
+          <span class="sfx-time">0.7s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">swipe-horizontal.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('swipe-horizontal', 'Transición', this)" aria-label="Reproducir swipe-horizontal.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Deslizamiento horizontal de carrusel o pantalla</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/transition/swipe-horizontal.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/transition/swipe-horizontal.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Transición" data-search="slide-in slide-in.mp3 transición despliegue lateral de cajón o panel">
+        <div class="sfx-header">
+          <span class="sfx-badge">Transición</span>
+          <span class="sfx-time">0.6s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">slide-in.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('slide-in', 'Transición', this)" aria-label="Reproducir slide-in.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Despliegue lateral de cajón o panel</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/transition/slide-in.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/transition/slide-in.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Transición" data-search="dissolve dissolve.mp3 transición disolución suave entre dos escenas">
+        <div class="sfx-header">
+          <span class="sfx-badge">Transición</span>
+          <span class="sfx-time">0.8s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">dissolve.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('dissolve', 'Transición', this)" aria-label="Reproducir dissolve.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Disolución suave entre dos escenas</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/transition/dissolve.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/transition/dissolve.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Impacto" data-search="logo-reveal logo-reveal.mp3 impacto revelación inicial de isotipo o marca">
+        <div class="sfx-header">
+          <span class="sfx-badge">Impacto</span>
+          <span class="sfx-time">1.2s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">logo-reveal.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('logo-reveal', 'Impacto', this)" aria-label="Reproducir logo-reveal.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Revelación inicial de isotipo o marca</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/impact/logo-reveal.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/impact/logo-reveal.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Impacto" data-search="logo-reveal-v2 logo-reveal-v2.mp3 impacto variante de revelación de marca con brillo">
+        <div class="sfx-header">
+          <span class="sfx-badge">Impacto</span>
+          <span class="sfx-time">1.2s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">logo-reveal-v2.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('logo-reveal-v2', 'Impacto', this)" aria-label="Reproducir logo-reveal-v2.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Variante de revelación de marca con brillo</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/impact/logo-reveal-v2.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/impact/logo-reveal-v2.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Impacto" data-search="brand-stamp brand-stamp.mp3 impacto sello de marca con golpe contundente">
+        <div class="sfx-header">
+          <span class="sfx-badge">Impacto</span>
+          <span class="sfx-time">0.8s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">brand-stamp.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('brand-stamp', 'Impacto', this)" aria-label="Reproducir brand-stamp.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Sello de marca con golpe contundente</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/impact/brand-stamp.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/impact/brand-stamp.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Impacto" data-search="drop-thud drop-thud.mp3 impacto caída y asentamiento de tarjeta pesada">
+        <div class="sfx-header">
+          <span class="sfx-badge">Impacto</span>
+          <span class="sfx-time">0.6s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">drop-thud.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('drop-thud', 'Impacto', this)" aria-label="Reproducir drop-thud.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Caída y asentamiento de tarjeta pesada</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/impact/drop-thud.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/impact/drop-thud.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Feedback" data-search="success-chime success-chime.mp3 feedback notificación de éxito, guardado o commit">
+        <div class="sfx-header">
+          <span class="sfx-badge">Feedback</span>
+          <span class="sfx-time">1.0s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">success-chime.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('success-chime', 'Feedback', this)" aria-label="Reproducir success-chime.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Notificación de éxito, guardado o commit</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/feedback/success-chime.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/feedback/success-chime.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Feedback" data-search="error-tone error-tone.mp3 feedback alerta de error o validación fallida">
+        <div class="sfx-header">
+          <span class="sfx-badge">Feedback</span>
+          <span class="sfx-time">0.6s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">error-tone.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('error-tone', 'Feedback', this)" aria-label="Reproducir error-tone.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Alerta de error o validación fallida</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/feedback/error-tone.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/feedback/error-tone.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Feedback" data-search="notification-pop notification-pop.mp3 feedback globo o burbuja de notificación entrante">
+        <div class="sfx-header">
+          <span class="sfx-badge">Feedback</span>
+          <span class="sfx-time">0.5s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">notification-pop.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('notification-pop', 'Feedback', this)" aria-label="Reproducir notification-pop.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Globo o burbuja de notificación entrante</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/feedback/notification-pop.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/feedback/notification-pop.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Feedback" data-search="achievement achievement.mp3 feedback logro completado, hito superado">
+        <div class="sfx-header">
+          <span class="sfx-badge">Feedback</span>
+          <span class="sfx-time">1.2s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">achievement.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('achievement', 'Feedback', this)" aria-label="Reproducir achievement.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Logro completado, hito superado</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/feedback/achievement.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/feedback/achievement.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Progreso" data-search="loading-tick loading-tick.mp3 progreso tic-tac de carga o spinner de proceso">
+        <div class="sfx-header">
+          <span class="sfx-badge">Progreso</span>
+          <span class="sfx-time">0.5s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">loading-tick.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('loading-tick', 'Progreso', this)" aria-label="Reproducir loading-tick.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Tic-tac de carga o spinner de proceso</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/progress/loading-tick.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/progress/loading-tick.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Progreso" data-search="generate-start generate-start.mp3 progreso inicio de generación de vídeo o render">
+        <div class="sfx-header">
+          <span class="sfx-badge">Progreso</span>
+          <span class="sfx-time">0.7s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">generate-start.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('generate-start', 'Progreso', this)" aria-label="Reproducir generate-start.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Inicio de generación de vídeo o render</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/progress/generate-start.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/progress/generate-start.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Progreso" data-search="complete-done complete-done.mp3 progreso proceso finalizado al 100%">
+        <div class="sfx-header">
+          <span class="sfx-badge">Progreso</span>
+          <span class="sfx-time">0.7s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">complete-done.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('complete-done', 'Progreso', this)" aria-label="Reproducir complete-done.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Proceso finalizado al 100%</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/progress/complete-done.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/progress/complete-done.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Magia e IA" data-search="sparkle sparkle.mp3 magia e ia destello mágico o acción de asistencia ia">
+        <div class="sfx-header">
+          <span class="sfx-badge">Magia e IA</span>
+          <span class="sfx-time">0.7s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">sparkle.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('sparkle', 'Magia e IA', this)" aria-label="Reproducir sparkle.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Destello mágico o acción de asistencia IA</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/magic/sparkle.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/magic/sparkle.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Magia e IA" data-search="ai-process ai-process.mp3 magia e ia inferencia de modelo o procesamiento inteligente">
+        <div class="sfx-header">
+          <span class="sfx-badge">Magia e IA</span>
+          <span class="sfx-time">1.0s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">ai-process.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('ai-process', 'Magia e IA', this)" aria-label="Reproducir ai-process.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Inferencia de modelo o procesamiento inteligente</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/magic/ai-process.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/magic/ai-process.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+
+      <div class="sfx-card" data-cat="Magia e IA" data-search="transform transform.mp3 magia e ia transformación de datos o cambio de vista">
+        <div class="sfx-header">
+          <span class="sfx-badge">Magia e IA</span>
+          <span class="sfx-time">0.9s</span>
+        </div>
+        <div class="sfx-title-row">
+          <h4 class="sfx-title">transform.mp3</h4>
+          <button type="button" class="sfx-play-btn" onclick="playSfx('transform', 'Magia e IA', this)" aria-label="Reproducir transform.mp3" title="Reproducir sonido">
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+        <p class="sfx-use">Transformación de datos o cambio de vista</p>
+        <div class="sfx-footer">
+          <code class="sfx-path">design-engine/sfx/magic/transform.mp3</code>
+          <button type="button" class="sfx-copy-btn" onclick="copyText('design-engine/sfx/magic/transform.mp3', this)" title="Copiar ruta">Copiar ruta</button>
+        </div>
+      </div>
+    
+        </div>
+      </div>
+
+      <!-- Subsección 4: Scripts de Render y Producción -->
+      <div class="tab-section" id="sec-scripts">
+        <div class="scripts-grid">
+          <!-- Render Video -->
+          <div class="script-card">
+            <h3>render-video.cjs</h3>
+            <p>Renderizador principal de vídeo. Carga la plantilla HTML en Puppeteer, controla el reloj en tiempo real y exporta a MP4 a 60 fps mediante FFmpeg.</p>
+            <div class="script-cmd-box">
+              <code>node design-engine/scripts/render-video.cjs --template vertical-promo --output salida.mp4</code>
+              <button type="button" class="btn-copy" onclick="copyText('node design-engine/scripts/render-video.cjs --template vertical-promo --output salida.mp4', this)">Copiar</button>
+            </div>
+          </div>
+
+          <!-- Add Music -->
+          <div class="script-card">
+            <h3>add-music.sh</h3>
+            <p>Mezcla música de fondo sobre un vídeo ya renderizado. Aplica normalización sonora EBU R128 (-16 LUFS), fade-in inicial de 1s y fade-out final de 2s.</p>
+            <div class="script-cmd-box">
+              <code>./design-engine/scripts/add-music.sh entrada.mp4 musica.mp3 salida_con_audio.mp4</code>
+              <button type="button" class="btn-copy" onclick="copyText('./design-engine/scripts/add-music.sh entrada.mp4 musica.mp3 salida_con_audio.mp4', this)">Copiar</button>
+            </div>
+          </div>
+
+          <!-- Generate Narration -->
+          <div class="script-card">
+            <h3>generate-narration.sh</h3>
+            <p>Genera la locución narrativa en MP3 a partir de un texto o guión utilizando síntesis TTS configurada para locución promocional.</p>
+            <div class="script-cmd-box">
+              <code>./design-engine/scripts/generate-narration.sh guion.txt voz_locucion.mp3</code>
+              <button type="button" class="btn-copy" onclick="copyText('./design-engine/scripts/generate-narration.sh guion.txt voz_locucion.mp3', this)">Copiar</button>
+            </div>
+          </div>
+
+          <!-- Render All Langs -->
+          <div class="script-card">
+            <h3>render-all-langs.cjs</h3>
+            <p>Generación masiva multi-idioma. Exporta el vídeo simultáneamente en los 6 idiomas oficiales: Español (`es`), Inglés (`en`), Portugués (`pt`), Francés (`fr`), Alemán (`de`) e Italiano (`it`).</p>
+            <div class="script-cmd-box">
+              <code>node design-engine/scripts/render-all-langs.cjs --template vertical-promo --langs es,en,pt,fr,de,it</code>
+              <button type="button" class="btn-copy" onclick="copyText('node design-engine/scripts/render-all-langs.cjs --template vertical-promo --langs es,en,pt,fr,de,it', this)">Copiar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subsección 5: Suite Modular ArtCraft (8 Sub-pestañas de reposDrive:/artcraft) -->
+      <div class="tab-section" id="sec-artcraft">
+        <div class="artcraft-subtabs" id="artcraft-subtab-pills" role="tablist" aria-label="8 Sub-pestañas de reposDrive:/artcraft">
+          <button type="button" class="artcraft-subtab-pill active" data-subtab="sora-video" onclick="selectArtcraftSubtab('sora-video', this)">1. Sora 2 · Vídeo</button>
+          <button type="button" class="artcraft-subtab-pill" data-subtab="midjourney-imagen" onclick="selectArtcraftSubtab('midjourney-imagen', this)">2. Midjourney · Key Visual</button>
+          <button type="button" class="artcraft-subtab-pill" data-subtab="grok-multimedia" onclick="selectArtcraftSubtab('grok-multimedia', this)">3. Grok · Multimedia</button>
+          <button type="button" class="artcraft-subtab-pill" data-subtab="fal-generacion" onclick="selectArtcraftSubtab('fal-generacion', this)">4. Fal.ai · FLUX / Kling</button>
+          <button type="button" class="artcraft-subtab-pill" data-subtab="worldlabs-3d" onclick="selectArtcraftSubtab('worldlabs-3d', this)">5. WorldLabs · Mundos 3D</button>
+          <button type="button" class="artcraft-subtab-pill" data-subtab="edicion-video" onclick="selectArtcraftSubtab('edicion-video', this)">6. Edición de Vídeo</button>
+          <button type="button" class="artcraft-subtab-pill" data-subtab="anatomy-svg" onclick="selectArtcraftSubtab('anatomy-svg', this)">7. Anatomy SVG · Isométrico</button>
+          <button type="button" class="artcraft-subtab-pill" data-subtab="capturas-frames" onclick="selectArtcraftSubtab('capturas-frames', this)">8. Capturas y Frames</button>
+        </div>
+
+        <div class="artcraft-layout">
+          <div class="artcraft-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+              <div>
+                <h3 id="artcraft-active-title" style="margin:0; font-size:1.1rem; color:var(--ink);">Sora 2 · Vídeo Generativo Cinemático</h3>
+                <small id="artcraft-active-origin" style="color:var(--muted);">Origen modular: <code>reposDrive:/artcraft/sora-video</code> · Destino soberano: <code id="artcraft-active-folder">control-erbolamm/difusion/diseno/sora-video/</code></small>
+              </div>
+              <span id="artcraft-items-badge" style="font-size:0.78rem; font-weight:700; padding:0.2rem 0.55rem; border-radius:999px; background:rgba(0,95,169,0.12); color:var(--blue);">0 piezas</span>
+            </div>
+
+            <div id="artcraft-items-list" style="display:flex; flex-direction:column; gap:0.65rem;">
+              <div style="font-size:0.86rem; color:var(--muted);">Sincronizando sub-pestaña ArtCraft con el repositorio activo...</div>
+            </div>
+          </div>
+
+          <div class="artcraft-card">
+            <h3 style="margin:0; font-size:1.05rem; color:var(--ink);">Registrar / Actualizar Pieza en Sub-pestaña Activa</h3>
+            <div class="config-group">
+              <label class="config-label" for="artcraft-input-id">ID de pieza (opcional)</label>
+              <input type="text" id="artcraft-input-id" class="config-input" placeholder="Ej: ART-CALCA-SORA-02" oninput="saveJavierDisenoState()">
+            </div>
+            <div class="config-group">
+              <label class="config-label" for="artcraft-input-titulo">Título de la pieza creativa</label>
+              <input type="text" id="artcraft-input-titulo" class="config-input" placeholder="Título descriptivo para esta sub-pestaña" oninput="saveJavierDisenoState()">
+            </div>
+            <div class="config-group">
+              <label class="config-label" for="artcraft-input-formato">Formato de salida</label>
+              <input type="text" id="artcraft-input-formato" class="config-input" value="9:16 Vertical (1080x1920 · 60fps)" oninput="saveJavierDisenoState()">
+            </div>
+            <div class="config-group">
+              <label class="config-label" for="artcraft-input-prompt">Prompt / Especificación creativa</label>
+              <textarea id="artcraft-input-prompt" class="config-input" rows="3" placeholder="Escribe el prompt o especificación para el orquestador del repositorio..." oninput="saveJavierDisenoState()"></textarea>
+            </div>
+            <div class="config-group">
+              <label class="config-label" for="artcraft-input-parametros">Parámetros técnicos</label>
+              <input type="text" id="artcraft-input-parametros" class="config-input" placeholder="model=sora-2-pro · duration=10s" oninput="saveJavierDisenoState()">
+            </div>
+            <button type="button" class="panel-action-btn primary" id="btn-save-artcraft-item" onclick="saveArtcraftSubtabItem()">
+              Guardar en control-erbolamm/difusion/diseno/<span id="btn-save-subtab-name">sora-video</span>/ + INBOX.md
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <p class="public-note">Estudio de Diseño y Vídeo · Ecosistema ErBolamm</p>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Copiado al portapapeles</div>
+  <p class="sr-only" id="announcer" aria-live="polite"></p>
+
+  <script src="../panel-shell.js"></script>
+  <script>
+    const STORAGE_KEY_DISENO_JAVIER = "erbolamm-diseno-estado-javier";
+    let currentDisenoProject = "calca_app";
+    let activeDisenoSection = "plantillas";
+    let activeArtcraftSubtab = "sora-video";
+    let artcraftStudioCache = null;
+
+    // Audio synthesis engine for immediate, reliable soundboard playback
+    let audioCtx = null;
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playSfx(id, cat, btnEl) {
+      const card = btnEl.closest('.sfx-card');
+      if (card) {
+        card.classList.add('playing');
+        setTimeout(() => card.classList.remove('playing'), 600);
+      }
+
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+
+        // Custom synthesis per category
+        if (cat === 'UI' || id.includes('click') || id.includes('tap')) {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(id === 'click-soft' ? 440 : 880, now);
+          osc.frequency.exponentialRampToValueAtTime(220, now + 0.08);
+          gain.gain.setValueAtTime(0.3, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.08);
+        } else if (cat === 'Teclado') {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(id === 'enter' ? 520 : 650, now);
+          gain.gain.setValueAtTime(0.25, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.05);
+        } else if (cat === 'Feedback' || id.includes('chime') || id.includes('achievement')) {
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, now + i * 0.06);
+            gain.gain.setValueAtTime(0.2, now + i * 0.06);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.06 + 0.35);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now + i * 0.06);
+            osc.stop(now + i * 0.06 + 0.35);
+          });
+        } else if (cat === 'Transición' || id.includes('whoosh')) {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(180, now);
+          osc.frequency.exponentialRampToValueAtTime(600, now + 0.15);
+          osc.frequency.exponentialRampToValueAtTime(120, now + 0.35);
+          gain.gain.setValueAtTime(0.05, now);
+          gain.gain.linearRampToValueAtTime(0.25, now + 0.15);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.35);
+        } else if (cat === 'Magia e IA' || id.includes('sparkle')) {
+          [1046.5, 1318.5, 1567.98, 2093.0].forEach((freq, i) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, now + i * 0.05);
+            gain.gain.setValueAtTime(0.18, now + i * 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.05 + 0.25);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now + i * 0.05);
+            osc.stop(now + i * 0.05 + 0.25);
+          });
+        } else {
+          // Default sound tone
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.frequency.setValueAtTime(320, now);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.12);
+        }
+      } catch (err) {
+        console.warn('Audio playback error:', err);
+      }
+    }
+
+    // Navegación por pestañas internas
+    function switchSection(secId, btn) {
+      activeDisenoSection = secId;
+      document.querySelectorAll('.subnav-tab').forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      if (btn) {
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+      } else {
+        const matchBtn = document.querySelector(`.subnav-tab[data-sec="${secId}"]`);
+        if (matchBtn) {
+          matchBtn.classList.add('active');
+          matchBtn.setAttribute('aria-selected', 'true');
+        }
+      }
+
+      document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById('sec-' + secId);
+      if (target) target.classList.add('active');
+      saveJavierDisenoState();
+    }
+
+    // Presets de proyecto
+    const PROJECT_PRESETS = {
+      calca_app: {
+        title: 'CalcaApp',
+        tagline: 'Dibuja y calca sobre papel con realidad aumentada',
+        color: '#005fa9',
+        f1: 'Filtros artísticos en tiempo real',
+        f2: 'Bloqueo de pantalla y linterna integrada',
+        f3: 'Exportación instantánea sin marcas de agua'
+      },
+      'apliarte-directo': {
+        title: 'ApliArte Directo',
+        tagline: 'Centro de streaming, avatares 3D y control OBS en tiempo real',
+        color: '#e8955e',
+        f1: 'Panel táctil para iPad y móvil',
+        f2: 'Integración Twitch chat con TTS Cleo',
+        f3: 'Oficina 3D interactiva para espectadores'
+      },
+      'tts-apliarte': {
+        title: 'TTS ApliArte',
+        tagline: 'Locución natural accesible sin emojis y clonación de voz',
+        color: '#2e7d32',
+        f1: 'Directiva accesible de lectura limpia',
+        f2: 'Clonación de voces con ElevenLabs y MiniMax',
+        f3: 'Procesamiento en lote para difusión'
+      },
+      'erbolamm-trabajo': {
+        title: 'ErBolamm Central',
+        tagline: 'Orquestación autónoma, tablero de tareas y catálogo vivo',
+        color: '#7b1fa2',
+        f1: 'Asistente ApliArte central para todo el sistema',
+        f2: 'Soberanía por repositorio bajo ADR-0013',
+        f3: '39 skills canónicas con despacho atómico'
+      }
+    };
+
+    function applyProjectPreset(projId, skipSave) {
+      currentDisenoProject = projId;
+      document.querySelectorAll('#diseno-project-pills .project-pill').forEach(pill => {
+        pill.classList.toggle('active', pill.getAttribute('data-project') === projId);
+      });
+      const sel = document.getElementById('cfg-project');
+      if (sel && sel.value !== projId) sel.value = projId;
+      const p = PROJECT_PRESETS[projId];
+      if (!p) return;
+      document.getElementById('cfg-title').value = p.title;
+      document.getElementById('cfg-tagline').value = p.tagline;
+      document.getElementById('cfg-feat-1').value = p.f1;
+      document.getElementById('cfg-feat-2').value = p.f2;
+      document.getElementById('cfg-feat-3').value = p.f3;
+      setColor(p.color, null);
+      updateLivePreview(true);
+      if (!skipSave) saveJavierDisenoState();
+    }
+
+    function selectDisenoProject(projId) {
+      applyProjectPreset(projId, false);
+      loadArtcraftStudio();
+    }
+
+    function selectArtcraftSubtab(subtabId, btnEl) {
+      activeArtcraftSubtab = subtabId;
+      document.querySelectorAll('#artcraft-subtab-pills .artcraft-subtab-pill').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-subtab') === subtabId);
+      });
+      const pathBadge = document.getElementById('diseno-sovereign-path');
+      if (pathBadge) pathBadge.textContent = `control-erbolamm/difusion/diseno/${subtabId}/`;
+      const btnSpan = document.getElementById('btn-save-subtab-name');
+      if (btnSpan) btnSpan.textContent = subtabId;
+      renderArtcraftSubtab();
+      saveJavierDisenoState();
+    }
+
+    async function loadArtcraftStudio() {
+      try {
+        const resp = await fetch(`/api/apps/diseno?app=${encodeURIComponent(currentDisenoProject)}&subpestana=${encodeURIComponent(activeArtcraftSubtab)}`);
+        const data = await resp.json();
+        if (!data.ok || !data.result) return;
+        artcraftStudioCache = data.result;
+        renderArtcraftSubtab();
+      } catch (err) {
+        console.warn('Error cargando estudio ArtCraft:', err);
+      }
+    }
+
+    function renderArtcraftSubtab() {
+      if (!artcraftStudioCache || !artcraftStudioCache.subpestanas) return;
+      const tabData = artcraftStudioCache.subpestanas[activeArtcraftSubtab];
+      if (!tabData) return;
+
+      const titleEl = document.getElementById('artcraft-active-title');
+      if (titleEl) titleEl.textContent = tabData.titulo || activeArtcraftSubtab;
+      const folderEl = document.getElementById('artcraft-active-folder');
+      if (folderEl) folderEl.textContent = tabData.carpeta_soberana || `control-erbolamm/difusion/diseno/${activeArtcraftSubtab}/`;
+      const pathBadge = document.getElementById('diseno-sovereign-path');
+      if (pathBadge) pathBadge.textContent = tabData.carpeta_soberana || `control-erbolamm/difusion/diseno/${activeArtcraftSubtab}/`;
+
+      const items = Array.isArray(tabData.items) ? tabData.items : [];
+      const badgeEl = document.getElementById('artcraft-items-badge');
+      if (badgeEl) badgeEl.textContent = `${items.length} pieza(s)`;
+
+      const listEl = document.getElementById('artcraft-items-list');
+      if (!listEl) return;
+      listEl.innerHTML = '';
+      items.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'artcraft-item-row';
+        row.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem;">
+            <strong style="font-size:0.9rem; color:var(--ink);">[${item.id}] ${item.titulo}</strong>
+            <span class="session-tag">${item.formato || ''}</span>
+          </div>
+          <p style="margin:0; font-size:0.83rem; color:var(--ink); opacity:0.9; line-height:1.4;">${item.prompt}</p>
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:var(--muted);">
+            <code>${item.parametros || ''}</code>
+            <span>Estado: <strong>${item.estado || 'listo'}</strong></span>
+          </div>
+        `;
+        listEl.appendChild(row);
+      });
+    }
+
+    async function saveArtcraftSubtabItem() {
+      const idVal = document.getElementById('artcraft-input-id').value.trim();
+      const tituloVal = document.getElementById('artcraft-input-titulo').value.trim();
+      const formatoVal = document.getElementById('artcraft-input-formato').value.trim();
+      const promptVal = document.getElementById('artcraft-input-prompt').value.trim();
+      const paramsVal = document.getElementById('artcraft-input-parametros').value.trim();
+
+      try {
+        showToast(`Guardando en control-erbolamm/difusion/diseno/${activeArtcraftSubtab}/...`);
+        const resp = await fetch(`/api/apps/diseno?app=${encodeURIComponent(currentDisenoProject)}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            subpestana: activeArtcraftSubtab,
+            id: idVal,
+            titulo: tituloVal,
+            formato: formatoVal,
+            prompt: promptVal,
+            parametros: paramsVal,
+            estado: 'listo'
+          })
+        });
+        const data = await resp.json();
+        if (!data.ok) throw new Error(data.error || 'Error guardando pieza ArtCraft');
+        artcraftStudioCache = data.result;
+        renderArtcraftSubtab();
+        showToast(`Pieza guardada en ${activeArtcraftSubtab} e inyectada en INBOX.md`);
+      } catch (err) {
+        showToast('Error: ' + err.message);
+      }
+    }
+
+    function saveJavierDisenoState() {
+      try {
+        const state = {
+          currentProject: currentDisenoProject,
+          activeSection: activeDisenoSection,
+          activeArtcraftSubtab: activeArtcraftSubtab,
+          cfgTitle: document.getElementById('cfg-title')?.value || '',
+          cfgTagline: document.getElementById('cfg-tagline')?.value || '',
+          cfgTemplate: document.getElementById('cfg-template')?.value || 'vertical-promo',
+          activeColor: activeColor,
+          artcraftId: document.getElementById('artcraft-input-id')?.value || '',
+          artcraftTitulo: document.getElementById('artcraft-input-titulo')?.value || '',
+          artcraftFormato: document.getElementById('artcraft-input-formato')?.value || '',
+          artcraftPrompt: document.getElementById('artcraft-input-prompt')?.value || '',
+          artcraftParametros: document.getElementById('artcraft-input-parametros')?.value || ''
+        };
+        localStorage.setItem(STORAGE_KEY_DISENO_JAVIER, JSON.stringify(state));
+      } catch (_) {}
+    }
+
+    function restoreJavierDisenoState() {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlProj = urlParams.get('app') || urlParams.get('proyecto');
+        const urlSubtab = urlParams.get('subpestana');
+        const raw = localStorage.getItem(STORAGE_KEY_DISENO_JAVIER);
+        const saved = raw ? JSON.parse(raw) : null;
+
+        const targetProj = urlProj || (saved && saved.currentProject) || 'calca_app';
+        applyProjectPreset(targetProj, true);
+
+        if (saved) {
+          if (saved.cfgTitle) document.getElementById('cfg-title').value = saved.cfgTitle;
+          if (saved.cfgTagline) document.getElementById('cfg-tagline').value = saved.cfgTagline;
+          if (saved.cfgTemplate) {
+            document.getElementById('cfg-template').value = saved.cfgTemplate;
+            changeTemplate(saved.cfgTemplate);
+          }
+          if (saved.activeColor) setColor(saved.activeColor, null);
+          if (saved.artcraftId) document.getElementById('artcraft-input-id').value = saved.artcraftId;
+          if (saved.artcraftTitulo) document.getElementById('artcraft-input-titulo').value = saved.artcraftTitulo;
+          if (saved.artcraftFormato) document.getElementById('artcraft-input-formato').value = saved.artcraftFormato;
+          if (saved.artcraftPrompt) document.getElementById('artcraft-input-prompt').value = saved.artcraftPrompt;
+          if (saved.artcraftParametros) document.getElementById('artcraft-input-parametros').value = saved.artcraftParametros;
+          if (saved.activeSection) switchSection(saved.activeSection, null);
+        }
+
+        const targetSubtab = urlSubtab || (saved && saved.activeArtcraftSubtab) || 'sora-video';
+        selectArtcraftSubtab(targetSubtab, null);
+        updateLivePreview(true);
+
+        // Sincronizar defaults desde Settings (/api/settings)
+        fetch('/api/settings', { cache: 'no-store' })
+          .then(r => r.ok ? r.json() : null)
+          .then(d => {
+            if (d && d.settings) {
+              window.disenoDefaultResolution = d.settings['diseno.resolucion'] || '1080p';
+              window.disenoDefaultFps = parseInt(d.settings['diseno.fps'], 10) || 30;
+              window.disenoDefaultEngine = d.settings['diseno.motor'] || 'hyperframes-local';
+            }
+          }).catch(() => {});
+      } catch (_) {}
+    }
+
+    let activeColor = '#005fa9';
+
+    function setColor(hex, el) {
+      activeColor = hex;
+      document.querySelectorAll('.color-swatch').forEach(sw => {
+        sw.classList.toggle('active', sw.getAttribute('data-color') === hex);
+      });
+      const cta = document.getElementById('screen-cta');
+      const badge = document.getElementById('screen-badge');
+      if (cta) cta.style.background = hex;
+      if (badge) {
+        badge.style.background = hex + '44';
+        badge.style.color = hex === '#005fa9' ? '#5ecef5' : '#fff';
+      }
+      if (el) saveJavierDisenoState();
+    }
+
+    function changeTemplate(val) {
+      const titleEl = document.getElementById('preview-mode-name');
+      const dev = document.getElementById('stage-device');
+      if (val === 'vertical-promo') {
+        titleEl.textContent = 'Vertical Promo (9:16 - TikTok/Reels)';
+        dev.classList.remove('mode-16-9');
+      } else if (val === 'app-showcase') {
+        titleEl.textContent = 'App Showcase (16:9 - Horizontal)';
+        dev.classList.add('mode-16-9');
+      } else if (val === 'feature-reel') {
+        titleEl.textContent = 'Feature Reel (16:9 - Dinámico)';
+        dev.classList.add('mode-16-9');
+      } else {
+        titleEl.textContent = 'Screenshot Set (Capturas promocionales)';
+        dev.classList.remove('mode-16-9');
+      }
+      saveJavierDisenoState();
+    }
+
+    function toggleAspectRatio() {
+      const dev = document.getElementById('stage-device');
+      dev.classList.toggle('mode-16-9');
+      const is169 = dev.classList.contains('mode-16-9');
+      document.getElementById('preview-mode-name').textContent = is169 ? 'Formato Horizontal (16:9)' : 'Formato Vertical (9:16)';
+    }
+
+    function restartAnimation() {
+      const dev = document.getElementById('stage-device');
+      dev.style.transform = 'scale(0.95)';
+      setTimeout(() => dev.style.transform = 'scale(1)', 180);
+      playSfx('whoosh', 'Transición', dev);
+    }
+
+    function updateLivePreview(skipSave) {
+      const t = document.getElementById('cfg-title').value;
+      const sub = document.getElementById('cfg-tagline').value;
+      const f1 = document.getElementById('cfg-feat-1').value;
+      const f2 = document.getElementById('cfg-feat-2').value;
+      const f3 = document.getElementById('cfg-feat-3').value;
+
+      document.getElementById('screen-title').textContent = t || 'Proyecto';
+      document.getElementById('screen-subtitle').textContent = sub || '';
+      document.getElementById('sf-1').textContent = f1;
+      document.getElementById('sf-2').textContent = f2;
+      document.getElementById('sf-3').textContent = f3;
+      if (!skipSave) saveJavierDisenoState();
+    }
+
+    function copyRenderCommand() {
+      const p = document.getElementById('cfg-project').value;
+      const tmpl = document.getElementById('cfg-template').value;
+      const cmd = `node design-engine/scripts/render-video.cjs --template ${tmpl} --project ${p} --output ${p}_${tmpl}.mp4`;
+      copyText(cmd, null);
+    }
+
+    // Filtrado de SFX
+    let activeSfxCat = 'Todas';
+    let sfxSearchQuery = '';
+
+    function filterSfx(q) {
+      sfxSearchQuery = q.toLowerCase().trim();
+      applySfxFilters();
+    }
+
+    function filterSfxCat(cat, el) {
+      activeSfxCat = cat;
+      document.querySelectorAll('#sfx-cat-pills .cat-pill').forEach(p => p.classList.remove('active'));
+      if (el) el.classList.add('active');
+      applySfxFilters();
+    }
+
+    function applySfxFilters() {
+      const cards = document.querySelectorAll('.sfx-card');
+      cards.forEach(card => {
+        const cCat = card.getAttribute('data-cat');
+        const sData = card.getAttribute('data-search') || '';
+        const matchCat = (activeSfxCat === 'Todas' || cCat === activeSfxCat);
+        const matchQuery = (!sfxSearchQuery || sData.includes(sfxSearchQuery));
+        card.style.display = (matchCat && matchQuery) ? 'flex' : 'none';
+      });
+    }
+
+    function copyText(text, triggerEl) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("Copiado: " + text);
+        if (triggerEl) {
+          const orig = triggerEl.textContent;
+          triggerEl.textContent = "Copiado";
+          setTimeout(() => triggerEl.textContent = orig, 1600);
+        }
+      }).catch(() => {
+        showToast("No se pudo copiar");
+      });
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById("toast");
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    let currentSessionActivos = [];
+
+    function toggleHistoryDrawer() {
+      const box = document.getElementById("history-content-container");
+      const icon = document.getElementById("history-toggle-icon");
+      if (!box) return;
+      const isOpen = box.style.display !== "none";
+      box.style.display = isOpen ? "none" : "block";
+      if (icon) icon.textContent = isOpen ? "[+]" : "[-]";
+    }
+
+    async function fetchHistorial() {
+      try {
+        const resp = await fetch("/api/diseno/historial");
+        const data = await resp.json();
+        if (!data.ok) return;
+
+        const countBadge = document.getElementById("badge-history-count");
+        if (countBadge) countBadge.textContent = `${data.sesiones.length} guardadas`;
+
+        const grid = document.getElementById("history-list-grid");
+        if (!grid) return;
+
+        if (data.sesiones.length === 0) {
+          grid.innerHTML = `
+            <div style="grid-column: 1 / -1; font-size: 0.85rem; color: var(--muted); padding: 0.8rem 0;">
+              No hay sesiones archivadas todavia. Al pulsar «Guardar sesion en Google Drive», tus disenos y activos se respaldaran automaticamente fuera del Mac.
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = "";
+        data.sesiones.forEach(s => {
+          const card = document.createElement("div");
+          card.className = "session-item";
+
+          const driveBadge = s.en_drive ? `<span class="cloud-tag">Google Drive</span>` : "";
+          const totalActivos = s.total_activos || (s.activos ? s.activos.length : 0);
+
+          card.innerHTML = `
+            <div class="session-item-header">
+              <span>${s.fecha_legible || s.timestamp}</span>
+              <div style="display:flex; gap:0.3rem; align-items:center;">
+                ${driveBadge}
+                <span style="font-weight:700;">${totalActivos} activos</span>
+              </div>
+            </div>
+            <div class="session-item-title" title="${(s.titulo || '').replace(/"/g, '&quot;')}">
+              "${s.titulo || s.proyecto}"
+            </div>
+            <div class="session-tags">
+              <span class="session-tag">${s.proyecto}</span>
+              <span class="session-tag">${s.plantilla}</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.3rem;">
+              <span style="font-size:0.75rem; color:var(--muted);">${s.color}</span>
+              <button type="button" class="btn-action-tool" onclick="loadSession('${s.id}')">
+                Cargar Sesion
+              </button>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      } catch (err) {
+        console.warn("Fallo cargando historial de diseno:", err);
+      }
+    }
+
+    async function loadSession(sessionId) {
+      showToast("Cargando sesion " + sessionId + "...");
+      try {
+        const resp = await fetch("/api/diseno/cargar-sesion?id=" + encodeURIComponent(sessionId));
+        const data = await resp.json();
+        if (!data.ok) throw new Error(data.error || "Fallo al cargar sesion.");
+
+        const s = data.sesion;
+        if (s.proyecto) document.getElementById("cfg-project").value = s.proyecto;
+        if (s.plantilla) {
+          document.getElementById("cfg-template").value = s.plantilla;
+          changeTemplate(s.plantilla);
+        }
+        if (s.titulo) document.getElementById("cfg-title").value = s.titulo;
+        if (s.tagline) document.getElementById("cfg-tagline").value = s.tagline;
+        if (s.color) setColor(s.color, null);
+
+        if (s.features && Array.isArray(s.features)) {
+          if (s.features[0]) document.getElementById("cfg-feat-1").value = s.features[0];
+          if (s.features[1]) document.getElementById("cfg-feat-2").value = s.features[1];
+          if (s.features[2]) document.getElementById("cfg-feat-3").value = s.features[2];
+        }
+
+        updateLivePreview();
+
+        if (s.activos && Array.isArray(s.activos)) {
+          currentSessionActivos = s.activos.slice();
+          renderGalleryActivos();
+        }
+
+        showToast("Sesion cargada y activos restaurados");
+        document.getElementById("sec-plantillas").scrollIntoView({ behavior: "smooth" });
+      } catch (err) {
+        showToast("Error al cargar: " + err.message);
+      }
+    }
+
+    async function saveCurrentDisenoSession() {
+      const title = document.getElementById("cfg-title").value.trim();
+      const proj = document.getElementById("cfg-project").value;
+      const tmpl = document.getElementById("cfg-template").value;
+      const tagline = document.getElementById("cfg-tagline").value.trim();
+      const f1 = document.getElementById("cfg-feat-1").value.trim();
+      const f2 = document.getElementById("cfg-feat-2").value.trim();
+      const f3 = document.getElementById("cfg-feat-3").value.trim();
+
+      const btn = document.getElementById("btn-save-diseno-cloud");
+      const origText = btn ? btn.textContent : "";
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Guardando en Google Drive...";
+      }
+
+      try {
+        showToast("Guardando sesion en local y en Google Drive...");
+        const resp = await fetch("/api/diseno/guardar-sesion", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            titulo: title || `Diseno ${proj}`,
+            proyecto: proj,
+            plantilla: tmpl,
+            tagline: tagline,
+            color: activeColor,
+            features: [f1, f2, f3],
+            activos: currentSessionActivos
+          })
+        });
+
+        const data = await resp.json();
+        if (!data.ok) throw new Error(data.error || "Fallo al guardar.");
+
+        showToast(data.mensaje || "Sesion guardada y respaldada en Google Drive");
+        await fetchHistorial();
+      } catch (err) {
+        showToast("Error al guardar: " + err.message);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = origText;
+        }
+      }
+    }
+
+    function captureStageSnapshot() {
+      const dev = document.getElementById("stage-device");
+      const is169 = dev.classList.contains("mode-16-9");
+      const width = is169 ? 480 : 270;
+      const height = is169 ? 270 : 480;
+
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+
+      // Render gradient background
+      const grad = ctx.createLinearGradient(0, 0, width, height);
+      grad.addColorStop(0, "#030a16");
+      grad.addColorStop(1, activeColor);
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, width, height);
+
+      // Title & Tagline
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 20px system-ui, -apple-system, sans-serif";
+      const title = document.getElementById("screen-title").textContent || "Proyecto";
+      ctx.fillText(title, 24, 60);
+
+      ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+      ctx.font = "12px system-ui, -apple-system, sans-serif";
+      const sub = document.getElementById("screen-subtitle").textContent || "";
+      ctx.fillText(sub.substring(0, 40), 24, 85);
+
+      // Features
+      ctx.fillStyle = "#5ecef5";
+      ctx.font = "11px system-ui, -apple-system, sans-serif";
+      const f1 = document.getElementById("sf-1").textContent || "";
+      const f2 = document.getElementById("sf-2").textContent || "";
+      const f3 = document.getElementById("sf-3").textContent || "";
+      ctx.fillText("- " + f1, 24, 130);
+      ctx.fillText("- " + f2, 24, 155);
+      ctx.fillText("- " + f3, 24, 180);
+
+      // CTA button
+      ctx.fillStyle = activeColor;
+      ctx.beginPath();
+      ctx.roundRect(24, height - 60, width - 48, 36, 8);
+      ctx.fill();
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 11px system-ui, -apple-system, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("Descargar en Tiendas", width / 2, height - 37);
+
+      const dataUrl = canvas.toDataURL("image/png");
+      const now = new Date();
+      const assetId = "fotograma_" + now.getTime();
+      const fileName = `${assetId}.png`;
+
+      const newAsset = {
+        id: assetId,
+        tipo: is169 ? "render-16-9" : "render-9-16",
+        titulo: `${title} (${is169 ? '16:9' : '9:16'})`,
+        archivo: fileName,
+        data_base64: dataUrl,
+        timestamp: now.toISOString()
+      };
+
+      // Acumulacion reactiva: anadir al frente sin borrar anteriores
+      currentSessionActivos.unshift(newAsset);
+      renderGalleryActivos();
+      showToast("Fotograma anadido a la galeria de la sesion");
+    }
+
+    function renderGalleryActivos() {
+      const grid = document.getElementById("gallery-activos-grid");
+      const badge = document.getElementById("gallery-count-badge");
+      if (!grid) return;
+
+      if (badge) badge.textContent = `${currentSessionActivos.length} activos`;
+
+      if (currentSessionActivos.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; font-size:0.85rem; color:var(--muted); padding:1rem 0;">
+            No hay activos generados en esta sesion. Pulsa «Guardar fotograma a galeria» para acumular creatividades aqui.
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = "";
+      currentSessionActivos.forEach((item) => {
+        const card = document.createElement("div");
+        card.className = "gallery-item";
+        const is169 = item.tipo && item.tipo.includes("16-9");
+        const src = item.data_base64 || item.url || "";
+
+        card.innerHTML = `
+          <div class="gallery-item-preview ${is169 ? 'mode-horizontal' : ''}">
+            <img src="${src}" alt="${item.titulo}" loading="lazy">
+          </div>
+          <div class="gallery-item-body">
+            <div class="gallery-item-title">${item.titulo}</div>
+            <div class="gallery-item-meta">
+              <span>${item.tipo}</span>
+              <a href="${src}" download="${item.archivo || 'fotograma.png'}" class="btn-action-tool" style="padding:0.15rem 0.4rem; font-size:0.7rem; text-decoration:none;">Descargar</a>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function clearCurrentGallery() {
+      currentSessionActivos = [];
+      renderGalleryActivos();
+      showToast("Galeria de la sesion limpia");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      restoreJavierDisenoState();
+      fetchHistorial();
+      loadArtcraftStudio();
+    });
+  </script>
+</body>
+</html>

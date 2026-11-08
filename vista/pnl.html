@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#005fa9">
+  <title>PNL · Programación Neurolingüística · Oficina local de ErBolamm</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23005fa9%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2246%22%20font-size%3D%2234%22%20text-anchor%3D%22middle%22%20fill%3D%22%235ecef5%22%3E%F0%9F%A7%A0%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../panel-shell.css" />
+  <script>
+    try {
+      document.documentElement.dataset.theme =
+        localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
+      document.documentElement.dataset.sidebar =
+        localStorage.getItem("erbolamm-panel-sidebar") === "icons" ? "icons" : "full";
+    } catch (_) {}
+  </script>
+  <style>
+    .pnl-hero {
+      background: linear-gradient(135deg, rgba(0, 95, 169, 0.08) 0%, rgba(94, 206, 245, 0.14) 100%);
+      border: 1px solid rgba(0, 95, 169, 0.18);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    html[data-theme="dark"] .pnl-hero {
+      background: linear-gradient(135deg, rgba(0, 70, 123, 0.35) 0%, rgba(0, 95, 169, 0.25) 100%);
+      border-color: rgba(94, 206, 245, 0.22);
+    }
+    .pnl-hero h2 {
+      margin: 0 0 0.35rem 0;
+      font-size: 1.35rem;
+      color: var(--ink);
+    }
+    .pnl-hero p {
+      margin: 0;
+      font-size: 0.92rem;
+      color: var(--muted, #666);
+      line-height: 1.45;
+    }
+    .project-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1.2rem;
+      margin-bottom: 1.25rem;
+    }
+    .project-selector-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .project-select {
+      padding: 0.45rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+      gap: 0.85rem;
+      margin-bottom: 1.25rem;
+    }
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.9rem 1.1rem;
+    }
+    .kpi-card small {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+    .kpi-card strong {
+      font-size: 1.25rem;
+      color: var(--ink);
+    }
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.85rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1.2rem;
+      margin-bottom: 1.25rem;
+    }
+    .pnl-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.2rem;
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+    .pnl-comparison {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 0.9rem;
+    }
+    .pnl-box-risk {
+      border: 1px solid rgba(220, 38, 38, 0.35);
+      background: rgba(220, 38, 38, 0.05);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem;
+    }
+    .pnl-box-improved {
+      border: 1px solid rgba(16, 163, 127, 0.4);
+      background: rgba(16, 163, 127, 0.06);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem;
+    }
+    .pnl-textarea {
+      width: 100%;
+      min-height: 70px;
+      padding: 0.55rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="office-sidebar" id="office-sidebar" aria-label="Navegación de la oficina">
+      <div class="sidebar-brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+        </svg>
+        <span><strong>Oficina ApliArte</strong><small>Panel de control operativo ApliArte</small></span>
+        <button id="sidebar-toggle" class="sidebar-toggle" type="button"
+          aria-controls="office-sidebar" aria-expanded="true" aria-label="Plegar la barra lateral a solo iconos" title="Plegar la barra lateral">
+          <span class="chev" aria-hidden="true">‹</span>
+        </button>
+      </div>
+      <nav class="side-nav" aria-label="Secciones">
+        <a class="nav-card" href="/"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
+        <a class="nav-card" href="/vista/javier"><span class="nav-icon" aria-hidden="true">👤</span><span class="nav-copy"><strong>Espacio Javier</strong><small>Control personal y ja--</small></span></a>
+        <a class="nav-card" href="/vista/inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
+        <a class="nav-card" href="/vista/aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
+        <a class="nav-card" href="/vista/skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
+        <a class="nav-card" href="/vista/conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
+        <a class="nav-card" href="/vista/plugins"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
+        <a class="nav-card" href="/vista/reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
+        <a class="nav-card" href="/vista/propuestas"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
+        <a class="nav-card" href="/vista/diseno"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
+        <a class="nav-card" href="/vista/tiendas"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
+        <a class="nav-card" href="/vista/mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
+        <a class="nav-card" href="/vista/correos"><span class="nav-icon" aria-hidden="true">✉</span><span class="nav-copy"><strong>Correos y Alertas</strong><small>erbolamm y javier</small></span></a>
+        <a class="nav-card" href="/vista/pnl" aria-current="page"><span class="nav-icon" aria-hidden="true">🧠</span><span class="nav-copy"><strong>Estudio PNL</strong><small>Enganche y microcopy</small></span></a>
+        <a class="nav-card" href="/vista/musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
+        <a class="nav-card" href="/vista/idiomas"><span class="nav-icon" aria-hidden="true">🌐</span><span class="nav-copy"><strong>Idiomas</strong><small>Traducción y locución</small></span></a>
+        <a class="nav-card" href="/vista/locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
+        <a class="nav-card" href="/vista/voicestudio"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
+        <a class="nav-card" href="/vista/terminales"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
+        <a class="nav-card" href="/vista/facturas"><span class="nav-icon" aria-hidden="true">€</span><span class="nav-copy"><strong>Facturas</strong><small>Gestor de facturas</small></span></a>
+        <a class="nav-card" href="/vista/blogger"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
+        <a class="nav-card" href="/vista/bitacora"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
+        <a class="nav-card" href="/vista/directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
+        <a class="nav-card" href="/resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
+        <a class="nav-card" href="/vista/settings"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-copy"><strong>Ajustes</strong><small>Opciones por defecto</small></span></a>
+        <a class="nav-card" href="/vista/como-funciona"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
+      </nav>
+    </aside>
+    <div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
+
+    <main class="office-content" id="office">
+      <header class="topbar">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+            <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+          </svg>
+          <h1>PNL — Programación Neurolingüística</h1>
+        </div>
+        <span class="private-chip">Retención y Enganche en la App</span>
+        <span class="connection" id="connection" data-kind="loading">Conectando</span>
+        <button id="refresh-btn" class="btn-refresh" type="button" onclick="cargarEstudioPnl(true)" aria-label="Actualizar estudio PNL" title="Actualizar">↻</button>
+        <button id="theme-toggle" type="button" aria-label="Activar modo oscuro" title="Cambiar tema">
+          <span id="theme-icon" aria-hidden="true">☾</span>
+        </button>
+      </header>
+      <p class="updated" id="updated">Auditando mensajes con riesgo de fallo y patrones PNL…</p>
+
+      <section class="pnl-hero" aria-label="Resumen de Programación Neurolingüística">
+        <h2>Auditoría PNL: Detección de Mensajes que Fallan y Reencuadre para Enganchar al Usuario</h2>
+        <p>Identifica qué textos, avisos de permisos, estados vacíos o llamadas a la acción dentro de la app provocan abandono y aplica patrones de <strong>Programación Neurolingüística (PNL)</strong> para guiar y retener al usuario. Se guarda en <code>&lt;repo&gt;/control-erbolamm/pnl/estudio-pnl.json</code> y sincroniza mejoras en <code>control-erbolamm/INBOX.md</code>.</p>
+      </section>
+
+      <div class="project-bar" role="region" aria-label="Selector de repositorio para PNL">
+        <div class="project-selector-group">
+          <label for="pnl-project-select">Repositorio Soberano:</label>
+          <select id="pnl-project-select" class="project-select" onchange="cambiarProyectoPnl(this.value)">
+            <option value="calca_app">CalcaApp (calca_app)</option>
+            <option value="tts-apliarte">TTS ApliArte (tts-apliarte)</option>
+            <option value="apliarte-directo">ApliArte Directo (apliarte-directo)</option>
+            <option value="erbolamm-trabajo">ErBolamm Central (erbolamm-trabajo)</option>
+          </select>
+        </div>
+        <button type="button" id="btn-ejecutar-pnl" class="pill-btn btn-action-start" onclick="cargarEstudioPnl(true)">
+          Ejecutar Auditoría PNL y Sincronizar con INBOX.md
+        </button>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <small>Índice de Enganche PNL (Actual → Propuesto)</small>
+          <strong id="kpi-pnl-enganche">-- → --</strong>
+        </div>
+        <div class="kpi-card">
+          <small>Mensajes con Riesgo de Fallo Detectados</small>
+          <strong id="kpi-pnl-detectados">0</strong>
+        </div>
+        <div class="kpi-card">
+          <small>Patrones PNL Aplicados</small>
+          <strong id="kpi-pnl-aplicados">0</strong>
+        </div>
+        <div class="kpi-card">
+          <small>Ruta Soberana control-erbolamm/pnl/</small>
+          <strong id="kpi-pnl-ruta" style="font-size:0.9rem;">estudio-pnl.json</strong>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <label style="font-size:0.85rem; font-weight:600;">
+          Estado del diagnóstico:
+          <select id="pnl-filtro-estado" class="project-select" onchange="aplicarFiltrosPnl()">
+            <option value="todos">Todos los mensajes</option>
+            <option value="detectado">Con riesgo detectado (pendientes)</option>
+            <option value="aplicado">Patrón PNL aplicado</option>
+            <option value="descartado">Descartado</option>
+          </select>
+        </label>
+        <input id="pnl-busqueda" type="search" placeholder="Buscar pantalla, mensaje o patrón PNL…" oninput="aplicarFiltrosPnl()" style="padding:0.45rem 0.85rem; border-radius:8px; border:1px solid var(--border); min-width:250px;">
+      </div>
+
+      <section class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-head">
+          <div class="panel-head-title">
+            <h2>Mensajes de la App que Pueden Fallar vs Reencuadre PNL Propuesto</h2>
+            <p id="pnl-status-banner">Mostrando estudio PNL aislado del repositorio seleccionado.</p>
+          </div>
+        </div>
+        <div id="lista-diagnosticos-pnl">
+          <p style="opacity:0.75;">Cargando diagnósticos PNL…</p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-head-title">
+            <h2>Añadir / Optimizar Mensaje de la App con PNL</h2>
+            <p>Analiza cualquier mensaje o pantalla de la aplicación, registra por qué puede fallar y guarda la alternativa con Programación Neurolingüística en <code>control-erbolamm/pnl/estudio-pnl.json</code>.</p>
+          </div>
+        </div>
+        <form id="form-nuevo-pnl" onsubmit="guardarDiagnosticoPnlFormulario(event)" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:0.85rem;">
+          <input type="hidden" id="pnl-input-id" value="">
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.82rem; font-weight:600;">
+            Pantalla o flujo de la app
+            <input id="pnl-input-screen" type="text" placeholder="Ej: Onboarding · Permiso de micrófono" required style="padding:0.45rem; border-radius:6px; border:1px solid var(--border);">
+          </label>
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.82rem; font-weight:600;">
+            Patrón PNL aplicado
+            <input id="pnl-input-pattern" type="text" placeholder="Ej: Puente al Futuro + Presuposición de logro" required style="padding:0.45rem; border-radius:6px; border:1px solid var(--border);">
+          </label>
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.82rem; font-weight:600;">
+            Estado
+            <select id="pnl-input-status" class="project-select">
+              <option value="detectado">Detectado (enviar a INBOX.md)</option>
+              <option value="aplicado">Aplicado en la app</option>
+              <option value="descartado">Descartado</option>
+            </select>
+          </label>
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.82rem; font-weight:600; grid-column: 1 / -1;">
+            Mensaje actual en la app (con riesgo de fallo o abandono)
+            <textarea id="pnl-input-current" class="pnl-textarea" placeholder="Escribe el mensaje actual que ve el usuario…" required></textarea>
+          </label>
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.82rem; font-weight:600; grid-column: 1 / -1;">
+            Por qué puede fallar (diagnóstico de fricción / sesgo negativo)
+            <input id="pnl-input-risk" type="text" placeholder="Ej: Usa negación directa y genera incertidumbre antes de mostrar valor…" required style="padding:0.45rem; border-radius:6px; border:1px solid var(--border);">
+          </label>
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.82rem; font-weight:600; grid-column: 1 / -1;">
+            Mensaje propuesto con PNL para enganchar al usuario
+            <textarea id="pnl-input-proposed" class="pnl-textarea" placeholder="Escribe el nuevo microcopy optimizado con PNL…" required></textarea>
+          </label>
+          <label style="display:flex; flex-direction:column; gap:4px; font-size:0.82rem; font-weight:600; grid-column: 1 / -1;">
+            Impacto estimado en enganche y retención
+            <input id="pnl-input-impact" type="text" placeholder="Ej: +30% de conversión en el primer minuto de sesión" required style="padding:0.45rem; border-radius:6px; border:1px solid var(--border);">
+          </label>
+          <div style="grid-column: 1 / -1; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem;">
+            <span id="pnl-form-feedback" style="font-size:0.82rem; opacity:0.85;">Estado de trabajo persistido en el navegador de Javier.</span>
+            <button type="submit" class="pill-btn btn-action-start">
+              Guardar Diagnóstico en control-erbolamm/pnl/estudio-pnl.json
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script src="../panel-shell.js" defer></script>
+  <script>
+    const STORAGE_KEY_PNL_JAVIER = 'erbolamm-pnl-estado-javier';
+    let currentProject = 'calca_app';
+    let mensajesPnlActuales = [];
+
+    function guardarEstadoPnlJavier() {
+      try {
+        const state = {
+          currentProject,
+          estadoFiltro: document.getElementById('pnl-filtro-estado')?.value || 'todos',
+          busqueda: document.getElementById('pnl-busqueda')?.value || '',
+          draftScreen: document.getElementById('pnl-input-screen')?.value || '',
+          draftPattern: document.getElementById('pnl-input-pattern')?.value || '',
+          draftStatus: document.getElementById('pnl-input-status')?.value || 'detectado',
+          draftCurrent: document.getElementById('pnl-input-current')?.value || '',
+          draftRisk: document.getElementById('pnl-input-risk')?.value || '',
+          draftProposed: document.getElementById('pnl-input-proposed')?.value || '',
+          draftImpact: document.getElementById('pnl-input-impact')?.value || '',
+          updatedAt: new Date().toISOString()
+        };
+        localStorage.setItem(STORAGE_KEY_PNL_JAVIER, JSON.stringify(state));
+      } catch (_) {}
+    }
+
+    function restaurarEstadoPnlJavier() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY_PNL_JAVIER);
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch (_) {
+        return null;
+      }
+    }
+
+    async function cambiarProyectoPnl(proj) {
+      currentProject = proj;
+      guardarEstadoPnlJavier();
+      await cargarEstudioPnl(false);
+    }
+
+    async function cargarEstudioPnl(mostrarFeedback) {
+      const banner = document.getElementById('pnl-status-banner');
+      try {
+        const res = await fetch(`/api/apps/pnl?app=${encodeURIComponent(currentProject)}`);
+        const payload = await res.json();
+        if (!res.ok || !payload.ok) {
+          if (banner) banner.textContent = payload.error || 'No se pudo cargar el estudio PNL.';
+          return;
+        }
+        const data = payload.result || {};
+        mensajesPnlActuales = Array.isArray(data.mensajes_auditados) ? data.mensajes_auditados : [];
+        actualizarKpisPnl(data);
+        if (banner) {
+          banner.textContent = `Proyecto activo: ${data.proyecto || currentProject} · Archivo soberano: ${data.archivo_soberano || 'control-erbolamm/pnl/estudio-pnl.json'}`;
+        }
+        renderizarDiagnosticosPnl();
+        if (mostrarFeedback) {
+          document.getElementById('pnl-form-feedback').textContent =
+            `Auditoría PNL guardada en ${currentProject}/control-erbolamm/pnl/ y sincronizada con INBOX.md.`;
+        }
+      } catch (_) {
+        if (banner) banner.textContent = 'Error de conexión al consultar /api/apps/pnl.';
+      }
+    }
+
+    function actualizarKpisPnl(data) {
+      const resumen = data.resumen || {};
+      const actual = data.indice_enganche_actual ?? resumen.indiceEngancheActual ?? 0;
+      const propuesto = data.indice_enganche_propuesto ?? resumen.indiceEnganchePropuesto ?? 0;
+      document.getElementById('kpi-pnl-enganche').textContent = `${actual}/100 → ${propuesto}/100`;
+      document.getElementById('kpi-pnl-detectados').textContent = resumen.detectados ?? mensajesPnlActuales.length;
+      document.getElementById('kpi-pnl-aplicados').textContent = resumen.aplicados ?? 0;
+      document.getElementById('kpi-pnl-ruta').textContent = data.archivo_soberano || 'control-erbolamm/pnl/estudio-pnl.json';
+    }
+
+    function aplicarFiltrosPnl() {
+      guardarEstadoPnlJavier();
+      renderizarDiagnosticosPnl();
+    }
+
+    function renderizarDiagnosticosPnl() {
+      const container = document.getElementById('lista-diagnosticos-pnl');
+      if (!container) return;
+      const estadoFiltro = document.getElementById('pnl-filtro-estado')?.value || 'todos';
+      const q = (document.getElementById('pnl-busqueda')?.value || '').toLowerCase().trim();
+
+      const filtrados = mensajesPnlActuales.filter((m) => {
+        const matchEstado = estadoFiltro === 'todos' || m.estado === estadoFiltro;
+        const texto = `${m.id || ''} ${m.pantalla || ''} ${m.mensajeActual || ''} ${m.riesgoFallo || ''} ${m.patronPnl || ''} ${m.mensajePropuesto || ''}`.toLowerCase();
+        const matchQ = q === '' || texto.includes(q);
+        return matchEstado && matchQ;
+      });
+
+      if (filtrados.length === 0) {
+        container.innerHTML = '<p style="opacity:0.75; padding:0.75rem 0;">No hay diagnósticos PNL que coincidan con el filtro seleccionado.</p>';
+        return;
+      }
+
+      container.innerHTML = '';
+      filtrados.forEach((m) => {
+        const card = document.createElement('article');
+        card.className = 'pnl-card';
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+            <strong>[${escapeHtml(m.id)}] ${escapeHtml(m.pantalla)}</strong>
+            <span style="font-size:0.82rem;">Patrón PNL: <strong>${escapeHtml(m.patronPnl)}</strong> · Impacto: ${escapeHtml(m.impactoRetencion || '')}</span>
+          </div>
+          <div class="pnl-comparison">
+            <div class="pnl-box-risk">
+              <small style="font-weight:700; color:#dc2626; display:block; margin-bottom:4px;">
+                [Riesgo] Mensaje actual con riesgo de fallo (${m.puntuacionActual ?? 40}/100)
+              </small>
+              <p style="margin:0 0 6px 0; font-weight:600;">"${escapeHtml(m.mensajeActual)}"</p>
+              <small style="display:block; opacity:0.85;"><strong>Por qué falla:</strong> ${escapeHtml(m.riesgoFallo)}</small>
+            </div>
+            <div class="pnl-box-improved">
+              <small style="font-weight:700; color:#0f766e; display:block; margin-bottom:4px;">
+                [Propuesta] Reencuadre PNL para enganchar al usuario (${m.puntuacionPropuesta ?? 92}/100)
+              </small>
+              <textarea class="pnl-textarea" id="pnl-prop-${escapeHtml(m.id)}">${escapeHtml(m.mensajePropuesto || '')}</textarea>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+            <label style="font-size:0.82rem; font-weight:600;">
+              Estado:
+              <select id="pnl-estado-${escapeHtml(m.id)}" class="project-select">
+                <option value="detectado" ${m.estado === 'detectado' ? 'selected' : ''}>Detectado (activo en INBOX.md)</option>
+                <option value="aplicado" ${m.estado === 'aplicado' ? 'selected' : ''}>Aplicado en la app</option>
+                <option value="descartado" ${m.estado === 'descartado' ? 'selected' : ''}>Descartado</option>
+              </select>
+            </label>
+            <button type="button" class="pill-btn btn-action-start" onclick="actualizarDiagnosticoPnlIndividual('${escapeHtml(m.id)}')">
+              Guardar mejora PNL
+            </button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    async function actualizarDiagnosticoPnlIndividual(id) {
+      const original = mensajesPnlActuales.find((m) => m.id === id);
+      if (!original) return;
+      const mensajePropuesto = document.getElementById(`pnl-prop-${id}`)?.value || original.mensajePropuesto;
+      const estado = document.getElementById(`pnl-estado-${id}`)?.value || original.estado;
+      const res = await fetch(`/api/apps/pnl?app=${encodeURIComponent(currentProject)}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.assign({}, original, { mensajePropuesto, estado }))
+      });
+      const payload = await res.json();
+      if (res.ok && payload.ok) {
+        mensajesPnlActuales = payload.result.mensajes_auditados || [];
+        actualizarKpisPnl(payload.result);
+        renderizarDiagnosticosPnl();
+        document.getElementById('pnl-form-feedback').textContent = `Diagnóstico ${id} actualizado en ${currentProject}.`;
+      }
+    }
+
+    async function guardarDiagnosticoPnlFormulario(ev) {
+      ev.preventDefault();
+      const body = {
+        id: document.getElementById('pnl-input-id')?.value || undefined,
+        pantalla: document.getElementById('pnl-input-screen')?.value || '',
+        patronPnl: document.getElementById('pnl-input-pattern')?.value || '',
+        estado: document.getElementById('pnl-input-status')?.value || 'detectado',
+        mensajeActual: document.getElementById('pnl-input-current')?.value || '',
+        riesgoFallo: document.getElementById('pnl-input-risk')?.value || '',
+        mensajePropuesto: document.getElementById('pnl-input-proposed')?.value || '',
+        impactoRetencion: document.getElementById('pnl-input-impact')?.value || ''
+      };
+      const res = await fetch(`/api/apps/pnl?app=${encodeURIComponent(currentProject)}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const payload = await res.json();
+      if (res.ok && payload.ok) {
+        mensajesPnlActuales = payload.result.mensajes_auditados || [];
+        actualizarKpisPnl(payload.result);
+        renderizarDiagnosticosPnl();
+        document.getElementById('pnl-input-id').value = '';
+        document.getElementById('pnl-input-screen').value = '';
+        document.getElementById('pnl-input-current').value = '';
+        document.getElementById('pnl-input-risk').value = '';
+        document.getElementById('pnl-input-proposed').value = '';
+        document.getElementById('pnl-input-impact').value = '';
+        guardarEstadoPnlJavier();
+        document.getElementById('pnl-form-feedback').textContent =
+          `Diagnóstico PNL guardado en ${currentProject}/control-erbolamm/pnl/estudio-pnl.json y sincronizado en INBOX.md.`;
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const saved = restaurarEstadoPnlJavier();
+      const params = new URLSearchParams(window.location.search);
+      const appParam = params.get('app') || params.get('proyecto') || (saved && saved.currentProject);
+      if (appParam) {
+        currentProject = appParam;
+        const sel = document.getElementById('pnl-project-select');
+        if (sel) sel.value = currentProject;
+      }
+      if (saved) {
+        if (saved.estadoFiltro && document.getElementById('pnl-filtro-estado')) {
+          document.getElementById('pnl-filtro-estado').value = saved.estadoFiltro;
+        }
+        if (saved.busqueda !== undefined && document.getElementById('pnl-busqueda')) {
+          document.getElementById('pnl-busqueda').value = saved.busqueda;
+        }
+        if (saved.draftScreen && document.getElementById('pnl-input-screen')) {
+          document.getElementById('pnl-input-screen').value = saved.draftScreen;
+        }
+        if (saved.draftPattern && document.getElementById('pnl-input-pattern')) {
+          document.getElementById('pnl-input-pattern').value = saved.draftPattern;
+        }
+        if (saved.draftStatus && document.getElementById('pnl-input-status')) {
+          document.getElementById('pnl-input-status').value = saved.draftStatus;
+        }
+        if (saved.draftCurrent && document.getElementById('pnl-input-current')) {
+          document.getElementById('pnl-input-current').value = saved.draftCurrent;
+        }
+        if (saved.draftRisk && document.getElementById('pnl-input-risk')) {
+          document.getElementById('pnl-input-risk').value = saved.draftRisk;
+        }
+        if (saved.draftProposed && document.getElementById('pnl-input-proposed')) {
+          document.getElementById('pnl-input-proposed').value = saved.draftProposed;
+        }
+        if (saved.draftImpact && document.getElementById('pnl-input-impact')) {
+          document.getElementById('pnl-input-impact').value = saved.draftImpact;
+        }
+      }
+
+      [
+        'pnl-input-screen',
+        'pnl-input-pattern',
+        'pnl-input-status',
+        'pnl-input-current',
+        'pnl-input-risk',
+        'pnl-input-proposed',
+        'pnl-input-impact'
+      ].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('input', guardarEstadoPnlJavier);
+          el.addEventListener('change', guardarEstadoPnlJavier);
+        }
+      });
+
+      cargarEstudioPnl(false);
+    });
+  </script>
+</body>
+</html>

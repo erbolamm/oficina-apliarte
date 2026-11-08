@@ -1,0 +1,3127 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#005fa9">
+  <title>Blogger & Difusión · Oficina local de ErBolamm</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23005fa9%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2246%22%20font-size%3D%2238%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-weight%3D%22bold%22%20text-anchor%3D%22middle%22%20fill%3D%22%235ecef5%22%3E%E2%9C%8E%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../panel-shell.css">
+  <link rel="stylesheet" href="/asistente-terminal.css">
+  <style>
+    .blogger-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      height: calc(100vh - 120px);
+      min-height: 600px;
+    }
+    .blogger-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--surface-2, #f4f6f8);
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color, #dcdfe4);
+      flex-wrap: wrap;
+    }
+    .blogger-tabs {
+      display: flex;
+      gap: 8px;
+    }
+    .tab-btn {
+      padding: 6px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color, #ccc);
+      background: var(--surface-1, #fff);
+      color: var(--text-1, #222);
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .tab-btn.active {
+      background: #005fa9;
+      color: #fff;
+      border-color: #005fa9;
+    }
+    .blogger-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 640px) {
+      #step-content-4 .blogger-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      #step-content-4 .blogger-actions .btn-action {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+        min-height: 44px;
+        box-sizing: border-box;
+      }
+    }
+    @media (max-width: 380px) {
+      #step-content-4 .blogger-actions {
+        grid-template-columns: 1fr;
+      }
+    }
+    .btn-action {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid #005fa9;
+      background: transparent;
+      color: #005fa9;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .btn-action:hover {
+      background: #005fa9;
+      color: #fff;
+    }
+    .btn-action.btn-primary {
+      background: #005fa9;
+      color: #fff;
+    }
+    .btn-action.btn-primary:hover {
+      background: #00467b;
+    }
+    .btn-action.btn-success {
+      background: #10b981;
+      border-color: #10b981;
+      color: #fff;
+    }
+    .btn-action.btn-success:hover {
+      background: #059669;
+    }
+    .monitor-panel {
+      display: none;
+      padding: 20px;
+      flex: 1;
+      overflow-y: auto;
+      background: var(--surface, #ffffff);
+      border-radius: 8px;
+      border: 1px solid var(--border, #dcdfe4);
+      flex-direction: column;
+      gap: 20px;
+    }
+    .monitor-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border, #e2e8f0);
+    }
+    .monitor-header h2 {
+      margin: 0 0 6px 0;
+      font-size: 18px;
+      color: var(--navy, #00467b);
+    }
+    .monitor-header p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted, #64748b);
+    }
+    .monitor-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .monitor-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .monitor-card {
+      padding: 16px;
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: 8px;
+      background: var(--surface-2, #fafafa);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    }
+    .monitor-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .monitor-site-icon {
+      font-size: 24px;
+    }
+    .monitor-site-name {
+      margin: 0;
+      font-size: 15px;
+      color: var(--navy, #00467b);
+      font-weight: 700;
+    }
+    .monitor-site-url {
+      font-size: 12px;
+      color: #005fa9;
+      text-decoration: none;
+    }
+    .monitor-site-url:hover {
+      text-decoration: underline;
+    }
+    .status-badge-ok {
+      margin-left: auto;
+      font-size: 11px;
+      font-weight: 700;
+      color: #10b981;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    .status-badge-warn {
+      margin-left: auto;
+      font-size: 11px;
+      font-weight: 700;
+      color: #f59e0b;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    .monitor-details {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 10px;
+      background: var(--surface, #ffffff);
+      border-radius: 6px;
+      border: 1px solid var(--border, #e2e8f0);
+    }
+    .monitor-metric-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+    }
+    .metric-label {
+      color: var(--muted, #64748b);
+    }
+    .metric-value {
+      font-weight: 600;
+      color: var(--ink, #333333);
+    }
+    .politicas-card {
+      padding: 16px 20px;
+      background: var(--surface-2, #f8fafc);
+      border: 1px solid var(--border, #e2e8f0);
+      border-left: 4px solid #005fa9;
+      border-radius: 8px;
+    }
+    .politicas-card h3 {
+      margin: 0 0 10px 0;
+      font-size: 15px;
+      color: var(--navy, #00467b);
+    }
+    .politicas-list {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 13px;
+      color: var(--ink, #333333);
+      line-height: 1.6;
+    }
+    .plantillas-panel {
+      display: none;
+      padding: 20px;
+      height: 100%;
+      overflow-y: auto;
+      background: var(--surface-1, #fff);
+      border-radius: 8px;
+      border: 1px solid var(--border-color, #dcdfe4);
+    }
+    .plantillas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .plantilla-card {
+      padding: 16px;
+      border: 1px solid var(--border-color, #e2e8f0);
+      border-radius: 8px;
+      background: var(--surface-2, #fafafa);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .plantilla-card h3 {
+      margin: 0;
+      font-size: 15px;
+      color: #005fa9;
+    }
+    .plantilla-card p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-2, #64748b);
+      line-height: 1.4;
+    }
+
+    /* 🚀 Sub-sección Redes y Difusión */
+    .difusion-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      flex: 1;
+      padding: 20px;
+      background: var(--surface, #ffffff);
+      border: 1px solid var(--border, #dcdfe4);
+      border-radius: 8px;
+      overflow-y: auto;
+    }
+    .difusion-card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 14px 18px;
+      background: var(--surface-2, #f8fafc);
+      border: 1px solid var(--border, #e2e8f0);
+      border-left: 4px solid #005fa9;
+      border-radius: 8px;
+    }
+    .difusion-title-area {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .difusion-tags {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .badge-tag {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: rgba(94, 206, 245, 0.2);
+      color: #005fa9;
+      border: 1px solid rgba(94, 206, 245, 0.5);
+    }
+    .difusion-title-text {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy, #00467b);
+      margin: 0;
+    }
+    .difusion-toolbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      border-bottom: 1px solid var(--border, #e2e8f0);
+      padding-bottom: 10px;
+    }
+    .difusion-view-modes {
+      display: flex;
+      gap: 6px;
+    }
+    .mode-btn {
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 6px;
+      border: 1px solid var(--border, #ccc);
+      background: var(--surface, #fff);
+      cursor: pointer;
+      color: var(--ink, #333);
+    }
+    .mode-btn.active {
+      background: #005fa9;
+      color: #fff;
+      border-color: #005fa9;
+    }
+    .difusion-content-box {
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
+    }
+    .difusion-preview-frame {
+      width: 100%;
+      height: 100%;
+      min-height: 380px;
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: 6px;
+      background: #ffffff;
+    }
+    .difusion-code-area {
+      display: none;
+      width: 100%;
+      height: 100%;
+      min-height: 380px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      padding: 12px;
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: 6px;
+      background: #1e1e1e;
+      color: #d4d4d4;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+
+    /* 🔗 Sección de Redes Sociales y Web Intents (Difusión 4) */
+    .difusion-social-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 10px;
+    }
+    .social-header-card {
+      background: var(--surface-2, #f8fafc);
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: 8px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .social-header-card h3 {
+      margin: 0;
+      font-size: 16px;
+      color: var(--navy, #00467b);
+    }
+    .social-header-card p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted, #64748b);
+    }
+    .url-input-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .url-input-field {
+      flex: 1;
+      min-width: 0;
+      padding: 9px 12px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid var(--border, #ccc);
+      background: var(--surface, #fff);
+      color: var(--ink, #333);
+      box-sizing: border-box;
+    }
+    .url-feedback-text {
+      font-size: 13px;
+      font-weight: 700;
+      color: #10b981;
+    }
+    .social-buttons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .social-card {
+      background: var(--surface, #ffffff);
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: 8px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    .social-card-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .social-card-title small {
+      font-size: 11px;
+      color: var(--muted, #888);
+      font-weight: normal;
+    }
+    .social-snippet {
+      margin: 0;
+      font-size: 12px;
+      color: var(--muted, #64748b);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      background: var(--surface-2, #fbfbfb);
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    .btn-social {
+      width: 100%;
+      padding: 9px 14px;
+      font-weight: 700;
+      font-size: 13px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-social:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      filter: grayscale(0.8);
+    }
+    .btn-x { background: #000000; color: #ffffff; }
+    .btn-x:hover:not(:disabled) { background: #222222; }
+    .btn-telegram { background: #229ED9; color: #ffffff; }
+    .btn-telegram:hover:not(:disabled) { background: #1b85b8; }
+    .btn-whatsapp { background: #25D366; color: #ffffff; }
+    .btn-whatsapp:hover:not(:disabled) { background: #1ea952; }
+    .btn-facebook { background: #1877F2; color: #ffffff; }
+    .btn-facebook:hover:not(:disabled) { background: #125ec2; }
+    .btn-linkedin { background: #0A66C2; color: #ffffff; }
+    .btn-linkedin:hover:not(:disabled) { background: #084f96; }
+    .btn-youtube { background: #FF0000; color: #ffffff; }
+    .btn-youtube:hover:not(:disabled) { background: #cc0000; }
+
+    .difusion-footer-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: var(--surface-2, #f8fafc);
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .difusion-empty-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      text-align: center;
+      gap: 16px;
+      background: var(--surface-2, #fafafa);
+      border: 2px dashed var(--border, #dcdfe4);
+      border-radius: 8px;
+    }
+    .difusion-empty-state h3 {
+      margin: 0;
+      font-size: 18px;
+      color: var(--navy, #00467b);
+    }
+    .difusion-empty-state p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--muted, #666);
+      max-width: 480px;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #10b981;
+      font-weight: 600;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+    }
+
+    .assistant-panel { margin-bottom: 20px; padding: 18px; border: 1px solid var(--border, #dcdfe4); border-radius: 10px; background: var(--surface, #fff); color: var(--text-1, #222); }
+    .assistant-panel h2 { margin-top: 0; }
+    .assistant-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+    .assistant-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+    .assistant-panel label { display: block; margin: 10px 0 4px; font-weight: 600; }
+    .assistant-panel textarea, .assistant-panel input { box-sizing: border-box; width: 100%; padding: 10px; color: inherit; background: var(--surface-2, #f4f6f8); border: 1px solid var(--border, #ccc); border-radius: 6px; font: inherit; }
+    #assistant-input { min-height: 56px; height: 72px; font-size: 16px; line-height: 1.4; resize: vertical; }
+    .assistant-messages { display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto; padding: 6px; background: var(--surface-2, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); border-radius: 8px; margin-bottom: 10px; }
+    .assistant-messages:empty { display: none; }
+    .assistant-message { display: inline-block; max-width: 90%; padding: 8px 12px; border-radius: 12px; font-size: 13.5px; line-height: 1.45; word-break: break-word; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+    .assistant-message.user-message { align-self: flex-end; background: #e0f2fe; color: #0369a1; border-bottom-right-radius: 2px; border: 1px solid #bae6fd; }
+    [data-theme="dark"] .assistant-message.user-message { background: #0c4a6e; color: #e0f2fe; border-color: #0284c7; }
+    .assistant-message.system-message { align-self: flex-start; background: var(--surface, #ffffff); color: var(--text-1, #1e293b); border-bottom-left-radius: 2px; border: 1px solid var(--border, #e2e8f0); }
+    [data-theme="dark"] .assistant-message.system-message { background: #1e293b; color: #f8fafc; border-color: #334155; }
+    .assistant-terminal-details { margin-top: 10px; border: 1px solid var(--border, #cbd5e1); border-radius: 8px; overflow: hidden; background: #0f172a; }
+    .assistant-terminal-details summary { padding: 10px 14px; font-size: 13px; font-weight: 600; cursor: pointer; color: #94a3b8; background: #1e293b; user-select: none; }
+    .assistant-terminal-details[open] summary { border-bottom: 1px solid #334155; color: #f8fafc; }
+    .assistant-terminal { margin: 0; padding: 12px; min-height: 140px; max-height: 280px; overflow: auto; font-size: 12px; line-height: 1.4; background: #0f172a; color: #f8fafc; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .asistente-keys-strip { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+    .asistente-key-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; padding: 6px 12px; border-radius: 8px; font-size: 13.5px; font-weight: 700; cursor: pointer; user-select: none; touch-action: manipulation; white-space: nowrap; border: 1px solid var(--border-subtle, #cbd5e1); background: var(--surface-2, #f8fafc); color: var(--text-1, #1e293b); }
+    .asistente-key-btn.btn-key-enter { background: #0284c7; color: #ffffff; border-color: #0369a1; flex: 1 1 100%; font-size: 15px; }
+    .asistente-key-btn.btn-key-ctrlc { background: #fee2e2; color: #991b1b; border-color: #fca5a5; flex: 1 1 calc(50% - 6px); }
+    .asistente-key-btn.btn-key-esc { flex: 1 1 calc(50% - 6px); }
+    .asistente-key-btn.btn-key-num { flex: 1 1 calc(25% - 6px); min-width: 44px; font-family: ui-monospace, SFMono-Regular, monospace; }
+    .assistant-panel iframe { width: 100%; min-height: 280px; border: 1px solid var(--border, #ccc); background: white; }
+    .assistant-panel button:disabled { opacity: .55; cursor: wait; }
+    /* Background research progress */
+    .assistant-progress { display: flex; align-items: center; gap: 12px; margin: 0 0 10px; padding: 12px 14px; border: 1px solid #bae6fd; border-radius: 8px; background: #f0f9ff; color: #0c4a6e; }
+    .assistant-progress[hidden] { display: none; }
+    .assistant-progress strong { display: block; font-size: 14px; }
+    .assistant-progress small { display: block; margin-top: 2px; font-size: 12.5px; opacity: .85; }
+    [data-theme="dark"] .assistant-progress { background: #0c4a6e; border-color: #0284c7; color: #e0f2fe; }
+    .assistant-spinner { flex: 0 0 auto; width: 28px; height: 28px; border: 3px solid rgba(2, 132, 199, .25); border-top-color: #0284c7; border-radius: 50%; animation: assistant-spin .9s linear infinite; }
+    [data-theme="dark"] .assistant-spinner { border-color: rgba(224, 242, 254, .25); border-top-color: #e0f2fe; }
+    @keyframes assistant-spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .assistant-spinner { animation-duration: 3s; } }
+    /* Proposal history, same pattern as /vista/locucion */
+    .history-card-box { margin-top: 14px; padding: 12px 14px; border: 1px solid var(--border, #cbd5e1); border-radius: 8px; background: var(--surface, #fff); }
+    [data-theme="dark"] .history-card-box { background: #0f172a; border-color: #334155; }
+    .history-card-box > summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; cursor: pointer; user-select: none; list-style: none; }
+    .history-card-box > summary::-webkit-details-marker { display: none; }
+    .history-title { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 14px; font-weight: 700; color: var(--navy, #00467b); }
+    [data-theme="dark"] .history-title { color: #f8fafc; }
+    .history-count { padding: 2px 8px; border-radius: 10px; font-size: 11.5px; font-weight: 700; background: rgba(56, 189, 248, .15); color: #0369a1; }
+    [data-theme="dark"] .history-count { color: #38bdf8; }
+    .history-toggle-icon { color: var(--muted, #94a3b8); transition: transform .2s; }
+    .history-card-box[open] .history-toggle-icon { transform: rotate(180deg); }
+    .history-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-top: 12px; }
+    .history-empty { grid-column: 1 / -1; margin: 0; font-size: 13px; color: var(--muted, #64748b); }
+    .session-item { display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1px solid var(--border, #e2e8f0); border-radius: 8px; background: var(--surface-2, #f8fafc); transition: border-color .15s; }
+    [data-theme="dark"] .session-item { background: #090d16; border-color: #1e293b; }
+    .session-item:hover { border-color: #38bdf8; }
+    .session-item.is-current { border-color: #16a34a; }
+    .session-item-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12px; color: var(--muted, #64748b); }
+    .session-item-title { font-size: 14px; font-weight: 600; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .session-item-summary { margin: 0; font-size: 12.5px; color: var(--muted, #64748b); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .session-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .session-tag { padding: 1px 7px; border-radius: 10px; font-size: 11px; background: rgba(0, 95, 169, .1); color: var(--navy, #00467b); }
+    [data-theme="dark"] .session-tag { background: rgba(94, 206, 245, .15); color: #e0f2fe; }
+    /* Editor y Vista Previa Dividida del Paso 2 */
+    .assistant-step2-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      gap: 18px;
+      margin-top: 16px;
+      align-items: stretch;
+    }
+    #assistant-draft-form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+    #assistant-draft-form label {
+      display: block;
+      font-weight: 700;
+      font-size: 13.5px;
+      color: var(--navy, #00467b);
+      margin-top: 8px;
+      margin-bottom: 2px;
+    }
+    #assistant-title {
+      display: block;
+      box-sizing: border-box;
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 6px;
+      border: 1px solid var(--border, #cbd5e1);
+      background: var(--surface-2, #f8fafc);
+      color: var(--text-1, #1e293b);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+    #assistant-title:focus {
+      outline: none;
+      border-color: #005fa9;
+      box-shadow: 0 0 0 3px rgba(0, 95, 169, 0.15);
+    }
+    #assistant-html {
+      display: block;
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 380px;
+      padding: 12px 14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 16px;
+      line-height: 1.55;
+      border-radius: 6px;
+      border: 1px solid var(--border, #cbd5e1);
+      background: #0f172a;
+      color: #f8fafc;
+      resize: vertical;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+    #assistant-html:focus {
+      outline: none;
+      border-color: #005fa9;
+      box-shadow: 0 0 0 3px rgba(0, 95, 169, 0.15);
+    }
+    .assistant-preview-wrapper {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .assistant-preview-wrapper label {
+      display: block;
+      font-weight: 700;
+      font-size: 13.5px;
+      color: var(--navy, #00467b);
+      margin-top: 8px;
+      margin-bottom: 2px;
+    }
+    #assistant-preview {
+      width: 100%;
+      flex: 1;
+      min-height: 420px;
+      border: 1px solid var(--border, #cbd5e1);
+      border-radius: 6px;
+      background: #ffffff;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+
+    /* Wizard Stepper & Progressive Flow */
+    .wizard-stepper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface-2, #f8fafc);
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: 10px;
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .wizard-step-indicator {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      opacity: 0.55;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .wizard-step-indicator.active {
+      opacity: 1;
+      font-weight: 700;
+    }
+    .wizard-step-indicator.completed {
+      opacity: 0.9;
+    }
+    .step-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--border, #cbd5e1);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+    .wizard-step-indicator.active .step-badge {
+      background: #005fa9;
+      box-shadow: 0 0 0 3px rgba(0, 95, 169, 0.2);
+    }
+    .wizard-step-indicator.completed .step-badge {
+      background: #10b981;
+    }
+    .step-label {
+      font-size: 13.5px;
+      color: var(--ink, #1e293b);
+    }
+    .wizard-step-divider {
+      color: var(--muted, #94a3b8);
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .wizard-step-content {
+      display: none;
+      animation: wizardFadeIn 0.25s ease;
+    }
+    .wizard-step-content.active {
+      display: block;
+    }
+    @keyframes wizardFadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .wizard-hero-card {
+      background: var(--surface, #ffffff);
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: 10px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 4px 12px rgba(0, 95, 169, 0.04);
+      margin-bottom: 20px;
+      scroll-margin-top: 60px;
+    }
+    .wizard-hero-card h2 {
+      margin: 0;
+      font-size: 18px;
+      color: var(--navy, #00467b);
+    }
+    .wizard-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      margin: 16px 0;
+    }
+    .wizard-image-card {
+      border: 2px solid var(--border, #e2e8f0);
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--surface, #fff);
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .wizard-image-card.selected {
+      border-color: #005fa9;
+      box-shadow: 0 0 0 3px rgba(0, 95, 169, 0.25);
+    }
+    .wizard-image-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      display: block;
+    }
+    .wizard-image-info {
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      border-top: 1px solid var(--border, #e2e8f0);
+    }
+
+    /* ==========================================================================
+       Responsive Media Queries (Consolidadas al final de la cascada CSS)
+       ========================================================================== */
+    @media (max-width: 1024px), (pointer: coarse) {
+      .btn-action, .btn-social, .asistente-key-btn, .mode-btn {
+        min-height: 44px;
+      }
+    }
+    @media (max-width: 900px) {
+      .assistant-step2-split {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 768px) {
+      .blogger-container { height: auto; min-height: 0; gap: 10px; }
+      .blogger-panel { border: none; border-radius: 0; background: transparent; box-shadow: none; }
+      .difusion-panel { padding: 8px 4px; border: none; border-radius: 0; background: transparent; overflow-y: visible; }
+      .assistant-panel { padding: 14px 12px; border-radius: 12px; margin-bottom: 12px; }
+      .assistant-grid { grid-template-columns: 1fr; gap: 14px; }
+      .assistant-actions { gap: 6px; }
+      .assistant-actions .btn-action { flex: 1 1 calc(50% - 6px); justify-content: center; text-align: center; }
+      .wizard-hero-card { padding: 14px 12px; }
+      .wizard-gallery { grid-template-columns: 1fr; }
+      #badge-fecha { white-space: nowrap; }
+    }
+    @media (max-width: 640px) {
+      .wizard-stepper {
+        padding: 6px 4px;
+        gap: 4px;
+        justify-content: space-around;
+      }
+      .wizard-step-indicator {
+        gap: 4px;
+      }
+      .wizard-step-indicator:not(.active) .step-label {
+        display: none;
+      }
+      .wizard-step-indicator.active .step-label {
+        display: inline-block;
+        font-size: 11.5px;
+      }
+      .step-badge {
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
+      }
+      .wizard-step-divider {
+        font-size: 11px;
+      }
+    }
+  </style>
+  <script>
+    try {
+      document.documentElement.dataset.theme =
+        localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
+      document.documentElement.dataset.sidebar =
+        localStorage.getItem("erbolamm-panel-sidebar") === "icons" ? "icons" : "full";
+    } catch (_) {}
+  </script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="office-sidebar" id="office-sidebar" aria-label="Navegación de la oficina">
+      <div class="sidebar-brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+        </svg>
+        <span><strong>Oficina ApliArte</strong><small>Panel de control operativo ApliArte</small></span>
+        <button id="sidebar-toggle" class="sidebar-toggle" type="button"
+          aria-controls="office-sidebar" aria-expanded="true" aria-label="Plegar la barra lateral a solo iconos" title="Plegar la barra lateral">
+          <span class="chev" aria-hidden="true">‹</span>
+        </button>
+      </div>
+      <nav class="side-nav" aria-label="Secciones">
+        <a class="nav-card" href="/"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
+        <a class="nav-card" href="/vista/javier"><span class="nav-icon" aria-hidden="true">👤</span><span class="nav-copy"><strong>Espacio Javier</strong><small>Control personal y ja--</small></span></a>
+        <a class="nav-card" href="/vista/inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
+        <a class="nav-card" href="/vista/aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
+        <a class="nav-card" href="/vista/skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
+        <a class="nav-card" href="/vista/conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
+        <a class="nav-card" href="/vista/plugins"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
+        <a class="nav-card" href="/vista/reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
+        <a class="nav-card" href="/vista/propuestas"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
+        <a class="nav-card" href="/vista/diseno"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
+        <a class="nav-card" href="/vista/tiendas"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
+        <a class="nav-card" href="/vista/mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
+        <a class="nav-card" href="/vista/correos"><span class="nav-icon" aria-hidden="true">✉</span><span class="nav-copy"><strong>Correos y Alertas</strong><small>erbolamm y javier</small></span></a>
+        <a class="nav-card" href="/vista/pnl"><span class="nav-icon" aria-hidden="true">🧠</span><span class="nav-copy"><strong>Estudio PNL</strong><small>Enganche y microcopy</small></span></a>
+        <a class="nav-card" href="/vista/musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
+        <a class="nav-card" href="/vista/idiomas"><span class="nav-icon" aria-hidden="true">🌐</span><span class="nav-copy"><strong>Idiomas</strong><small>Traducción y locución</small></span></a>
+        <a class="nav-card" href="/vista/locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
+        <a class="nav-card" href="/vista/voicestudio"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
+        <a class="nav-card" href="/vista/terminales"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
+        <a class="nav-card" href="/vista/facturas"><span class="nav-icon" aria-hidden="true">€</span><span class="nav-copy"><strong>Facturas</strong><small>Gestor de facturas</small></span></a>
+        <a class="nav-card" href="/vista/blogger" aria-current="page"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
+        <a class="nav-card" href="/vista/bitacora"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
+        <a class="nav-card" href="/vista/directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
+        <a class="nav-card" href="/resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
+        <a class="nav-card" href="/vista/settings"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-copy"><strong>Ajustes</strong><small>Opciones por defecto</small></span></a>
+        <a class="nav-card" href="/vista/como-funciona"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
+      </nav>
+      <div class="sidebar-note">
+        <strong>Difusión y Redes</strong>
+        <span>Sincronizado con Blogger API v3 y motor oficial de difusión.</span>
+      </div>
+    </aside>
+    <div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
+
+    <main class="office-content" id="office">
+      <header class="topbar">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+            <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
+          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
+          </svg>
+          <h1>Blogger & Difusión</h1>
+        </div>
+        <span class="private-chip">Oficina local · Difusión v1</span>
+        <div class="status-badge" id="header-status-badge"><span class="status-dot"></span> Sincronizado</div>
+        <button id="refresh-btn" class="btn-refresh" type="button" onclick="window.location.reload()" aria-label="Actualizar vista" title="Actualizar">↻</button>
+        <button id="theme-toggle" type="button" aria-label="Activar modo oscuro" title="Cambiar tema">
+          <span id="theme-icon" aria-hidden="true">☾</span>
+        </button>
+      </header>
+
+      <section class="panel blogger-panel" aria-labelledby="blogger-title">
+        <div class="blogger-container">
+          <div class="blogger-toolbar">
+            <div class="blogger-tabs">
+              <button class="tab-btn active" id="tab-difusion" onclick="cambiarPestana('difusion')">🚀 Redes y Difusión</button>
+              <button class="tab-btn" id="tab-monitor" onclick="cambiarPestana('monitor')">📊 Monitor Web & AdSense</button>
+              <button class="tab-btn" id="tab-plantillas" onclick="cambiarPestana('plantillas')">📑 Plantillas Oficiales</button>
+              <button class="tab-btn" id="tab-recurrentes" onclick="cambiarPestana('recurrentes')">🔄 Tareas Recurrentes</button>
+            </div>
+            <div class="blogger-actions">
+              <a href="https://draft.blogger.com" target="_blank" rel="noopener noreferrer" class="btn-action">
+                <span>↗ Abrir Blogger Draft</span>
+              </a>
+              <button class="btn-action" onclick="cargarBorradorDifusion()">🔄 Actualizar</button>
+            </div>
+          </div>
+
+          <!-- 🚀 SUB-SECCIÓN: Redes y Difusión (Panel Activo en 4 Pasos Progresivos) -->
+          <div class="difusion-panel" id="wrapper-difusion">
+
+            <!-- 🧭 Stepper Progresivo de 4 Pasos -->
+            <nav class="wizard-stepper" id="wizard-stepper" aria-label="Progreso de publicación">
+              <div class="wizard-step-indicator active" id="step-ind-1" onclick="irAPaso(1)">
+                <span class="step-badge">1</span>
+                <span class="step-label">Entrada e Investigación</span>
+              </div>
+              <span class="wizard-step-divider">›</span>
+              <div class="wizard-step-indicator" id="step-ind-2" onclick="irAPaso(2)">
+                <span class="step-badge">2</span>
+                <span class="step-label">Propuesta Estratégica</span>
+              </div>
+              <span class="wizard-step-divider">›</span>
+              <div class="wizard-step-indicator" id="step-ind-3" onclick="irAPaso(3)">
+                <span class="step-badge">3</span>
+                <span class="step-label">Imágenes y Portada</span>
+              </div>
+              <span class="wizard-step-divider">›</span>
+              <div class="wizard-step-indicator" id="step-ind-4" onclick="irAPaso(4)">
+                <span class="step-badge">4</span>
+                <span class="step-label">Maquetación y Publicación</span>
+              </div>
+            </nav>
+
+            <!-- 🔍 PASO 1: Entrada e Investigación Autónoma -->
+            <div class="wizard-step-content active" id="step-content-1">
+              <section class="assistant-panel" id="blogger-assistant" aria-labelledby="assistant-heading">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+                  <div>
+                    <h2 id="assistant-heading" style="margin:0; font-size:1.25rem; color:var(--navy,#00467b);">1. Entrada e Investigación Autónoma</h2>
+                    <p style="margin:4px 0 0; font-size:13px; color:var(--muted,#666);">Pega una noticia de internet, una URL para resumir o el nombre de un repositorio local/GitHub. El sistema investiga y contrasta fuentes.</p>
+                  </div>
+                  <div class="status-badge" id="step1-badge"><span class="status-dot"></span> Esperando entrada</div>
+                </div>
+
+                <form id="assistant-message-form" style="margin-bottom:14px;">
+                  <label for="assistant-input" style="font-weight:700; font-size:14px;">Noticia, enlace o repositorio a investigar</label>
+                  <textarea id="assistant-input" rows="6" maxlength="16000" required placeholder="Ejemplo: Hemos lanzado la versión v1.2 de apliarte-directo con avatares 3D en OBS y control táctil... O pega una noticia para contrastar fuentes..."></textarea>
+                  <div class="assistant-actions" style="margin-top:10px;">
+                    <button class="btn-action btn-primary" type="submit" style="font-size:14px; padding:10px 18px; font-weight:700;">🚀 Investigar y Crear Propuesta</button>
+                    <button type="button" class="btn-action" onclick="copiarUrlsDesdeEntrada()" title="Extraer URLs del texto y pasarlas a la casilla de fuentes">🔗 Pasar URLs a fuentes</button>
+                    <button type="button" class="btn-action" onclick="irAPaso(2)">Siguiente: Ver Propuesta →</button>
+                  </div>
+                </form>
+
+                <!-- 🌐 Extracción Local de Fuentes y Portadas Reales (og:image) -->
+                <div class="fuentes-extractor-card" style="margin-top:14px; background:#fff; border:1px solid var(--border,#cbd5e1); border-radius:8px; padding:16px; box-shadow:0 1px 4px rgba(0,0,0,0.05);">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <span style="font-size:16px;">📰</span>
+                      <h3 style="margin:0; font-size:14px; font-weight:700; color:var(--navy,#00467b);">Extracción de Fuentes y Portadas Reales (og:image)</h3>
+                    </div>
+                    <span style="font-size:11px; font-weight:700; text-transform:uppercase; padding:2px 8px; border-radius:12px; background:#e0f2fe; color:#0369a1;">Fórmula ErBolamm</span>
+                  </div>
+                  <p style="margin:0 0 10px; font-size:13px; color:var(--muted,#666);">
+                    Pega una o varias URLs de noticias para extraer sus portadas reales e imágenes de cabecera de las fuentes oficiales (og:image), vinculándolas directamente a la propuesta.
+                  </p>
+                  <div style="display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
+                    <input type="text" id="input-fuentes-urls" placeholder="https://ejemplo.com/noticia-1, https://ejemplo.com/noticia-2" style="flex:1; min-width:240px; padding:8px 12px; border:1px solid #cbd5e1; border-radius:6px; font-size:13.5px;">
+                    <button type="button" class="btn-action" onclick="extraerFuentesUI()">Extraer Fuentes</button>
+                    <button type="button" class="btn-action btn-primary" onclick="prepararNoticiaDesdeFuentesUI()">⚡ Preparar Borrador con Fuentes</button>
+                  </div>
+                  <div id="fuentes-extractor-status" style="font-size:12.5px; color:#64748b; margin-bottom:8px;"></div>
+                  <div id="fuentes-preview-list" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:12px;"></div>
+                </div>
+
+                <div style="margin-top:16px;">
+                  <h3 style="font-size:14px; margin-bottom:8px;">Mensajes e interacción con el asistente</h3>
+                  <div id="assistant-messages" class="assistant-messages" aria-label="Entradas guardadas del usuario"></div>
+
+                  <div class="asistente-keys-strip" aria-label="Teclas rápidas de terminal">
+                    <button type="button" class="asistente-key-btn btn-key-enter" id="assistant-key-enter" title="Enviar tecla Enter al terminal del asistente. No hace falta para avanzar al Paso 2.">↵ Enter (terminal)</button>
+                    <button type="button" class="asistente-key-btn btn-key-ctrlc" id="assistant-key-ctrlc">🛑 Ctrl+C</button>
+                    <button type="button" class="asistente-key-btn btn-key-esc" id="assistant-key-esc">⎋ Esc</button>
+                    <button type="button" class="asistente-key-btn btn-key-num" id="assistant-key-1">1</button>
+                    <button type="button" class="asistente-key-btn btn-key-num" id="assistant-key-2">2</button>
+                    <button type="button" class="asistente-key-btn btn-key-num" id="assistant-key-3">3</button>
+                    <button type="button" class="asistente-key-btn btn-key-num" id="assistant-key-tab">Tab</button>
+                  </div>
+
+                  <details class="assistant-terminal-details" style="margin-top:12px;">
+                    <summary>Consola del Asistente en Vivo (capturas de texto limitadas)</summary>
+                    <pre id="assistant-terminal" class="assistant-terminal"></pre>
+                  </details>
+
+                  <div class="assistant-actions" style="margin-top:12px; font-size:12px; color:var(--muted,#666); align-items:center;">
+                    <button type="button" class="btn-action" id="assistant-start">Iniciar o retomar asistente</button>
+                    <button type="button" class="btn-action" id="assistant-refresh">Actualizar y guardar respuesta</button>
+                    <button type="button" class="btn-action" id="assistant-close" style="color:#dc2626;">✕ Cerrar terminal</button>
+                    <a class="btn-action" href="/vista/terminales">Ver terminal y permisos</a>
+                    <span>No publica automáticamente. Tus mensajes y el borrador se guardan en este ordenador.</span>
+                  </div>
+                </div>
+
+                <div id="assistant-progress" class="assistant-progress" role="status" aria-live="polite" hidden>
+                  <span class="assistant-spinner" aria-hidden="true"></span>
+                  <div>
+                    <strong>Investigando fuentes y redactando la propuesta…</strong>
+                    <small id="assistant-progress-detail">Pasarás al Paso 2 automáticamente en cuanto esté lista. Puedes cambiar de pestaña: la de Blogger avisará.</small>
+                  </div>
+                </div>
+
+                <p id="assistant-status" role="status" aria-live="polite" style="font-size:13px; font-weight:600; padding:8px 12px; background:var(--surface-2,#f8fafc); border-radius:6px; border:1px solid var(--border,#e2e8f0);">Consulta el estado con Actualizar y guardar respuesta. La sesión no se inicia al cargar la página.</p>
+
+                <!-- Historial de propuestas generadas (patrón de /vista/locucion) -->
+                <details class="history-card-box" id="blogger-history-box">
+                  <summary>
+                    <h3 class="history-title">
+                      <span>📂 Historial de propuestas</span>
+                      <span class="history-count" id="blogger-history-count">0 guardadas</span>
+                    </h3>
+                    <span class="history-toggle-icon" aria-hidden="true">▼</span>
+                  </summary>
+                  <div class="history-grid" id="blogger-history-grid">
+                    <p class="history-empty">Todavía no hay propuestas. Cada propuesta que genere el asistente se guarda aquí automáticamente.</p>
+                  </div>
+                </details>
+              </section>
+            </div>
+
+            <!-- 📑 PASO 2: Propuesta Estratégica y Enfoque SEO -->
+            <div class="wizard-step-content" id="step-content-2">
+              <div class="wizard-hero-card">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+                  <div>
+                    <h2 style="margin:0; font-size:1.25rem; color:var(--navy,#00467b);">2. Propuesta Estratégica y Enfoque SEO</h2>
+                    <p style="margin:4px 0 0; font-size:13.5px; color:var(--muted,#666);">Revisa el título, el enfoque editorial y los términos clave generados a partir de las fuentes contrastadas.</p>
+                  </div>
+                  <div style="display:flex; gap:8px;">
+                    <button type="button" class="btn-action" onclick="irAPaso(1)">← Volver a Entrada</button>
+                    <button type="button" class="btn-action btn-primary" onclick="aprobarPropuestaYAvanzar()" style="font-weight:700;">✓ Aprobar Propuesta y Generar Imágenes →</button>
+                  </div>
+                </div>
+
+                <!-- 💡 Alerta de Propuesta Nueva Alternativa del Asistente (Conflicto / Reemplazo) -->
+                <div id="pending-candidate-alert" style="display:none; background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:12px 14px; margin-top:12px;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                    <div>
+                      <strong style="color:#1e40af; font-size:13.5px;">💡 Nueva propuesta disponible del asistente</strong>
+                      <p style="margin:2px 0 0 0; font-size:12.5px; color:#2563eb;">El asistente ha generado una propuesta alternativa. Puedes aplicarla sustituyendo el borrador actual o conservar tus cambios hechos a mano.</p>
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                      <button type="button" class="btn-action btn-primary" onclick="resolverPropuesta(true)" style="font-size:12.5px; padding:6px 12px; font-weight:700;">Aplicar nueva propuesta</button>
+                      <button type="button" class="btn-action" onclick="resolverPropuesta(false)" style="font-size:12.5px; padding:6px 12px;">Conservar mis cambios</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tarjeta de Metadatos SEO -->
+                <div style="background:var(--surface-2,#f8fafc); border:1px solid var(--border,#e2e8f0); border-radius:8px; padding:16px; display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:14px; margin-top:8px;">
+                  <div>
+                    <label style="font-size:12px; font-weight:700; color:var(--navy,#00467b); text-transform:uppercase;">Palabra Clave Principal</label>
+                    <div id="propuesta-kw-principal" style="font-size:14px; font-weight:600; color:var(--ink,#333); margin-top:2px;">Sin propuesta aún</div>
+                  </div>
+                  <div>
+                    <label style="font-size:12px; font-weight:700; color:var(--navy,#00467b); text-transform:uppercase;">Slug Permanente SEO</label>
+                    <div id="propuesta-slug" style="font-size:13px; font-family:monospace; color:#005fa9; margin-top:2px;">pendiente-de-propuesta</div>
+                  </div>
+                  <div>
+                    <label style="font-size:12px; font-weight:700; color:var(--navy,#00467b); text-transform:uppercase;">Etiquetas Blogger</label>
+                    <div id="propuesta-etiquetas" style="display:flex; gap:6px; flex-wrap:wrap; margin-top:4px;">
+                      <span class="badge-tag" style="background:#f1f5f9; color:#94a3b8;">Sin etiquetas</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Editor y Vista Previa Dividida -->
+                <div class="assistant-step2-split">
+                  <div class="assistant-editor-col">
+                    <form id="assistant-draft-form">
+                      <label for="assistant-title">Título de la entrada</label>
+                      <input id="assistant-title" maxlength="500" placeholder="Título atractivo y optimizado para SEO">
+
+                      <label for="assistant-html">Estructura del artículo (HTML editorial)</label>
+                      <textarea id="assistant-html" rows="12" maxlength="200000" placeholder="Contenido del post en HTML enriquecido..."></textarea>
+
+                      <div class="assistant-actions" style="margin-top:12px;">
+                        <button type="submit" class="btn-action">Guardar borrador</button>
+                        <button type="button" class="btn-action" id="assistant-preview-button">Actualizar vista previa</button>
+                        <button type="button" class="btn-action" id="assistant-promote" style="background:#16a34a; color:#fff; font-weight:700;">Pasar borrador a difusión</button>
+                        <button type="button" class="btn-action" id="assistant-copy-title">Copiar título</button>
+                        <button type="button" class="btn-action" id="assistant-copy-html">Copiar HTML</button>
+                      </div>
+                    </form>
+                  </div>
+
+                  <div class="assistant-preview-wrapper">
+                    <label>Vista previa renderizada en vivo</label>
+                    <iframe id="assistant-preview" title="Vista previa aislada del borrador" sandbox="" referrerpolicy="no-referrer"></iframe>
+                  </div>
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; margin-top:14px;">
+                  <button type="button" class="btn-action btn-primary" onclick="aprobarPropuestaYAvanzar()" style="font-size:14px; padding:10px 20px; font-weight:700;">✓ Aprobar Propuesta y Generar Imágenes →</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 🖼️ PASO 3: Generación y Selección de Imágenes 16:9 -->
+            <div class="wizard-step-content" id="step-content-3">
+              <div class="wizard-hero-card">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+                  <div>
+                    <h2 style="margin:0; font-size:1.25rem; color:var(--navy,#00467b);">3. Generación y Selección de Imágenes 16:9</h2>
+                    <p style="margin:4px 0 0; font-size:13.5px; color:var(--muted,#666);">Portadas cinematográficas con estética oficial ErBolamm/ApliArte. Selecciona las que prefieras para la publicación.</p>
+                  </div>
+                  <div style="display:flex; gap:8px;">
+                    <button type="button" class="btn-action" onclick="irAPaso(2)">← Volver a Propuesta</button>
+                    <button type="button" class="btn-action btn-primary" onclick="subirImagenYAvanzar()" style="font-weight:700;">Vincular a Blogger y Continuar →</button>
+                  </div>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-top:8px;">
+                  <div style="font-size:13px; color:var(--muted,#666);">
+                    <span>Formato canónico: <strong>16:9 (1792×1024)</strong> · Estilo cinematográfico cian y azul marino</span>
+                  </div>
+                  <button type="button" class="btn-action" id="btn-regenerar-imagen" onclick="regenerarImagen()">
+                    <span>🔄 Regenerar otra variante</span>
+                  </button>
+                </div>
+
+                <!-- Galería de Opciones Generadas -->
+                <div class="wizard-gallery" id="wizard-images-gallery">
+                  <div style="padding:24px; color:var(--muted,#666); font-style:italic; grid-column:1/-1; text-align:center;">Cargando variantes de imagen de portada...</div>
+                </div>
+
+                <div id="image-upload-status" style="font-size:13px; font-weight:600; padding:10px 14px; background:var(--surface-2,#f8fafc); border-radius:6px; border:1px solid var(--border,#e2e8f0); margin-top:8px;">
+                  ✓ Imagen seleccionada lista para subida. Al pulsar continuar se vincula con la maquetación del artículo.
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
+                  <button type="button" class="btn-action" onclick="irAPaso(2)">← Volver a Paso 2</button>
+                  <button type="button" class="btn-action btn-primary" onclick="subirImagenYAvanzar()" style="font-size:14px; padding:10px 20px; font-weight:700;">Vincular a Blogger y Continuar al Paso 4 →</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 🚀 PASO 4: Maquetación Final y Publicación en Blogger -->
+            <div class="wizard-step-content" id="step-content-4">
+              <div class="difusion-card-meta" id="difusion-meta-card">
+                <div class="difusion-title-area">
+                  <div class="difusion-tags">
+                    <span class="badge-tag" id="badge-proyecto">PROYECTO</span>
+                    <span class="badge-tag" id="badge-version" style="display:none;">v1.0</span>
+                    <span id="badge-fecha" style="font-size:12px;color:var(--muted,#666);">2026-09-17</span>
+                  </div>
+                  <h2 class="difusion-title-text" id="difusion-titulo-display">Cargando borrador activo...</h2>
+                </div>
+                <div class="blogger-actions">
+                  <button class="btn-action" id="btn-copiar-titulo" onclick="copiarTitulo()">📋 Copiar Título</button>
+                  <button class="btn-action btn-primary" id="btn-copiar-html" onclick="copiarHtml()">📋 Copiar HTML para Blogger</button>
+                  <button type="button" class="btn-action" id="btn-enviar-blogger-n8n" onclick="enviarBorradorBloggerN8N()" style="background:#059669; color:#fff; font-weight:700;">
+                    <span>📤 Enviar a Borrador en Blogger (n8n)</span>
+                  </button>
+                  <a class="btn-action" id="btn-descargar-imagen" href="#" download style="display:none;">📥 Descargar Portada</a>
+                  <a href="https://draft.blogger.com" target="_blank" rel="noopener noreferrer" class="btn-action btn-success" style="font-weight:700;">
+                    <span>↗ Abrir Blogger Draft</span>
+                  </a>
+                </div>
+                <div id="n8n-publish-status" style="display:none; font-size:13px; font-weight:600; padding:8px 12px; border-radius:6px; margin-top:8px;"></div>
+                <div id="aviso-portada-local" style="display:none; font-size:12px; color:#b45309; background:#fffbeb; border:1px solid #fde68a; border-radius:6px; padding:6px 10px; margin-top:8px;">
+                  ℹ️ <strong>Portada local:</strong> El HTML copiado omite la ruta local para evitar enlaces rotos. Descarga la imagen con el botón «Descargar Portada» y súbela directamente en el editor de Blogger.
+                </div>
+              </div>
+
+              <div class="difusion-toolbar-inner">
+                <div class="difusion-view-modes">
+                  <button class="mode-btn active" id="btn-mode-preview" onclick="cambiarModoVisor('preview')">👁️ Vista Previa Visual</button>
+                  <button class="mode-btn" id="btn-mode-code" onclick="cambiarModoVisor('code')">💻 Código HTML</button>
+                </div>
+                <span id="copy-feedback" style="font-size:13px;font-weight:700;color:#10b981;display:none;">✓ ¡Copiado al portapapeles!</span>
+              </div>
+
+              <div class="difusion-content-box">
+                <iframe id="difusion-preview-frame" class="difusion-preview-frame" sandbox="" referrerpolicy="no-referrer" title="Vista previa de Blogger"></iframe>
+                <textarea id="difusion-code-area" class="difusion-code-area" readonly></textarea>
+              </div>
+
+              <!-- 🔗 SECCIÓN DE REDES SOCIALES Y WEB INTENTS -->
+              <div class="difusion-social-section" id="difusion-social-section">
+                <div class="social-header-card">
+                  <h3>🔗 Vincular URL de Blogger y Disparar a Redes</h3>
+                  <p>Pega aquí la URL pública de la entrada una vez publicada en Blogger para activar los botones sociales con el texto y enlace listos.</p>
+                  <div class="url-input-row">
+                    <input type="url" id="input-url-blogger" class="url-input-field" placeholder="https://apliarte.blogspot.com/2026/09/mi-articulo.html" oninput="validarUrlInput()">
+                    <button class="btn-action btn-primary" id="btn-guardar-url" onclick="guardarUrlBlogger()">💾 Guardar URL</button>
+                    <span id="url-feedback" class="url-feedback-text"></span>
+                  </div>
+                </div>
+
+                <div class="social-buttons-grid" id="social-buttons-grid">
+                  <!-- X (Twitter) -->
+                  <div class="social-card social-x">
+                    <div class="social-card-title">
+                      <span>𝕏 (Twitter)</span>
+                      <small id="char-count-x">&lt; 280 car.</small>
+                    </div>
+                    <p class="social-snippet" id="snippet-x">Gancho de apertura con hashtags y enlace oficial...</p>
+                    <button class="btn-social btn-x" id="btn-intent-x" onclick="dispararIntentX()" disabled>
+                      <span>🚀 Compartir en 𝕏</span>
+                    </button>
+                  </div>
+
+                  <!-- Telegram -->
+                  <div class="social-card social-telegram">
+                    <div class="social-card-title">
+                      <span>✈️ Telegram</span>
+                      <small>Canal / Grupo</small>
+                    </div>
+                    <p class="social-snippet" id="snippet-telegram">Resumen formateado con mejoras y enlace...</p>
+                    <button class="btn-social btn-telegram" id="btn-intent-telegram" onclick="dispararIntentTelegram()" disabled>
+                      <span>✈️ Compartir en Telegram</span>
+                    </button>
+                  </div>
+
+                  <!-- WhatsApp -->
+                  <div class="social-card social-whatsapp">
+                    <div class="social-card-title">
+                      <span>💬 WhatsApp</span>
+                      <small>Canal / Chat</small>
+                    </div>
+                    <p class="social-snippet" id="snippet-whatsapp">Mensaje directo con viñetas y enlace...</p>
+                    <button class="btn-social btn-whatsapp" id="btn-intent-whatsapp" onclick="dispararIntentWhatsApp()" disabled>
+                      <span>💬 Enviar a WhatsApp</span>
+                    </button>
+                  </div>
+
+                  <!-- Facebook -->
+                  <div class="social-card social-facebook">
+                    <div class="social-card-title">
+                      <span>📘 Facebook</span>
+                      <small>Página Oficial</small>
+                    </div>
+                    <p class="social-snippet" id="snippet-facebook">Publicación adaptada para la comunidad en Facebook...</p>
+                    <div style="display:flex;flex-direction:column;gap:6px;">
+                      <button class="btn-action" id="btn-copiar-facebook" onclick="copiarTextoFacebook()" style="width:100%;justify-content:center;font-size:12px;padding:6px 10px;">
+                        📋 Copiar Texto
+                      </button>
+                      <button class="btn-social btn-facebook" id="btn-intent-facebook" onclick="dispararIntentFacebook()" disabled>
+                        <span>📘 Publicar en Facebook</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- LinkedIn -->
+                  <div class="social-card social-linkedin">
+                    <div class="social-card-title">
+                      <span>💼 LinkedIn</span>
+                      <small>Perfil / Página</small>
+                    </div>
+                    <p class="social-snippet" id="snippet-linkedin">Actualización profesional de desarrollo y arquitectura...</p>
+                    <div style="display:flex;flex-direction:column;gap:6px;">
+                      <button class="btn-action" id="btn-copiar-linkedin" onclick="copiarTextoLinkedIn()" style="width:100%;justify-content:center;font-size:12px;padding:6px 10px;">
+                        📋 Copiar Texto
+                      </button>
+                      <button class="btn-social btn-linkedin" id="btn-intent-linkedin" onclick="dispararIntentLinkedIn()" disabled>
+                        <span>💼 Compartir en LinkedIn</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- YouTube Comunidad -->
+                  <div class="social-card social-youtube">
+                    <div class="social-card-title">
+                      <span>▶️ YouTube Comunidad</span>
+                      <small>Pestaña Comunidad</small>
+                    </div>
+                    <p class="social-snippet" id="snippet-youtube">Publicación para la pestaña Comunidad del canal...</p>
+                    <div style="display:flex;flex-direction:column;gap:6px;">
+                      <button class="btn-action" id="btn-copiar-youtube" onclick="copiarTextoYouTube()" style="width:100%;justify-content:center;font-size:12px;padding:6px 10px;">
+                        📋 Copiar Texto
+                      </button>
+                      <button class="btn-social btn-youtube" id="btn-intent-youtube" onclick="dispararIntentYouTube()" disabled>
+                        <span>📋 Copiar y Abrir Comunidad</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 🏁 Finalización y Archivo -->
+                <div class="difusion-footer-card">
+                  <div>
+                    <h4 style="margin:0;color:var(--navy,#00467b);">🏁 ¿Difusión completada?</h4>
+                    <small style="color:var(--muted,#666);">Archiva este borrador en el histórico y deja la bandeja limpia para el siguiente hito.</small>
+                  </div>
+                  <div style="display:flex; gap:10px;">
+                    <button class="btn-action" onclick="irAPaso(3)">← Volver a Imágenes</button>
+                    <button class="btn-action btn-success" id="btn-finalizar-difusion" onclick="archivarDifusion()">
+                      <span>✅ Marcar Difusión como Completada</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Estado Vacío -->
+              <div class="difusion-empty-state" id="difusion-empty-state">
+                <h3>⚪ No hay borrador activo de difusión</h3>
+                <p>Genera un borrador ejecutando <code>erbolamm difusion demo</code> en la terminal o solicita una difusión en la sesión del asistente.</p>
+                <button class="btn-action btn-primary" onclick="cargarBorradorDifusion()">🔄 Comprobar de nuevo</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 📊 SUB-SECCIÓN: Monitor Web & AdSense (Consola Canónica) -->
+          <div class="monitor-panel" id="wrapper-monitor">
+            <div class="monitor-header">
+              <div>
+                <h2>Consola de Monitoreo Web & AdSense</h2>
+                <p>Supervisión centralizada de portales, monetización, directrices de calidad y accesos directos a consolas de Google.</p>
+              </div>
+              <div class="monitor-actions">
+                <a href="https://www.google.com/adsense" target="_blank" rel="noopener noreferrer" class="btn-action btn-primary">
+                  <span>↗ Consola AdSense</span>
+                </a>
+                <a href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer" class="btn-action">
+                  <span>↗ Search Console</span>
+                </a>
+                <a href="https://analytics.google.com" target="_blank" rel="noopener noreferrer" class="btn-action">
+                  <span>↗ Analytics</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Grid de Métricas y Sitios -->
+            <div class="monitor-grid">
+              <!-- Portal Principal ApliArte -->
+              <div class="monitor-card">
+                <div class="monitor-card-header">
+                  <span class="monitor-site-icon">🌐</span>
+                  <div>
+                    <h3 class="monitor-site-name">ApliArte</h3>
+                    <a href="https://apliarte.com" target="_blank" rel="noopener" class="monitor-site-url">apliarte.com</a>
+                  </div>
+                  <span class="status-badge-ok">Activo</span>
+                </div>
+                <div class="monitor-details">
+                  <div class="monitor-metric-item">
+                    <span class="metric-label">Plataforma</span>
+                    <span class="metric-value">Blogger / Custom Domain</span>
+                  </div>
+                  <div class="monitor-metric-item">
+                    <span class="metric-label">Monetización</span>
+                    <span class="metric-value">AdSense Verificado</span>
+                  </div>
+                  <div class="monitor-metric-item">
+                    <span class="metric-label">Directriz Clave</span>
+                    <span class="metric-value">Máximo 3 bloques de anuncio</span>
+                  </div>
+                </div>
+                <div class="monitor-card-footer">
+                  <a href="https://draft.blogger.com" target="_blank" rel="noopener" class="btn-action">Gestionar en Blogger</a>
+                </div>
+              </div>
+
+              <!-- CalcaApp -->
+              <div class="monitor-card">
+                <div class="monitor-card-header">
+                  <span class="monitor-site-icon">📱</span>
+                  <div>
+                    <h3 class="monitor-site-name">CalcaApp</h3>
+                    <a href="https://calcaapp.com" target="_blank" rel="noopener" class="monitor-site-url">calcaapp.com</a>
+                  </div>
+                  <span class="status-badge-ok">Activo</span>
+                </div>
+                <div class="monitor-details">
+                  <div class="monitor-metric-item">
+                    <span class="metric-label">Plataforma</span>
+                    <span class="metric-value">Web & App Landing</span>
+                  </div>
+                  <div class="monitor-metric-item">
+                    <span class="metric-label">AdMob / AdSense</span>
+                    <span class="metric-value">Habilitado</span>
+                  </div>
+                  <div class="monitor-metric-item">
+                    <span class="metric-label">Optimización</span>
+                    <span class="metric-value">Control de CTR & Políticas</span>
+                  </div>
+                </div>
+                <div class="monitor-card-footer">
+                  <a href="https://calcaapp.com" target="_blank" rel="noopener" class="btn-action">Visitar Portal</a>
+                </div>
+              </div>
+
+              <!-- Tu Aplicación Gratis -->
+              <div class="monitor-card">
+                <div class="monitor-card-header">
+                  <span class="monitor-site-icon">🎁</span>
+                  <div>
+                    <h3 class="monitor-site-name">Tu Aplicación Gratis</h3>
+                    <a href="https://tuaplicaciongratis.com" target="_blank" rel="noopener" class="monitor-site-url">tuaplicaciongratis.com</a>
+                  </div>
+                  <span class="status-badge-warn">Supervisión</span>
+                </div>
+                <div class="monitor-details">
+                  <div class="monitor-metric-item">
+                    <span class="metric-label">Plataforma</span>
+                    <span class="metric-value">Blogger / Web</span>
+                  </div>
+                  <div class="monitor-metric-item">
+                    <span class="metric-label">Calidad SEO</span>
+                    <span class="metric-value">Revisión de valor agregado</span>
+                  </div>
+                  <div class="monitor-metric-item">
+                    <span class="metric-label">Directriz</span>
+                    <span class="metric-value">Evitar contenido de poco valor</span>
+                  </div>
+                </div>
+                <div class="monitor-card-footer">
+                  <a href="https://tuaplicaciongratis.com" target="_blank" rel="noopener" class="btn-action">Auditar Contenido</a>
+                </div>
+              </div>
+
+              <!-- ErBolamm Central -->
+              <div class="monitor-card">
+                <div class="monitor-card-header">
+                  <span class="monitor-site-icon">⚡</span>
+                  <div>
+                    <h3 class="monitor-site-name">ErBolamm Central</h3>
+                    <a href="https://erbolamm.com" target="_blank" rel="noopener" class="monitor-site-url">erbolamm.com</a>
+                  </div>
+                  <span class="status-badge-ok">Activo</span>
+                </div>
+                <div class="monitor-details">
+                  <div class="monitor-metric-item">
+                    <span class="metric-label">Plataforma</span>
+                    <span class="metric-value">Hub & Repositorio</span>
+                  </div>
+                  <div class="monitor-metric-item">
+                    <span class="metric-label">Identidad</span>
+                    <span class="metric-value">Kit de Marca ApliArte</span>
+                  </div>
+                  <div class="monitor-metric-item">
+                    <span class="metric-label">Directriz</span>
+                    <span class="metric-value">Fondo blanco por defecto</span>
+                  </div>
+                </div>
+                <div class="monitor-card-footer">
+                  <a href="https://erbolamm.com" target="_blank" rel="noopener" class="btn-action">Abrir Central</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Directrices y Políticas de Calidad -->
+            <div class="politicas-card">
+              <h3>🛡️ Reglas de Oro de Monetización (Google AdSense & Brand Kit)</h3>
+              <ul class="politicas-list">
+                <li><strong>Tope de 3 bloques</strong>: No superar nunca 3 unidades publicitarias por página para proteger la experiencia del usuario y evitar sanciones de AdSense.</li>
+                <li><strong>Modo Claro por Defecto</strong>: Fondo blanco (<code>#fdfdfd</code>) con interruptor sol/luna obligatorio para modo oscuro (<code>#303030</code>).</li>
+                <li><strong>Archivo ads.txt sincronizado</strong>: Asegurar la correcta declaración de publicador directo en la raíz de cada dominio personalizado.</li>
+                <li><strong>Alineación con Difusión</strong>: Cada post redactado debe aportar valor real, código reproducible o descarga verificada antes de activar monetización.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 📑 SUB-SECCIÓN: Plantillas Oficiales -->
+          <div class="plantillas-panel" id="wrapper-plantillas">
+            <h2>Plantillas Oficiales de Difusión (blogger-control)</h2>
+            <p>Estructuras HTML estandarizadas para lanzamientos de productos, tutoriales y artículos técnicos.</p>
+            <div class="plantillas-grid">
+              <div class="plantilla-card">
+                <h3>🚀 Lanzamiento de App</h3>
+                <p>Estructura optimizada con ficha técnica, capturas, insignias de tienda y enlaces de descarga directa.</p>
+                <a href="https://draft.blogger.com" target="_blank" rel="noopener" class="btn-action">Usar en Blogger</a>
+              </div>
+              <div class="plantilla-card">
+                <h3>🛠️ Actualización & Changelog</h3>
+                <p>Formato de notas de la versión para comunicar novedades, parches y mejoras a los usuarios.</p>
+                <a href="https://draft.blogger.com" target="_blank" rel="noopener" class="btn-action">Usar en Blogger</a>
+              </div>
+              <div class="plantilla-card">
+                <h3>💡 Tutorial y Guía Paso a Paso</h3>
+                <p>Estructura paso a paso con llamadas de atención, fragmentos de código destacados y enlaces canónicos.</p>
+                <a href="https://draft.blogger.com" target="_blank" rel="noopener" class="btn-action">Usar en Blogger</a>
+              </div>
+              <div class="plantilla-card">
+                <h3>📱 Ficha de Tienda (Store Copy)</h3>
+                <p>Texto enriquecido optimizado para descripción de Google Play Store y App Store con palabras clave.</p>
+                <a href="https://draft.blogger.com" target="_blank" rel="noopener" class="btn-action">Usar en Blogger</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- 🔄 SUB-SECCIÓN: Tareas Recurrentes & Automatización -->
+          <div class="recurrentes-panel" id="wrapper-recurrentes" style="display:none; flex-direction:column; gap:20px; padding:20px 0;">
+            <div class="wizard-hero-card" style="margin-bottom:0;">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+                <div>
+                  <h2 style="margin:0; font-size:1.25rem; color:var(--navy,#00467b);">Tareas Recurrentes de Difusión & Automatización</h2>
+                  <p style="margin:4px 0 0; font-size:13.5px; color:var(--muted,#666);">
+                    Programación periódica en <code>tareas/recurrentes/</code> sincronizada con Blogger y n8n. Prepara y ejecuta publicaciones diarias con imágenes reales de las fuentes.
+                  </p>
+                </div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                  <button type="button" class="btn-action" onclick="cargarTareasRecurrentes()">🔄 Actualizar Tareas</button>
+                  <button type="button" class="btn-action btn-primary" onclick="ejecutarPublicacionDiariaUI()">⚡ Ejecutar Publicación Diaria Ahora</button>
+                </div>
+              </div>
+
+              <div id="recurrentes-status-msg" style="margin-top:12px; font-size:13px; font-weight:600; padding:8px 12px; background:var(--surface-2,#f8fafc); border-radius:6px; border:1px solid var(--border,#e2e8f0); display:none;"></div>
+
+              <!-- Lista dinámica de tarjetas de tareas recurrentes -->
+              <div id="recurrentes-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:16px; margin-top:16px;">
+                <div style="padding:24px; color:var(--muted,#666); font-style:italic; grid-column:1/-1; text-align:center;">Cargando tareas recurrentes...</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    let borradorActivo = null;
+    let pasoActual = 1;
+    let draftDirty = false;
+
+    function irAPaso(n) {
+      if (n < 1 || n > 4) return;
+      pasoActual = n;
+      for (let i = 1; i <= 4; i++) {
+        const ind = document.getElementById('step-ind-' + i);
+        const cont = document.getElementById('step-content-' + i);
+        if (ind) {
+          ind.classList.remove('active', 'completed');
+          if (i === n) {
+            ind.classList.add('active');
+          } else if (i < n) {
+            ind.classList.add('completed');
+          }
+        }
+        if (cont) {
+          cont.classList.toggle('active', i === n);
+        }
+      }
+      const activeContent = document.getElementById('step-content-' + n);
+      if (activeContent) {
+        activeContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        const wrap = document.getElementById('wrapper-difusion');
+        if (wrap) wrap.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      if (n >= 2 && n <= 4) {
+        if (typeof cargarBorradorDifusion === 'function') cargarBorradorDifusion();
+      }
+    }
+
+    async function aprobarPropuestaYAvanzar() {
+      const title = (document.getElementById('assistant-title')?.value || '').trim();
+      const html = (document.getElementById('assistant-html')?.value || '').trim();
+      const req = window.BloggerAsistente?.request;
+      if (!title || !html) {
+        alert('Por favor redacta o genera el título y el contenido antes de aprobar.');
+        return;
+      }
+      if (typeof req !== 'function') {
+        alert('El servicio del asistente no está disponible.');
+        return;
+      }
+      const status = document.getElementById('assistant-status');
+      if (status) status.textContent = 'Guardando y promoviendo propuesta al borrador activo...';
+      try {
+        await req('/draft', { title, html });
+        await req('/promote', {});
+        if (typeof cargarBorradorDifusion === 'function') await cargarBorradorDifusion();
+        irAPaso(3);
+        if (status) status.textContent = 'Propuesta aprobada y promovida con éxito al Paso 3.';
+      } catch (err) {
+        alert('Error al guardar o promover la propuesta: ' + (err.message || err));
+        if (status) status.textContent = 'Error: no se pudo guardar la propuesta. Revisa la conexión.';
+      }
+    }
+
+    let imagenSeleccionadaUrl = '';
+
+    function seleccionarImagen(n, src) {
+      if (src) imagenSeleccionadaUrl = src;
+      const gallery = document.getElementById('wizard-images-gallery');
+      if (!gallery) return;
+      const cards = gallery.querySelectorAll('.wizard-image-card');
+      cards.forEach((card, idx) => {
+        const isMatch = (idx + 1 === n);
+        card.classList.toggle('selected', isMatch);
+        const chk = card.querySelector('input[type="checkbox"]');
+        if (chk) chk.checked = isMatch;
+        const badge = card.querySelector('.badge-tag');
+        if (badge) {
+          badge.textContent = isMatch ? 'Seleccionada' : 'Disponible';
+          badge.style.background = isMatch ? 'rgba(94, 206, 245, 0.2)' : '#f1f5f9';
+          badge.style.color = isMatch ? '#00467b' : '#64748b';
+        }
+      });
+      const status = document.getElementById('image-upload-status');
+      if (status) {
+        status.textContent = '✓ Portada ' + n + ' seleccionada para el artículo.';
+      }
+    }
+
+    function actualizarSeleccionImagenes() {
+      const gallery = document.getElementById('wizard-images-gallery');
+      if (!gallery) return;
+      const cards = gallery.querySelectorAll('.wizard-image-card');
+      cards.forEach((card) => {
+        const chk = card.querySelector('input[type="checkbox"]');
+        if (chk) card.classList.toggle('selected', chk.checked);
+      });
+    }
+
+    async function subirImagenYAvanzar() {
+      if (!borradorActivo) {
+        alert('No hay un borrador activo cargado.');
+        return;
+      }
+      if (!imagenSeleccionadaUrl) {
+        alert('Por favor selecciona una portada antes de continuar al Paso 4.');
+        return;
+      }
+      const req = window.BloggerAsistente?.request;
+      if (typeof req !== 'function') {
+        alert('El servicio del asistente no está disponible.');
+        return;
+      }
+      const status = document.getElementById('image-upload-status');
+      if (status) {
+        status.textContent = 'Vinculando portada y guardando selección en el borrador activo...';
+      }
+      const coverRel = imagenSeleccionadaUrl.startsWith('/') ? imagenSeleccionadaUrl.substring(1) : imagenSeleccionadaUrl;
+      borradorActivo.imagenPortada = coverRel;
+      borradorActivo.imagenPortadaUrlLocal = imagenSeleccionadaUrl;
+      try {
+        await req('/draft', {
+          title: borradorActivo.titulo || borradorActivo.title || '',
+          html: borradorActivo.htmlBlogger || borradorActivo.html || '',
+          imagenPortada: coverRel
+        });
+        await req('/promote', {});
+        if (typeof cargarBorradorDifusion === 'function') await cargarBorradorDifusion();
+        if (status) status.textContent = '✓ Imagen vinculada correctamente.';
+        irAPaso(4);
+      } catch (err) {
+        alert('Error al vincular la portada al borrador: ' + (err.message || err));
+        if (status) status.textContent = 'Error: no se pudo vincular la imagen al borrador.';
+      }
+    }
+
+    async function regenerarImagen() {
+      const status = document.getElementById('image-upload-status');
+      const btn = document.getElementById('btn-regenerar-imagen');
+      if (btn) btn.disabled = true;
+      if (status) status.textContent = 'Solicitando nueva variante de portada a blogger-editor...';
+      try {
+        const req = window.BloggerAsistente?.request;
+        if (typeof req === 'function') {
+          await req('/message', {
+            text: 'Genera una nueva variante de imagen de portada (16:9) para este post en difusion/imagenes/ con un enfoque visual alternativo y actualiza candidate_draft.json con todas las variantes.'
+          });
+          if (status) status.textContent = 'Generando variante de portada... Comprobando galería cada 3 segundos...';
+          const getVariantCount = (st, b) => {
+            const list1 = (st && st.draft && Array.isArray(st.draft.variantesPortada)) ? st.draft.variantesPortada : [];
+            const list2 = (b && Array.isArray(b.variantesPortada)) ? b.variantesPortada : [];
+            const list3 = (st && st.pendingCandidate && Array.isArray(st.pendingCandidate.variantesPortada)) ? st.pendingCandidate.variantesPortada : [];
+            return new Set([...list1, ...list2, ...list3]).size;
+          };
+          const initialVariants = getVariantCount(window.BloggerAsistente?.lastState, borradorActivo);
+          let attempts = 0;
+          const maxAttempts = 15;
+          const pollStep = async () => {
+            attempts++;
+            let refreshedState = null;
+            try {
+              refreshedState = await req('/refresh', {});
+              if (window.BloggerAsistente?.render) {
+                window.BloggerAsistente.render(refreshedState);
+              }
+            } catch (err) {
+              if (err && err.status === 403) {
+                if (status) status.textContent = 'Error de autorización en el asistente.';
+                if (btn) btn.disabled = false;
+                return;
+              }
+            }
+            await cargarBorradorDifusion();
+            const currentVariants = getVariantCount(refreshedState || window.BloggerAsistente?.lastState, borradorActivo);
+            if (currentVariants > initialVariants) {
+              if (status) status.textContent = 'Nueva portada generada e incorporada a la galería.';
+              if (btn) btn.disabled = false;
+            } else if (attempts >= maxAttempts) {
+              if (status) status.textContent = 'Aviso: La generación de imagen sigue en proceso en el asistente. Pulsa Actualizar en unos instantes.';
+              if (btn) btn.disabled = false;
+            } else {
+              setTimeout(pollStep, 3000);
+            }
+          };
+          setTimeout(pollStep, 3000);
+        } else {
+          if (status) status.textContent = 'Asistente no inicializado en la página.';
+          if (btn) btn.disabled = false;
+        }
+      } catch (err) {
+        if (status) status.textContent = 'Aviso: ' + (err && err.message ? err.message : err);
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    async function cargarBorradorDifusion() {
+      try {
+        const res = await fetch('/api/difusion/activa');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+
+        const metaCard = document.getElementById('difusion-meta-card');
+        const emptyState = document.getElementById('difusion-empty-state');
+        const socialSection = document.getElementById('difusion-social-section');
+        const previewFrame = document.getElementById('difusion-preview-frame');
+        const codeArea = document.getElementById('difusion-code-area');
+
+        if (data && (data.activo || data.titulo)) {
+          borradorActivo = data;
+          metaCard.style.display = 'flex';
+          socialSection.style.display = 'flex';
+          emptyState.style.display = 'none';
+
+          document.getElementById('badge-proyecto').textContent = (data.proyecto || 'APLIARTE').toUpperCase();
+          if (data.version) {
+            const vBadge = document.getElementById('badge-version');
+            vBadge.textContent = data.version === 'asistente-editorial' ? 'Asistente Editorial' : ('v' + data.version);
+            vBadge.style.display = 'inline-block';
+          }
+          document.getElementById('badge-fecha').textContent = data.fecha || '';
+          document.getElementById('difusion-titulo-display').textContent = data.titulo || 'Borrador sin título';
+
+          // Actualizar datos del Paso 2 (Propuesta y SEO)
+          if (data.seo) {
+            const kwEl = document.getElementById('propuesta-kw-principal');
+            if (kwEl && data.seo.palabraClavePrincipal) kwEl.textContent = data.seo.palabraClavePrincipal;
+            const slugEl = document.getElementById('propuesta-slug');
+            if (slugEl && data.seo.slug) slugEl.textContent = data.seo.slug;
+            const tagsEl = document.getElementById('propuesta-etiquetas');
+            if (tagsEl && Array.isArray(data.seo.etiquetas)) {
+              tagsEl.replaceChildren();
+              for (const t of data.seo.etiquetas) {
+                const span = document.createElement('span');
+                span.className = 'badge-tag';
+                span.textContent = String(t);
+                tagsEl.appendChild(span);
+              }
+            }
+          }
+          const asstTitle = document.getElementById('assistant-title');
+          if (asstTitle && !draftDirty && data.titulo) asstTitle.value = data.titulo;
+          const asstHtml = document.getElementById('assistant-html');
+          if (asstHtml && !draftDirty && (data.htmlBlogger || data.html)) asstHtml.value = data.htmlBlogger || data.html;
+          const asstPrev = document.getElementById('assistant-preview');
+          if (asstPrev && (data.htmlBlogger || data.html)) {
+            asstPrev.srcdoc = '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; img-src \'self\' data: blob: http: https:; style-src \'unsafe-inline\'; base-uri \'none\'; form-action \'none\'">' + (data.htmlBlogger || data.html);
+          }
+
+          const html = data.htmlBlogger || data.html || '<p>Sin contenido HTML</p>';
+          const imgUrl = (data.imagenPortada && (data.imagenPortada.startsWith('http://') || data.imagenPortada.startsWith('https://')))
+              ? data.imagenPortada
+              : (data.imagenPortadaUrlLocal || (data.imagenPortada ? ('/' + data.imagenPortada) : ''));
+
+          // Renderizar galería de imágenes generadas del Paso 3
+          const gallery = document.getElementById('wizard-images-gallery');
+          if (gallery) {
+            const listaImagenes = [];
+            const asstDraft = window.BloggerAsistente?.lastState?.draft;
+            const asstPending = window.BloggerAsistente?.lastState?.pendingCandidate;
+            const rawVariants = [];
+            const addVariants = (arr) => {
+              if (Array.isArray(arr)) {
+                arr.forEach(p => {
+                  if (typeof p === 'string' && p.trim() && !rawVariants.includes(p.trim())) {
+                    rawVariants.push(p.trim());
+                  }
+                });
+              }
+            };
+            addVariants(data.variantesPortada);
+            if (asstDraft) addVariants(asstDraft.variantesPortada);
+            if (asstPending) addVariants(asstPending.variantesPortada);
+            if (data.imagenPortada && typeof data.imagenPortada === 'string' && !rawVariants.includes(data.imagenPortada.trim())) {
+              rawVariants.unshift(data.imagenPortada.trim());
+            }
+
+            if (rawVariants.length > 0) {
+              rawVariants.forEach((p, idx) => {
+                const url = (p.startsWith('http://') || p.startsWith('https://') || p.startsWith('/')) ? p : '/' + p;
+                const altText = (idx === 0 ? data.seo?.altPortada : data.seo?.altPortadaVariante2) || ('Variante ' + (idx + 1));
+                const titleText = (idx === 0 ? (data.seo?.tituloVariante1 || 'Variante 1 (Principal 16:9)') : (data.seo?.tituloVariante2 || ('Variante ' + (idx + 1))));
+                listaImagenes.push({
+                  src: url,
+                  alt: altText,
+                  titulo: titleText
+                });
+              });
+            } else if (imgUrl) {
+              listaImagenes.push({
+                src: imgUrl,
+                alt: data.seo?.altPortada || 'Portada del artículo',
+                titulo: data.seo?.tituloVariante1 || 'Variante 1 (Principal 16:9)'
+              });
+            }
+
+            if (listaImagenes.length > 0) {
+              if (!imagenSeleccionadaUrl) {
+                imagenSeleccionadaUrl = listaImagenes[0].src;
+              }
+              gallery.replaceChildren();
+              listaImagenes.forEach((img, idx) => {
+                const num = idx + 1;
+                const isSel = (img.src === imagenSeleccionadaUrl || (idx === 0 && !imagenSeleccionadaUrl));
+                const card = document.createElement('div');
+                card.className = 'wizard-image-card' + (isSel ? ' selected' : '');
+                card.id = 'img-card-' + num;
+                card.onclick = () => seleccionarImagen(num, img.src);
+
+                const imgEl = document.createElement('img');
+                imgEl.src = img.src;
+                imgEl.alt = img.alt;
+                imgEl.id = 'wizard-img-' + num;
+                imgEl.style.cssText = 'width:100%; height:160px; object-fit:cover; display:block;';
+
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'wizard-image-info';
+
+                const label = document.createElement('label');
+                label.style.cssText = 'display:flex; align-items:center; gap:8px; font-weight:700; cursor:pointer;';
+
+                const chk = document.createElement('input');
+                chk.type = 'checkbox';
+                chk.id = 'chk-img-' + num;
+                chk.checked = isSel;
+                chk.style.cssText = 'width:20px; height:20px; cursor:pointer; accent-color:#005fa9;';
+                chk.onclick = (e) => {
+                  e.stopPropagation();
+                  seleccionarImagen(num, img.src);
+                };
+
+                const spanTitle = document.createElement('span');
+                spanTitle.textContent = img.titulo;
+                label.append(chk, spanTitle);
+
+                const badge = document.createElement('span');
+                badge.className = 'badge-tag';
+                badge.style.cssText = isSel ? 'background:rgba(94, 206, 245, 0.2); color:#00467b;' : 'background:#f1f5f9; color:#64748b;';
+                badge.textContent = isSel ? 'Seleccionada' : 'Disponible';
+
+                infoDiv.append(label, badge);
+                card.append(imgEl, infoDiv);
+                gallery.appendChild(card);
+              });
+            }
+          }
+
+          let previewHtml = html;
+          const chosenImgUrl = imagenSeleccionadaUrl || imgUrl;
+          const isRemoteImg = chosenImgUrl && (chosenImgUrl.startsWith('http://') || chosenImgUrl.startsWith('https://'));
+          if (chosenImgUrl && !previewHtml.includes(chosenImgUrl)) {
+            const alt = (data.seo && data.seo.altPortada) || 'Portada del artículo';
+            const imgBanner = '<div class="separator" style="clear: both; text-align: center; margin-bottom: 24px;"><img border="0" src="' + chosenImgUrl + '" alt="' + alt + '" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.15);" /></div>';
+            if (previewHtml.includes('<div class="apliarte-blog-post"')) {
+              previewHtml = previewHtml.replace(/(<div class="apliarte-blog-post"[^>]*>)/, '$1' + imgBanner);
+            } else {
+              previewHtml = imgBanner + previewHtml;
+            }
+          }
+          const cspMeta = '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; img-src \'self\' data: blob: http: https:; style-src \'unsafe-inline\'; base-uri \'none\'; form-action \'none\'">';
+          previewFrame.srcdoc = cspMeta + previewHtml;
+          // El código para copiar a Blogger no debe llevar rutas locales rotas (/difusion/...)
+          codeArea.value = isRemoteImg ? previewHtml : html;
+
+          // Aviso de portada local para recordar subirla a mano
+          const avisoImg = document.getElementById('aviso-portada-local');
+          if (avisoImg) {
+            avisoImg.style.display = (chosenImgUrl && !isRemoteImg) ? 'block' : 'none';
+          }
+
+          // Botón de descargar portada
+          const btnImg = document.getElementById('btn-descargar-imagen');
+          if (btnImg) {
+            const chosenImgUrl = imagenSeleccionadaUrl || imgUrl;
+            if (chosenImgUrl) {
+              btnImg.href = chosenImgUrl;
+              btnImg.download = (data.proyecto || 'portada') + '-portada.jpg';
+              btnImg.style.display = 'inline-flex';
+            } else {
+              btnImg.style.display = 'none';
+            }
+          }
+
+          // Snippets de redes
+          actualizarSnippetsRedes(data);
+
+          // URL existente
+          const inputUrl = document.getElementById('input-url-blogger');
+          if (data.urlBlogger) {
+            inputUrl.value = data.urlBlogger;
+            activarBotonesSociales(true);
+          } else {
+            inputUrl.value = '';
+            activarBotonesSociales(false);
+          }
+        } else {
+          borradorActivo = null;
+          metaCard.style.display = 'none';
+          socialSection.style.display = 'none';
+          emptyState.style.display = 'flex';
+          previewFrame.srcdoc = '';
+          codeArea.value = '';
+        }
+      } catch (err) {
+        console.warn('Error cargando borrador de difusión:', err);
+      }
+    }
+
+    function actualizarSnippetsRedes(data) {
+      const url = data.urlBlogger || '{URL_BLOG}';
+      const textX = data.textoXPublicable || (data.textoX ? data.textoX.replace('{URL_BLOG}', url) : '');
+      const textGen = data.textoGeneralPublicable || (data.textoGeneral ? data.textoGeneral.replace('{URL_BLOG}', url) : '');
+      const textFb = data.textoFacebookPublicable || (data.textoFacebook ? data.textoFacebook.replace('{URL_BLOG}', url) : '');
+      const textLi = data.textoLinkedInPublicable || (data.textoLinkedIn ? data.textoLinkedIn.replace('{URL_BLOG}', url) : '');
+      const textYt = data.textoYouTubePublicable || (data.textoYouTube ? data.textoYouTube.replace('{URL_BLOG}', url) : '');
+
+      const snipX = document.getElementById('snippet-x');
+      if (snipX) snipX.textContent = textX;
+
+      const charCountX = document.getElementById('char-count-x');
+      if (charCountX) {
+        const len = textX.length;
+        charCountX.textContent = len + ' / 280 car.';
+        charCountX.style.color = len > 280 ? '#dc2626' : (len > 250 ? '#d97706' : '#64748b');
+        charCountX.style.fontWeight = len > 280 ? '700' : 'normal';
+      }
+
+      const snipTg = document.getElementById('snippet-telegram');
+      if (snipTg) snipTg.textContent = textGen;
+
+      const snipWa = document.getElementById('snippet-whatsapp');
+      if (snipWa) snipWa.textContent = textGen;
+
+      const snipFb = document.getElementById('snippet-facebook');
+      if (snipFb) snipFb.textContent = textFb;
+
+      const snipLi = document.getElementById('snippet-linkedin');
+      if (snipLi) snipLi.textContent = textLi;
+
+      const snipYt = document.getElementById('snippet-youtube');
+      if (snipYt) snipYt.textContent = textYt;
+    }
+
+    function copiarTextoFacebook() {
+      if (!borradorActivo) return;
+      const url = borradorActivo.urlBlogger || '{URL_BLOG}';
+      const text = borradorActivo.textoFacebookPublicable || (borradorActivo.textoFacebook || '').replace('{URL_BLOG}', url);
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        mostrarFeedback('✓ Texto de Facebook copiado');
+      });
+    }
+
+    function copiarTextoLinkedIn() {
+      if (!borradorActivo) return;
+      const url = borradorActivo.urlBlogger || '{URL_BLOG}';
+      const text = borradorActivo.textoLinkedInPublicable || (borradorActivo.textoLinkedIn || '').replace('{URL_BLOG}', url);
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        mostrarFeedback('✓ Texto de LinkedIn copiado');
+      });
+    }
+
+    function copiarTextoYouTube() {
+      if (!borradorActivo) return;
+      const url = borradorActivo.urlBlogger || '{URL_BLOG}';
+      const text = borradorActivo.textoYouTubePublicable || (borradorActivo.textoYouTube || '').replace('{URL_BLOG}', url);
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        mostrarFeedback('✓ Texto de YouTube copiado');
+      });
+    }
+
+    function activarBotonesSociales(activo) {
+      const ids = [
+        'btn-intent-x',
+        'btn-intent-telegram',
+        'btn-intent-whatsapp',
+        'btn-intent-facebook',
+        'btn-intent-linkedin',
+        'btn-intent-youtube'
+      ];
+      ids.forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) btn.disabled = !activo;
+      });
+    }
+
+    function validarUrlInput() {
+      const input = document.getElementById('input-url-blogger');
+      const val = (input.value || '').trim();
+      const esValida = val.startsWith('http://') || val.startsWith('https://');
+      const btnGuardar = document.getElementById('btn-guardar-url');
+      if (btnGuardar) btnGuardar.disabled = !esValida;
+    }
+
+    async function guardarUrlBlogger() {
+      const input = document.getElementById('input-url-blogger');
+      const url = (input.value || '').trim();
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        alert('Por favor introduce una URL válida (http:// o https://)');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/difusion/url', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-ErBolamm-Action': String(window.Oficina?.office?.actionToken || '') },
+          body: JSON.stringify({ url })
+        });
+        const data = await res.json();
+        if (data && data.ok) {
+          borradorActivo = data.borrador;
+          activarBotonesSociales(true);
+          actualizarSnippetsRedes(borradorActivo);
+
+          const feedback = document.getElementById('url-feedback');
+          feedback.textContent = '✓ URL vinculada con éxito';
+          setTimeout(() => { feedback.textContent = ''; }, 3000);
+          mostrarFeedback('✓ Enlaces de redes sociales listos');
+        } else {
+          alert('Error: ' + (data.error || 'No se pudo guardar la URL'));
+        }
+      } catch (e) {
+        alert('Error conectando con el servidor: ' + e);
+      }
+    }
+
+    function dispararIntentX() {
+      if (!borradorActivo) return;
+      const url = borradorActivo.urlBlogger || '';
+      const text = borradorActivo.textoXPublicable || (borradorActivo.textoX || '').replace('{URL_BLOG}', url);
+      const intentUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text);
+      window.open(intentUrl, '_blank', 'width=580,height=440');
+    }
+
+    function dispararIntentTelegram() {
+      if (!borradorActivo) return;
+      const url = borradorActivo.urlBlogger || '';
+      const text = borradorActivo.textoGeneralPublicable || (borradorActivo.textoGeneral || '').replace('{URL_BLOG}', url);
+      const intentUrl = 'https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(text);
+      window.open(intentUrl, '_blank');
+    }
+
+    function dispararIntentWhatsApp() {
+      if (!borradorActivo) return;
+      const url = borradorActivo.urlBlogger || '';
+      const text = borradorActivo.textoGeneralPublicable || (borradorActivo.textoGeneral || '').replace('{URL_BLOG}', url);
+      const intentUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(text);
+      window.open(intentUrl, '_blank');
+    }
+
+    function dispararIntentFacebook() {
+      if (!borradorActivo) return;
+      const url = borradorActivo.urlBlogger || '';
+      const text = borradorActivo.textoFacebookPublicable || (borradorActivo.textoFacebook || '').replace('{URL_BLOG}', url);
+      navigator.clipboard.writeText(text).then(() => {
+        mostrarFeedback('✓ Copiado para pegar en Facebook');
+      });
+      const intentUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
+      window.open(intentUrl, '_blank', 'width=600,height=500');
+    }
+
+    function dispararIntentLinkedIn() {
+      if (!borradorActivo) return;
+      const url = borradorActivo.urlBlogger || '';
+      const text = borradorActivo.textoLinkedInPublicable || (borradorActivo.textoLinkedIn || '').replace('{URL_BLOG}', url);
+      navigator.clipboard.writeText(text).then(() => {
+        mostrarFeedback('✓ Copiado para pegar en LinkedIn');
+      });
+      const intentUrl = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(url);
+      window.open(intentUrl, '_blank', 'width=600,height=550');
+    }
+
+    function dispararIntentYouTube() {
+      if (!borradorActivo) return;
+      const url = borradorActivo.urlBlogger || '';
+      const text = borradorActivo.textoYouTubePublicable || (borradorActivo.textoYouTube || '').replace('{URL_BLOG}', url);
+      navigator.clipboard.writeText(text).then(() => {
+        mostrarFeedback('✓ Copiado para pestaña Comunidad');
+      });
+      window.open('https://www.youtube.com/@erbolammapliarte/community', '_blank');
+    }
+
+    async function archivarDifusion() {
+      if (!confirm('¿Deseas dar por finalizada esta difusión y archivar el borrador en el histórico?')) {
+        return;
+      }
+      try {
+        const res = await fetch('/api/difusion/archivar', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-ErBolamm-Action': String(window.Oficina?.office?.actionToken || ''),
+          },
+          body: '{}',
+        });
+        const data = await res.json();
+        if (data && data.ok) {
+          mostrarFeedback('✓ ¡Difusión archivada con éxito!');
+          await cargarBorradorDifusion();
+        } else {
+          alert('Error archivando: ' + (data.error || 'Desconocido'));
+        }
+      } catch (e) {
+        alert('Error: ' + e);
+      }
+    }
+
+    function cambiarModoVisor(modo) {
+      const btnPreview = document.getElementById('btn-mode-preview');
+      const btnCode = document.getElementById('btn-mode-code');
+      const previewFrame = document.getElementById('difusion-preview-frame');
+      const codeArea = document.getElementById('difusion-code-area');
+
+      if (modo === 'preview') {
+        btnPreview.classList.add('active');
+        btnCode.classList.remove('active');
+        previewFrame.style.display = 'block';
+        codeArea.style.display = 'none';
+      } else {
+        btnPreview.classList.remove('active');
+        btnCode.classList.add('active');
+        previewFrame.style.display = 'none';
+        codeArea.style.display = 'block';
+      }
+    }
+
+    function mostrarFeedback(msg) {
+      const fb = document.getElementById('copy-feedback');
+      fb.textContent = msg || '✓ ¡Copiado al portapapeles!';
+      fb.style.display = 'inline-block';
+      setTimeout(() => {
+        fb.style.display = 'none';
+      }, 2500);
+    }
+
+    function copiarTitulo() {
+      if (!borradorActivo || !borradorActivo.titulo) return;
+      navigator.clipboard.writeText(borradorActivo.titulo).then(() => {
+        mostrarFeedback('✓ ¡Título copiado!');
+      }).catch(() => {
+        alert('Título: ' + borradorActivo.titulo);
+      });
+    }
+
+    function copiarHtml() {
+      const codeArea = document.getElementById('difusion-code-area');
+      const textToCopy = (codeArea && codeArea.value) ? codeArea.value : (borradorActivo ? (borradorActivo.htmlBlogger || borradorActivo.html) : '');
+      if (!textToCopy) return;
+      const isLocal = borradorActivo && (borradorActivo.imagenPortada || borradorActivo.imagenPortadaUrlLocal) && !((borradorActivo.imagenPortada || '').startsWith('http'));
+      const msg = isLocal
+        ? '✓ ¡HTML copiado! (Sube la portada a mano en Blogger)'
+        : '✓ ¡HTML para Blogger copiado!';
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        mostrarFeedback(msg);
+      }).catch(() => {
+        mostrarFeedback('✓ Selección manual en pestaña Código');
+        cambiarModoVisor('code');
+      });
+    }
+
+    function cambiarPestana(tipo) {
+      const tabDifusion = document.getElementById('tab-difusion');
+      const tabMonitor = document.getElementById('tab-monitor');
+      const tabPlantillas = document.getElementById('tab-plantillas');
+      const tabRecurrentes = document.getElementById('tab-recurrentes');
+      const wrapDifusion = document.getElementById('wrapper-difusion');
+      const wrapMonitor = document.getElementById('wrapper-monitor');
+      const wrapPlantillas = document.getElementById('wrapper-plantillas');
+      const wrapRecurrentes = document.getElementById('wrapper-recurrentes');
+
+      tabDifusion.classList.remove('active');
+      tabMonitor.classList.remove('active');
+      tabPlantillas.classList.remove('active');
+      if (tabRecurrentes) tabRecurrentes.classList.remove('active');
+      wrapDifusion.style.display = 'none';
+      wrapMonitor.style.display = 'none';
+      wrapPlantillas.style.display = 'none';
+      if (wrapRecurrentes) wrapRecurrentes.style.display = 'none';
+
+      if (tipo === 'difusion') {
+        tabDifusion.classList.add('active');
+        wrapDifusion.style.display = 'flex';
+        cargarBorradorDifusion();
+      } else if (tipo === 'monitor') {
+        tabMonitor.classList.add('active');
+        wrapMonitor.style.display = 'flex';
+      } else if (tipo === 'plantillas') {
+        tabPlantillas.classList.add('active');
+        wrapPlantillas.style.display = 'block';
+      } else if (tipo === 'recurrentes') {
+        if (tabRecurrentes) tabRecurrentes.classList.add('active');
+        if (wrapRecurrentes) wrapRecurrentes.style.display = 'flex';
+        cargarTareasRecurrentes();
+      }
+    }
+
+    async function cargarTareasRecurrentes() {
+      const grid = document.getElementById('recurrentes-grid');
+      const statusMsg = document.getElementById('recurrentes-status-msg');
+      if (statusMsg) {
+        statusMsg.style.display = 'block';
+        statusMsg.textContent = 'Consultando tareas periódicas programadas en tareas/recurrentes/...';
+      }
+      try {
+        const res = await fetch('/api/tasks/recurrentes');
+        const data = await res.json();
+        if (!data.ok || !Array.isArray(data.tasks)) {
+          if (grid) grid.innerHTML = '<div style="color:#dc2626; padding:16px;">Error al obtener tareas recurrentes</div>';
+          return;
+        }
+        if (statusMsg) {
+          statusMsg.textContent = 'Sincronizado: ' + data.tasks.length + ' tarea(s) recurrente(s) configurada(s).';
+        }
+        if (grid) {
+          grid.innerHTML = '';
+          data.tasks.forEach(t => {
+            const card = document.createElement('div');
+            card.style.cssText = 'background:#fff; border:1px solid #cbd5e1; border-radius:8px; padding:16px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 1px 3px rgba(0,0,0,0.05);';
+            const statusColor = t.active ? (t.isDue ? '#ea580c' : '#16a34a') : '#64748b';
+            const statusBadge = t.status || (t.active ? 'Activa' : 'Inactiva');
+
+            const headerDiv = document.createElement('div');
+            headerDiv.style.cssText = 'display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:8px;';
+            const titleEl = document.createElement('h3');
+            titleEl.style.cssText = 'margin:0; font-size:14.5px; font-weight:700; color:#00467b; word-break:break-word;';
+            titleEl.textContent = t.id;
+            const badgeEl = document.createElement('span');
+            badgeEl.style.cssText = 'font-size:11px; font-weight:700; text-transform:uppercase; padding:2px 8px; border-radius:12px; background:' + statusColor + '15; color:' + statusColor + '; white-space:nowrap;';
+            badgeEl.textContent = statusBadge;
+            headerDiv.appendChild(titleEl);
+            headerDiv.appendChild(badgeEl);
+
+            const descEl = document.createElement('p');
+            descEl.style.cssText = 'margin:0 0 8px; font-size:13px; color:#475569; line-height:1.4;';
+            descEl.textContent = t.objective || 'Sin descripción';
+
+            const scheduleEl = document.createElement('div');
+            scheduleEl.style.cssText = 'font-size:12px; color:#64748b; margin-bottom:6px;';
+            scheduleEl.textContent = 'Horario: ' + (t.daysDescription || 'Días fijados') + ' a las ' + (t.timeFormatted || '09:00');
+
+            const lastEl = document.createElement('div');
+            lastEl.style.cssText = 'font-size:12px; color:#64748b; margin-bottom:6px;';
+            lastEl.textContent = 'Última ejecución: ' + (t.lastExecutionFormatted || 'Nunca ejecutada');
+
+            const cmdEl = document.createElement('div');
+            cmdEl.style.cssText = 'font-size:11.5px; color:#005fa9; font-family:monospace; background:#f1f5f9; padding:4px 8px; border-radius:4px; margin-bottom:12px; word-break:break-all;';
+            cmdEl.textContent = t.command || 'Sin comando';
+
+            const topContent = document.createElement('div');
+            topContent.appendChild(headerDiv);
+            topContent.appendChild(descEl);
+            topContent.appendChild(scheduleEl);
+            topContent.appendChild(lastEl);
+            topContent.appendChild(cmdEl);
+
+            const btnBar = document.createElement('div');
+            btnBar.style.cssText = 'display:flex; gap:8px; margin-top:8px;';
+            const runBtn = document.createElement('button');
+            runBtn.type = 'button';
+            runBtn.className = 'btn-action btn-primary';
+            runBtn.style.cssText = 'flex:1; font-size:12.5px; padding:7px 12px; font-weight:700;';
+            runBtn.textContent = '⚡ Ejecutar / Preparar';
+            runBtn.onclick = () => ejecutarTareaRecurrente(t.id);
+            btnBar.appendChild(runBtn);
+
+            card.appendChild(topContent);
+            card.appendChild(btnBar);
+            grid.appendChild(card);
+          });
+        }
+      } catch (err) {
+        if (grid) grid.innerHTML = '<div style="color:#dc2626; padding:16px;">Error de conexión con /api/tasks/recurrentes: ' + (err.message || err) + '</div>';
+      }
+    }
+
+    async function ejecutarTareaRecurrente(id) {
+      const statusMsg = document.getElementById('recurrentes-status-msg');
+      if (statusMsg) {
+        statusMsg.style.display = 'block';
+        statusMsg.textContent = 'Ejecutando tarea recurrente ' + id + '...';
+      }
+      try {
+        const res = await fetch('/api/tasks/recurrentes/run', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-action-token': window.actionToken || '',
+          },
+          body: JSON.stringify({ id: id })
+        });
+        const data = await res.json();
+        if (data.ok && data.result?.success) {
+          if (statusMsg) {
+            statusMsg.textContent = '✓ Tarea ' + id + ' ejecutada con éxito. Actualizando borrador...';
+          }
+          await cargarTareasRecurrentes();
+          if (typeof cargarBorradorDifusion === 'function') await cargarBorradorDifusion();
+        } else {
+          alert('Error en ejecución: ' + (data.result?.stderr || data.error || 'Fallo desconocido'));
+          if (statusMsg) statusMsg.textContent = 'Fallo en la ejecución de ' + id + '.';
+        }
+      } catch (err) {
+        alert('Error al disparar tarea recurrente: ' + (err.message || err));
+      }
+    }
+
+    async function ejecutarPublicacionDiariaUI() {
+      await ejecutarTareaRecurrente('ge--erbolamm-trabajo--publicacion-diaria-noticias-blogger');
+      cambiarPestana('difusion');
+      irAPaso(1);
+    }
+
+    function copiarUrlsDesdeEntrada() {
+      const text = document.getElementById('assistant-input')?.value || '';
+      const found = text.match(/https?:\/\/[^\s,]+/g) || [];
+      if (!found.length) {
+        alert('No se encontraron enlaces web (http:// o https://) en el texto de entrada.');
+        return;
+      }
+      const input = document.getElementById('input-fuentes-urls');
+      if (input) {
+        input.value = found.join(', ');
+        extraerFuentesUI();
+      }
+    }
+
+    async function extraerFuentesUI() {
+      const input = document.getElementById('input-fuentes-urls');
+      const status = document.getElementById('fuentes-extractor-status');
+      const list = document.getElementById('fuentes-preview-list');
+      if (!input || !input.value.trim()) {
+        const text = document.getElementById('assistant-input')?.value || '';
+        const found = text.match(/https?:\/\/[^\s,]+/g) || [];
+        if (found.length && input) {
+          input.value = found.join(', ');
+        } else {
+          alert('Por favor introduce al menos una URL.');
+          return;
+        }
+      }
+      const rawUrls = input.value.split(/[,\s]+/).filter(u => u.startsWith('http://') || u.startsWith('https://'));
+      if (rawUrls.length === 0) {
+        alert('Introduce URLs válidas que empiecen por http:// o https://');
+        return;
+      }
+      if (status) status.textContent = 'Consultando ' + rawUrls.length + ' fuentes y extrayendo og:image real...';
+      try {
+        const res = await fetch('/api/difusion/extraer-fuente', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ urls: rawUrls })
+        });
+        const data = await res.json();
+        if (!data.ok || !Array.isArray(data.fuentes)) {
+          if (status) status.textContent = 'Error al extraer fuentes: ' + (data.error || 'Respuesta no válida');
+          return;
+        }
+        if (status) status.textContent = '✓ ' + data.fuentes.length + ' fuente(s) analizada(s) con éxito.';
+        if (list) {
+          list.innerHTML = '';
+          data.fuentes.forEach(f => {
+            const card = document.createElement('div');
+            card.style.cssText = 'background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:10px; display:flex; gap:10px; align-items:flex-start;';
+            const imgEl = document.createElement(f.imagenUrl ? 'img' : 'div');
+            if (f.imagenUrl) {
+              imgEl.src = f.imagenUrl;
+              imgEl.alt = 'Portada de ' + f.dominio;
+              imgEl.style.cssText = 'width:70px; height:50px; object-fit:cover; border-radius:4px; border:1px solid #cbd5e1; flex-shrink:0;';
+            } else {
+              imgEl.style.cssText = 'width:70px; height:50px; background:#e2e8f0; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:10px; color:#64748b; flex-shrink:0;';
+              imgEl.textContent = 'Sin imagen';
+            }
+            const infoDiv = document.createElement('div');
+            infoDiv.style.cssText = 'overflow:hidden; font-size:12.5px;';
+            const titleDiv = document.createElement('div');
+            titleDiv.style.cssText = 'font-weight:700; color:#00467b; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;';
+            titleDiv.textContent = f.titulo;
+            const domainDiv = document.createElement('div');
+            domainDiv.style.cssText = 'color:#64748b; font-size:11.5px;';
+            domainDiv.textContent = f.dominio;
+            const descDiv = document.createElement('div');
+            descDiv.style.cssText = 'color:#334155; font-size:11.5px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;';
+            descDiv.textContent = f.descripcion;
+
+            infoDiv.appendChild(titleDiv);
+            infoDiv.appendChild(domainDiv);
+            infoDiv.appendChild(descDiv);
+
+            card.appendChild(imgEl);
+            card.appendChild(infoDiv);
+            list.appendChild(card);
+          });
+        }
+      } catch (err) {
+        if (status) status.textContent = 'Error: ' + (err.message || err);
+      }
+    }
+
+    let _cachedGlobalToken = '';
+    async function obtenerActionToken() {
+      if (window.actionToken) return String(window.actionToken);
+      const officeToken = window.Oficina?.office?.actionToken;
+      if (officeToken) return String(officeToken);
+      if (_cachedGlobalToken) return _cachedGlobalToken;
+      try {
+        const response = await fetch('/api/tasks', { credentials: 'same-origin', cache: 'no-store' });
+        if (response.ok) {
+          const data = await response.json();
+          _cachedGlobalToken = String(data.office?.actionToken || '');
+          window.actionToken = _cachedGlobalToken;
+        }
+      } catch (_) {}
+      return _cachedGlobalToken;
+    }
+
+    async function prepararNoticiaDesdeFuentesUI() {
+      const input = document.getElementById('input-fuentes-urls');
+      const status = document.getElementById('fuentes-extractor-status');
+      if (!input || !input.value.trim()) {
+        const text = document.getElementById('assistant-input')?.value || '';
+        const found = text.match(/https?:\/\/[^\s,]+/g) || [];
+        if (found.length && input) {
+          input.value = found.join(', ');
+        } else {
+          alert('Por favor introduce al menos una URL.');
+          return;
+        }
+      }
+      const rawUrls = input.value.split(/[,\s]+/).filter(u => u.startsWith('http://') || u.startsWith('https://'));
+      if (rawUrls.length === 0) {
+        alert('Introduce URLs válidas.');
+        return;
+      }
+      const temaInput = (document.getElementById('assistant-input')?.value || '').trim();
+      let tema = (temaInput && !temaInput.startsWith('http')) ? temaInput : '';
+      if (!tema) {
+        tema = prompt('Título o tema principal del artículo de noticias:', 'Actualidad Tecnológica: ' + (new Date().toISOString().substring(0, 10)));
+      }
+      if (!tema) return;
+      if (status) status.textContent = 'Preparando borrador completo con fuentes e imágenes reales...';
+      try {
+        const token = await obtenerActionToken();
+        const res = await fetch('/api/difusion/preparar-noticia', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-ErBolamm-Action': token,
+            'x-action-token': token,
+          },
+          body: JSON.stringify({ tema: tema, urls: rawUrls })
+        });
+        const data = await res.json();
+        if (data.ok && data.borrador) {
+          if (status) status.textContent = '✓ Borrador preparado con imágenes reales de las fuentes. Avanzando al Paso 2...';
+          await cargarBorradorDifusion();
+          irAPaso(2);
+        } else {
+          alert('Error al preparar noticia: ' + (data.error || 'Respuesta fallida'));
+        }
+      } catch (err) {
+        alert('Error: ' + (err.message || err));
+      }
+    }
+
+    async function enviarBorradorBloggerN8N() {
+      const statusEl = document.getElementById('n8n-publish-status');
+      if (!borradorActivo) {
+        alert('No hay un borrador activo cargado.');
+        return;
+      }
+      const titulo = borradorActivo.titulo || document.getElementById('assistant-title')?.value || '';
+      const html = borradorActivo.htmlBlogger || borradorActivo.html || document.getElementById('assistant-html')?.value || '';
+      if (!titulo || !html) {
+        alert('El título o el contenido HTML están vacíos.');
+        return;
+      }
+      if (statusEl) {
+        statusEl.style.display = 'block';
+        statusEl.style.background = '#e0f2fe';
+        statusEl.style.color = '#0369a1';
+        statusEl.style.border = '1px solid #bae6fd';
+        statusEl.textContent = 'Enviando borrador a Blogger vía n8n (javier@apliarte.com)...';
+      }
+      try {
+        const token = await obtenerActionToken();
+        const res = await fetch('/api/difusion/blogger/enviar-n8n', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-ErBolamm-Action': token,
+            'x-action-token': token,
+          },
+          body: JSON.stringify({
+            titulo: titulo,
+            html: html,
+            etiquetas: borradorActivo.seo?.etiquetas || ['Tecnología', 'Noticias', 'ApliArte']
+          })
+        });
+        const data = await res.json();
+        if (data.ok) {
+          if (statusEl) {
+            statusEl.style.background = '#dcfce7';
+            statusEl.style.color = '#15803d';
+            statusEl.style.border = '1px solid #bbf7d0';
+            statusEl.textContent = '✓ Borrador enviado con éxito a Blogger (vía n8n / javier@apliarte.com). En breve aparecerá en draft.blogger.com.';
+          }
+          alert('¡Borrador enviado con éxito a Blogger a través de n8n!');
+        } else {
+          if (statusEl) {
+            statusEl.style.background = '#fee2e2';
+            statusEl.style.color = '#991b1b';
+            statusEl.style.border = '1px solid #fecaca';
+            statusEl.textContent = 'Aviso: ' + (data.error || 'Respuesta fallida de n8n');
+          }
+          alert('Aviso al enviar a n8n: ' + (data.error || 'Fallo al procesar'));
+        }
+      } catch (err) {
+        if (statusEl) {
+          statusEl.style.background = '#fee2e2';
+          statusEl.style.color = '#991b1b';
+          statusEl.style.border = '1px solid #fecaca';
+          statusEl.textContent = 'Error de conexión: ' + (err.message || err);
+        }
+        alert('Error al conectar con el servidor: ' + (err.message || err));
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      cargarBorradorDifusion();
+    });
+  </script>
+
+  <script>
+  (() => {
+    const byId = (id) => document.getElementById(id);
+    const status = byId('assistant-status');
+    let busy = false;
+    draftDirty = false;
+    let cachedToken = '';
+    async function token() {
+      const officeToken = window.Oficina?.office?.actionToken;
+      if (officeToken) return String(officeToken);
+      if (cachedToken) return cachedToken;
+      const response = await fetch('/api/tasks', { credentials: 'same-origin', cache: 'no-store' });
+      if (!response.ok) throw new Error('No se pudo obtener autorización de la oficina.');
+      const data = await response.json();
+      cachedToken = String(data.office?.actionToken || '');
+      if (!cachedToken) throw new Error('Falta autorización de la oficina.');
+      return cachedToken;
+    }
+    async function request(path = '', body) {
+      const headers = { 'Content-Type': 'application/json', 'X-ErBolamm-Action': await token() };
+      if (body !== undefined) headers['Content-Type'] = 'application/json';
+      const response = await fetch('/api/blogger/assistant' + path, {
+        method: body === undefined ? 'GET' : 'POST', headers,
+        credentials: 'same-origin', cache: 'no-store',
+        ...(body === undefined ? {} : { body: JSON.stringify(body) })
+      });
+      if (!response.ok) {
+        if (response.status === 403) cachedToken = '';
+        const error = new Error('La oficina no pudo completar la solicitud (HTTP ' + response.status + ').');
+        error.status = response.status;
+        // The server only ever returns a short opaque code, never diagnostics.
+        try { error.code = String((await response.json()).error || ''); } catch (_) { error.code = ''; }
+        throw error;
+      }
+      return response.json();
+    }
+    function render(state) {
+      const session = state.session || {};
+      status.textContent = state.error === 'session-expired'
+        ? 'La sesión anterior del asistente ya no existe. Se iniciará una nueva al enviar tu petición o al pulsar Iniciar o retomar asistente.'
+        : state.error || ('Sesión: ' + (session.status || 'sin iniciar') + '. Usa Actualizar y guardar respuesta para consultar avances.');
+      const messages = byId('assistant-messages');
+      if (messages) {
+        messages.replaceChildren();
+        for (const message of (state.messages || [])) {
+          const item = document.createElement('div');
+          item.className = 'assistant-message ' + (message.role === 'user' ? 'user-message' : 'system-message');
+          const label = document.createElement('strong');
+          label.textContent = message.role === 'user' ? 'Tú: ' : 'Estado de entrega: ';
+          const text = document.createElement('span');
+          text.textContent = String(message.text || '');
+          item.append(label, text); messages.append(item);
+        }
+      }
+      if (byId('assistant-terminal')) byId('assistant-terminal').textContent = String(state.terminalText || '');
+      const respCard = document.getElementById('assistant-response-card');
+      const respText = document.getElementById('assistant-response-text');
+      const respBadge = document.getElementById('assistant-response-badge');
+      if (respCard && respText) {
+        const rawTerminal = String(state.terminalText || '').trim();
+        if (rawTerminal) {
+          let clean = rawTerminal;
+          const marker = '> UNTRUSTED EDITORIAL INPUT';
+          const lastInputIdx = clean.lastIndexOf(marker);
+          if (lastInputIdx !== -1) {
+            clean = clean.substring(lastInputIdx);
+            const sep = '────────────────────────────────────────────────────────────';
+            const secondSep = clean.indexOf(sep, 40);
+            if (secondSep !== -1) {
+              clean = clean.substring(secondSep + sep.length);
+            }
+          }
+          clean = clean
+            .replace(/\? for shortcuts[\s\S]*$/, '')
+            .replace(/esc to cancel[\s\S]*$/, '')
+            .replace(/───+[\s\S]*$/, '')
+            .trim();
+          if (clean) {
+            respText.textContent = clean;
+            respCard.style.display = 'block';
+            if (respBadge) {
+              const isDone = session.status === 'idle' || session.status === 'done';
+              respBadge.textContent = isDone ? 'Respuesta lista' : 'Generando...';
+              respBadge.style.background = isDone ? '#dcfce7' : '#e0f2fe';
+              respBadge.style.color = isDone ? '#15803d' : '#0369a1';
+            }
+          } else {
+            respCard.style.display = 'none';
+          }
+        } else {
+          respCard.style.display = 'none';
+        }
+      }
+      if (!draftDirty && state.draft) {
+        byId('assistant-title').value = state.draft.title || state.draft.titulo || '';
+        const htmlContent = state.draft.html || state.draft.htmlBlogger || '';
+        byId('assistant-html').value = htmlContent;
+        if (htmlContent) {
+          const previewEl = byId('assistant-preview');
+          if (previewEl) {
+            previewEl.srcdoc = '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; img-src \'self\' data: blob: http: https:; style-src \'unsafe-inline\'; base-uri \'none\'; form-action \'none\'">' + htmlContent;
+          }
+        }
+      }
+      if (state.draft && state.draft.seo) {
+        const kwEl = document.getElementById('propuesta-kw-principal');
+        if (kwEl && state.draft.seo.palabraClavePrincipal) kwEl.textContent = String(state.draft.seo.palabraClavePrincipal);
+        const slugEl = document.getElementById('propuesta-slug');
+        if (slugEl && state.draft.seo.slug) slugEl.textContent = String(state.draft.seo.slug);
+        const tagsEl = document.getElementById('propuesta-etiquetas');
+        if (tagsEl && Array.isArray(state.draft.seo.etiquetas)) {
+          tagsEl.replaceChildren();
+          for (const t of state.draft.seo.etiquetas) {
+            const span = document.createElement('span');
+            span.className = 'badge-tag';
+            span.textContent = String(t);
+            tagsEl.appendChild(span);
+          }
+        }
+      }
+      const step1Badge = document.getElementById('step1-badge');
+      if (step1Badge && state.draft && (state.draft.title || state.draft.titulo)) {
+        step1Badge.textContent = 'Propuesta lista (Paso 2)';
+        step1Badge.style.color = '#15803d';
+        step1Badge.style.borderColor = '#bbf7d0';
+      }
+      if (window.BloggerAsistente) {
+        window.BloggerAsistente.lastState = state;
+      }
+      const candidateAlert = document.getElementById('pending-candidate-alert');
+      if (candidateAlert) {
+        candidateAlert.style.display = (state.pendingCandidate && typeof state.pendingCandidate === 'object') ? 'block' : 'none';
+      }
+    }
+    async function perform(action) {
+      if (busy) return;
+      busy = true;
+      const buttons = byId('blogger-assistant').querySelectorAll('button');
+      buttons.forEach(button => button.disabled = true);
+      try { await action(); } catch (err) { status.textContent = (err && err.message ? err.message + ' ' : '') + 'No se pudo completar la solicitud. Revisa la conexión o los permisos desde Terminales; tu texto permanece aquí.'; }
+      finally { busy = false; buttons.forEach(button => button.disabled = false); }
+    }
+    byId('assistant-start').addEventListener('click', () => perform(async () => render(await request('/start', {}))));
+    byId('assistant-refresh').addEventListener('click', () => perform(async () => render(await request('/refresh', {}))));
+    byId('assistant-close').addEventListener('click', () => perform(async () => render(await request('/close', {}))));
+    byId('assistant-promote').addEventListener('click', () => perform(async () => {
+      const title = byId('assistant-title').value.trim();
+      const html = byId('assistant-html').value.trim();
+      if (!title || !html) {
+        alert('No se puede promover un borrador con título o contenido vacío.');
+        return;
+      }
+      if (draftDirty) {
+        await request('/draft', { title, html });
+        draftDirty = false;
+      }
+      const state = await request('/promote', {});
+      render(state);
+      if (typeof cargarBorradorDifusion === 'function') await cargarBorradorDifusion();
+      status.textContent = 'Borrador promovido con éxito al Paso 2.';
+    }));
+    for (const key of ['enter', 'ctrlc', 'esc', 'tab', '1', '2', '3']) {
+      const btn = byId('assistant-key-' + key);
+      if (btn) {
+        btn.addEventListener('click', () => perform(async () => {
+          const mappedKey = key === 'ctrlc' ? 'ctrl-c' : key;
+          render(await request('/key', { key: mappedKey }));
+        }));
+      }
+    }
+    // A running editorial job survives navigation: the Office shell reads the
+    // same keys to light the Blogger tab while another page is open.
+    const JOB_KEY = 'erbolamm-blogger-job';
+    const READY_KEY = 'erbolamm-blogger-ready';
+    const JOB_MAX_MS = 30 * 60 * 1000;
+    // An agent that stays idle this long without writing a proposal has
+    // finished its turn; shorter idle gaps are transitions between steps.
+    const IDLE_POLLS_TO_STOP = 12;
+    const IDLE_MIN_ELAPSED_MS = 90 * 1000;
+    const progress = byId('assistant-progress');
+    const progressDetail = byId('assistant-progress-detail');
+    function notifyShell() { window.dispatchEvent(new CustomEvent('blogger:state')); }
+    function readJob() {
+      try {
+        const job = JSON.parse(localStorage.getItem(JOB_KEY) || 'null');
+        if (job && typeof job.startedAt === 'number' && Date.now() - job.startedAt < JOB_MAX_MS) return job;
+      } catch (_) {}
+      return null;
+    }
+    function writeJob(job) {
+      try {
+        if (job) localStorage.setItem(JOB_KEY, JSON.stringify(job));
+        else localStorage.removeItem(JOB_KEY);
+      } catch (_) {}
+      notifyShell();
+    }
+    function readReadyDigest() {
+      try { return localStorage.getItem(READY_KEY) || ''; } catch (_) { return ''; }
+    }
+    function markProposalSeen() {
+      try { localStorage.removeItem(READY_KEY); } catch (_) {}
+      notifyShell();
+    }
+    function baselineFrom(state) {
+      const proposal = state?.proposal || {};
+      return { candidateDigest: proposal.candidateDigest || '', title: proposal.title || '' };
+    }
+    // New means the candidate file changed since the job started and the
+    // server already ingested it, or there is an active proposal ready.
+    function proposalIsNew(state, baseline) {
+      const proposal = state.proposal || {};
+      if (proposal.candidateDigest && baseline?.candidateDigest) {
+        return proposal.candidateDigest !== baseline.candidateDigest && !proposal.candidateUnseen;
+      }
+      if (Boolean(proposal.ready) && (!baseline?.candidateDigest || !baseline?.title)) {
+        return true;
+      }
+      return Boolean(proposal.ready) && proposal.title !== baseline?.title;
+    }
+    function setProgress(active, detail) {
+      progress.hidden = !active;
+      if (detail) progressDetail.textContent = detail;
+      const badge = byId('step1-badge');
+      if (badge && active) {
+        badge.textContent = 'Investigando…';
+        badge.style.color = '#0369a1';
+        badge.style.borderColor = '#bae6fd';
+      }
+    }
+    function elapsedLabel(ms) {
+      const total = Math.floor(ms / 1000);
+      return Math.floor(total / 60) + ':' + String(total % 60).padStart(2, '0');
+    }
+    let sondeoAsistenteTimer = null;
+    function detenerSondeo(message) {
+      if (sondeoAsistenteTimer) clearTimeout(sondeoAsistenteTimer);
+      sondeoAsistenteTimer = null;
+      writeJob(null);
+      setProgress(false);
+      if (message) status.textContent = message;
+    }
+    // Stores the finished proposal as the active draft and opens Step 2, with
+    // no terminal key press or manual click involved.
+    async function finalizarPropuesta(state) {
+      detenerSondeo('');
+      markProposalSeen();
+      cargarHistorial();
+      if (state.proposal?.pending) {
+        status.textContent = 'El asistente ha generado una propuesta alternativa. Revísala en el Paso 2; tu borrador editado se conserva.';
+      } else if (draftDirty) {
+        status.textContent = 'Propuesta nueva lista. Tienes cambios sin guardar en el Paso 2, así que no se ha sustituido tu texto.';
+      } else {
+        try {
+          render(await request('/promote', {}));
+          status.textContent = 'Propuesta lista y guardada como borrador activo. Abriendo el Paso 2...';
+        } catch (_) {
+          status.textContent = 'Propuesta lista. No se pudo guardar como borrador activo; usa «Pasar borrador a difusión» en el Paso 2.';
+        }
+      }
+      if (typeof irAPaso === 'function') irAPaso(2);
+    }
+    function iniciarSondeoAsistente(baseline, startedAt = Date.now(), firstDelay = 2500) {
+      if (sondeoAsistenteTimer) clearTimeout(sondeoAsistenteTimer);
+      writeJob({ startedAt, baseline });
+      setProgress(true);
+      let idlePolls = 0;
+      const sondear = async () => {
+        sondeoAsistenteTimer = null;
+        const elapsed = Date.now() - startedAt;
+        let stopMessage = '';
+        try {
+          const state = await request('/refresh', {});
+          render(state);
+          const proposal = state.proposal || {};
+          const session = state.session;
+          const hasReadyDraft = Boolean(proposal.ready) || Boolean(state.draft && (state.draft.title || state.draft.titulo) && (state.draft.html || state.draft.htmlBlogger));
+          const isDone = Boolean(session && !state.error && (session.status === 'idle' || session.status === 'done'));
+
+          if (proposalIsNew(state, baseline)) {
+            await finalizarPropuesta(state);
+            return;
+          }
+
+          if (!session || state.error === 'session-expired') {
+            if (hasReadyDraft) {
+              await finalizarPropuesta(state);
+              return;
+            }
+            stopMessage = 'La sesión del asistente terminó sin entregar una propuesta. Vuelve a enviar tu petición.';
+          } else {
+            idlePolls = isDone ? idlePolls + 1 : 0;
+            // Si el asistente ya completó su turno y existe borrador/propuesta lista, avanzamos automáticamente sin bloqueos falsos
+            if (isDone && hasReadyDraft && (elapsed > 4000 || idlePolls >= 2 || !baseline?.candidateDigest || proposal.candidateDigest !== baseline?.candidateDigest)) {
+              await finalizarPropuesta(state);
+              return;
+            }
+            if (idlePolls >= IDLE_POLLS_TO_STOP && elapsed > IDLE_MIN_ELAPSED_MS) {
+              if (hasReadyDraft) {
+                await finalizarPropuesta(state);
+                return;
+              }
+              stopMessage = 'El asistente terminó su turno sin entregar una propuesta. Puedes volver a intentarlo o redactar tu idea.';
+            }
+            setProgress(true, 'Estado del asistente: ' + (session.status || 'desconocido') + ' · ' + elapsedLabel(elapsed) + '. Pasarás al Paso 2 automáticamente; puedes cambiar de pestaña.');
+            status.textContent = 'Investigando fuentes y redactando propuesta... Consultando avances automáticamente.';
+          }
+        } catch (_) {
+          // Busy server or a transient failure: the job is still running.
+        }
+        if (!stopMessage && elapsed > JOB_MAX_MS) {
+          stopMessage = 'El asistente lleva más de 30 minutos sin entregar una propuesta. Puedes volver a consultar en cualquier momento.';
+        }
+        if (stopMessage) { detenerSondeo(stopMessage); return; }
+        sondeoAsistenteTimer = setTimeout(sondear, elapsed > 120000 ? 5000 : 2500);
+      };
+      sondeoAsistenteTimer = setTimeout(sondear, firstDelay);
+    }
+
+    // Proposal history. Entries are rendered as text nodes only.
+    function pintarHistorial(entries) {
+      const grid = byId('blogger-history-grid');
+      byId('blogger-history-count').textContent = entries.length + (entries.length === 1 ? ' guardada' : ' guardadas');
+      grid.replaceChildren();
+      if (!entries.length) {
+        const empty = document.createElement('p');
+        empty.className = 'history-empty';
+        empty.textContent = 'Todavía no hay propuestas. Cada propuesta que genere el asistente se guarda aquí automáticamente.';
+        grid.append(empty);
+        return;
+      }
+      const currentTitle = window.BloggerAsistente?.lastState?.proposal?.title || '';
+      for (const entry of entries) {
+        const card = document.createElement('div');
+        card.className = 'session-item' + (entry.title && entry.title === currentTitle ? ' is-current' : '');
+        const header = document.createElement('div');
+        header.className = 'session-item-header';
+        const date = document.createElement('span');
+        const savedAt = new Date(entry.savedAt);
+        date.textContent = '📅 ' + (Number.isNaN(savedAt.getTime()) ? '' : savedAt.toLocaleString('es-ES', { dateStyle: 'medium', timeStyle: 'short' }));
+        const project = document.createElement('strong');
+        project.textContent = String(entry.proyecto || '').toUpperCase();
+        header.append(date, project);
+        const title = document.createElement('div');
+        title.className = 'session-item-title';
+        title.textContent = String(entry.title || 'Propuesta sin título');
+        card.append(header, title);
+        if (entry.resumen && entry.resumen !== entry.title) {
+          const summary = document.createElement('p');
+          summary.className = 'session-item-summary';
+          summary.textContent = String(entry.resumen);
+          card.append(summary);
+        }
+        const tags = document.createElement('div');
+        tags.className = 'session-tags';
+        for (const tag of (Array.isArray(entry.etiquetas) ? entry.etiquetas : []).slice(0, 6)) {
+          const pill = document.createElement('span');
+          pill.className = 'session-tag';
+          pill.textContent = String(tag);
+          tags.append(pill);
+        }
+        if (tags.childElementCount) card.append(tags);
+        const load = document.createElement('button');
+        load.type = 'button';
+        load.className = 'btn-action';
+        load.textContent = '🔄 Cargar como borrador activo';
+        load.addEventListener('click', () => cargarDelHistorial(String(entry.id)));
+        card.append(load);
+        grid.append(card);
+      }
+    }
+    async function cargarHistorial() {
+      try { pintarHistorial((await request('/history')).history || []); } catch (_) {}
+    }
+    function cargarDelHistorial(id) {
+      if (draftDirty) {
+        status.textContent = 'Tienes cambios sin guardar en el Paso 2. Guárdalos antes de cargar otra propuesta del historial.';
+        return;
+      }
+      perform(async () => {
+        render(await request('/history/load', { id }));
+        render(await request('/promote', {}));
+        status.textContent = 'Propuesta del historial cargada como borrador activo.';
+        cargarHistorial();
+        if (typeof irAPaso === 'function') irAPaso(2);
+      });
+    }
+
+    // Delivers one message, renewing a vanished session once and waiting while
+    // the agent is still busy. The server rejects `busy`, `session-expired` and
+    // `not-started` before sending anything, so retrying those cannot duplicate
+    // a message; any other failure may have an unknown delivery and is not retried.
+    async function entregarMensaje(text, startSession) {
+      let renewed = false;
+      for (let intento = 0; ; intento++) {
+        try {
+          return await request('/message', { text });
+        } catch (err) {
+          const expired = err.code === 'session-expired' || err.code === 'not-started';
+          if (expired && !renewed) {
+            renewed = true;
+            await startSession();
+          } else if (err.code === 'busy' && intento < 40) {
+            status.textContent = 'El asistente está preparándose. Tu petición se enviará en cuanto esté listo...';
+            await new Promise(resolve => setTimeout(resolve, 3000));
+          } else {
+            throw err;
+          }
+        }
+      }
+    }
+
+    byId('assistant-message-form').addEventListener('submit', event => {
+      event.preventDefault();
+      const input = byId('assistant-input'); const text = input.value.trim();
+      if (!text) return;
+      perform(async () => {
+        const lastState = window.BloggerAsistente?.lastState;
+        const startSession = async () => {
+          status.textContent = 'Iniciando sesión del asistente editorial...';
+          render(await request('/start', {}));
+        };
+        if (!lastState?.session || lastState.error === 'session-expired') await startSession();
+        // The accepted-delivery state is the baseline: anything the agent
+        // writes after this point is the new proposal.
+        const accepted = await entregarMensaje(text, startSession);
+        render(accepted);
+        input.value = '';
+        status.textContent = 'Investigando fuentes y redactando propuesta... Consultando avances automáticamente.';
+        iniciarSondeoAsistente(baselineFrom(accepted));
+      });
+    });
+    for (const id of ['assistant-title', 'assistant-html']) byId(id).addEventListener('input', () => draftDirty = true);
+    byId('assistant-draft-form').addEventListener('submit', event => {
+      event.preventDefault();
+      const html = byId('assistant-html').value;
+      if (new TextEncoder().encode(html).length > 128 * 1024) {
+        status.textContent = 'El HTML supera 128 KiB. Reduce el contenido antes de guardar; no se ha enviado.';
+        return;
+      }
+      perform(async () => {
+        const state = await request('/draft', { title: byId('assistant-title').value, html });
+        draftDirty = false; render(state); status.textContent = 'Borrador guardado en el servidor. No publicado.';
+      });
+    });
+    for (const [buttonId, fieldId] of [['assistant-copy-title', 'assistant-title'], ['assistant-copy-html', 'assistant-html']]) {
+      byId(buttonId).addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(byId(fieldId).value);
+          status.textContent = 'Copiado. Publicar sigue siendo una acción manual.';
+        } catch (_) {
+          byId(fieldId).focus(); byId(fieldId).select();
+          status.textContent = 'Seleccionado: usa Copiar en tu navegador.';
+        }
+      });
+    }
+    byId('assistant-preview-button').addEventListener('click', () => {
+      byId('assistant-preview').srcdoc = '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; img-src \'self\' data: blob: http: https:; style-src \'unsafe-inline\'; base-uri \'none\'; form-action \'none\'">' + byId('assistant-html').value;
+    });
+    async function resolverPropuesta(accept) {
+      perform(async () => {
+        const digest = window.BloggerAsistente?.lastState?.pendingCandidateDigest;
+        const payload = { accept };
+        if (digest) payload.digest = digest;
+        const state = await request('/candidate/resolve', payload);
+        if (accept) {
+          draftDirty = false;
+        }
+        render(state);
+        if (accept && typeof cargarBorradorDifusion === 'function') {
+          await cargarBorradorDifusion();
+        }
+        status.textContent = accept
+          ? 'Propuesta nueva del asistente aplicada al borrador.'
+          : 'Propuesta alternativa descartada; se conservaron tus cambios.';
+      });
+    }
+    window.resolverPropuesta = resolverPropuesta;
+    // Expose API for wizard and test automation without globals
+    window.BloggerAsistente = {
+      request,
+      token,
+      render,
+      perform,
+      lastState: null,
+      resolverPropuesta,
+      isDirty: () => draftDirty
+    };
+    // Initial load never starts a model session. It only resumes watching a
+    // job the user already launched, or a proposal that finished meanwhile.
+    perform(async () => {
+      const state = await request();
+      render(state);
+      cargarHistorial();
+      const proposal = state.proposal || {};
+      const job = readJob();
+      if (job) {
+        iniciarSondeoAsistente(job.baseline || baselineFrom(null), job.startedAt, 0);
+      } else if (proposal.candidateUnseen) {
+        // The agent wrote a proposal that no page has collected yet.
+        iniciarSondeoAsistente({ candidateDigest: '', title: proposal.title || '' }, Date.now(), 0);
+      } else if (readReadyDigest() && proposal.ready) {
+        // The Office shell collected it while another page was open.
+        await finalizarPropuesta(state);
+      } else {
+        writeJob(null);
+        markProposalSeen();
+      }
+    });
+  })();
+  </script>
+  <script src="../panel-shell.js"></script>
+</body>
+</html>
