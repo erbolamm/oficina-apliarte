@@ -13,6 +13,7 @@ from urllib.parse import urlparse
 
 RAIZ_PROYECTO = Path(__file__).resolve().parent.parent
 DIR_HABILIDADES = RAIZ_PROYECTO / "habilidades"
+DIR_VISTAS = RAIZ_PROYECTO / "vistas"
 
 
 def parsear_frontmatter(texto: str) -> dict:
@@ -72,6 +73,15 @@ class ManejadorOficina(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(cuerpo)
 
+    def responder_html(self, html_texto: str, codigo: int = 200):
+        cuerpo = html_texto.encode("utf-8")
+        self.send_response(codigo)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(cuerpo)))
+        self.send_header("X-Modo-Oficina", "solo_lectura")
+        self.end_headers()
+        self.wfile.write(cuerpo)
+
     def responder_error(self, mensaje: str, codigo: int = 404):
         self.responder_json({"error": mensaje, "codigo": codigo}, codigo=codigo)
 
@@ -79,7 +89,13 @@ class ManejadorOficina(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         ruta = parsed.path.rstrip("/")
 
-        if ruta == "" or ruta == "/api/estado":
+        if ruta == "" or ruta == "/" or ruta == "/vista/skills" or ruta == "/skills":
+            archivo_vista = DIR_VISTAS / "skills.html"
+            if archivo_vista.exists():
+                self.responder_html(archivo_vista.read_text(encoding="utf-8"))
+                return
+
+        if ruta == "/api/estado":
             self.responder_json({
                 "servicio": "oficina-apliarte",
                 "estado": "activo",

@@ -81,6 +81,14 @@ class TestServidorOficina(unittest.TestCase):
             self.assertEqual(datos["nombre"], "patito-de-goma")
             self.assertIn("contenido", datos)
 
+    def test_vista_skills(self):
+        with urllib.request.urlopen(f"{self.base_url}/vista/skills") as resp:
+            self.assertEqual(resp.status, 200)
+            self.assertIn("text/html", resp.headers.get("Content-Type", ""))
+            html = resp.read().decode("utf-8")
+            self.assertIn("Oficina ApliArte — Banco de Habilidades", html)
+            self.assertIn("Modo Solo Lectura", html)
+
     def test_bloqueo_metodos_escritura(self):
         req = urllib.request.Request(f"{self.base_url}/api/habilidades", method="POST")
         try:
