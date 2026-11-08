@@ -96,26 +96,30 @@
       </div>
 
       <nav class="side-nav" id="sidebar-nav" aria-label="Secciones">
-        <!-- 5 pestañas activas -->
-        <a class="nav-card" href="index.html">
+        <!-- Pestaña activa única -->
+        <a class="nav-card active" href="#" aria-current="page" onclick="return false;">
           <span class="nav-icon" aria-hidden="true">⌂</span>
           <span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span>
         </a>
-        <a class="nav-card" href="vistas/propuestas.html">
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
           <span class="nav-icon" aria-hidden="true">💡</span>
           <span class="nav-copy"><strong>Propuestas</strong><small>Bandeja comunitaria</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
         </a>
-        <a class="nav-card" href="vistas/skills.html">
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
           <span class="nav-icon" aria-hidden="true">⌘</span>
           <span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
         </a>
-        <a class="nav-card" href="vistas/aplicaciones.html">
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
           <span class="nav-icon" aria-hidden="true">📱</span>
           <span class="nav-copy"><strong>Aplicaciones</strong><small>Catálogo oficial</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
         </a>
-        <a class="nav-card" href="vistas/paquetes.html">
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
           <span class="nav-icon" aria-hidden="true">📦</span>
           <span class="nav-copy"><strong>Paquetes</strong><small>Librerías Flutter</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
         </a>
 
         <!-- 22 pestañas en desarrollo con diseño atenuado -->
@@ -259,8 +263,8 @@
         <button type="button" class="pill-btn" role="tab" id="tab-btn-recurrentes" aria-selected="false" aria-controls="recurrentes-panel" data-tab="recurrentes">
           <span aria-hidden="true">🔁</span> Tareas recurrentes
         </button>
-        <a href="vistas/propuestas.html" class="pill-btn" role="tab" id="tab-btn-buzon" title="Abrir Ideas y recordatorios">
-          <span aria-hidden="true">💡</span> Ideas y recordatorios ↗
+        <a href="#" class="pill-btn" role="tab" id="tab-btn-buzon" title="Ideas y recordatorios" onclick="return false;">
+          <span aria-hidden="true">💡</span> Ideas y recordatorios
         </a>
         <button type="button" class="pill-btn" role="tab" id="tab-btn-agentes" aria-selected="false" aria-controls="agentes-panel" data-tab="agentes">
           <span aria-hidden="true">🤖</span> Agentes
@@ -277,13 +281,13 @@
             </div>
           </div>
           <div class="panel-head-actions">
-            <a href="vistas/propuestas.html" class="panel-action-btn primary" title="Nueva propuesta">
+            <a href="#" class="panel-action-btn primary" title="Nueva propuesta" onclick="return false;">
               <span aria-hidden="true">＋</span> Nueva propuesta
             </a>
-            <a href="vistas/tareas.html" class="panel-action-btn" title="Lista de tareas">
+            <a href="#" class="panel-action-btn" title="Lista de tareas" onclick="return false;">
               <span aria-hidden="true">📋</span> Lista de tareas
             </a>
-            <a href="vistas/skills.html" class="panel-action-btn" title="Banco de Skills">
+            <a href="#" class="panel-action-btn" title="Skills" onclick="return false;">
               <span aria-hidden="true">⌘</span> Skills
             </a>
           </div>
