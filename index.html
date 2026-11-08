@@ -1,261 +1,329 @@
-<!doctype html>
-<html lang="es" data-theme="dark">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#07172b">
-  <title>Oficina ApliArte — Panel Operativo</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="description" content="Oficina ApliArte — Suite modular soberana para el ecosistema ErBolamm y ApliArte.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="./panel-shell.css">
-  <script>
-    try {
-      document.documentElement.dataset.theme =
-        localStorage.getItem("erbolamm-panel-theme") || "dark";
-      document.documentElement.dataset.sidebar =
-        localStorage.getItem("erbolamm-panel-sidebar") === "icons" ? "icons" : "full";
-    } catch (_) {}
-  </script>
+  <title>Oficina ApliArte — Suite Soberana</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface-hover: #334155;
+      --border: #475569;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --primary-hover: #0284c7;
+      --success: #34d399;
+      --warning: #fbbf24;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 1.5rem;
+      min-height: 100vh;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .brand-logo {
+      width: 2.25rem;
+      height: 2.25rem;
+    }
+    h1 { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background-color: rgba(56, 189, 248, 0.2);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+      overflow-x: auto;
+    }
+    .nav-tab {
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: 0.375rem;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-tab:hover {
+      background-color: var(--surface-hover);
+      color: var(--text);
+    }
+    .nav-tab.active {
+      background-color: var(--surface);
+      color: var(--primary);
+      border: 1px solid var(--border);
+    }
+    .hero {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding: 1rem 0;
+    }
+    .hero h2 {
+      font-size: 2rem;
+      color: #fff;
+      margin-bottom: 0.75rem;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 1.5rem auto;
+    }
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.65rem 1.25rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    .btn-primary {
+      background-color: var(--primary);
+      color: #0f172a;
+    }
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+    .btn-secondary {
+      background-color: var(--surface);
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .btn-secondary:hover {
+      background-color: var(--surface-hover);
+    }
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .grid-tabs {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 3rem;
+    }
+    .tab-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .tab-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+    .tab-card.locked-card {
+      border-color: #334155;
+    }
+    .tab-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.5rem;
+    }
+    .tab-card-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .pill {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 9999px;
+      text-transform: uppercase;
+    }
+    .pill-active {
+      background: rgba(52, 211, 153, 0.15);
+      color: var(--success);
+      border: 1px solid var(--success);
+    }
+    .pill-locked {
+      background: rgba(251, 191, 36, 0.15);
+      color: var(--warning);
+      border: 1px solid var(--warning);
+    }
+    .tab-card-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+    .tab-card-link {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--primary);
+      text-decoration: none;
+      align-self: flex-start;
+    }
+    .tab-card-link:hover {
+      text-decoration: underline;
+    }
+    .btn-sm {
+      background-color: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.6rem;
+      border-radius: 0.375rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-sm:hover {
+      background-color: var(--surface-hover);
+      border-color: var(--primary);
+    }
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+    }
+  </style>
 </head>
 <body>
-  <div class="app-shell">
-    <aside class="office-sidebar" id="office-sidebar" aria-label="Navegación de la oficina">
-      <div class="sidebar-brand">
-        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
-          <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
-          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
-        </svg>
-        <span><strong>Oficina ApliArte</strong><small>Panel de control operativo ApliArte</small></span>
-        <button id="sidebar-toggle" class="sidebar-toggle" type="button"
-          aria-controls="office-sidebar" aria-expanded="true" aria-label="Plegar la barra lateral a solo iconos" title="Plegar la barra lateral">
-          <span class="chev" aria-hidden="true">‹</span>
-        </button>
+
+  <header>
+    <div class="brand-wrap">
+      <img src="favicon.svg" alt="Logo Oficina ApliArte" class="brand-logo">
+      <div>
+        <h1>Oficina ApliArte</h1>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.15rem;">
+          Suite Modular Soberana y Desacoplada
+        </p>
       </div>
-      <nav class="side-nav" aria-label="Secciones">
-        <a class="nav-card" href="index.html" aria-current="page"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
-        <a class="nav-card" href="vista/javier.html"><span class="nav-icon" aria-hidden="true">👤</span><span class="nav-copy"><strong>Espacio Javier</strong><small>Control personal y ja--</small></span></a>
-        <a class="nav-card" href="vista/inicio-dia.html"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
-        <a class="nav-card" href="vista/aplichat.html"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
-        <a class="nav-card" href="vista/skills.html"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
-        <a class="nav-card" href="vista/conectores.html"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
-        <a class="nav-card" href="vista/plugins.html"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
-        <a class="nav-card" href="vista/reflect.html"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
-        <a class="nav-card" href="vista/propuestas.html"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
-        <a class="nav-card" href="vista/diseno.html"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
-        <a class="nav-card" href="vista/tiendas.html"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
-        <a class="nav-card" href="vista/mercado.html"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
-        <a class="nav-card" href="vista/correos.html"><span class="nav-icon" aria-hidden="true">✉</span><span class="nav-copy"><strong>Correos y Alertas</strong><small>erbolamm y javier</small></span></a>
-        <a class="nav-card" href="vista/pnl.html"><span class="nav-icon" aria-hidden="true">🧠</span><span class="nav-copy"><strong>Estudio PNL</strong><small>Enganche y microcopy</small></span></a>
-        <a class="nav-card" href="vista/musica.html"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
-        <a class="nav-card" href="vista/locucion.html"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
-        <a class="nav-card" href="vista/voicestudio.html"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
-        <a class="nav-card" href="vista/terminales.html"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
-        <a class="nav-card" href="vista/facturas.html"><span class="nav-icon" aria-hidden="true">€</span><span class="nav-copy"><strong>Facturas</strong><small>Gestor de facturas</small></span></a>
-        <a class="nav-card" href="vista/blogger.html"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
-        <a class="nav-card" href="vista/bitacora.html"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
-        <a class="nav-card" href="vista/directo.html"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
-        <a class="nav-card" href="vista/diapositivas.html"><span class="nav-icon" aria-hidden="true">⎘</span><span class="nav-copy"><strong>Diapositivas</strong><small>Presentaciones y difusión</small></span></a>
-        <a class="nav-card" href="vista/shorts.html"><span class="nav-icon" aria-hidden="true">⏩</span><span class="nav-copy"><strong>Shorts</strong><small>Vídeo acelerado a 60 s</small></span></a>
-        <a class="nav-card" href="vista/resenas.html"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
-        <a class="nav-card" href="vista/settings.html"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-copy"><strong>Ajustes</strong><small>Opciones por defecto</small></span></a>
-        <a class="nav-card" href="vista/como-funciona.html"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
-      </nav>
-      <p class="sidebar-note"><strong>Privada y local</strong>No conecta la oficina pública, no consulta cuotas y no muestra historial.</p>
-    </aside>
-    <div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
-
-    <main class="office-content" id="office">
-    <header class="topbar" id="casita">
-      <div class="brand">
-        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
-          <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
-          <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
-        </svg>
-        <h1>Oficina · Tablero de tareas</h1>
-      </div>
-      <span class="private-chip">Oficina local · privada</span>
-      <span class="connection" id="connection" data-kind="loading">Conectando</span>
-      <div id="system-telemetry-chips" class="system-telemetry-chips" aria-label="Telemetría del sistema"></div>
-      <button id="refresh-btn" class="btn-refresh" type="button" onclick="window.location.reload()" aria-label="Actualizar vista" title="Actualizar">↻</button>
-      <button id="theme-toggle" type="button" aria-label="Activar modo oscuro" title="Cambiar tema">
-        <span id="theme-icon" aria-hidden="true">☾</span>
-      </button>
-    </header>
-    <p class="updated" id="updated">Esperando la primera lectura</p>
-
-    <section class="needs" id="needs" aria-labelledby="needs-title" hidden>
-      <h2 id="needs-title">Necesita a Javier</h2>
-      <ul id="needs-list"></ul>
-    </section>
-
-    <nav class="panel-tabs" id="panel-tabs" role="tablist" aria-label="Secciones del panel">
-      <button type="button" class="pill-btn active" role="tab" id="tab-btn-tablero" aria-selected="true" aria-controls="tablero" data-tab="tablero">
-        <span aria-hidden="true">📋</span> Tablero de tareas
-      </button>
-      <button type="button" class="pill-btn" role="tab" id="tab-btn-recurrentes" aria-selected="false" aria-controls="recurrentes-panel" data-tab="recurrentes">
-        <span aria-hidden="true">🔁</span> Tareas recurrentes
-      </button>
-      <button type="button" class="pill-btn" role="tab" id="tab-btn-buzon" aria-selected="false" aria-controls="office-tools-buzon" data-tab="buzon">
-        <span aria-hidden="true">💡</span> Ideas y recordatorios <span class="tab-badge" id="tab-badge-buzon" hidden>0</span>
-      </button>
-      <button type="button" class="pill-btn" role="tab" id="tab-btn-agentes" aria-selected="false" aria-controls="office-tools-agentes" data-tab="agentes">
-        <span aria-hidden="true">🤖</span> Agentes
-      </button>
-    </nav>
-
-    <section class="panel board" id="tablero" aria-labelledby="board-title">
-      <div class="panel-head">
-        <div class="panel-head-title">
-          <div>
-            <h2 id="board-title">Tablero de tareas</h2>
-          </div>
-        </div>
-        <div class="panel-head-actions">
-          <a href="vista/buscar.html" target="_blank" rel="noopener" class="panel-action-btn" id="btn-open-buscar" title="Buscar tareas en todo el historial"><span aria-hidden="true">🔍</span> Buscar ↗</a>
-          <a href="vista/herdr.html" target="_blank" rel="noopener" class="panel-action-btn" id="btn-open-herdr" title="Supervisión multi-agente en Herdr"><span aria-hidden="true">🤖</span> Herdr ↗</a>
-          <a href="vista/mesa-redonda.html" target="_blank" rel="noopener" class="panel-action-btn" id="btn-open-mesa-redonda" title="Deliberación colegiada en Mesa Redonda"><span aria-hidden="true">👥</span> Mesa Redonda ↗</a>
-          <a href="vista/manual.html" target="_blank" rel="noopener" class="panel-action-btn" id="btn-open-manual" title="Manual oficial de ErBolamm"><span aria-hidden="true">📖</span> Manual ↗</a>
-          <a href="vista/plano.html" target="_blank" rel="noopener" class="panel-action-btn" id="btn-open-plano-3d" title="Abrir Plano 3D en ventana independiente">
-            <span aria-hidden="true">🧊</span> Plano 3D ↗
-          </a>
-          <a href="vista/plano.html?modo=2d" target="_blank" rel="noopener" class="panel-action-btn" id="btn-open-plano-2d" title="Abrir Plano 2D en ventana independiente">
-            <span aria-hidden="true">🗺️</span> Plano 2D ↗
-          </a>
-          <a href="vista/radar.html" target="_blank" rel="noopener" class="panel-action-btn" id="btn-open-radar" title="Abrir Radar de Nodos en ventana independiente">
-            <span aria-hidden="true">◎</span> Radar ↗
-          </a>
-        </div>
-      </div>
-      <div class="lanes" id="lanes"></div>
-    </section>
-
-    <section class="panel recurrentes-panel" id="recurrentes-panel" aria-labelledby="recurrentes-title">
-      <div class="panel-head">
-        <div class="panel-head-title">
-          <div>
-            <h2 id="recurrentes-title">Tareas recurrentes</h2>
-            <p id="recurrentes-subtitle">Tareas periódicas programadas en tareas/recurrentes/.</p>
-          </div>
-        </div>
-        <div class="panel-head-actions">
-          <button type="button" class="panel-action-btn primary" id="recurrentes-new-btn" title="Crear nueva tarea recurrente">
-            <span aria-hidden="true">＋</span> Nueva recurrente
-          </button>
-          <button type="button" class="panel-action-btn" id="recurrentes-refresh-btn" title="Actualizar tareas recurrentes">
-            <span aria-hidden="true">↻</span> Recargar
-          </button>
-        </div>
-      </div>
-      <form class="recurrentes-form" id="recurrentes-form" hidden>
-        <div class="recurrentes-form-grid">
-          <div class="recurrentes-form-field">
-            <label for="rec-title">Título o nombre de la tarea</label>
-            <input type="text" id="rec-title" name="title" required placeholder="Ej: Revisar catálogo de webapps">
-          </div>
-          <div class="recurrentes-form-field">
-            <label for="rec-role">Responsable</label>
-            <select id="rec-role" name="role">
-              <option value="ge" selected>ge (Orquestador / agy)</option>
-              <option value="ja">ja (Javier)</option>
-              <option value="co">co (Codex)</option>
-              <option value="cl">cl (Claude)</option>
-              <option value="pi">pi (Pi / OpenCode)</option>
-              <option value="gr">gr (Grok)</option>
-              <option value="op">op (OpenCode)</option>
-            </select>
-          </div>
-          <div class="recurrentes-form-field">
-            <label for="rec-days">Días</label>
-            <input type="text" id="rec-days" name="days" value="lunes, miércoles, viernes" placeholder="Ej: lunes, miércoles, viernes o diario">
-          </div>
-          <div class="recurrentes-form-field">
-            <label for="rec-time">Hora</label>
-            <input type="time" id="rec-time" name="time" value="09:00">
-          </div>
-          <div class="recurrentes-form-field full-width">
-            <label for="rec-command">Comando a ejecutar (opcional)</label>
-            <input type="text" id="rec-command" name="command" placeholder="Ej: mmx quota show (dejar vacío si es recordatorio sin script)">
-          </div>
-          <div class="recurrentes-form-field full-width">
-            <label for="rec-objective">Objetivo</label>
-            <textarea id="rec-objective" name="objective" rows="2" placeholder="Propósito o motivo de la rutina periódica"></textarea>
-          </div>
-        </div>
-        <div class="recurrentes-form-actions">
-          <button type="button" class="panel-action-btn" id="recurrentes-cancel-btn">Cancelar</button>
-          <button type="submit" class="panel-action-btn primary" id="recurrentes-submit-btn">Guardar recurrente</button>
-        </div>
-      </form>
-      <ul class="recurrentes-list" id="recurrentes-list">
-        <li class="recurrentes-empty">Cargando tareas recurrentes…</li>
-      </ul>
-      <p class="recurrentes-feedback" id="recurrentes-feedback" role="status" aria-live="polite" hidden></p>
-    </section>
-
-    <div class="office-tools" id="office-tools-buzon">
-      <section class="panel inbox" id="buzon" aria-labelledby="inbox-title">
-        <div class="panel-head">
-          <div class="panel-head-title">
-            <div>
-              <h2 id="inbox-title">Ideas y recordatorios</h2>
-              <p>Llega al orquestador, que lo lee al empezar cada turno. No es tiempo real y no ejecuta nada.</p>
-            </div>
-          </div>
-          <div class="panel-head-actions">
-            <a href="vista/aplichat.html" class="panel-action-btn" id="btn-go-aplichat" title="Abrir ApliChat">💬 ApliChat ↗</a>
-          </div>
-        </div>
-        <form class="inbox-form" id="inbox-form">
-          <label for="inbox-text">Escribe la idea o el recordatorio</label>
-          <textarea id="inbox-text" name="text" rows="3" maxlength="2000" required
-            placeholder="Por ejemplo: el lunes revisar si las claves de calca_app están revocadas"></textarea>
-          <div class="inbox-actions">
-            <p class="report-status" id="inbox-status" aria-live="polite">No pegues claves ni contraseñas: el buzón las rechaza.</p>
-            <button class="primary" type="submit" id="inbox-send">Enviar al buzón</button>
-          </div>
-        </form>
-        <ul class="inbox-list" id="inbox-list"><li class="inbox-empty">El buzón está vacío.</li></ul>
-      </section>
     </div>
-    <div class="office-tools" id="office-tools-agentes">
-<section class="panel agents-panel" aria-labelledby="agents-title">
-      <div class="panel-head"><h2 id="agents-title">Agentes</h2><p>Un agente, un personaje.</p></div>
-      <ul class="agent-list" id="agent-list"></ul>
+    <div id="connection-bar"></div>
+  </header>
+
+  <nav class="nav-tabs" id="escaparate-nav">
+    <a href="index.html" class="nav-tab active">Inicio</a>
+    <a href="vistas/skills.html" class="nav-tab">Banco de Habilidades</a>
+    <a href="vistas/resenas.html" class="nav-tab">Resenas de Tiendas</a>
+    <a href="vistas/instala-tu-oficina.html" class="nav-tab">Instala tu Oficina</a>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <h2>El Centro de Operaciones de tu Ecosistema</h2>
+      <p>
+        Consulta de habilidades, revision de resenas y catalogo completo de las 27 herramientas soberanas para orquestadores locales y dispositivos moviles.
+      </p>
+      <div class="hero-actions">
+        <a href="vistas/skills.html" class="btn btn-primary">Abrir Banco de Habilidades</a>
+        <a href="vistas/instala-tu-oficina.html" class="btn btn-secondary">Instalar Suite Completa</a>
+      </div>
     </section>
 
-
+    <div class="section-title">
+      <span>Herramientas del Ecosistema (27 Pestañas)</span>
+      <span style="font-size: 0.85rem; font-weight: normal; color: var(--text-muted);" id="status-badge">
+        3 Públicas en Escaparate · 24 Privadas
+      </span>
     </div>
 
-    <p class="public-note">Oficina pública (nube): sin conectar · tarea aparte</p>
-    </main>
-  </div>
+    <div class="grid-tabs" id="grid-tabs">
+      <!-- Tarjetas renderizadas dinamicamente -->
+    </div>
+  </main>
 
-  <dialog id="routine-dialog" aria-labelledby="routine-dialog-title">
-    <form class="dialog-body" id="routine-confirm-form">
-      <h2 id="routine-dialog-title">Confirmar rutina</h2>
-      <p class="confirmation" id="routine-confirmation"></p>
-      <p>La ejecución se guardará como informe local. No archiva ni borra tareas.</p>
-      <p id="routine-error" role="alert"></p>
-      <div class="dialog-actions">
-        <button type="button" id="cancel-routine">Cancelar</button>
-        <button class="primary" type="submit" id="confirm-routine">Ejecutar rutina</button>
-      </div>
-    </form>
-  </dialog>
-  <p class="sr-only" id="announcer" aria-live="polite"></p>
+  <footer>
+    Oficina ApliArte · Ecosistema ErBolamm · Licencia MIT
+  </footer>
 
-  <template id="task-template">
-    <li class="task"><strong></strong><small></small><button type="button" class="task-ficha-open" aria-label="Abrir ficha de esta tarea" data-tip="Abrir la ficha de esta tarea para leerla, comentarla o gestionarla"><span aria-hidden="true">📄</span></button></li>
-  </template>
-  <template id="agent-template">
-    <li class="agent-row">
-      <span class="avatar" aria-hidden="true"></span>
-      <span class="agent-copy"><strong></strong><span></span></span>
-      <span class="agent-zone"></span>
-    </li>
-  </template>
+  <script src="vistas/escaparate.js"></script>
+  <script>
+    renderizarBarraConexion('connection-bar');
+    const backendActivo = obtenerBackendUrl();
+    if (backendActivo) {
+      const badge = document.getElementById('status-badge');
+      if (badge) {
+        badge.textContent = 'Servidor Conectado (' + backendActivo + ') · Modo Operativo';
+        badge.style.color = 'var(--success)';
+      }
+    }
+    const grid = document.getElementById('grid-tabs');
+    PESTANAS_ECOSISTEMA.forEach(p => {
+      const card = document.createElement('div');
+      const esDesbloqueada = p.publica || !!backendActivo;
+      card.className = 'tab-card' + (!esDesbloqueada ? ' locked-card' : '');
+      const pillClass = esDesbloqueada ? 'pill-active' : 'pill-locked';
+      const pillText = esDesbloqueada ? (p.publica ? 'Escaparate' : 'Conectada') : 'Privada';
+      const targetUrl = p.publica 
+        ? (p.slug === 'skills' ? 'vistas/skills.html' : (p.slug === 'resenas' ? 'vistas/resenas.html' : 'vistas/instala-tu-oficina.html'))
+        : (backendActivo ? ('vistas/' + p.archivo) : 'vistas/instala-tu-oficina.html');
 
-  <script src="./panel-shell.js"></script>
+      card.innerHTML = `
+        <div>
+          <div class="tab-card-header">
+            <div class="tab-card-title">${p.titulo}</div>
+            <span class="pill ${pillClass}">${pillText}</span>
+          </div>
+          <div class="tab-card-desc">
+            ${esDesbloqueada ? (p.publica ? 'Herramienta pública accesible en modo escaparate.' : 'Herramienta conectada a tu servidor.') : 'Ejecución exclusiva en servidor privado con modelos locales.'}
+          </div>
+        </div>
+        <a href="${targetUrl}" class="tab-card-link">
+          ${esDesbloqueada ? 'Abrir herramienta →' : 'Instalar en mi servidor →'}
+        </a>
+      `;
+      grid.appendChild(card);
+    });
+  </script>
 </body>
 </html>

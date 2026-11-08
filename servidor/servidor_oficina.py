@@ -166,15 +166,6 @@ class ManejadorOficina(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(cuerpo)
 
-    def responder_css(self, css_texto: str, codigo: int = 200):
-        cuerpo = css_texto.encode("utf-8")
-        self.send_response(codigo)
-        self.send_header("Content-Type", "text/css; charset=utf-8")
-        self.send_header("Content-Length", str(len(cuerpo)))
-        self.send_header("X-Modo-Oficina", "solo_lectura")
-        self.end_headers()
-        self.wfile.write(cuerpo)
-
     def responder_svg(self, svg_texto: str, codigo: int = 200):
         cuerpo = svg_texto.encode("utf-8")
         self.send_response(codigo)
@@ -218,36 +209,6 @@ class ManejadorOficina(BaseHTTPRequestHandler):
             archivo_js = DIR_VISTAS / "escaparate.js"
             if archivo_js.exists():
                 self.responder_js(archivo_js.read_text(encoding="utf-8"))
-                return
-
-        if ruta in ("/panel-shell.css", "panel-shell.css"):
-            f_css = RAIZ_PROYECTO / "panel-shell.css"
-            if f_css.exists():
-                self.responder_css(f_css.read_text(encoding="utf-8"))
-                return
-
-        if ruta in ("/panel-shell.js", "panel-shell.js"):
-            f_js = RAIZ_PROYECTO / "panel-shell.js"
-            if f_js.exists():
-                self.responder_js(f_js.read_text(encoding="utf-8"))
-                return
-
-        if ruta == "/estado-migracion-pestanas.json":
-            f_mig = RAIZ_PROYECTO / "estado-migracion-pestanas.json"
-            if f_mig.exists():
-                self.responder_json(json.loads(f_mig.read_text(encoding="utf-8")))
-                return
-
-        if ruta.startswith("/estilos/"):
-            f_estilo = RAIZ_PROYECTO / ruta.lstrip("/")
-            if f_estilo.exists() and f_estilo.suffix == ".css":
-                self.responder_css(f_estilo.read_text(encoding="utf-8"))
-                return
-
-        if ruta.startswith("/componentes/"):
-            f_comp = RAIZ_PROYECTO / ruta.lstrip("/")
-            if f_comp.exists() and f_comp.suffix == ".js":
-                self.responder_js(f_comp.read_text(encoding="utf-8"))
                 return
 
         if ruta in ("", "/", "/index.html"):
@@ -344,33 +305,10 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 self.responder_error(f"Resena '{id_resena}' no encontrada", 404)
             return
 
-        if ruta == "/api/tasks":
-            f_tasks = RAIZ_PROYECTO / "datos" / "tasks.json"
-            if f_tasks.exists():
-                self.responder_json(json.loads(f_tasks.read_text(encoding="utf-8")))
-                return
-
-        if ruta == "/api/reports":
-            f_rep = RAIZ_PROYECTO / "datos" / "reports.json"
-            if f_rep.exists():
-                self.responder_json(json.loads(f_rep.read_text(encoding="utf-8")))
-                return
-
-        if ruta == "/api/modulos":
-            f_mod = RAIZ_PROYECTO / "datos" / "modulos.json"
-            if f_mod.exists():
-                self.responder_json(json.loads(f_mod.read_text(encoding="utf-8")))
-                return
-
         if ruta.startswith("/vista/"):
             slug = ruta.replace("/vista/", "").strip("/")
-            slug_limpio = slug[:-5] if slug.endswith(".html") else slug
-            f_vista_real = RAIZ_PROYECTO / "vista" / f"{slug_limpio}.html"
-            if f_vista_real.exists():
-                self.responder_html(f_vista_real.read_text(encoding="utf-8"))
-                return
             for p in PESTANAS_ECOSISTEMA:
-                if p["slug"] == slug_limpio:
+                if p["slug"] == slug:
                     plantilla_privada = DIR_VISTAS / "pestana_privada.html"
                     if plantilla_privada.exists():
                         contenido = plantilla_privada.read_text(encoding="utf-8")
