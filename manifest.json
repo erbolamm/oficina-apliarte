@@ -1,0 +1,22 @@
+{
+  "name": "Oficina ApliArte",
+  "short_name": "Oficina",
+  "description": "Oficina modular y soberana para el ecosistema ApliArte y ErBolamm",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": [
+    "productivity",
+    "utilities",
+    "business"
+  ]
+}

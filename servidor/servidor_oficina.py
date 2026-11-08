@@ -165,6 +165,15 @@ class ManejadorOficina(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(cuerpo)
 
+    def responder_svg(self, svg_texto: str, codigo: int = 200):
+        cuerpo = svg_texto.encode("utf-8")
+        self.send_response(codigo)
+        self.send_header("Content-Type", "image/svg+xml")
+        self.send_header("Content-Length", str(len(cuerpo)))
+        self.send_header("X-Modo-Oficina", "solo_lectura")
+        self.end_headers()
+        self.wfile.write(cuerpo)
+
     def responder_error(self, mensaje: str, codigo: int = 404):
         self.responder_json({"error": mensaje, "codigo": codigo}, codigo=codigo)
 
@@ -172,13 +181,31 @@ class ManejadorOficina(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         ruta = parsed.path.rstrip("/")
 
+        if ruta == "/favicon.svg":
+            archivo_fav = RAIZ_PROYECTO / "favicon.svg"
+            if archivo_fav.exists():
+                self.responder_svg(archivo_fav.read_text(encoding="utf-8"))
+                return
+
+        if ruta == "/manifest.json":
+            archivo_man = RAIZ_PROYECTO / "manifest.json"
+            if archivo_man.exists():
+                self.responder_json(json.loads(archivo_man.read_text(encoding="utf-8")))
+                return
+
         if ruta in ("/vistas/escaparate.js", "/escaparate.js"):
             archivo_js = DIR_VISTAS / "escaparate.js"
             if archivo_js.exists():
                 self.responder_js(archivo_js.read_text(encoding="utf-8"))
                 return
 
-        if ruta == "" or ruta == "/" or ruta == "/vista/skills" or ruta == "/skills":
+        if ruta in ("", "/", "/index.html"):
+            archivo_index = RAIZ_PROYECTO / "index.html"
+            if archivo_index.exists():
+                self.responder_html(archivo_index.read_text(encoding="utf-8"))
+                return
+
+        if ruta in ("/vista/skills", "/skills"):
             archivo_vista = DIR_VISTAS / "skills.html"
             if archivo_vista.exists():
                 self.responder_html(archivo_vista.read_text(encoding="utf-8"))

@@ -201,6 +201,27 @@ class TestServidorOficina(unittest.TestCase):
             js = resp.read().decode("utf-8")
             self.assertIn("PESTANAS_ECOSISTEMA", js)
 
+    def test_vista_raiz_index(self):
+        for ruta in ("/", "/index.html"):
+            with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
+                self.assertEqual(resp.status, 200)
+                self.assertIn("text/html", resp.headers.get("Content-Type", ""))
+                html = resp.read().decode("utf-8")
+                self.assertIn("Oficina ApliArte", html)
+                self.assertIn("Suite Soberana", html)
+
+    def test_favicon_svg(self):
+        with urllib.request.urlopen(f"{self.base_url}/favicon.svg") as resp:
+            self.assertEqual(resp.status, 200)
+            self.assertIn("image/svg+xml", resp.headers.get("Content-Type", ""))
+
+    def test_manifest_json(self):
+        with urllib.request.urlopen(f"{self.base_url}/manifest.json") as resp:
+            self.assertEqual(resp.status, 200)
+            datos = json.loads(resp.read().decode("utf-8"))
+            self.assertEqual(datos.get("name"), "Oficina ApliArte")
+            self.assertEqual(datos.get("display"), "standalone")
+
 
 if __name__ == "__main__":
     unittest.main()

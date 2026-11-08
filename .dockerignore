@@ -1,0 +1,24 @@
+# Exclusion obligatoria segun directiva ADR-0013
+control-erbolamm/
+
+# Control de versiones
+.git/
+.gitignore
+
+# Entornos virtuales y cache de Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+
+# Pruebas y desarrollo
+tests/
+scratch/
+
+# Archivos de sistema y secretos
+.DS_Store
+.env
+.env.*
+*.log
