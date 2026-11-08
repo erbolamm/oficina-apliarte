@@ -15,6 +15,7 @@ RAIZ_PROYECTO = Path(__file__).resolve().parent.parent
 DIR_HABILIDADES = RAIZ_PROYECTO / "habilidades"
 DIR_VISTAS = RAIZ_PROYECTO / "vistas"
 DIR_RESENAS = RAIZ_PROYECTO / "resenas"
+DIR_DATOS = RAIZ_PROYECTO / "datos"
 
 PESTANAS_ECOSISTEMA = [
     {"slug": "skills", "titulo": "Banco de Habilidades", "ruta": "/vista/skills", "publica": True},
@@ -175,6 +176,17 @@ class ManejadorOficina(BaseHTTPRequestHandler):
         self.wfile.write(cuerpo)
 
     def responder_error(self, mensaje: str, codigo: int = 404):
+        if codigo == 405:
+            cuerpo = json.dumps({"error": mensaje, "codigo": codigo}, ensure_ascii=False, indent=2).encode("utf-8")
+            self.send_response(codigo)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.send_header("Content-Length", str(len(cuerpo)))
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.send_header("Allow", "GET, OPTIONS")
+            self.send_header("X-Modo-Oficina", "solo_lectura")
+            self.end_headers()
+            self.wfile.write(cuerpo)
+            return
         self.responder_json({"error": mensaje, "codigo": codigo}, codigo=codigo)
 
     def do_GET(self):
@@ -205,23 +217,33 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 self.responder_html(archivo_index.read_text(encoding="utf-8"))
                 return
 
-        if ruta in ("/vista/skills", "/skills"):
+        if ruta in ("/vista/skills", "/skills", "/vistas/skills.html"):
             archivo_vista = DIR_VISTAS / "skills.html"
             if archivo_vista.exists():
                 self.responder_html(archivo_vista.read_text(encoding="utf-8"))
                 return
 
-        if ruta in ("/resenas", "/vista/resenas"):
+        if ruta in ("/resenas", "/vista/resenas", "/vistas/resenas.html"):
             archivo_vista = DIR_VISTAS / "resenas.html"
             if archivo_vista.exists():
                 self.responder_html(archivo_vista.read_text(encoding="utf-8"))
                 return
 
-        if ruta in ("/vista/instala-tu-oficina", "/instala-tu-oficina"):
+        if ruta in ("/vista/instala-tu-oficina", "/instala-tu-oficina", "/vistas/instala-tu-oficina.html"):
             archivo_vista = DIR_VISTAS / "instala-tu-oficina.html"
             if archivo_vista.exists():
                 self.responder_html(archivo_vista.read_text(encoding="utf-8"))
                 return
+
+        if ruta.startswith("/datos/"):
+            archivo_dato = RAIZ_PROYECTO / ruta.lstrip("/")
+            if archivo_dato.exists() and archivo_dato.is_file() and archivo_dato.suffix == ".json":
+                try:
+                    datos = json.loads(archivo_dato.read_text(encoding="utf-8"))
+                    self.responder_json(datos)
+                    return
+                except Exception:
+                    pass
 
         if ruta == "/api/estado":
             self.responder_json({
@@ -305,6 +327,17 @@ class ManejadorOficina(BaseHTTPRequestHandler):
 
     def do_DELETE(self):
         self.responder_error("Metodo DELETE bloqueado: servidor en modo exclusivo de solo lectura", 405)
+
+    def do_PATCH(self):
+        self.responder_error("Metodo PATCH bloqueado: servidor en modo exclusivo de solo lectura", 405)
+
+    def do_OPTIONS(self):
+        self.send_response(204)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.send_header("X-Modo-Oficina", "solo_lectura")
+        self.end_headers()
 
     def log_message(self, format, *args):
         # Silenciar logs en consola estandar salvo errores criticos

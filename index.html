@@ -211,6 +211,21 @@
     .tab-card-link:hover {
       text-decoration: underline;
     }
+    .btn-sm {
+      background-color: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.6rem;
+      border-radius: 0.375rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-sm:hover {
+      background-color: var(--surface-hover);
+      border-color: var(--primary);
+    }
     footer {
       margin-top: 3rem;
       text-align: center;
@@ -233,7 +248,7 @@
         </p>
       </div>
     </div>
-    <span class="badge">Modo Escaparate Publico</span>
+    <div id="connection-bar"></div>
   </header>
 
   <nav class="nav-tabs" id="escaparate-nav">
@@ -273,15 +288,25 @@
 
   <script src="vistas/escaparate.js"></script>
   <script>
+    renderizarBarraConexion('connection-bar');
+    const backendActivo = obtenerBackendUrl();
+    if (backendActivo) {
+      const badge = document.getElementById('status-badge');
+      if (badge) {
+        badge.textContent = 'Servidor Conectado (' + backendActivo + ') · Modo Operativo';
+        badge.style.color = 'var(--success)';
+      }
+    }
     const grid = document.getElementById('grid-tabs');
     PESTANAS_ECOSISTEMA.forEach(p => {
       const card = document.createElement('div');
-      card.className = 'tab-card' + (!p.publica ? ' locked-card' : '');
-      const pillClass = p.publica ? 'pill-active' : 'pill-locked';
-      const pillText = p.publica ? 'Escaparate' : 'Privada';
+      const esDesbloqueada = p.publica || !!backendActivo;
+      card.className = 'tab-card' + (!esDesbloqueada ? ' locked-card' : '');
+      const pillClass = esDesbloqueada ? 'pill-active' : 'pill-locked';
+      const pillText = esDesbloqueada ? (p.publica ? 'Escaparate' : 'Conectada') : 'Privada';
       const targetUrl = p.publica 
         ? (p.slug === 'skills' ? 'vistas/skills.html' : (p.slug === 'resenas' ? 'vistas/resenas.html' : 'vistas/instala-tu-oficina.html'))
-        : 'vistas/instala-tu-oficina.html';
+        : (backendActivo ? ('vistas/' + p.archivo) : 'vistas/instala-tu-oficina.html');
 
       card.innerHTML = `
         <div>
@@ -290,11 +315,11 @@
             <span class="pill ${pillClass}">${pillText}</span>
           </div>
           <div class="tab-card-desc">
-            ${p.publica ? 'Herramienta publica accesible en modo escaparate.' : 'Ejecucion exclusiva en servidor privado con modelos locales.'}
+            ${esDesbloqueada ? (p.publica ? 'Herramienta pública accesible en modo escaparate.' : 'Herramienta conectada a tu servidor.') : 'Ejecución exclusiva en servidor privado con modelos locales.'}
           </div>
         </div>
         <a href="${targetUrl}" class="tab-card-link">
-          ${p.publica ? 'Abrir herramienta →' : 'Instalar en mi servidor →'}
+          ${esDesbloqueada ? 'Abrir herramienta →' : 'Instalar en mi servidor →'}
         </a>
       `;
       grid.appendChild(card);

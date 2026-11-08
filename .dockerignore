@@ -4,6 +4,7 @@ control-erbolamm/
 # Control de versiones
 .git/
 .gitignore
+.atl/
 
 # Entornos virtuales y cache de Python
 __pycache__/

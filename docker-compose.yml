@@ -6,8 +6,8 @@ services:
     ports:
       - "8791:8791"
     volumes:
-      - ./resenas:/app/resenas
-      - ./habilidades:/app/habilidades
+      - ./resenas:/app/resenas:ro
+      - ./habilidades:/app/habilidades:ro
     environment:
       - OFICINA_PUERTO=8791
       - OFICINA_HOST=0.0.0.0

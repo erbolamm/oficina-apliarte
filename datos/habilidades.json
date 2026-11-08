@@ -1,0 +1,21 @@
+{
+  "modo": "solo_lectura",
+  "total": 3,
+  "habilidades": [
+    {
+      "nombre": "paso-a-paso",
+      "descripcion": "Protocolo canonico de ejecucion atomica, hoja de ruta secuencial y verificacion paso a paso con confirmacion y commit por hito.",
+      "ruta_relativa": "habilidades/paso-a-paso/SKILL.md"
+    },
+    {
+      "nombre": "patito-de-goma",
+      "descripcion": "Protocolo canonico de repaso guiado, explicacion paso a paso y descubrimiento de cabos sueltos o flecos pendientes.",
+      "ruta_relativa": "habilidades/patito-de-goma/SKILL.md"
+    },
+    {
+      "nombre": "ritmo-y-rigor",
+      "descripcion": "Trifecta canonica de ritmo y cautela dictada por Javier Mateo. Modula la velocidad de ejecucion y la profundidad de verificacion.",
+      "ruta_relativa": "habilidades/ritmo-y-rigor/SKILL.md"
+    }
+  ]
+}

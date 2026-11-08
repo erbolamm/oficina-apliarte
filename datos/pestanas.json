@@ -1,0 +1,33 @@
+{
+  "modo": "solo_lectura",
+  "total": 27,
+  "pestanas": [
+    {"slug": "skills", "titulo": "Banco de Habilidades", "ruta": "vistas/skills.html", "publica": true},
+    {"slug": "resenas", "titulo": "Reseñas de Tiendas", "ruta": "vistas/resenas.html", "publica": true},
+    {"slug": "instala-tu-oficina", "titulo": "Instala tu Oficina", "ruta": "vistas/instala-tu-oficina.html", "publica": true},
+    {"slug": "propuestas", "titulo": "Bandeja de Propuestas y Aprendizajes", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "aplichat", "titulo": "ApliChat y Buzón de Conversación", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "tiendas", "titulo": "Tiendas y Metadatos ASO", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "diseno", "titulo": "Capturas Retina y Mockups", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "musica", "titulo": "Música Procedural Strudel", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "mercado", "titulo": "Estudio de Mercado y Tendencias", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "locucion", "titulo": "Locución y Doblaje", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "facturas", "titulo": "Facturas y Gestoría Trimestral", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "correos", "titulo": "Correos de Soporte de Usuarios", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "pnl", "titulo": "Programación Neurolingüística (PNL)", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "herramientas", "titulo": "Catálogo de Herramientas", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "auditor-tiendas", "titulo": "Auditoría de Tiendas y Versiones", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "auditoria-web", "titulo": "Auditoría Web y Conversión", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "admob", "titulo": "AdMob y Publicidad Dual", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "aislar-voces", "titulo": "Aislamiento Vocal y Peritaje", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "campana-visual", "titulo": "Campaña Visual Multiformato", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "edicion-video", "titulo": "Edición y Mezcla de Vídeo", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "presentaciones", "titulo": "Presentaciones Multilingües", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "blogger", "titulo": "Publicaciones en Blogger", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "conciliacion", "titulo": "Conciliación Bancaria", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "ses-hospedajes", "titulo": "Registro SES Hospedajes", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "vps", "titulo": "Estado de Infraestructura VPS", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "apliarte-bot", "titulo": "Supervisión de ApliArteBot", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
+    {"slug": "directo", "titulo": "Monitor de Directo y Streaming", "ruta": "vistas/instala-tu-oficina.html", "publica": false}
+  ]
+}

@@ -3,6 +3,7 @@ control-erbolamm/
 
 # Sistema y entornos
 .DS_Store
+.atl/
 .env
 .env.*
 !.env.example

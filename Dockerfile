@@ -11,6 +11,10 @@ WORKDIR /app
 # Copia de codigo soberano
 COPY . /app
 
+# Usuario sin privilegios por seguridad
+RUN useradd -u 1000 -m -s /bin/sh appuser && chown -R appuser:appuser /app
+USER appuser
+
 # Puerto oficial de Oficina ApliArte
 EXPOSE 8791
 

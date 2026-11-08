@@ -92,7 +92,7 @@ class TestServidorOficina(unittest.TestCase):
             self.assertIn("text/html", resp.headers.get("Content-Type", ""))
             html = resp.read().decode("utf-8")
             self.assertIn("Oficina ApliArte — Banco de Habilidades", html)
-            self.assertIn("Modo Solo Lectura", html)
+            self.assertIn("connection-bar", html)
 
     def test_bloqueo_metodos_escritura(self):
         req = urllib.request.Request(f"{self.base_url}/api/habilidades", method="POST")
@@ -155,7 +155,7 @@ class TestServidorOficina(unittest.TestCase):
                 self.assertIn("text/html", resp.headers.get("Content-Type", ""))
                 html = resp.read().decode("utf-8")
                 self.assertIn("Oficina ApliArte — Gestion de Resenas", html)
-                self.assertIn("Modo Solo Lectura", html)
+                self.assertIn("connection-bar", html)
 
     def test_bloqueo_escritura_resenas(self):
         req = urllib.request.Request(f"{self.base_url}/api/resenas", method="POST")
@@ -209,6 +209,43 @@ class TestServidorOficina(unittest.TestCase):
                 html = resp.read().decode("utf-8")
                 self.assertIn("Oficina ApliArte", html)
                 self.assertIn("Suite Soberana", html)
+
+    def test_paridad_rutas_html_directas(self):
+        for ruta in ("/vistas/skills.html", "/vistas/resenas.html", "/vistas/instala-tu-oficina.html"):
+            with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
+                self.assertEqual(resp.status, 200)
+                self.assertIn("text/html", resp.headers.get("Content-Type", ""))
+
+    def test_datos_estaticos_json(self):
+        for ruta in ("/datos/habilidades.json", "/datos/resenas.json", "/datos/pestanas.json"):
+            with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
+                self.assertEqual(resp.status, 200)
+                self.assertIn("application/json", resp.headers.get("Content-Type", ""))
+                datos = json.loads(resp.read().decode("utf-8"))
+                self.assertIsNotNone(datos)
+
+    def test_cabecera_allow_en_error_405(self):
+        req = urllib.request.Request(f"{self.base_url}/api/habilidades", method="POST")
+        try:
+            urllib.request.urlopen(req)
+            self.fail("Deberia haber lanzado HTTPError 405")
+        except urllib.error.HTTPError as e:
+            self.assertEqual(e.code, 405)
+            self.assertIn("GET", e.headers.get("Allow", ""))
+
+    def test_metodo_patch_bloqueado_405(self):
+        req = urllib.request.Request(f"{self.base_url}/api/habilidades", method="PATCH")
+        try:
+            urllib.request.urlopen(req)
+            self.fail("Deberia haber lanzado HTTPError 405")
+        except urllib.error.HTTPError as e:
+            self.assertEqual(e.code, 405)
+
+    def test_metodo_options_permitido(self):
+        req = urllib.request.Request(f"{self.base_url}/api/habilidades", method="OPTIONS")
+        with urllib.request.urlopen(req) as resp:
+            self.assertEqual(resp.status, 204)
+            self.assertIn("GET", resp.headers.get("Access-Control-Allow-Methods", ""))
 
     def test_favicon_svg(self):
         with urllib.request.urlopen(f"{self.base_url}/favicon.svg") as resp:

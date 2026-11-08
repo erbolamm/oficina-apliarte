@@ -1,0 +1,50 @@
+{
+  "modo": "solo_lectura",
+  "datos_de_muestra": true,
+  "nota": "Datos de ejemplo demostrativos para el Modo Escaparate de Oficina ApliArte.",
+  "total": 3,
+  "resenas": [
+    {
+      "id": "resena-aplichat-001",
+      "aplicacion": "aplichat",
+      "tienda": "App Store",
+      "version": "1.2.0",
+      "autor": "CarlosM_Tech",
+      "puntuacion": 5,
+      "fecha": "2026-11-02",
+      "titulo": "Impresionante fluidez y privacidad",
+      "comentario": "La conexion con los orquestadores locales es inmediata y no requiere intermediarios en la nube publica. Totalmente recomendada.",
+      "borrador_respuesta": "Muchas gracias Carlos. La soberania de datos y la comunicacion directa local son los pilares fundamentales del ecosistema ApliArte. Seguimos mejorando en cada version.",
+      "estado": "borrador_listo",
+      "idioma": "es"
+    },
+    {
+      "id": "resena-aplichat-002",
+      "aplicacion": "aplichat",
+      "tienda": "Google Play",
+      "version": "1.2.0",
+      "autor": "ElenaDev",
+      "puntuacion": 4,
+      "fecha": "2026-11-05",
+      "titulo": "Muy buena, esperando soporte de temas oscuros personalizados",
+      "comentario": "Funciona excelente en terminal y movil. Me gustaria poder personalizar un poco mas la paleta de colores.",
+      "borrador_respuesta": "Hola Elena, agradecemos mucho tus comentarios. El soporte para personalizacion de paletas accesibles de alto contraste esta en camino en la proxima actualizacion. Un saludo cordial.",
+      "estado": "pendiente_revision",
+      "idioma": "es"
+    },
+    {
+      "id": "resena-rutas-003",
+      "aplicacion": "rutas-senderismo",
+      "tienda": "Google Play",
+      "version": "2.0.1",
+      "autor": "MontaneroAstur",
+      "puntuacion": 5,
+      "fecha": "2026-10-28",
+      "titulo": "La mejor cartografia sin conexion",
+      "comentario": "La utilizo en los Picos de Europa y no falla nunca. Muy agradecido por no requerir suscripciones abusivas.",
+      "borrador_respuesta": "Gracias por tu confianza. Disenar herramientas fiables para situaciones reales en montana sin dependencias de red es nuestra prioridad absoluta.",
+      "estado": "borrador_listo",
+      "idioma": "es"
+    }
+  ]
+}

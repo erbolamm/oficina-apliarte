@@ -1,6 +1,6 @@
 # AGENTS.md — Protocolo Canonico de Oficina ApliArte
 
-Hogar soberano de la nueva **Oficina ApliArte** en `/Users/apliarte/repos/oficina-apliarte`.
+Hogar soberano de la nueva **Oficina ApliArte** en el repositorio `oficina-apliarte`.
 Cualquier agente que opere en este repositorio debe aplicar obligatoriamente este protocolo:
 
 ---
