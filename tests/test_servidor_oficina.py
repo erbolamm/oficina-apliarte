@@ -19,6 +19,8 @@ from servidor_oficina import (
     ManejadorOficina,
     listar_habilidades,
     obtener_habilidad,
+    listar_resenas,
+    obtener_resena,
     parsear_frontmatter,
 )
 
@@ -64,6 +66,7 @@ class TestServidorOficina(unittest.TestCase):
             self.assertEqual(datos["modo"], "solo_lectura")
             self.assertEqual(datos["estado"], "activo")
             self.assertTrue(datos["total_habilidades"] >= 1)
+            self.assertTrue(datos["total_resenas"] >= 1)
 
     def test_endpoint_habilidades_lista(self):
         with urllib.request.urlopen(f"{self.base_url}/api/habilidades") as resp:
@@ -91,6 +94,69 @@ class TestServidorOficina(unittest.TestCase):
 
     def test_bloqueo_metodos_escritura(self):
         req = urllib.request.Request(f"{self.base_url}/api/habilidades", method="POST")
+        try:
+            urllib.request.urlopen(req)
+            self.fail("Deberia haber lanzado HTTPError 405")
+        except urllib.error.HTTPError as e:
+            self.assertEqual(e.code, 405)
+
+
+    def test_listar_resenas(self):
+        resenas = listar_resenas()
+        self.assertTrue(len(resenas) >= 1)
+        ids = [r["id"] for r in resenas]
+        self.assertIn("resena-aplichat-001", ids)
+
+    def test_obtener_resena(self):
+        r = obtener_resena("resena-aplichat-001")
+        self.assertIsNotNone(r)
+        self.assertEqual(r["aplicacion"], "aplichat")
+        self.assertEqual(r["tienda"], "App Store")
+        self.assertIn("borrador_respuesta", r)
+
+    def test_endpoint_resenas_lista(self):
+        with urllib.request.urlopen(f"{self.base_url}/api/resenas") as resp:
+            self.assertEqual(resp.status, 200)
+            datos = json.loads(resp.read().decode("utf-8"))
+            self.assertEqual(datos["modo"], "solo_lectura")
+            self.assertTrue(datos["total"] >= 1)
+            ids = [r["id"] for r in datos["resenas"]]
+            self.assertIn("resena-aplichat-001", ids)
+
+    def test_endpoint_resenas_filtro_app(self):
+        with urllib.request.urlopen(f"{self.base_url}/api/resenas?app=aplichat") as resp:
+            self.assertEqual(resp.status, 200)
+            datos = json.loads(resp.read().decode("utf-8"))
+            self.assertTrue(datos["total"] >= 1)
+            for r in datos["resenas"]:
+                self.assertEqual(r["aplicacion"], "aplichat")
+
+    def test_endpoint_resena_detalle(self):
+        with urllib.request.urlopen(f"{self.base_url}/api/resenas/resena-aplichat-001") as resp:
+            self.assertEqual(resp.status, 200)
+            datos = json.loads(resp.read().decode("utf-8"))
+            self.assertEqual(datos["id"], "resena-aplichat-001")
+            self.assertEqual(datos["aplicacion"], "aplichat")
+            self.assertIn("borrador_respuesta", datos)
+
+    def test_endpoint_resena_no_encontrada(self):
+        try:
+            urllib.request.urlopen(f"{self.base_url}/api/resenas/id-inexistente-999")
+            self.fail("Deberia haber lanzado HTTPError 404")
+        except urllib.error.HTTPError as e:
+            self.assertEqual(e.code, 404)
+
+    def test_vista_resenas(self):
+        for ruta in ("/resenas", "/vista/resenas"):
+            with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
+                self.assertEqual(resp.status, 200)
+                self.assertIn("text/html", resp.headers.get("Content-Type", ""))
+                html = resp.read().decode("utf-8")
+                self.assertIn("Oficina ApliArte — Gestion de Resenas", html)
+                self.assertIn("Modo Solo Lectura", html)
+
+    def test_bloqueo_escritura_resenas(self):
+        req = urllib.request.Request(f"{self.base_url}/api/resenas", method="POST")
         try:
             urllib.request.urlopen(req)
             self.fail("Deberia haber lanzado HTTPError 405")

@@ -9,11 +9,12 @@ import os
 import re
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import urlparse, parse_qs
 
 RAIZ_PROYECTO = Path(__file__).resolve().parent.parent
 DIR_HABILIDADES = RAIZ_PROYECTO / "habilidades"
 DIR_VISTAS = RAIZ_PROYECTO / "vistas"
+DIR_RESENAS = RAIZ_PROYECTO / "resenas"
 
 
 def parsear_frontmatter(texto: str) -> dict:
@@ -60,6 +61,49 @@ def obtener_habilidad(nombre: str) -> dict | None:
     }
 
 
+def listar_resenas(aplicacion: str | None = None) -> list:
+    resultado = []
+    if not DIR_RESENAS.exists():
+        return resultado
+
+    # 1. Cargar archivo consolidado borradores.json si existe
+    archivo_consolidado = DIR_RESENAS / "borradores.json"
+    if archivo_consolidado.exists():
+        try:
+            datos = json.loads(archivo_consolidado.read_text(encoding="utf-8"))
+            if isinstance(datos, list):
+                resultado.extend(datos)
+        except Exception:
+            pass
+
+    # 2. Cargar archivos individuales .json en resenas/
+    for ruta_json in DIR_RESENAS.glob("*.json"):
+        if ruta_json.name == "borradores.json":
+            continue
+        try:
+            datos = json.loads(ruta_json.read_text(encoding="utf-8"))
+            if isinstance(datos, list):
+                resultado.extend(datos)
+            elif isinstance(datos, dict):
+                resultado.append(datos)
+        except Exception:
+            pass
+
+    # Filtrar por aplicacion si se solicita
+    if aplicacion:
+        app_filtro = aplicacion.strip().lower()
+        resultado = [r for r in resultado if str(r.get("aplicacion", "")).strip().lower() == app_filtro]
+
+    return resultado
+
+
+def obtener_resena(id_resena: str) -> dict | None:
+    for r in listar_resenas():
+        if str(r.get("id")) == id_resena:
+            return r
+    return None
+
+
 class ManejadorOficina(BaseHTTPRequestHandler):
     server_version = "OficinaApliArte/0.1.0"
 
@@ -95,6 +139,12 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 self.responder_html(archivo_vista.read_text(encoding="utf-8"))
                 return
 
+        if ruta in ("/resenas", "/vista/resenas"):
+            archivo_vista = DIR_VISTAS / "resenas.html"
+            if archivo_vista.exists():
+                self.responder_html(archivo_vista.read_text(encoding="utf-8"))
+                return
+
         if ruta == "/api/estado":
             self.responder_json({
                 "servicio": "oficina-apliarte",
@@ -102,6 +152,7 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 "modo": "solo_lectura",
                 "version": "0.1.0",
                 "total_habilidades": len(listar_habilidades()),
+                "total_resenas": len(listar_resenas()),
             })
             return
 
@@ -121,6 +172,27 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 self.responder_json(hab)
             else:
                 self.responder_error(f"Habilidad '{nombre}' no encontrada", 404)
+            return
+
+        if ruta == "/api/resenas":
+            query = parse_qs(parsed.query)
+            app_param = query.get("app", [None])[0]
+            resenas = listar_resenas(aplicacion=app_param)
+            self.responder_json({
+                "modo": "solo_lectura",
+                "total": len(resenas),
+                "resenas": resenas,
+            })
+            return
+
+        match_resena = re.match(r"^/api/resenas/([a-zA-Z0-9_\-]+)$", ruta)
+        if match_resena:
+            id_resena = match_resena.group(1)
+            resena = obtener_resena(id_resena)
+            if resena:
+                self.responder_json(resena)
+            else:
+                self.responder_error(f"Resena '{id_resena}' no encontrada", 404)
             return
 
         self.responder_error(f"Ruta '{ruta}' no encontrada en modo solo lectura", 404)
