@@ -4,6 +4,8 @@
 // Modo 3: Conectado a Servidor en la Nube (Hostinger VPS)
 
 const PESTANAS_ECOSISTEMA = [
+  { slug: 'aplicaciones', titulo: 'Aplicaciones Oficiales', archivo: 'aplicaciones.html', ruta: '/vista/aplicaciones', publica: true },
+  { slug: 'paquetes', titulo: 'Paquetes Flutter', archivo: 'paquetes.html', ruta: '/vista/paquetes', publica: true },
   { slug: 'skills', titulo: 'Banco de Habilidades', archivo: 'skills.html', ruta: '/vista/skills', publica: true },
   { slug: 'resenas', titulo: 'Reseñas de Tiendas', archivo: 'resenas.html', ruta: '/resenas', publica: true },
   { slug: 'instala-tu-oficina', titulo: 'Instala tu Oficina', archivo: 'instala-tu-oficina.html', ruta: '/vista/instala-tu-oficina', publica: true },
@@ -35,14 +37,28 @@ const PESTANAS_ECOSISTEMA = [
 
 const CLAVE_ALMACEN_BACKEND = 'oficina_backend_url';
 
+function esEntornoGitHubPages() {
+  return window.location.hostname.includes('github.io');
+}
+
 function obtenerBackendUrl() {
+  // En GitHub Pages, regla de seguridad estricta: cero sondeo automatico a 127.0.0.1; arranca siempre en escaparate puro
+  if (esEntornoGitHubPages()) {
+    return sessionStorage.getItem(CLAVE_ALMACEN_BACKEND) || '';
+  }
   return localStorage.getItem(CLAVE_ALMACEN_BACKEND) || '';
 }
 
 function fijarBackendUrl(url) {
   if (url) {
-    localStorage.setItem(CLAVE_ALMACEN_BACKEND, url.replace(/\/+$/, ''));
+    const urlLimpia = url.replace(/\/+$/, '');
+    if (esEntornoGitHubPages()) {
+      sessionStorage.setItem(CLAVE_ALMACEN_BACKEND, urlLimpia);
+    } else {
+      localStorage.setItem(CLAVE_ALMACEN_BACKEND, urlLimpia);
+    }
   } else {
+    sessionStorage.removeItem(CLAVE_ALMACEN_BACKEND);
     localStorage.removeItem(CLAVE_ALMACEN_BACKEND);
   }
 }
@@ -71,19 +87,24 @@ function calcularRutaRelativa(rutaDestino) {
 async function hacerPeticionUniversal(endpointApi, rutaFallbackEstatica) {
   const backend = obtenerBackendUrl();
   
+  // Regla de seguridad: en GitHub Pages con HTTPS no conectar a 127.0.0.1 salvo sesion iniciada expresamente
   if (backend) {
-    try {
-      const urlCompleta = `${backend}${endpointApi}`;
-      const res = await fetch(urlCompleta, { method: 'GET', mode: 'cors' });
-      if (res.ok) {
-        return await res.json();
+    const esLocal = backend.includes('127.0.0.1') || backend.includes('localhost');
+    const esHttps = window.location.protocol === 'https:';
+    if (!esHttps || !esLocal) {
+      try {
+        const urlCompleta = `${backend}${endpointApi}`;
+        const res = await fetch(urlCompleta, { method: 'GET', mode: 'cors' });
+        if (res.ok) {
+          return await res.json();
+        }
+      } catch (e) {
+        console.warn('Fallo al conectar con backend configurado, recurriendo a datos estaticos:', e);
       }
-    } catch (e) {
-      console.warn('Fallo al conectar con backend configurado, recurriendo a datos estaticos:', e);
     }
   }
 
-  // Fallback estatico para GitHub Pages o modo desconectado
+  // Fallback estatico para GitHub Pages o modo escaparate puro
   const rutaFinal = calcularRutaRelativa(rutaFallbackEstatica);
   const resFallback = await fetch(rutaFinal);
   if (!resFallback.ok) {
@@ -131,6 +152,9 @@ function renderizarBarraConexion(contenedorId) {
 
 async function conectarLocal() {
   const urlLocal = 'http://127.0.0.1:8791';
+  if (window.location.protocol === 'https:' && esEntornoGitHubPages()) {
+    alert('Aviso de seguridad del navegador: Desde un sitio HTTPS (como GitHub Pages), las peticiones directas a un servidor HTTP local en 127.0.0.1 suelen ser bloqueadas por politicas de contenido mixto del navegador. Para conectar con tu entorno local, puedes abrir http://127.0.0.1:8791 directamente en tu navegador o conectar un servidor en la nube con HTTPS.');
+  }
   try {
     const res = await fetch(`${urlLocal}/api/estado`, { mode: 'cors' });
     if (res.ok) {

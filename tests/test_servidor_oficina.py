@@ -67,8 +67,8 @@ class TestServidorOficina(unittest.TestCase):
             self.assertEqual(datos["estado"], "activo")
             self.assertTrue(datos["total_habilidades"] >= 1)
             self.assertTrue(datos["total_resenas"] >= 1)
-            self.assertEqual(datos.get("total_pestanas"), 27)
-            self.assertEqual(datos.get("pestanas_publicas"), 3)
+            self.assertEqual(datos.get("total_pestanas"), 29)
+            self.assertEqual(datos.get("pestanas_publicas"), 5)
 
     def test_endpoint_habilidades_lista(self):
         with urllib.request.urlopen(f"{self.base_url}/api/habilidades") as resp:
@@ -180,9 +180,52 @@ class TestServidorOficina(unittest.TestCase):
             self.assertEqual(resp.status, 200)
             datos = json.loads(resp.read().decode("utf-8"))
             self.assertEqual(datos["modo"], "solo_lectura")
-            self.assertEqual(datos["total"], 27)
+            self.assertEqual(datos["total"], 29)
             slugs_publicos = [p["slug"] for p in datos["pestanas"] if p["publica"]]
-            self.assertEqual(set(slugs_publicos), {"skills", "resenas", "instala-tu-oficina"})
+            self.assertEqual(set(slugs_publicos), {"aplicaciones", "paquetes", "skills", "resenas", "instala-tu-oficina"})
+
+    def test_vista_aplicaciones(self):
+        for ruta in ("/vista/aplicaciones", "/aplicaciones", "/vistas/aplicaciones.html"):
+            with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
+                self.assertEqual(resp.status, 200)
+                self.assertIn("text/html", resp.headers.get("Content-Type", ""))
+                html = resp.read().decode("utf-8")
+                self.assertIn("Oficina ApliArte — Aplicaciones Oficiales", html)
+                self.assertIn("connection-bar", html)
+                self.assertIn("apps-grid", html)
+
+    def test_vista_paquetes(self):
+        for ruta in ("/vista/paquetes", "/paquetes", "/vistas/paquetes.html"):
+            with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
+                self.assertEqual(resp.status, 200)
+                self.assertIn("text/html", resp.headers.get("Content-Type", ""))
+                html = resp.read().decode("utf-8")
+                self.assertIn("Oficina ApliArte — Paquetes Flutter", html)
+                self.assertIn("connection-bar", html)
+                self.assertIn("packages-list", html)
+
+    def test_endpoint_aplicaciones(self):
+        with urllib.request.urlopen(f"{self.base_url}/api/aplicaciones") as resp:
+            self.assertEqual(resp.status, 200)
+            datos = json.loads(resp.read().decode("utf-8"))
+            self.assertIsInstance(datos, list)
+            self.assertTrue(len(datos) >= 4)
+            ids = [a["id"] for a in datos]
+            self.assertIn("calca-app", ids)
+            self.assertIn("inem-sellar", ids)
+            self.assertIn("aplichat", ids)
+            self.assertIn("dictado-oficina", ids)
+
+    def test_endpoint_paquetes(self):
+        with urllib.request.urlopen(f"{self.base_url}/api/paquetes") as resp:
+            self.assertEqual(resp.status, 200)
+            datos = json.loads(resp.read().decode("utf-8"))
+            self.assertIsInstance(datos, list)
+            self.assertTrue(len(datos) >= 3)
+            nombres = [p["nombre"] for p in datos]
+            self.assertIn("apliarte_flutter_connect", nombres)
+            self.assertIn("apliarte_remote_control", nombres)
+            self.assertIn("tts_apliarte", nombres)
 
     def test_vista_pestana_privada_bloqueada(self):
         for ruta in ("/vista/aplichat", "/vista/propuestas", "/vista/facturas"):
@@ -211,13 +254,13 @@ class TestServidorOficina(unittest.TestCase):
                 self.assertIn("Suite Soberana", html)
 
     def test_paridad_rutas_html_directas(self):
-        for ruta in ("/vistas/skills.html", "/vistas/resenas.html", "/vistas/instala-tu-oficina.html"):
+        for ruta in ("/vistas/skills.html", "/vistas/resenas.html", "/vistas/instala-tu-oficina.html", "/vistas/aplicaciones.html", "/vistas/paquetes.html"):
             with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
                 self.assertEqual(resp.status, 200)
                 self.assertIn("text/html", resp.headers.get("Content-Type", ""))
 
     def test_datos_estaticos_json(self):
-        for ruta in ("/datos/habilidades.json", "/datos/resenas.json", "/datos/pestanas.json"):
+        for ruta in ("/datos/habilidades.json", "/datos/resenas.json", "/datos/pestanas.json", "/datos/aplicaciones.json", "/datos/paquetes.json"):
             with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
                 self.assertEqual(resp.status, 200)
                 self.assertIn("application/json", resp.headers.get("Content-Type", ""))

@@ -18,6 +18,8 @@ DIR_RESENAS = RAIZ_PROYECTO / "resenas"
 DIR_DATOS = RAIZ_PROYECTO / "datos"
 
 PESTANAS_ECOSISTEMA = [
+    {"slug": "aplicaciones", "titulo": "Aplicaciones Oficiales", "ruta": "/vista/aplicaciones", "publica": True},
+    {"slug": "paquetes", "titulo": "Paquetes Flutter", "ruta": "/vista/paquetes", "publica": True},
     {"slug": "skills", "titulo": "Banco de Habilidades", "ruta": "/vista/skills", "publica": True},
     {"slug": "resenas", "titulo": "Reseñas de Tiendas", "ruta": "/resenas", "publica": True},
     {"slug": "instala-tu-oficina", "titulo": "Instala tu Oficina", "ruta": "/vista/instala-tu-oficina", "publica": True},
@@ -217,6 +219,18 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 self.responder_html(archivo_index.read_text(encoding="utf-8"))
                 return
 
+        if ruta in ("/vista/aplicaciones", "/aplicaciones", "/vistas/aplicaciones.html"):
+            archivo_vista = DIR_VISTAS / "aplicaciones.html"
+            if archivo_vista.exists():
+                self.responder_html(archivo_vista.read_text(encoding="utf-8"))
+                return
+
+        if ruta in ("/vista/paquetes", "/paquetes", "/vistas/paquetes.html"):
+            archivo_vista = DIR_VISTAS / "paquetes.html"
+            if archivo_vista.exists():
+                self.responder_html(archivo_vista.read_text(encoding="utf-8"))
+                return
+
         if ruta in ("/vista/skills", "/skills", "/vistas/skills.html"):
             archivo_vista = DIR_VISTAS / "skills.html"
             if archivo_vista.exists():
@@ -264,6 +278,22 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 "total": len(PESTANAS_ECOSISTEMA),
                 "pestanas": PESTANAS_ECOSISTEMA,
             })
+            return
+
+        if ruta == "/api/aplicaciones":
+            archivo_app = DIR_DATOS / "aplicaciones.json"
+            if archivo_app.exists():
+                self.responder_json(json.loads(archivo_app.read_text(encoding="utf-8")))
+            else:
+                self.responder_json([])
+            return
+
+        if ruta == "/api/paquetes":
+            archivo_paq = DIR_DATOS / "paquetes.json"
+            if archivo_paq.exists():
+                self.responder_json(json.loads(archivo_paq.read_text(encoding="utf-8")))
+            else:
+                self.responder_json([])
             return
 
         if ruta == "/api/habilidades":

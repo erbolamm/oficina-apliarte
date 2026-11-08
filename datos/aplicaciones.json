@@ -1,0 +1,156 @@
+[
+  {
+    "id": "calca-app",
+    "nombre": "CalcaApp",
+    "subtitulo": "Trazar y Dibujar con Realidad Aumentada",
+    "descripcion": "Proyecta cualquier imagen de tu galeria o de tu entorno sobre papel o lienzo para calcar, bocetar y pintar con precision asistida por camara.",
+    "categoria": "Creatividad y Diseno",
+    "estado": "Disponible en Produccion",
+    "version": "2.5.7",
+    "icono": "🎨",
+    "enlace_principal": {
+      "texto": "Sitio Web Oficial",
+      "url": "https://calca.app"
+    },
+    "tiendas": [
+      {
+        "tienda": "Google Play",
+        "plataforma": "Android",
+        "disponible": true,
+        "url": "https://play.google.com/store/apps/details?id=com.apliarte.calcaapp"
+      },
+      {
+        "tienda": "App Store",
+        "plataforma": "iOS",
+        "disponible": true,
+        "url": "https://apps.apple.com/app/calca-app/id6449416560"
+      },
+      {
+        "tienda": "Huawei AppGallery",
+        "plataforma": "Huawei",
+        "disponible": true,
+        "url": "https://appgallery.huawei.com"
+      },
+      {
+        "tienda": "Amazon Appstore",
+        "plataforma": "Amazon",
+        "disponible": true,
+        "url": "https://www.amazon.es"
+      }
+    ],
+    "caracteristicas": [
+      "Fijacion de punto de vista mediante realidad aumentada",
+      "Control de opacidad y bloqueo de enfoque",
+      "Modo linterna para iluminacion del lienzo",
+      "Filtros de contraste para resaltar trazos y bordes"
+    ]
+  },
+  {
+    "id": "inem-sellar",
+    "nombre": "Inem Sellar",
+    "subtitulo": "Renovacion de Demanda de Empleo DARDE y Citas",
+    "descripcion": "Aplicacion utilitaria para la gestion rapida, sellado de demanda de empleo autonomico y solicitud de cita previa en los servicios publicos de empleo de Espana.",
+    "categoria": "Productividad y Gestiones",
+    "estado": "Disponible en Produccion",
+    "version": "226.0.0",
+    "icono": "📋",
+    "enlace_principal": {
+      "texto": "Sitio Web Oficial",
+      "url": "https://inemsellar.apliarte.com"
+    },
+    "tiendas": [
+      {
+        "tienda": "Google Play",
+        "plataforma": "Android",
+        "disponible": true,
+        "url": "https://play.google.com/store/apps/details?id=com.mobincube.android.sc_WRTRG.app_72671"
+      },
+      {
+        "tienda": "Huawei AppGallery",
+        "plataforma": "Huawei",
+        "disponible": true,
+        "url": "https://appgallery.huawei.com"
+      },
+      {
+        "tienda": "Amazon Appstore",
+        "plataforma": "Amazon",
+        "disponible": true,
+        "url": "https://www.amazon.es"
+      }
+    ],
+    "caracteristicas": [
+      "Acceso directo a todas las comunidades autonomas (SEPE, SAE, LABORA, SOC)",
+      "Recordatorios calendarizados antes de la fecha de renovacion",
+      "Gestion de citas previas telefonicas y presenciales",
+      "Guia informativa de tramites y prestaciones frecuentes"
+    ]
+  },
+  {
+    "id": "aplichat",
+    "nombre": "ApliChat",
+    "subtitulo": "Chat Accesible con Grandes Tipografias y Lectura por Voz",
+    "descripcion": "Mensajeria inteligente adaptada para personas mayores o con dificultades visuales, con interfaz limpia, botones de gran contraste y lectura por voz integrada.",
+    "categoria": "Accesibilidad y Comunicacion",
+    "estado": "Disponible en Produccion",
+    "version": "1.2.43",
+    "icono": "💬",
+    "enlace_principal": {
+      "texto": "Sitio Web Oficial",
+      "url": "https://aplichat.apliarte.com"
+    },
+    "tiendas": [
+      {
+        "tienda": "Google Play",
+        "plataforma": "Android",
+        "disponible": true,
+        "url": "https://play.google.com/store/apps/details?id=com.apliarte.aplichat"
+      },
+      {
+        "tienda": "App Store (TestFlight)",
+        "plataforma": "iOS",
+        "disponible": true,
+        "url": "https://testflight.apple.com"
+      }
+    ],
+    "caracteristicas": [
+      "Tipografia dinamica con tamano extragrande ajustable",
+      "Lectura por voz de mensajes entrantes con un solo toque",
+      "Entrada por dictado vocal guiado",
+      "Proteccion de privacidad sin publicidad invasiva"
+    ]
+  },
+  {
+    "id": "dictado-oficina",
+    "nombre": "Dictado Oficina",
+    "subtitulo": "Dictado Flotante y Centinela por Voz",
+    "descripcion": "Herramienta de escritorio flotante para captura por voz desatendida, transcripcion local inmediata e integracion directa con el panel de tareas de Oficina ApliArte.",
+    "categoria": "Herramientas de Oficina",
+    "estado": "En Desarrollo Activo",
+    "version": "0.5.0",
+    "icono": "🎙️",
+    "enlace_principal": {
+      "texto": "Sitio Web Oficial",
+      "url": "https://oficina.apliarte.com"
+    },
+    "tiendas": [
+      {
+        "tienda": "macOS Escritorio",
+        "plataforma": "macOS",
+        "disponible": true,
+        "url": "https://github.com/erbolamm/oficina-apliarte"
+      },
+      {
+        "tienda": "Linux Escritorio",
+        "plataforma": "Linux",
+        "disponible": false,
+        "url": null
+      }
+    ],
+    "caracteristicas": [
+      "Ventana flotante ligera siempre visible",
+      "Activacion por atajo global de teclado",
+      "Conexion directa con el buzon de tareas de la Oficina",
+      "Deteccion de silencio y envio automatico"
+    ]
+  }
+]

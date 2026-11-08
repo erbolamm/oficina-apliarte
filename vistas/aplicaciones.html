@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="manifest" href="../manifest.json">
+  <title>Oficina ApliArte — Aplicaciones Oficiales</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface-hover: #334155;
+      --border: #475569;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --primary-hover: #0284c7;
+      --success: #34d399;
+      --warning: #fbbf24;
+      --accent: #a855f7;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 1.5rem;
+      min-height: 100vh;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    h1 { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background-color: rgba(56, 189, 248, 0.2);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+      overflow-x: auto;
+    }
+    .nav-tab {
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: 0.375rem;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-tab:hover {
+      background-color: var(--surface-hover);
+      color: var(--text);
+    }
+    .nav-tab.active {
+      background-color: var(--surface);
+      color: var(--primary);
+      border: 1px solid var(--border);
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .hero {
+      margin-bottom: 2.5rem;
+      text-align: center;
+    }
+    .hero h2 {
+      font-size: 1.8rem;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .hero p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .app-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .app-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+    .app-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .app-icon {
+      font-size: 2.2rem;
+      line-height: 1;
+      width: 3rem;
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 0.75rem;
+      flex-shrink: 0;
+    }
+    .app-title-wrap {
+      flex: 1;
+    }
+    .app-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.2rem;
+    }
+    .app-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+    .app-status {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.15rem 0.5rem;
+      border-radius: 9999px;
+      margin-bottom: 0.75rem;
+    }
+    .status-prod {
+      background: rgba(52, 211, 153, 0.15);
+      color: var(--success);
+      border: 1px solid var(--success);
+    }
+    .status-dev {
+      background: rgba(251, 191, 36, 0.15);
+      color: var(--warning);
+      border: 1px solid var(--warning);
+    }
+    .app-desc {
+      font-size: 0.88rem;
+      color: #cbd5e1;
+      margin-bottom: 1.25rem;
+      line-height: 1.5;
+    }
+    .app-features {
+      list-style: none;
+      margin-bottom: 1.5rem;
+      padding-left: 0;
+    }
+    .app-features li {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+      position: relative;
+      padding-left: 1.2rem;
+    }
+    .app-features li::before {
+      content: "•";
+      color: var(--primary);
+      font-size: 1.1rem;
+      position: absolute;
+      left: 0.2rem;
+      top: -0.1rem;
+    }
+    .app-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: auto;
+      border-top: 1px solid var(--border);
+      padding-top: 1.25rem;
+    }
+    .btn-main-landing {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: var(--primary);
+      color: #0f172a;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 0.65rem 1rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      transition: background-color 0.2s;
+    }
+    .btn-main-landing:hover {
+      background: var(--primary-hover);
+    }
+    .stores-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.4rem;
+    }
+    .stores-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .store-btn {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.3rem 0.6rem;
+      border-radius: 0.375rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.2s;
+    }
+    .store-btn-active {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .store-btn-active:hover {
+      background: var(--surface-hover);
+      border-color: var(--primary);
+      color: #fff;
+    }
+    .store-btn-disabled {
+      background: rgba(255, 255, 255, 0.02);
+      color: #64748b;
+      border: 1px dashed #334155;
+      cursor: not-allowed;
+    }
+    .btn-sm {
+      background-color: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.6rem;
+      border-radius: 0.375rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-sm:hover {
+      background-color: var(--surface-hover);
+      border-color: var(--primary);
+    }
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <h1>Oficina ApliArte — Aplicaciones Oficiales</h1>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
+        Catálogo Declarativo de Aplicaciones en Producción y Desarrollo del Ecosistema
+      </p>
+    </div>
+    <div id="connection-bar"></div>
+  </header>
+
+  <nav class="nav-tabs" id="escaparate-nav">
+    <a href="../index.html" class="nav-tab">Inicio</a>
+    <a href="aplicaciones.html" class="nav-tab active">Aplicaciones</a>
+    <a href="paquetes.html" class="nav-tab">Paquetes Flutter</a>
+    <a href="skills.html" class="nav-tab">Banco de Habilidades</a>
+    <a href="resenas.html" class="nav-tab">Reseñas de Tiendas</a>
+    <a href="instala-tu-oficina.html" class="nav-tab">Instala tu Oficina</a>
+  </nav>
+
+  <div class="container">
+    <section class="hero">
+      <h2>Aplicaciones del Ecosistema ApliArte</h2>
+      <p>
+        Acceso directo a las páginas oficiales de presentación y enlaces verificados a las tiendas de aplicaciones en múltiples plataformas.
+      </p>
+    </section>
+
+    <div class="apps-grid" id="apps-grid">
+      <div style="color: var(--text-muted); font-size: 0.9rem;">Cargando catálogo de aplicaciones...</div>
+    </div>
+  </div>
+
+  <footer>
+    Oficina ApliArte Soberana · Catálogo Oficial de Aplicaciones
+  </footer>
+
+  <script src="escaparate.js"></script>
+  <script>
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    async function cargarAplicaciones() {
+      const contenedor = document.getElementById('apps-grid');
+      try {
+        const apps = await hacerPeticionUniversal('/api/aplicaciones', 'datos/aplicaciones.json');
+        contenedor.innerHTML = '';
+
+        if (!Array.isArray(apps) || apps.length === 0) {
+          contenedor.innerHTML = '<p style="color: var(--text-muted);">No hay aplicaciones registradas.</p>';
+          return;
+        }
+
+        apps.forEach(app => {
+          const card = document.createElement('div');
+          card.className = 'app-card';
+
+          const esProd = (app.estado || '').toLowerCase().includes('produccion');
+          const statusClase = esProd ? 'status-prod' : 'status-dev';
+
+          let tiendasHtml = '';
+          if (Array.isArray(app.tiendas) && app.tiendas.length > 0) {
+            tiendasHtml = `
+              <div>
+                <div class="stores-title">Disponibilidad en Tiendas</div>
+                <div class="stores-row">
+                  ${app.tiendas.map(t => {
+                    if (t.disponible && t.url) {
+                      return `<a href="${escapeHtml(t.url)}" target="_blank" rel="noopener" class="store-btn store-btn-active" title="Abrir en ${escapeHtml(t.tienda)}">${escapeHtml(t.tienda)} ↗</a>`;
+                    } else {
+                      return `<span class="store-btn store-btn-disabled" title="Proximamente en ${escapeHtml(t.tienda)}">${escapeHtml(t.tienda)} (Proximamente)</span>`;
+                    }
+                  }).join('')}
+                </div>
+              </div>
+            `;
+          }
+
+          let caracteristicasHtml = '';
+          if (Array.isArray(app.caracteristicas) && app.caracteristicas.length > 0) {
+            caracteristicasHtml = `
+              <ul class="app-features">
+                ${app.caracteristicas.map(c => `<li>${escapeHtml(c)}</li>`).join('')}
+              </ul>
+            `;
+          }
+
+          card.innerHTML = `
+            <div>
+              <div class="app-card-header">
+                <div class="app-icon">${escapeHtml(app.icono || '📱')}</div>
+                <div class="app-title-wrap">
+                  <div class="app-title">${escapeHtml(app.nombre)}</div>
+                  <div class="app-subtitle">${escapeHtml(app.subtitulo || '')}</div>
+                </div>
+              </div>
+
+              <div>
+                <span class="app-status ${statusClase}">${escapeHtml(app.estado)} · v${escapeHtml(app.version)}</span>
+              </div>
+
+              <div class="app-desc">
+                ${escapeHtml(app.descripcion)}
+              </div>
+
+              ${caracteristicasHtml}
+            </div>
+
+            <div class="app-actions">
+              <a href="${escapeHtml(app.enlace_principal.url)}" target="_blank" rel="noopener" class="btn-main-landing">
+                ${escapeHtml(app.enlace_principal.texto || 'Sitio Web Oficial')} ↗
+              </a>
+              ${tiendasHtml}
+            </div>
+          `;
+
+          contenedor.appendChild(card);
+        });
+
+      } catch (e) {
+        contenedor.innerHTML = `<p style="color: var(--warning);">Error al cargar aplicaciones: ${escapeHtml(e.message)}</p>`;
+      }
+    }
+
+    if (typeof renderizarBarraConexion === 'function') {
+      renderizarBarraConexion('connection-bar');
+    }
+    if (typeof renderizarBarraEscaparate === 'function') {
+      renderizarBarraEscaparate('escaparate-nav', 'aplicaciones');
+    }
+
+    cargarAplicaciones();
+  </script>
+</body>
+</html>

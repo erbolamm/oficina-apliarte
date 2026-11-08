@@ -1,0 +1,41 @@
+[
+  {
+    "id": "apliarte_flutter_connect",
+    "nombre": "apliarte_flutter_connect",
+    "tipo": "Plugin de Flutter",
+    "subtitulo": "Conectividad Local P2P, mDNS y Streaming",
+    "descripcion": "Base de conectividad de dispositivo a dispositivo para aplicaciones Flutter, incluyendo descubrimiento de servicios mDNS, puentes WebSocket en red local y Wi-Fi Direct P2P en Android.",
+    "version": "0.2.0",
+    "repositorio": "https://github.com/erbolamm/apliarte-flutter-connect",
+    "licencia": "MIT",
+    "plataformas": ["Android", "iOS", "macOS", "Web"],
+    "etiquetas": ["connectivity", "streaming", "mdns", "p2p", "wifi-direct"],
+    "instalacion": "git:\n  url: https://github.com/erbolamm/apliarte-flutter-connect.git"
+  },
+  {
+    "id": "apliarte_remote_control",
+    "nombre": "apliarte_remote_control",
+    "tipo": "Paquete Dart / Flutter",
+    "subtitulo": "Control Remoto y Telemetria para Oficina",
+    "descripcion": "Protocolo de comunicacion y eventos en tiempo real para enlazar terminales moviles con el centro de control y paneles operativos de Oficina ApliArte.",
+    "version": "0.1.0",
+    "repositorio": "https://github.com/erbolamm/apliarte-remote-control",
+    "licencia": "MIT",
+    "plataformas": ["Android", "iOS", "macOS", "Windows", "Linux"],
+    "etiquetas": ["remote-control", "websocket", "telemetry", "office"],
+    "instalacion": "git:\n  url: https://github.com/erbolamm/apliarte-remote-control.git"
+  },
+  {
+    "id": "tts_apliarte",
+    "nombre": "tts_apliarte",
+    "tipo": "Plugin de Flutter",
+    "subtitulo": "Motor de Sintesis y Lectura Accesible por Voz",
+    "descripcion": "Capa unificada para lectura por voz de textos largos, gestion de colas de audio y locucion accesible para perfiles con baja vision y personas mayores.",
+    "version": "0.1.0",
+    "repositorio": "https://github.com/erbolamm/tts-apliarte",
+    "licencia": "MIT",
+    "plataformas": ["Android", "iOS", "macOS"],
+    "etiquetas": ["tts", "accessibility", "speech", "audio"],
+    "instalacion": "git:\n  url: https://github.com/erbolamm/tts-apliarte.git"
+  }
+]

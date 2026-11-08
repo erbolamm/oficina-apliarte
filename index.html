@@ -253,8 +253,10 @@
 
   <nav class="nav-tabs" id="escaparate-nav">
     <a href="index.html" class="nav-tab active">Inicio</a>
+    <a href="vistas/aplicaciones.html" class="nav-tab">Aplicaciones</a>
+    <a href="vistas/paquetes.html" class="nav-tab">Paquetes Flutter</a>
     <a href="vistas/skills.html" class="nav-tab">Banco de Habilidades</a>
-    <a href="vistas/resenas.html" class="nav-tab">Resenas de Tiendas</a>
+    <a href="vistas/resenas.html" class="nav-tab">Reseñas de Tiendas</a>
     <a href="vistas/instala-tu-oficina.html" class="nav-tab">Instala tu Oficina</a>
   </nav>
 
@@ -262,18 +264,18 @@
     <section class="hero">
       <h2>El Centro de Operaciones de tu Ecosistema</h2>
       <p>
-        Consulta de habilidades, revision de resenas y catalogo completo de las 27 herramientas soberanas para orquestadores locales y dispositivos moviles.
+        Catálogo de aplicaciones oficiales, paquetes de código abierto Flutter, banco de habilidades, reseñas de tiendas y herramientas soberanas para orquestadores locales y dispositivos móviles.
       </p>
       <div class="hero-actions">
-        <a href="vistas/skills.html" class="btn btn-primary">Abrir Banco de Habilidades</a>
-        <a href="vistas/instala-tu-oficina.html" class="btn btn-secondary">Instalar Suite Completa</a>
+        <a href="vistas/aplicaciones.html" class="btn btn-primary">Ver Aplicaciones Oficiales</a>
+        <a href="vistas/paquetes.html" class="btn btn-secondary">Explorar Paquetes Flutter</a>
       </div>
     </section>
 
     <div class="section-title">
-      <span>Herramientas del Ecosistema (27 Pestañas)</span>
+      <span>Herramientas del Ecosistema (<span id="tabs-total-counter">29</span> Pestañas)</span>
       <span style="font-size: 0.85rem; font-weight: normal; color: var(--text-muted);" id="status-badge">
-        3 Públicas en Escaparate · 24 Privadas
+        5 Públicas en Escaparate · 24 Privadas
       </span>
     </div>
 
@@ -305,7 +307,7 @@
       const pillClass = esDesbloqueada ? 'pill-active' : 'pill-locked';
       const pillText = esDesbloqueada ? (p.publica ? 'Escaparate' : 'Conectada') : 'Privada';
       const targetUrl = p.publica 
-        ? (p.slug === 'skills' ? 'vistas/skills.html' : (p.slug === 'resenas' ? 'vistas/resenas.html' : 'vistas/instala-tu-oficina.html'))
+        ? ('vistas/' + p.archivo)
         : (backendActivo ? ('vistas/' + p.archivo) : 'vistas/instala-tu-oficina.html');
 
       card.innerHTML = `

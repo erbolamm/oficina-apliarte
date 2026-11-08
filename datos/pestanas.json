@@ -1,7 +1,9 @@
 {
   "modo": "solo_lectura",
-  "total": 27,
+  "total": 29,
   "pestanas": [
+    {"slug": "aplicaciones", "titulo": "Aplicaciones Oficiales", "ruta": "vistas/aplicaciones.html", "publica": true},
+    {"slug": "paquetes", "titulo": "Paquetes Flutter", "ruta": "vistas/paquetes.html", "publica": true},
     {"slug": "skills", "titulo": "Banco de Habilidades", "ruta": "vistas/skills.html", "publica": true},
     {"slug": "resenas", "titulo": "Reseñas de Tiendas", "ruta": "vistas/resenas.html", "publica": true},
     {"slug": "instala-tu-oficina", "titulo": "Instala tu Oficina", "ruta": "vistas/instala-tu-oficina.html", "publica": true},
