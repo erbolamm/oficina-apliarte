@@ -1,0 +1,20 @@
+[
+  {
+    "id": "propuesta-afinar-de-oido",
+    "titulo": "Afinar de Oído: Entrenamiento Auditivo y Solfeo Interactivo",
+    "descripcion": "Incorporación de ejercicios interactivos de reconocimiento de intervalos, escalas mayores y menores, y afinación vocal en tiempo real utilizando la biblioteca de síntesis y procesamiento de frecuencias.",
+    "categoria": "Afinar de Oído",
+    "estado": "Propuesta Comunitaria",
+    "autor": "Comunidad ApliArte",
+    "fecha": "2026-11-08"
+  },
+  {
+    "id": "propuesta-calca-app",
+    "titulo": "CalcaApp: Modo Calco Invertido y Filtro de Alto Contraste",
+    "descripcion": "Añadir soporte para inversión cromática en el visor de cámara aumentada y filtrado de contornos para facilitar el calco de dibujos sobre superficies oscuras o con poca iluminación.",
+    "categoria": "CalcaApp",
+    "estado": "En Evaluación",
+    "autor": "Comunidad ApliArte",
+    "fecha": "2026-11-08"
+  }
+]

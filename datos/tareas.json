@@ -1,0 +1,20 @@
+[
+  {
+    "id": "tarea-lectura-voz",
+    "titulo": "Auditoría de Lectura Fluida por Voz y Accesibilidad Text-to-Speech",
+    "descripcion": "Revisión integral de las descripciones, etiquetas semánticas y ritmo de pronunciación en todos los módulos de la oficina para garantizar una locución natural y sin interrupciones mediante sintetizadores de voz.",
+    "categoria": "Accesibilidad",
+    "estado": "En Curso",
+    "autor": "Oficina ApliArte",
+    "fecha": "2026-11-08"
+  },
+  {
+    "id": "tarea-instalador-linux",
+    "titulo": "Instalador Automatizado en Servidores Linux y Contenedores",
+    "descripcion": "Creación de un guion de despliegue desatendido para servidores Debian y Ubuntu que configure el entorno de Python, dependencias del sistema y demonios de servicio con permisos restringidos.",
+    "categoria": "Infraestructura",
+    "estado": "Por Hacer",
+    "autor": "Oficina ApliArte",
+    "fecha": "2026-11-08"
+  }
+]

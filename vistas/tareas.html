@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="manifest" href="../manifest.json">
+  <title>Oficina ApliArte — Tareas del Ecosistema</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface-hover: #334155;
+      --border: #475569;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --primary-hover: #0284c7;
+      --success: #34d399;
+      --warning: #fbbf24;
+      --accent: #a855f7;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 1.5rem;
+      min-height: 100vh;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    h1 { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+      overflow-x: auto;
+    }
+    .nav-tab {
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: 0.375rem;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-tab:hover {
+      background-color: var(--surface-hover);
+      color: var(--text);
+    }
+    .nav-tab.active {
+      background-color: var(--surface);
+      color: var(--primary);
+      border: 1px solid var(--border);
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .hero {
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .hero-text h2 {
+      font-size: 1.8rem;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .hero-text p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 680px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.25rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    .btn-primary {
+      background-color: var(--primary);
+      color: #0f172a;
+    }
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+    .btn-secondary {
+      background-color: var(--surface);
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .btn-secondary:hover {
+      background-color: var(--surface-hover);
+    }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+    .card-header {
+      margin-bottom: 0.75rem;
+    }
+    .card-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .pill {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.15rem 0.5rem;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .pill-category {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+    .pill-status {
+      background: rgba(52, 211, 153, 0.15);
+      color: var(--success);
+      border: 1px solid var(--success);
+    }
+    .pill-local {
+      background: rgba(251, 191, 36, 0.15);
+      color: var(--warning);
+      border: 1px solid var(--warning);
+    }
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 0.25rem;
+    }
+    .card-author-date {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+    .card-desc {
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .card-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Modal Formulario */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-backdrop.active {
+      display: flex;
+    }
+    .modal-dialog {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      max-width: 600px;
+      width: 100%;
+      padding: 1.75rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem;
+    }
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .btn-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.25rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .btn-close:hover {
+      color: #fff;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 0.35rem;
+    }
+    .form-control {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 0.375rem;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-family: inherit;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .counter-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.25rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+    .notice-box {
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid var(--primary);
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem;
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      margin-bottom: 1rem;
+    }
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <h1>Oficina ApliArte — Tareas del Ecosistema</h1>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
+        Tablero de Tareas Técnicas, Auditorías y Hoja de Ruta del Ecosistema Soberano
+      </p>
+    </div>
+    <div id="connection-bar"></div>
+  </header>
+
+  <nav class="nav-tabs" id="escaparate-nav">
+    <a href="../index.html" class="nav-tab">Inicio</a>
+    <a href="tareas.html" class="nav-tab active">Tareas</a>
+    <a href="propuestas.html" class="nav-tab">Propuestas</a>
+    <a href="aplicaciones.html" class="nav-tab">Aplicaciones</a>
+    <a href="paquetes.html" class="nav-tab">Paquetes Flutter</a>
+    <a href="skills.html" class="nav-tab">Banco de Habilidades</a>
+    <a href="resenas.html" class="nav-tab">Reseñas de Tiendas</a>
+    <a href="instala-tu-oficina.html" class="nav-tab">Instala tu Oficina</a>
+  </nav>
+
+  <div class="container">
+    <section class="hero">
+      <div class="hero-text">
+        <h2>Planificación y Tareas del Ecosistema</h2>
+        <p>
+          Seguimiento de tareas de ingeniería, auditorías de accesibilidad, despliegue de infraestructura y mejoras operativas para la suite soberana.
+        </p>
+      </div>
+      <div>
+        <button class="btn btn-primary" onclick="abrirModalTarea()">+ Nueva Tarea</button>
+      </div>
+    </section>
+
+    <div class="cards-grid" id="cards-grid">
+      <div style="color: var(--text-muted); font-size: 0.9rem;">Cargando tareas del ecosistema...</div>
+    </div>
+  </div>
+
+  <!-- Modal para Formulario de Alta -->
+  <div class="modal-backdrop" id="modal-tarea">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Registrar Nueva Tarea</h3>
+        <button class="btn-close" onclick="cerrarModalTarea()">&times;</button>
+      </div>
+
+      <div class="notice-box" id="modo-notice">
+        En modo visitante público, la tarea se guardará en tu navegador con una insignia distintiva y se abrirá una plantilla en GitHub Issues para registrarla oficialmente en el repositorio.
+      </div>
+
+      <form id="form-tarea" onsubmit="enviarTarea(event)">
+        <div class="form-group">
+          <label class="form-label" for="tarea-titulo">Título de la tarea *</label>
+          <input type="text" id="tarea-titulo" class="form-control" placeholder="Ejemplo: Auditoría de seguridad para contenedores" required maxlength="120">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="tarea-categoria">Categoría o Módulo *</label>
+          <input type="text" id="tarea-categoria" class="form-control" placeholder="Ejemplo: Infraestructura, Accesibilidad, Servidor, Vistas" required maxlength="50">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="tarea-autor">Responsable o Autor *</label>
+          <input type="text" id="tarea-autor" class="form-control" placeholder="Nombre del desarrollador o colaborador" required maxlength="60" value="Oficina ApliArte">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="tarea-desc">Descripción técnica (máximo 800 caracteres) *</label>
+          <textarea id="tarea-desc" class="form-control" rows="5" placeholder="Detalla los pasos técnicos a seguir y el resultado esperado..." required maxlength="800"></textarea>
+          <div class="counter-wrapper">
+            <span>Tope estricto de extensión</span>
+            <span id="char-counter">0 / 800 caracteres</span>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" onclick="cerrarModalTarea()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-tarea">Registrar Tarea</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    Oficina ApliArte Soberana · Gestión de Tareas y Desarrollo
+  </footer>
+
+  <script src="escaparate.js"></script>
+  <script>
+    const CLAVE_LOCAL_TAREAS = 'oficina_tareas_locales';
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function esServidorLocal8791() {
+      if (window.location.port === '8791') return true;
+      if (typeof obtenerBackendUrl === 'function') {
+        const backend = obtenerBackendUrl();
+        if (backend && backend.includes(':8791')) return true;
+      }
+      return false;
+    }
+
+    function abrirModalTarea() {
+      document.getElementById('modal-tarea').classList.add('active');
+      const notice = document.getElementById('modo-notice');
+      if (esServidorLocal8791()) {
+        notice.textContent = 'Servidor local detectado en puerto 8791: la tarea se registrará directamente en el archivo local de datos.';
+      } else {
+        notice.textContent = 'Modo visitante público: la tarjeta se guardará de inmediato en tu navegador con una insignia distintiva y se abrirá una plantilla en GitHub Issues para registrarla en el repositorio comunitario.';
+      }
+    }
+
+    function cerrarModalTarea() {
+      document.getElementById('modal-tarea').classList.remove('active');
+    }
+
+    // Contador en vivo con tope estricto de 800 caracteres
+    const textareaDesc = document.getElementById('tarea-desc');
+    const counterSpan = document.getElementById('char-counter');
+    textareaDesc.addEventListener('input', () => {
+      const len = textareaDesc.value.length;
+      counterSpan.textContent = `${len} / 800 caracteres`;
+      if (len >= 750) {
+        counterSpan.style.color = 'var(--warning)';
+      } else {
+        counterSpan.style.color = 'var(--text-muted)';
+      }
+    });
+
+    function obtenerTareasLocales() {
+      try {
+        const guardadas = localStorage.getItem(CLAVE_LOCAL_TAREAS);
+        return guardadas ? JSON.parse(guardadas) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function guardarTareaLocal(tarea) {
+      const actuales = obtenerTareasLocales();
+      actuales.unshift(tarea);
+      localStorage.setItem(CLAVE_LOCAL_TAREAS, JSON.stringify(actuales));
+    }
+
+    async function cargarTareas() {
+      const contenedor = document.getElementById('cards-grid');
+      try {
+        let tareasServidor = [];
+        try {
+          tareasServidor = await hacerPeticionUniversal('/api/tareas', 'datos/tareas.json');
+        } catch (e) {
+          tareasServidor = [];
+        }
+
+        const tareasLocales = obtenerTareasLocales();
+        const todas = [...tareasLocales, ...(Array.isArray(tareasServidor) ? tareasServidor : [])];
+
+        contenedor.innerHTML = '';
+        if (todas.length === 0) {
+          contenedor.innerHTML = '<p style="color: var(--text-muted);">No hay tareas registradas actualmente.</p>';
+          return;
+        }
+
+        todas.forEach(t => {
+          const card = document.createElement('div');
+          card.className = 'card';
+
+          const esLocal = !!t.esLocal;
+          const badgeLocalHtml = esLocal ? '<span class="pill pill-local">Guardada en Navegador</span>' : '';
+
+          card.innerHTML = `
+            <div>
+              <div class="card-header">
+                <div class="card-meta-row">
+                  <span class="pill pill-category">${escapeHtml(t.categoria || 'General')}</span>
+                  <span class="pill pill-status">${escapeHtml(t.estado || 'Por Hacer')}</span>
+                  ${badgeLocalHtml}
+                </div>
+                <div class="card-title">${escapeHtml(t.titulo)}</div>
+                <div class="card-author-date">Por ${escapeHtml(t.autor || 'Oficina ApliArte')} · ${escapeHtml(t.fecha || '')}</div>
+              </div>
+              <div class="card-desc">${escapeHtml(t.descripcion)}</div>
+            </div>
+            <div class="card-footer">
+              <span>Identificador: ${escapeHtml(t.id)}</span>
+              ${esLocal ? '<span style="color: var(--warning);">Visible en tu sesión</span>' : '<span style="color: var(--success);">Oficial</span>'}
+            </div>
+          `;
+          contenedor.appendChild(card);
+        });
+
+      } catch (err) {
+        contenedor.innerHTML = `<p style="color: var(--warning);">Error al cargar tareas: ${escapeHtml(err.message)}</p>`;
+      }
+    }
+
+    async function enviarTarea(evento) {
+      evento.preventDefault();
+      const titulo = document.getElementById('tarea-titulo').value.trim();
+      const categoria = document.getElementById('tarea-categoria').value.trim();
+      const autor = document.getElementById('tarea-autor').value.trim() || 'Oficina ApliArte';
+      const descripcion = document.getElementById('tarea-desc').value.trim();
+
+      if (!titulo || !descripcion || !categoria) {
+        alert('Por favor, completa todos los campos requeridos.');
+        return;
+      }
+
+      if (descripcion.length > 800) {
+        alert('La descripción supera el tope estricto de 800 caracteres.');
+        return;
+      }
+
+      const nuevaTarea = {
+        id: 'tarea-' + Date.now().toString(36),
+        titulo: titulo,
+        descripcion: descripcion,
+        categoria: categoria,
+        estado: 'Por Hacer',
+        autor: autor,
+        fecha: new Date().toISOString().slice(0, 10),
+        esLocal: true
+      };
+
+      if (esServidorLocal8791()) {
+        try {
+          const res = await fetch('/api/tareas', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json; charset=utf-8' },
+            body: JSON.stringify(nuevaTarea)
+          });
+          if (res.ok) {
+            alert('Tarea registrada con éxito en el servidor local.');
+            cerrarModalTarea();
+            document.getElementById('form-tarea').reset();
+            counterSpan.textContent = '0 / 800 caracteres';
+            cargarTareas();
+            return;
+          }
+        } catch (e) {
+          console.warn('Fallo al guardar en servidor local, recurriendo a guardado en navegador:', e);
+        }
+      }
+
+      // Modo visitante público: bifurcación limpia
+      guardarTareaLocal(nuevaTarea);
+      cerrarModalTarea();
+      document.getElementById('form-tarea').reset();
+      counterSpan.textContent = '0 / 800 caracteres';
+      cargarTareas();
+
+      // Construcción del enlace hacia GitHub Issues con prefijo entre corchetes
+      const issueTitle = encodeURIComponent(`[TAREA]: ${titulo}`);
+      const issueBody = encodeURIComponent(
+        `### Título de la tarea\n${titulo}\n\n` +
+        `### Categoría o Módulo\n${categoria}\n\n` +
+        `### Descripción técnica (máximo 800 caracteres)\n${descripcion}\n\n` +
+        `### Responsable o Autor\n${autor}\n\n` +
+        `---\n*Tarea registrada desde el Escaparate de Oficina ApliArte*`
+      );
+      const urlGithubIssue = `https://github.com/erbolamm/oficina-apliarte/issues/new?title=${issueTitle}&body=${issueBody}&labels=tarea,desarrollo`;
+
+      // Notificación al usuario y apertura de la ventana hacia GitHub
+      alert('Tu tarea ha sido guardada en tu navegador y ya es visible en tu pantalla con su insignia distintiva. Se abrirá una nueva pestaña para registrar la incidencia oficial en el repositorio de GitHub.');
+      window.open(urlGithubIssue, '_blank');
+    }
+
+    if (typeof renderizarBarraConexion === 'function') {
+      renderizarBarraConexion('connection-bar');
+    }
+
+    cargarTareas();
+  </script>
+</body>
+</html>

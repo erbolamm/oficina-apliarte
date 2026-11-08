@@ -18,12 +18,13 @@ DIR_RESENAS = RAIZ_PROYECTO / "resenas"
 DIR_DATOS = RAIZ_PROYECTO / "datos"
 
 PESTANAS_ECOSISTEMA = [
+    {"slug": "tareas", "titulo": "Tareas del Ecosistema", "ruta": "/vista/tareas", "publica": True},
+    {"slug": "propuestas", "titulo": "Propuestas Comunitarias", "ruta": "/vista/propuestas", "publica": True},
     {"slug": "aplicaciones", "titulo": "Aplicaciones Oficiales", "ruta": "/vista/aplicaciones", "publica": True},
     {"slug": "paquetes", "titulo": "Paquetes Flutter", "ruta": "/vista/paquetes", "publica": True},
     {"slug": "skills", "titulo": "Banco de Habilidades", "ruta": "/vista/skills", "publica": True},
     {"slug": "resenas", "titulo": "Reseñas de Tiendas", "ruta": "/resenas", "publica": True},
     {"slug": "instala-tu-oficina", "titulo": "Instala tu Oficina", "ruta": "/vista/instala-tu-oficina", "publica": True},
-    {"slug": "propuestas", "titulo": "Bandeja de Propuestas y Aprendizajes", "ruta": "/vista/propuestas", "publica": False},
     {"slug": "aplichat", "titulo": "ApliChat y Buzón de Conversación", "ruta": "/vista/aplichat", "publica": False},
     {"slug": "tiendas", "titulo": "Tiendas y Metadatos ASO", "ruta": "/vista/tiendas", "publica": False},
     {"slug": "diseno", "titulo": "Capturas Retina y Mockups", "ruta": "/vista/diseno", "publica": False},
@@ -219,6 +220,18 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 self.responder_html(archivo_index.read_text(encoding="utf-8"))
                 return
 
+        if ruta in ("/vista/tareas", "/tareas", "/vistas/tareas.html"):
+            archivo_vista = DIR_VISTAS / "tareas.html"
+            if archivo_vista.exists():
+                self.responder_html(archivo_vista.read_text(encoding="utf-8"))
+                return
+
+        if ruta in ("/vista/propuestas", "/propuestas", "/vistas/propuestas.html"):
+            archivo_vista = DIR_VISTAS / "propuestas.html"
+            if archivo_vista.exists():
+                self.responder_html(archivo_vista.read_text(encoding="utf-8"))
+                return
+
         if ruta in ("/vista/aplicaciones", "/aplicaciones", "/vistas/aplicaciones.html"):
             archivo_vista = DIR_VISTAS / "aplicaciones.html"
             if archivo_vista.exists():
@@ -278,6 +291,22 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 "total": len(PESTANAS_ECOSISTEMA),
                 "pestanas": PESTANAS_ECOSISTEMA,
             })
+            return
+
+        if ruta == "/api/tareas":
+            archivo_tar = DIR_DATOS / "tareas.json"
+            if archivo_tar.exists():
+                self.responder_json(json.loads(archivo_tar.read_text(encoding="utf-8")))
+            else:
+                self.responder_json([])
+            return
+
+        if ruta == "/api/propuestas":
+            archivo_prop = DIR_DATOS / "propuestas.json"
+            if archivo_prop.exists():
+                self.responder_json(json.loads(archivo_prop.read_text(encoding="utf-8")))
+            else:
+                self.responder_json([])
             return
 
         if ruta == "/api/aplicaciones":
@@ -350,6 +379,50 @@ class ManejadorOficina(BaseHTTPRequestHandler):
         self.responder_error(f"Ruta '{ruta}' no encontrada en modo solo lectura", 404)
 
     def do_POST(self):
+        parsed = urlparse(self.path)
+        ruta = parsed.path.rstrip("/")
+
+        if ruta in ("/api/propuestas", "/api/tareas"):
+            try:
+                longitud = int(self.headers.get("Content-Length", 0))
+            except (ValueError, TypeError):
+                longitud = 0
+
+            if longitud <= 0:
+                self.responder_error("Cuerpo de peticion vacio", 400)
+                return
+            try:
+                cuerpo = self.rfile.read(longitud).decode("utf-8")
+                datos = json.loads(cuerpo)
+            except Exception as e:
+                self.responder_error(f"Error decodificando JSON: {str(e)}", 400)
+                return
+
+            campos_obligatorios = ["id", "titulo", "descripcion", "categoria", "estado", "autor", "fecha"]
+            for campo in campos_obligatorios:
+                if campo not in datos or not str(datos[campo]).strip():
+                    self.responder_error(f"Campo obligatorio '{campo}' ausente o vacio", 400)
+                    return
+
+            if len(str(datos["descripcion"])) > 800:
+                self.responder_error("La descripcion supera el limite maximo de 800 caracteres", 400)
+                return
+
+            archivo_destino = DIR_DATOS / ("propuestas.json" if ruta == "/api/propuestas" else "tareas.json")
+            elementos = []
+            if archivo_destino.exists():
+                try:
+                    elementos = json.loads(archivo_destino.read_text(encoding="utf-8"))
+                    if not isinstance(elementos, list):
+                        elementos = []
+                except Exception:
+                    elementos = []
+
+            elementos.insert(0, datos)
+            archivo_destino.write_text(json.dumps(elementos, ensure_ascii=False, indent=2), encoding="utf-8")
+            self.responder_json({"ok": True, "mensaje": "Elemento registrado exitosamente", "elemento": datos}, codigo=201)
+            return
+
         self.responder_error("Metodo POST bloqueado: servidor en modo exclusivo de solo lectura", 405)
 
     def do_PUT(self):
@@ -364,7 +437,7 @@ class ManejadorOficina(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
         self.send_response(204)
         self.send_header("Access-Control-Allow-Origin", "*")
-        self.send_header("Access-Control-Allow-Methods", "GET, OPTIONS")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.send_header("X-Modo-Oficina", "solo_lectura")
         self.end_headers()

@@ -4,12 +4,13 @@
 // Modo 3: Conectado a Servidor en la Nube (Hostinger VPS)
 
 const PESTANAS_ECOSISTEMA = [
+  { slug: 'tareas', titulo: 'Tareas del Ecosistema', archivo: 'tareas.html', ruta: '/vista/tareas', publica: true },
+  { slug: 'propuestas', titulo: 'Propuestas Comunitarias', archivo: 'propuestas.html', ruta: '/vista/propuestas', publica: true },
   { slug: 'aplicaciones', titulo: 'Aplicaciones Oficiales', archivo: 'aplicaciones.html', ruta: '/vista/aplicaciones', publica: true },
   { slug: 'paquetes', titulo: 'Paquetes Flutter', archivo: 'paquetes.html', ruta: '/vista/paquetes', publica: true },
   { slug: 'skills', titulo: 'Banco de Habilidades', archivo: 'skills.html', ruta: '/vista/skills', publica: true },
   { slug: 'resenas', titulo: 'Reseñas de Tiendas', archivo: 'resenas.html', ruta: '/resenas', publica: true },
   { slug: 'instala-tu-oficina', titulo: 'Instala tu Oficina', archivo: 'instala-tu-oficina.html', ruta: '/vista/instala-tu-oficina', publica: true },
-  { slug: 'propuestas', titulo: 'Bandeja de Propuestas y Aprendizajes', archivo: 'instala-tu-oficina.html', ruta: '/vista/propuestas', publica: false },
   { slug: 'aplichat', titulo: 'ApliChat y Buzón de Conversación', archivo: 'instala-tu-oficina.html', ruta: '/vista/aplichat', publica: false },
   { slug: 'tiendas', titulo: 'Tiendas y Metadatos ASO', archivo: 'instala-tu-oficina.html', ruta: '/vista/tiendas', publica: false },
   { slug: 'diseno', titulo: 'Capturas Retina y Mockups', archivo: 'instala-tu-oficina.html', ruta: '/vista/diseno', publica: false },

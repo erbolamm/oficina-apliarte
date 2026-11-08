@@ -1,13 +1,14 @@
 {
   "modo": "solo_lectura",
-  "total": 29,
+  "total": 30,
   "pestanas": [
+    {"slug": "tareas", "titulo": "Tareas del Ecosistema", "ruta": "vistas/tareas.html", "publica": true},
+    {"slug": "propuestas", "titulo": "Propuestas Comunitarias", "ruta": "vistas/propuestas.html", "publica": true},
     {"slug": "aplicaciones", "titulo": "Aplicaciones Oficiales", "ruta": "vistas/aplicaciones.html", "publica": true},
     {"slug": "paquetes", "titulo": "Paquetes Flutter", "ruta": "vistas/paquetes.html", "publica": true},
     {"slug": "skills", "titulo": "Banco de Habilidades", "ruta": "vistas/skills.html", "publica": true},
     {"slug": "resenas", "titulo": "Reseñas de Tiendas", "ruta": "vistas/resenas.html", "publica": true},
     {"slug": "instala-tu-oficina", "titulo": "Instala tu Oficina", "ruta": "vistas/instala-tu-oficina.html", "publica": true},
-    {"slug": "propuestas", "titulo": "Bandeja de Propuestas y Aprendizajes", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
     {"slug": "aplichat", "titulo": "ApliChat y Buzón de Conversación", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
     {"slug": "tiendas", "titulo": "Tiendas y Metadatos ASO", "ruta": "vistas/instala-tu-oficina.html", "publica": false},
     {"slug": "diseno", "titulo": "Capturas Retina y Mockups", "ruta": "vistas/instala-tu-oficina.html", "publica": false},

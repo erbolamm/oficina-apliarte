@@ -33,11 +33,19 @@ class TestServidorOficina(unittest.TestCase):
         cls.hilo = threading.Thread(target=cls.servidor.serve_forever, daemon=True)
         cls.hilo.start()
         cls.base_url = f"http://127.0.0.1:{cls.puerto}"
+        cls.ruta_propuestas = DIR_REPOSITORIO / "datos" / "propuestas.json"
+        cls.ruta_tareas = DIR_REPOSITORIO / "datos" / "tareas.json"
+        cls.contenido_orig_propuestas = cls.ruta_propuestas.read_text(encoding="utf-8") if cls.ruta_propuestas.exists() else None
+        cls.contenido_orig_tareas = cls.ruta_tareas.read_text(encoding="utf-8") if cls.ruta_tareas.exists() else None
 
     @classmethod
     def tearDownClass(cls):
         cls.servidor.shutdown()
         cls.servidor.server_close()
+        if cls.contenido_orig_propuestas is not None:
+            cls.ruta_propuestas.write_text(cls.contenido_orig_propuestas, encoding="utf-8")
+        if cls.contenido_orig_tareas is not None:
+            cls.ruta_tareas.write_text(cls.contenido_orig_tareas, encoding="utf-8")
 
     def test_parsear_frontmatter(self):
         ejemplo = "---\nname: prueba\ndescription: una prueba\n---\n# Contenido"
@@ -67,8 +75,8 @@ class TestServidorOficina(unittest.TestCase):
             self.assertEqual(datos["estado"], "activo")
             self.assertTrue(datos["total_habilidades"] >= 1)
             self.assertTrue(datos["total_resenas"] >= 1)
-            self.assertEqual(datos.get("total_pestanas"), 29)
-            self.assertEqual(datos.get("pestanas_publicas"), 5)
+            self.assertEqual(datos.get("total_pestanas"), 30)
+            self.assertEqual(datos.get("pestanas_publicas"), 7)
 
     def test_endpoint_habilidades_lista(self):
         with urllib.request.urlopen(f"{self.base_url}/api/habilidades") as resp:
@@ -180,9 +188,140 @@ class TestServidorOficina(unittest.TestCase):
             self.assertEqual(resp.status, 200)
             datos = json.loads(resp.read().decode("utf-8"))
             self.assertEqual(datos["modo"], "solo_lectura")
-            self.assertEqual(datos["total"], 29)
+            self.assertEqual(datos["total"], 30)
             slugs_publicos = [p["slug"] for p in datos["pestanas"] if p["publica"]]
-            self.assertEqual(set(slugs_publicos), {"aplicaciones", "paquetes", "skills", "resenas", "instala-tu-oficina"})
+            self.assertEqual(set(slugs_publicos), {"tareas", "propuestas", "aplicaciones", "paquetes", "skills", "resenas", "instala-tu-oficina"})
+
+    def test_vista_tareas(self):
+        for ruta in ("/vista/tareas", "/tareas", "/vistas/tareas.html"):
+            with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
+                self.assertEqual(resp.status, 200)
+                self.assertIn("text/html", resp.headers.get("Content-Type", ""))
+                html = resp.read().decode("utf-8")
+                self.assertIn("Oficina ApliArte — Tareas del Ecosistema", html)
+                self.assertIn("connection-bar", html)
+                self.assertIn("modal-tarea", html)
+
+    def test_vista_propuestas(self):
+        for ruta in ("/vista/propuestas", "/propuestas", "/vistas/propuestas.html"):
+            with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
+                self.assertEqual(resp.status, 200)
+                self.assertIn("text/html", resp.headers.get("Content-Type", ""))
+                html = resp.read().decode("utf-8")
+                self.assertIn("Oficina ApliArte — Propuestas Comunitarias", html)
+                self.assertIn("connection-bar", html)
+                self.assertIn("modal-propuesta", html)
+
+    def test_endpoint_tareas_get(self):
+        with urllib.request.urlopen(f"{self.base_url}/api/tareas") as resp:
+            self.assertEqual(resp.status, 200)
+            datos = json.loads(resp.read().decode("utf-8"))
+            self.assertIsInstance(datos, list)
+            self.assertTrue(len(datos) >= 2)
+            campos_7 = {"id", "titulo", "descripcion", "categoria", "estado", "autor", "fecha"}
+            for t in datos:
+                self.assertTrue(campos_7.issubset(set(t.keys())))
+            titulos = [t["titulo"] for t in datos]
+            self.assertTrue(any("Auditoría de Lectura Fluida" in tit for tit in titulos))
+            self.assertTrue(any("Instalador Automatizado en Servidores Linux" in tit for tit in titulos))
+
+    def test_endpoint_propuestas_get(self):
+        with urllib.request.urlopen(f"{self.base_url}/api/propuestas") as resp:
+            self.assertEqual(resp.status, 200)
+            datos = json.loads(resp.read().decode("utf-8"))
+            self.assertIsInstance(datos, list)
+            self.assertTrue(len(datos) >= 2)
+            campos_7 = {"id", "titulo", "descripcion", "categoria", "estado", "autor", "fecha"}
+            for p in datos:
+                self.assertTrue(campos_7.issubset(set(p.keys())))
+            titulos = [p["titulo"] for p in datos]
+            self.assertTrue(any("Afinar de Oído" in tit for tit in titulos))
+            self.assertTrue(any("CalcaApp" in tit for tit in titulos))
+
+    def test_endpoint_propuestas_post_valido(self):
+        nueva = {
+            "id": "propuesta-test-unitario",
+            "titulo": "Prueba Unitaria de Propuesta",
+            "descripcion": "Descripción concisa de prueba unitaria sin superar ochocientos caracteres.",
+            "categoria": "CalcaApp",
+            "estado": "Propuesta Comunitaria",
+            "autor": "Tester",
+            "fecha": "2026-11-08"
+        }
+        req = urllib.request.Request(
+            f"{self.base_url}/api/propuestas",
+            data=json.dumps(nueva).encode("utf-8"),
+            headers={"Content-Type": "application/json; charset=utf-8"},
+            method="POST"
+        )
+        with urllib.request.urlopen(req) as resp:
+            self.assertEqual(resp.status, 201)
+            res = json.loads(resp.read().decode("utf-8"))
+            self.assertTrue(res.get("ok"))
+
+    def test_endpoint_tareas_post_valido(self):
+        nueva = {
+            "id": "tarea-test-unitario",
+            "titulo": "Prueba Unitaria de Tarea",
+            "descripcion": "Descripción de tarea técnica para verificación de endpoint en pruebas.",
+            "categoria": "Infraestructura",
+            "estado": "Por Hacer",
+            "autor": "Tester",
+            "fecha": "2026-11-08"
+        }
+        req = urllib.request.Request(
+            f"{self.base_url}/api/tareas",
+            data=json.dumps(nueva).encode("utf-8"),
+            headers={"Content-Type": "application/json; charset=utf-8"},
+            method="POST"
+        )
+        with urllib.request.urlopen(req) as resp:
+            self.assertEqual(resp.status, 201)
+            res = json.loads(resp.read().decode("utf-8"))
+            self.assertTrue(res.get("ok"))
+
+    def test_endpoint_post_descripcion_larga_400(self):
+        invalida = {
+            "id": "propuesta-invalida-larga",
+            "titulo": "Demasiado Larga",
+            "descripcion": "A" * 801,
+            "categoria": "General",
+            "estado": "Propuesta",
+            "autor": "Tester",
+            "fecha": "2026-11-08"
+        }
+        req = urllib.request.Request(
+            f"{self.base_url}/api/propuestas",
+            data=json.dumps(invalida).encode("utf-8"),
+            headers={"Content-Type": "application/json; charset=utf-8"},
+            method="POST"
+        )
+        try:
+            urllib.request.urlopen(req)
+            self.fail("Deberia haber lanzado HTTPError 400 por superar 800 caracteres")
+        except urllib.error.HTTPError as e:
+            self.assertEqual(e.code, 400)
+
+    def test_endpoint_post_campo_faltante_400(self):
+        incompleta = {
+            "id": "propuesta-incompleta",
+            "titulo": "Falta Descripcion",
+            "categoria": "General",
+            "estado": "Propuesta",
+            "autor": "Tester",
+            "fecha": "2026-11-08"
+        }
+        req = urllib.request.Request(
+            f"{self.base_url}/api/propuestas",
+            data=json.dumps(incompleta).encode("utf-8"),
+            headers={"Content-Type": "application/json; charset=utf-8"},
+            method="POST"
+        )
+        try:
+            urllib.request.urlopen(req)
+            self.fail("Deberia haber lanzado HTTPError 400 por campo faltante")
+        except urllib.error.HTTPError as e:
+            self.assertEqual(e.code, 400)
 
     def test_vista_aplicaciones(self):
         for ruta in ("/vista/aplicaciones", "/aplicaciones", "/vistas/aplicaciones.html"):
@@ -228,7 +367,7 @@ class TestServidorOficina(unittest.TestCase):
             self.assertIn("tts_apliarte", nombres)
 
     def test_vista_pestana_privada_bloqueada(self):
-        for ruta in ("/vista/aplichat", "/vista/propuestas", "/vista/facturas"):
+        for ruta in ("/vista/aplichat", "/vista/tiendas", "/vista/facturas"):
             with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
                 self.assertEqual(resp.status, 200)
                 self.assertIn("text/html", resp.headers.get("Content-Type", ""))
@@ -254,13 +393,13 @@ class TestServidorOficina(unittest.TestCase):
                 self.assertIn("Suite Soberana", html)
 
     def test_paridad_rutas_html_directas(self):
-        for ruta in ("/vistas/skills.html", "/vistas/resenas.html", "/vistas/instala-tu-oficina.html", "/vistas/aplicaciones.html", "/vistas/paquetes.html"):
+        for ruta in ("/vistas/skills.html", "/vistas/resenas.html", "/vistas/instala-tu-oficina.html", "/vistas/aplicaciones.html", "/vistas/paquetes.html", "/vistas/tareas.html", "/vistas/propuestas.html"):
             with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
                 self.assertEqual(resp.status, 200)
                 self.assertIn("text/html", resp.headers.get("Content-Type", ""))
 
     def test_datos_estaticos_json(self):
-        for ruta in ("/datos/habilidades.json", "/datos/resenas.json", "/datos/pestanas.json", "/datos/aplicaciones.json", "/datos/paquetes.json"):
+        for ruta in ("/datos/habilidades.json", "/datos/resenas.json", "/datos/pestanas.json", "/datos/aplicaciones.json", "/datos/paquetes.json", "/datos/tareas.json", "/datos/propuestas.json"):
             with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
                 self.assertEqual(resp.status, 200)
                 self.assertIn("application/json", resp.headers.get("Content-Type", ""))
