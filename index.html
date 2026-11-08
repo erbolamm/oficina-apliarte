@@ -1,379 +1,87 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es" data-theme="dark" data-sidebar="full">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#005fa9">
   <meta name="description" content="Oficina ApliArte — Panel de control operativo ApliArte. Suite modular soberana para el ecosistema ErBolamm y ApliArte.">
+  <title>Tablero · Oficina ApliArte</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="manifest" href="manifest.json">
-  <title>Oficina ApliArte — Panel de control operativo ApliArte</title>
-  <link rel="stylesheet" href="panel-shell.css">
+  <link rel="stylesheet" href="panel-shell.css?v=20261108_2">
   <style>
-    :root {
-      --bg: #0f172a;
-      --surface: #1e293b;
-      --surface-hover: #334155;
-      --border: #475569;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --primary: #38bdf8;
-      --primary-hover: #0284c7;
-      --success: #34d399;
-      --warning: #fbbf24;
+    /* Distribución de cuatro columnas para el tablero auténtico */
+    @media (min-width: 960px) {
+      .lanes {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+      }
     }
-    
-    /* Reglas complementarias para el armazón auténtico */
-    .app-shell {
-      display: flex;
-      min-height: 100vh;
-      width: 100%;
+    @media (max-width: 959px) and (min-width: 641px) {
+      .lanes {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
     }
-    .office-sidebar {
-      width: 260px;
-      flex-shrink: 0;
-      background: var(--sidebar, #091322);
-      border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow-y: auto;
-      z-index: 100;
-      transition: width 0.2s ease;
+    @media (max-width: 640px) {
+      .lanes {
+        grid-template-columns: 1fr !important;
+      }
     }
-    html[data-sidebar="icons"] .office-sidebar {
-      width: 68px;
-    }
-    .sidebar-brand {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 1rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .brand-mark {
-      width: 32px;
-      height: 32px;
-      flex-shrink: 0;
-    }
-    .sidebar-brand > span {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.2;
-      overflow: hidden;
-    }
-    .sidebar-brand > span strong {
-      font-size: 0.95rem;
-      color: #fff;
-      white-space: nowrap;
-    }
-    .sidebar-brand > span small {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      white-space: nowrap;
-    }
-    .sidebar-toggle {
-      margin-left: auto;
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      border-radius: 4px;
-      width: 24px;
-      height: 24px;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-    .side-nav {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      padding: 0.75rem 0.5rem;
-      flex-grow: 1;
-    }
-    .nav-card {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      padding: 0.5rem 0.65rem;
-      border-radius: 6px;
-      text-decoration: none;
-      color: var(--text);
-      border: 1px solid transparent;
-      transition: all 0.15s ease;
-    }
-    .nav-card:hover {
-      background: var(--surface-hover);
-      border-color: var(--primary);
-      transform: translateX(2px);
-    }
-    .nav-card[aria-current="page"] {
-      background: var(--surface);
-      border-color: var(--primary);
-      color: var(--primary);
-    }
-    .nav-icon {
-      font-size: 1.1rem;
-      width: 1.5rem;
-      text-align: center;
-      flex-shrink: 0;
-    }
-    .nav-copy {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.2;
-      overflow: hidden;
-    }
-    .nav-copy strong {
-      font-size: 0.85rem;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
-    .nav-copy small {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
-    .nav-card.disabled-card,
-    .nav-card[aria-disabled="true"] {
-      opacity: 0.45;
-      cursor: not-allowed;
-      pointer-events: none;
-      filter: grayscale(0.5);
-    }
-    .nav-card.disabled-card:hover {
-      transform: none;
-      background: transparent;
-      border-color: transparent;
-      box-shadow: none;
-    }
+
+    /* Insignia visual para pestañas en desarrollo */
     .badge-dev {
       display: inline-block;
-      font-size: 0.6rem;
-      font-weight: 700;
-      padding: 0.1rem 0.4rem;
-      border-radius: 9999px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 1px 5px;
+      border-radius: 4px;
       background: rgba(251, 191, 36, 0.15);
-      color: var(--warning, #fbbf24);
-      border: 1px solid var(--warning, #fbbf24);
+      color: #fbbf24;
+      border: 1px solid rgba(251, 191, 36, 0.3);
       margin-left: auto;
       white-space: nowrap;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-    }
-    html[data-sidebar="icons"] .sidebar-brand > span,
-    html[data-sidebar="icons"] .nav-copy,
-    html[data-sidebar="icons"] .badge-dev,
-    html[data-sidebar="icons"] .sidebar-note {
-      display: none;
-    }
-    .sidebar-note {
-      padding: 0.75rem 1rem;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      border-top: 1px solid var(--border);
-      margin: 0;
-    }
-    .sidebar-note strong {
-      display: block;
-      color: #fff;
     }
 
-    /* Contenido principal */
-    .office-content {
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-      background: var(--bg);
-    }
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 1.5rem;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-    .topbar .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    .topbar h1 {
-      font-size: 1.25rem;
+    /* Estilos de etiquetas y tarjetas */
+    .task-meta-tag {
+      display: inline-block;
+      font-size: 0.68rem;
       font-weight: 700;
-      color: var(--primary);
-      margin: 0;
+      padding: 1px 5px;
+      border-radius: 3px;
+      margin-right: 4px;
     }
-    .content-body {
-      padding: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      width: 100%;
-    }
-    .hero {
+    .tag-propuesta { background: rgba(168, 85, 247, 0.18); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .tag-por-hacer { background: rgba(56, 189, 248, 0.18); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .tag-en-curso { background: rgba(251, 191, 36, 0.18); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); }
+    .tag-hecho { background: rgba(52, 211, 153, 0.18); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.3); }
+    .task-empty-msg {
+      padding: 1rem 0.5rem;
       text-align: center;
-      margin-bottom: 2.5rem;
+      color: var(--text-muted, #94a3b8);
+      font-size: 0.8rem;
+      font-style: italic;
+      list-style: none;
     }
-    .hero h2 {
-      font-size: 2rem;
-      color: #fff;
-      margin-bottom: 0.5rem;
-    }
-    .hero p {
-      font-size: 1rem;
-      color: var(--text-muted);
-      max-width: 700px;
-      margin: 0 auto 1.5rem auto;
-    }
-    .hero-actions {
-      display: flex;
-      justify-content: center;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.55rem 1rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      border-radius: 0.5rem;
-      text-decoration: none;
-      transition: all 0.2s;
-      cursor: pointer;
-      border: 1px solid transparent;
-    }
-    .btn-primary {
-      background-color: var(--primary);
-      color: #0f172a;
-    }
-    .btn-primary:hover {
-      background-color: var(--primary-hover);
-    }
-    .btn-secondary {
-      background-color: var(--surface);
-      color: var(--text);
-      border-color: var(--border);
-    }
-    .btn-secondary:hover {
-      background-color: var(--surface-hover);
-    }
-    .section-title {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 1.25rem;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    .grid-tabs {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.25rem;
-      margin-bottom: 3rem;
-    }
-    .tab-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 0.75rem;
-      padding: 1.25rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: transform 0.2s, border-color 0.2s;
-    }
-    .tab-card:hover {
-      transform: translateY(-2px);
-      border-color: var(--primary);
-    }
-    .tab-card.locked-card {
-      opacity: 0.55;
-      border-color: #334155;
-      background: rgba(30, 41, 59, 0.5);
-    }
-    .tab-card.locked-card:hover {
-      transform: none;
-      border-color: #334155;
-    }
-    .tab-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 0.5rem;
-      gap: 0.5rem;
-    }
-    .tab-card-title {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: #fff;
-    }
-    .pill {
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 0.15rem 0.5rem;
-      border-radius: 9999px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .pill-active {
-      background: rgba(52, 211, 153, 0.15);
-      color: var(--success);
-      border: 1px solid var(--success);
-    }
-    .pill-locked {
-      background: rgba(251, 191, 36, 0.15);
-      color: var(--warning);
-      border: 1px solid var(--warning);
-    }
-    .tab-card-desc {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 1rem;
-    }
-    .tab-card-link {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--primary);
-      text-decoration: none;
-      align-self: flex-start;
-    }
-    .tab-card-link:hover {
-      text-decoration: underline;
-    }
-    .tab-card-link.disabled-link {
-      color: var(--text-muted);
-      cursor: not-allowed;
-      pointer-events: none;
-      text-decoration: none;
-    }
-    footer {
-      margin-top: auto;
-      text-align: center;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      border-top: 1px solid var(--border);
-      padding: 1.5rem;
+
+    /* Adaptación móvil responsiva */
+    @media (max-width: 820px) {
+      .topbar {
+        padding-left: 3.5rem !important;
+      }
     }
   </style>
+  <script>
+    try {
+      document.documentElement.dataset.theme =
+        localStorage.getItem("erbolamm-panel-theme") === "light" ? "light" : "dark";
+      document.documentElement.dataset.sidebar =
+        localStorage.getItem("erbolamm-panel-sidebar") === "icons" ? "icons" : "full";
+    } catch (_) {}
+  </script>
 </head>
 <body>
-
   <div class="app-shell">
-    <!-- Barra lateral auténtica con marca origami oficial -->
     <aside class="office-sidebar" id="office-sidebar" aria-label="Navegación de la oficina">
       <div class="sidebar-brand">
         <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
@@ -387,159 +95,512 @@
         </button>
       </div>
 
-      <nav class="side-nav" aria-label="Secciones" id="sidebar-nav">
-        <!-- Renderizado dinámico de las 27 pestañas auténticas -->
+      <nav class="side-nav" id="sidebar-nav" aria-label="Secciones">
+        <!-- 5 pestañas activas -->
+        <a class="nav-card" href="index.html">
+          <span class="nav-icon" aria-hidden="true">⌂</span>
+          <span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span>
+        </a>
+        <a class="nav-card" href="vistas/propuestas.html">
+          <span class="nav-icon" aria-hidden="true">💡</span>
+          <span class="nav-copy"><strong>Propuestas</strong><small>Bandeja comunitaria</small></span>
+        </a>
+        <a class="nav-card" href="vistas/skills.html">
+          <span class="nav-icon" aria-hidden="true">⌘</span>
+          <span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span>
+        </a>
+        <a class="nav-card" href="vistas/aplicaciones.html">
+          <span class="nav-icon" aria-hidden="true">📱</span>
+          <span class="nav-copy"><strong>Aplicaciones</strong><small>Catálogo oficial</small></span>
+        </a>
+        <a class="nav-card" href="vistas/paquetes.html">
+          <span class="nav-icon" aria-hidden="true">📦</span>
+          <span class="nav-copy"><strong>Paquetes</strong><small>Librerías Flutter</small></span>
+        </a>
+
+        <!-- 22 pestañas en desarrollo con diseño atenuado -->
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">👤</span>
+          <span class="nav-copy"><strong>Espacio Javier</strong><small>Control personal y ja--</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">☼</span>
+          <span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">💬</span>
+          <span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">⇄</span>
+          <span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">⊞</span>
+          <span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">◐</span>
+          <span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">🎨</span>
+          <span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">🎯</span>
+          <span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">📊</span>
+          <span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">✉</span>
+          <span class="nav-copy"><strong>Correos y Alertas</strong><small>erbolamm y javier</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">🧠</span>
+          <span class="nav-copy"><strong>Estudio PNL</strong><small>Enganche y microcopy</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">🎵</span>
+          <span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">🎙</span>
+          <span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">⚡</span>
+          <span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">▣</span>
+          <span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">€</span>
+          <span class="nav-copy"><strong>Facturas</strong><small>Gestor de facturas</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">✎</span>
+          <span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">☰</span>
+          <span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">▶</span>
+          <span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">⎘</span>
+          <span class="nav-copy"><strong>Diapositivas</strong><small>Presentaciones y difusión</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">⏩</span>
+          <span class="nav-copy"><strong>Shorts</strong><small>Vídeo acelerado a 60 s</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
+          <span class="nav-icon" aria-hidden="true">★</span>
+          <span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span>
+          <span class="badge-dev">[En desarrollo]</span>
+        </a>
       </nav>
 
-      <p class="sidebar-note">
-        <strong>Oficina Soberana</strong>
-        Ecosistema ApliArte · Despliegue Progresivo
-      </p>
+      <p class="sidebar-note"><strong>Oficina Comunitaria</strong>Acceso público y transparente al ecosistema de herramientas ErBolamm y ApliArte.</p>
     </aside>
 
     <div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
 
-    <!-- Contenido principal -->
     <main class="office-content" id="office">
-      <header class="topbar" id="casita">
+      <header class="topbar" id="tablero-topbar">
         <div class="brand">
           <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
             <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
             <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
           </svg>
-          <h1>Oficina ApliArte · Panel de control operativo ApliArte</h1>
+          <h1>Oficina · Tablero de tareas</h1>
         </div>
-        <div id="connection-bar"></div>
+        <span class="private-chip">Oficina pública · lectura</span>
+        <button id="refresh-btn" class="btn-refresh" type="button" onclick="window.location.reload()" aria-label="Actualizar vista" title="Actualizar">↻</button>
         <button id="theme-toggle" type="button" aria-label="Cambiar tema" title="Cambiar tema">
           <span id="theme-icon" aria-hidden="true">☾</span>
         </button>
       </header>
 
-      <div class="content-body">
-        <section class="hero">
-          <h2>Panel de Control Operativo del Ecosistema</h2>
-          <p>
-            Armazón auténtico de la Oficina ApliArte con arquitectura tri-modo: Escaparate Autónomo, Servidor Local en puerto 8791 y Servidor en la Nube.
-          </p>
-          <div class="hero-actions">
-            <a href="vistas/tareas.html" class="btn btn-primary">Oficina / Tablero</a>
-            <a href="vistas/propuestas.html" class="btn btn-secondary">Bandeja de Propuestas</a>
-            <a href="vistas/aplicaciones.html" class="btn btn-secondary">Catálogo de Apps</a>
-            <a href="vistas/paquetes.html" class="btn btn-secondary">Paquetes Flutter</a>
-            <a href="vistas/skills.html" class="btn btn-secondary">Banco de Skills</a>
+      <nav class="panel-tabs" id="panel-tabs" role="tablist" aria-label="Secciones del panel">
+        <button type="button" class="pill-btn active" role="tab" id="tab-btn-tablero" aria-selected="true" aria-controls="tablero" data-tab="tablero">
+          <span aria-hidden="true">📋</span> Tablero de tareas
+        </button>
+        <button type="button" class="pill-btn" role="tab" id="tab-btn-recurrentes" aria-selected="false" aria-controls="recurrentes-panel" data-tab="recurrentes">
+          <span aria-hidden="true">🔁</span> Tareas recurrentes
+        </button>
+        <a href="vistas/propuestas.html" class="pill-btn" role="tab" id="tab-btn-buzon" title="Abrir Ideas y recordatorios">
+          <span aria-hidden="true">💡</span> Ideas y recordatorios ↗
+        </a>
+        <button type="button" class="pill-btn" role="tab" id="tab-btn-agentes" aria-selected="false" aria-controls="agentes-panel" data-tab="agentes">
+          <span aria-hidden="true">🤖</span> Agentes
+        </button>
+      </nav>
+
+      <!-- Sección Principal Tablero -->
+      <section class="panel board" id="tablero" aria-labelledby="board-title">
+        <div class="panel-head">
+          <div class="panel-head-title">
+            <div>
+              <h2 id="board-title">Tablero</h2>
+              <p id="board-subtitle">Por hacer, haciendo y hecho. Vista ampliada sin el plano.</p>
+            </div>
           </div>
-        </section>
-
-        <div class="section-title">
-          <span>Herramientas del Ecosistema (<span id="tabs-total-counter">27</span> Pestañas)</span>
-          <span style="font-size: 0.85rem; font-weight: normal; color: var(--text-muted);" id="status-badge">
-            5 Completadas · 22 En desarrollo
-          </span>
+          <div class="panel-head-actions">
+            <a href="vistas/propuestas.html" class="panel-action-btn primary" title="Nueva propuesta">
+              <span aria-hidden="true">＋</span> Nueva propuesta
+            </a>
+            <a href="vistas/tareas.html" class="panel-action-btn" title="Lista de tareas">
+              <span aria-hidden="true">📋</span> Lista de tareas
+            </a>
+            <a href="vistas/skills.html" class="panel-action-btn" title="Banco de Skills">
+              <span aria-hidden="true">⌘</span> Skills
+            </a>
+          </div>
         </div>
 
-        <div class="grid-tabs" id="grid-tabs">
-          <!-- Tarjetas renderizadas dinámicamente -->
-        </div>
-      </div>
+        <div class="lanes" id="lanes">
+          <!-- Columna 1: Propuestas e Ideas -->
+          <section class="lane" data-state="propuestas">
+            <h3 class="lane-heading-interactive">
+              <span>💡 Propuestas · <span id="count-propuestas">0</span></span>
+            </h3>
+            <ul id="lane-propuestas"></ul>
+          </section>
 
-      <footer>
-        Oficina ApliArte · Ecosistema ErBolamm · Licencia MIT
-      </footer>
+          <!-- Columna 2: Por hacer -->
+          <section class="lane" data-state="por-hacer">
+            <h3 class="lane-heading-interactive">
+              <span>📥 Por hacer · <span id="count-por-hacer">0</span></span>
+            </h3>
+            <ul id="lane-por-hacer"></ul>
+          </section>
+
+          <!-- Columna 3: En curso -->
+          <section class="lane" data-state="en-curso">
+            <h3 class="lane-heading-interactive">
+              <span>⚙️ En curso · <span id="count-en-curso">0</span></span>
+            </h3>
+            <ul id="lane-en-curso"></ul>
+          </section>
+
+          <!-- Columna 4: Hecho -->
+          <section class="lane" data-state="hecho">
+            <h3 class="lane-heading-interactive">
+              <span>✅ Hecho · <span id="count-hecho">0</span></span>
+            </h3>
+            <ul id="lane-hecho"></ul>
+          </section>
+        </div>
+      </section>
+
+      <!-- Sección Tareas Recurrentes -->
+      <section class="panel recurrentes-panel" id="recurrentes-panel" aria-labelledby="recurrentes-title" hidden>
+        <div class="panel-head">
+          <div class="panel-head-title">
+            <div>
+              <h2 id="recurrentes-title">Tareas recurrentes</h2>
+              <p id="recurrentes-subtitle">Rutinas periódicas programadas en el ecosistema.</p>
+            </div>
+          </div>
+        </div>
+        <ul class="recurrentes-list" style="padding: 1rem; list-style: none; display: grid; gap: 0.75rem;">
+          <li class="card" style="padding: 1rem; border: 1px solid var(--border, #475569); border-radius: var(--radius-sm, 6px); background: var(--surface);">
+            <strong style="color: var(--navy, #38bdf8); display: block; margin-bottom: 0.25rem;">Sincronización matutina de repositorios y memoria</strong>
+            <small style="color: var(--text-muted); display: block;">Responsable: ge (Orquestador) · Frecuencia: Diario 08:30</small>
+            <p style="font-size: 0.85rem; margin-top: 0.5rem; color: var(--text);">Actualización de ramas remotas, comprobación de estado y recolección de contexto de trabajo.</p>
+          </li>
+          <li class="card" style="padding: 1rem; border: 1px solid var(--border, #475569); border-radius: var(--radius-sm, 6px); background: var(--surface);">
+            <strong style="color: var(--navy, #38bdf8); display: block; margin-bottom: 0.25rem;">Auditoría de seguridad y solo lectura en endpoints</strong>
+            <small style="color: var(--text-muted); display: block;">Responsable: agy · Frecuencia: Diario 19:00</small>
+            <p style="font-size: 0.85rem; margin-top: 0.5rem; color: var(--text);">Verificación de contratos HTTP seguros, bloqueo de escrituras remotas no autorizadas y pruebas unitarias.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Sección Agentes -->
+      <section class="panel agentes-panel" id="agentes-panel" aria-labelledby="agentes-title" hidden>
+        <div class="panel-head">
+          <div class="panel-head-title">
+            <div>
+              <h2 id="agentes-title">Agentes y Orquestadores</h2>
+              <p id="agentes-subtitle">Unidades activas del ecosistema ApliArte y ErBolamm.</p>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem;">
+          <div class="card" style="padding: 1rem; border: 1px solid var(--border, #475569); border-radius: var(--radius-sm, 6px); background: var(--surface);">
+            <div style="font-weight: 700; font-size: 1rem; color: var(--navy, #38bdf8);">agy · Antigravity</div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Orquestador central, desarrollo guiado por resultados e integración continua.</p>
+          </div>
+          <div class="card" style="padding: 1rem; border: 1px solid var(--border, #475569); border-radius: var(--radius-sm, 6px); background: var(--surface);">
+            <div style="font-weight: 700; font-size: 1rem; color: var(--navy, #38bdf8);">cl · Claude Code</div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Especialista en refactorización profunda, diseño de interfaz y accesibilidad.</p>
+          </div>
+          <div class="card" style="padding: 1rem; border: 1px solid var(--border, #475569); border-radius: var(--radius-sm, 6px); background: var(--surface);">
+            <div style="font-weight: 700; font-size: 1rem; color: var(--navy, #38bdf8);">co · Codex</div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Automatización de pruebas unitarias, análisis estático y tipado seguro.</p>
+          </div>
+        </div>
+      </section>
+
+      <p class="public-note" style="margin-top: 1.5rem; text-align: center; font-size: 0.82rem; color: var(--text-muted, #64748b);">
+        Oficina ApliArte · Ecosistema ErBolamm · Modo público de solo lectura
+      </p>
     </main>
   </div>
 
-  <script src="vistas/escaparate.js"></script>
+  <!-- Diálogo Ficha de Tarea -->
+  <dialog id="javier-task-modal" style="max-width:650px; width:92vw; border:1px solid var(--border, #475569); border-radius:var(--radius-md, 8px); background:var(--surface, #1e293b); color:var(--ink, inherit); padding:0; box-shadow:0 12px 36px rgba(0,0,0,0.35);">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:1rem 1.25rem; border-bottom:1px solid var(--border, #475569); background:rgba(0,95,169,0.08);">
+      <div>
+        <h3 id="modal-task-title" style="margin:0; font-size:1.15rem; color:var(--primary, #38bdf8);">Ficha de Tarea</h3>
+        <small id="modal-task-meta" style="color:var(--text-muted, #94a3b8); font-size:0.75rem;"></small>
+      </div>
+      <button type="button" onclick="document.getElementById('javier-task-modal').close()" style="border:0; background:transparent; font-size:1.4rem; cursor:pointer; color:inherit;" aria-label="Cerrar">✕</button>
+    </div>
+    <div style="padding:1.25rem; display:flex; flex-direction:column; gap:1rem;">
+      <div>
+        <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:0.25rem; color:var(--text-muted, #94a3b8);">Descripción</label>
+        <p id="modal-task-desc" style="font-size:0.95rem; line-height:1.5; margin:0; white-space:pre-wrap;"></p>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:0.5rem; padding-top:0.75rem; border-top:1px solid var(--border, #475569);">
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('javier-task-modal').close()" style="padding:0.4rem 1rem; cursor:pointer;">Cerrar</button>
+      </div>
+    </div>
+  </dialog>
+
   <script>
-    if (typeof renderizarBarraConexion === 'function') {
-      renderizarBarraConexion('connection-bar');
-    }
+    // 1. Manejo de la barra lateral (escritorio y móvil)
+    const sidebar = document.getElementById("office-sidebar");
+    const sidebarToggle = document.getElementById("sidebar-toggle");
+    const sidebarScrim = document.getElementById("sidebar-scrim");
+    const isMobile = () => window.innerWidth <= 820;
 
-    const backendActivo = typeof obtenerBackendUrl === 'function' ? obtenerBackendUrl() : '';
-    if (backendActivo) {
-      const badge = document.getElementById('status-badge');
-      if (badge) {
-        badge.textContent = 'Servidor Conectado (' + backendActivo + ') · Modo Operativo';
-        badge.style.color = 'var(--success)';
+    function closeDrawer() {
+      if (!sidebar) return;
+      sidebar.dataset.drawerOpen = "false";
+      if (sidebarScrim) {
+        sidebarScrim.dataset.active = "false";
+        sidebarScrim.setAttribute("aria-hidden", "true");
       }
     }
 
-    // Toggle de la barra lateral (modo iconos vs extendido)
-    const toggleBtn = document.getElementById('sidebar-toggle');
-    if (toggleBtn) {
-      toggleBtn.addEventListener('click', () => {
-        const isIcons = document.documentElement.dataset.sidebar === 'icons';
-        document.documentElement.dataset.sidebar = isIcons ? 'full' : 'icons';
-        toggleBtn.querySelector('.chev').textContent = isIcons ? '‹' : '›';
-      });
+    function openDrawer() {
+      if (!sidebar) return;
+      sidebar.dataset.drawerOpen = "true";
+      if (sidebarScrim) {
+        sidebarScrim.dataset.active = "true";
+        sidebarScrim.setAttribute("aria-hidden", "false");
+      }
     }
 
-    // Toggle de tema claro / oscuro
-    const themeBtn = document.getElementById('theme-toggle');
-    if (themeBtn) {
-      themeBtn.addEventListener('click', () => {
-        const isDark = document.documentElement.dataset.theme === 'dark';
-        const next = isDark ? 'light' : 'dark';
-        document.documentElement.dataset.theme = next;
-        const icon = document.getElementById('theme-icon');
-        if (icon) icon.textContent = next === 'dark' ? '☼' : '☾';
-      });
-    }
-
-    // Renderizado de la barra lateral y de la cuadrícula de pestañas
-    const sidebarNav = document.getElementById('sidebar-nav');
-    const gridTabs = document.getElementById('grid-tabs');
-
-    PESTANAS_ECOSISTEMA.forEach(p => {
-      const esActiva = !!p.activa;
-      const icono = p.icono || '📋';
-      const targetUrl = esActiva ? ('vistas/' + p.archivo) : 'javascript:void(0)';
-
-      // 1. Tarjeta en la barra lateral izquierda
-      if (sidebarNav) {
-        const navItem = document.createElement('a');
-        navItem.className = 'nav-card' + (!esActiva ? ' disabled-card' : '');
-        navItem.href = targetUrl;
-        if (!esActiva) {
-          navItem.setAttribute('aria-disabled', 'true');
-          navItem.setAttribute('tabindex', '-1');
+    if (sidebarToggle) {
+      sidebarToggle.addEventListener("click", () => {
+        if (isMobile()) {
+          const isOpen = sidebar.dataset.drawerOpen === "true";
+          if (isOpen) closeDrawer();
+          else openDrawer();
+        } else {
+          const isIcons = document.documentElement.dataset.sidebar === "icons";
+          const next = isIcons ? "full" : "icons";
+          document.documentElement.dataset.sidebar = next;
+          try { localStorage.setItem("erbolamm-panel-sidebar", next); } catch (_) {}
         }
+      });
+    }
 
-        navItem.innerHTML = `
-          <span class="nav-icon" aria-hidden="true">${icono}</span>
-          <span class="nav-copy">
-            <strong>${p.titulo}</strong>
-            <small>${p.subtitulo || ''}</small>
-          </span>
-          ${!esActiva ? '<span class="badge-dev">En desarrollo</span>' : ''}
-        `;
-        sidebarNav.appendChild(navItem);
+    if (sidebarScrim) {
+      sidebarScrim.addEventListener("click", closeDrawer);
+    }
+
+    // 2. Cambio de tema claro / oscuro
+    const themeBtn = document.getElementById("theme-toggle");
+    if (themeBtn) {
+      const icon = document.getElementById("theme-icon");
+      if (icon) {
+        icon.textContent = document.documentElement.dataset.theme === "dark" ? "☼" : "☾";
       }
+      themeBtn.addEventListener("click", () => {
+        const isDark = document.documentElement.dataset.theme === "dark";
+        const next = isDark ? "light" : "dark";
+        document.documentElement.dataset.theme = next;
+        if (icon) icon.textContent = next === "dark" ? "☼" : "☾";
+        try { localStorage.setItem("erbolamm-panel-theme", next); } catch (_) {}
+      });
+    }
 
-      // 2. Tarjeta en la cuadrícula principal
-      if (gridTabs) {
-        const card = document.createElement('div');
-        card.className = 'tab-card' + (!esActiva ? ' locked-card' : '');
-        const pillClass = esActiva ? 'pill-active' : 'pill-locked';
-        const pillText = esActiva ? 'Completada' : 'En desarrollo';
+    // 3. Conmutador de secciones del panel (Tablero, Recurrentes, Agentes)
+    const tabs = document.querySelectorAll(".panel-tabs .pill-btn[data-tab]");
+    const panels = {
+      "tablero": document.getElementById("tablero"),
+      "recurrentes": document.getElementById("recurrentes-panel"),
+      "agentes": document.getElementById("agentes-panel")
+    };
 
-        card.innerHTML = `
-          <div>
-            <div class="tab-card-header">
-              <div class="tab-card-title">${icono} ${p.titulo}</div>
-              <span class="pill ${pillClass}">${pillText}</span>
-            </div>
-            <div class="tab-card-desc">
-              ${p.subtitulo ? p.subtitulo + '. ' : ''}${esActiva ? 'Herramienta operativa en el escaparate universal.' : 'Módulo en desarrollo dentro del ecosistema.'}
-            </div>
-          </div>
-          ${esActiva 
-            ? `<a href="${targetUrl}" class="tab-card-link">Abrir herramienta →</a>`
-            : `<span class="tab-card-link disabled-link" aria-disabled="true">En desarrollo</span>`
+    tabs.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const targetTab = btn.getAttribute("data-tab");
+        tabs.forEach(b => {
+          b.classList.remove("active");
+          b.setAttribute("aria-selected", "false");
+        });
+        btn.classList.add("active");
+        btn.setAttribute("aria-selected", "true");
+
+        Object.keys(panels).forEach(key => {
+          if (panels[key]) {
+            panels[key].hidden = (key !== targetTab);
           }
-        `;
-        gridTabs.appendChild(card);
-      }
+        });
+      });
     });
+
+    // 4. Carga y renderizado de las 4 columnas del tablero
+    function abrirModalTarea(tarea) {
+      const modal = document.getElementById("javier-task-modal");
+      if (!modal) return;
+      document.getElementById("modal-task-title").textContent = tarea.titulo || "Detalle de tarea";
+      document.getElementById("modal-task-meta").textContent = `[${tarea.categoria || "General"}] · ${tarea.autor || "Oficina"} · ${tarea.fecha || ""}`;
+      document.getElementById("modal-task-desc").textContent = tarea.descripcion || "Sin descripción adicional.";
+      if (typeof modal.showModal === "function") {
+        modal.showModal();
+      }
+    }
+
+    function crearElementoTarea(item, tagClass, tagText) {
+      const li = document.createElement("li");
+      li.className = "task";
+      li.style.cursor = "pointer";
+
+      const strong = document.createElement("strong");
+      strong.textContent = item.titulo;
+
+      const small = document.createElement("small");
+      small.innerHTML = `<span class="task-meta-tag ${tagClass}">${tagText}</span>[${item.categoria || "General"}] ${item.autor || "Oficina"}`;
+
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "task-ficha-open";
+      btn.setAttribute("aria-label", "Abrir ficha");
+      btn.setAttribute("title", "Abrir ficha");
+      btn.innerHTML = '<span aria-hidden="true">📄</span>';
+
+      li.append(strong, small, btn);
+
+      li.addEventListener("click", () => abrirModalTarea(item));
+      return li;
+    }
+
+    async function cargarTablero() {
+      let tareas = [];
+      let propuestas = [];
+
+      try {
+        const resTareas = await fetch("datos/tareas.json?v=20261108_2");
+        if (resTareas.ok) tareas = await resTareas.json();
+      } catch (_) {}
+
+      try {
+        const resProp = await fetch("datos/propuestas.json?v=20261108_2");
+        if (resProp.ok) propuestas = await resProp.json();
+      } catch (_) {}
+
+      // Tareas y propuestas guardadas localmente en el navegador
+      try {
+        const localT = JSON.parse(localStorage.getItem("oficina_comunitaria_tareas") || "[]");
+        if (Array.isArray(localT)) tareas = [...localT, ...tareas];
+      } catch (_) {}
+
+      try {
+        const localP = JSON.parse(localStorage.getItem("oficina_comunitaria_propuestas") || "[]");
+        if (Array.isArray(localP)) propuestas = [...localP, ...propuestas];
+      } catch (_) {}
+
+      // Clasificación en las 4 columnas
+      const lanePropuestas = document.getElementById("lane-propuestas");
+      const lanePorHacer = document.getElementById("lane-por-hacer");
+      const laneEnCurso = document.getElementById("lane-en-curso");
+      const laneHecho = document.getElementById("lane-hecho");
+
+      if (lanePropuestas) lanePropuestas.innerHTML = "";
+      if (lanePorHacer) lanePorHacer.innerHTML = "";
+      if (laneEnCurso) laneEnCurso.innerHTML = "";
+      if (laneHecho) laneHecho.innerHTML = "";
+
+      let countProp = 0, countPorHacer = 0, countEnCurso = 0, countHecho = 0;
+
+      // Columna 1: Propuestas
+      propuestas.forEach(p => {
+        countProp++;
+        if (lanePropuestas) lanePropuestas.appendChild(crearElementoTarea(p, "tag-propuesta", "Propuesta"));
+      });
+      if (countProp === 0 && lanePropuestas) {
+        lanePropuestas.innerHTML = '<li class="task-empty-msg">Sin propuestas pendientes</li>';
+      }
+      document.getElementById("count-propuestas").textContent = countProp;
+
+      // Columnas 2, 3 y 4: Tareas por estado
+      tareas.forEach(t => {
+        const estadoNorm = String(t.estado || "").toLowerCase().trim();
+        if (estadoNorm.includes("curso") || estadoNorm.includes("haciendo") || estadoNorm.includes("proceso")) {
+          countEnCurso++;
+          if (laneEnCurso) laneEnCurso.appendChild(crearElementoTarea(t, "tag-en-curso", "En curso"));
+        } else if (estadoNorm.includes("hecho") || estadoNorm.includes("completad") || estadoNorm.includes("finaliz")) {
+          countHecho++;
+          if (laneHecho) laneHecho.appendChild(crearElementoTarea(t, "tag-hecho", "Hecho"));
+        } else {
+          countPorHacer++;
+          if (lanePorHacer) lanePorHacer.appendChild(crearElementoTarea(t, "tag-por-hacer", "Por hacer"));
+        }
+      });
+
+      if (countPorHacer === 0 && lanePorHacer) {
+        lanePorHacer.innerHTML = '<li class="task-empty-msg">Sin tareas por hacer</li>';
+      }
+      if (countEnCurso === 0 && laneEnCurso) {
+        laneEnCurso.innerHTML = '<li class="task-empty-msg">Sin tareas en curso</li>';
+      }
+      if (countHecho === 0 && laneHecho) {
+        laneHecho.innerHTML = '<li class="task-empty-msg">Sin tareas finalizadas</li>';
+      }
+
+      document.getElementById("count-por-hacer").textContent = countPorHacer;
+      document.getElementById("count-en-curso").textContent = countEnCurso;
+      document.getElementById("count-hecho").textContent = countHecho;
+    }
+
+    document.addEventListener("DOMContentLoaded", cargarTablero);
   </script>
 </body>
 </html>
