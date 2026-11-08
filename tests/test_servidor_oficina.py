@@ -94,14 +94,6 @@ class TestServidorOficina(unittest.TestCase):
             self.assertEqual(datos["nombre"], "patito-de-goma")
             self.assertIn("contenido", datos)
 
-    def test_vista_skills(self):
-        with urllib.request.urlopen(f"{self.base_url}/vista/skills") as resp:
-            self.assertEqual(resp.status, 200)
-            self.assertIn("text/html", resp.headers.get("Content-Type", ""))
-            html = resp.read().decode("utf-8")
-            self.assertIn("Oficina ApliArte — Banco de Habilidades", html)
-            self.assertIn("connection-bar", html)
-
     def test_bloqueo_metodos_escritura(self):
         req = urllib.request.Request(f"{self.base_url}/api/habilidades", method="POST")
         try:
@@ -156,15 +148,6 @@ class TestServidorOficina(unittest.TestCase):
         except urllib.error.HTTPError as e:
             self.assertEqual(e.code, 404)
 
-    def test_vista_resenas(self):
-        for ruta in ("/resenas", "/vista/resenas"):
-            with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
-                self.assertEqual(resp.status, 200)
-                self.assertIn("text/html", resp.headers.get("Content-Type", ""))
-                html = resp.read().decode("utf-8")
-                self.assertIn("Oficina ApliArte — Gestion de Resenas", html)
-                self.assertIn("connection-bar", html)
-
     def test_bloqueo_escritura_resenas(self):
         req = urllib.request.Request(f"{self.base_url}/api/resenas", method="POST")
         try:
@@ -172,16 +155,6 @@ class TestServidorOficina(unittest.TestCase):
             self.fail("Deberia haber lanzado HTTPError 405")
         except urllib.error.HTTPError as e:
             self.assertEqual(e.code, 405)
-
-    def test_vista_instala_tu_oficina(self):
-        for ruta in ("/vista/instala-tu-oficina", "/instala-tu-oficina"):
-            with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
-                self.assertEqual(resp.status, 200)
-                self.assertIn("text/html", resp.headers.get("Content-Type", ""))
-                html = resp.read().decode("utf-8")
-                self.assertIn("Oficina ApliArte — Instala tu Oficina", html)
-                self.assertIn("APLIARTE", html)
-                self.assertIn("Hola Kodee", html)
 
     def test_endpoint_pestanas_ecosistema(self):
         with urllib.request.urlopen(f"{self.base_url}/api/pestanas") as resp:
@@ -191,26 +164,6 @@ class TestServidorOficina(unittest.TestCase):
             self.assertEqual(datos["total"], 27)
             slugs_publicos = [p["slug"] for p in datos["pestanas"] if p["publica"]]
             self.assertEqual(set(slugs_publicos), {"oficina", "propuestas", "aplicaciones", "paquetes", "skills"})
-
-    def test_vista_tareas(self):
-        for ruta in ("/vista/tareas", "/tareas", "/vistas/tareas.html"):
-            with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
-                self.assertEqual(resp.status, 200)
-                self.assertIn("text/html", resp.headers.get("Content-Type", ""))
-                html = resp.read().decode("utf-8")
-                self.assertIn("Oficina ApliArte — Tareas del Ecosistema", html)
-                self.assertIn("connection-bar", html)
-                self.assertIn("modal-tarea", html)
-
-    def test_vista_propuestas(self):
-        for ruta in ("/vista/propuestas", "/propuestas", "/vistas/propuestas.html"):
-            with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
-                self.assertEqual(resp.status, 200)
-                self.assertIn("text/html", resp.headers.get("Content-Type", ""))
-                html = resp.read().decode("utf-8")
-                self.assertIn("Oficina ApliArte — Propuestas Comunitarias", html)
-                self.assertIn("connection-bar", html)
-                self.assertIn("modal-propuesta", html)
 
     def test_endpoint_tareas_get(self):
         with urllib.request.urlopen(f"{self.base_url}/api/tareas") as resp:
@@ -323,26 +276,6 @@ class TestServidorOficina(unittest.TestCase):
         except urllib.error.HTTPError as e:
             self.assertEqual(e.code, 400)
 
-    def test_vista_aplicaciones(self):
-        for ruta in ("/vista/aplicaciones", "/aplicaciones", "/vistas/aplicaciones.html"):
-            with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
-                self.assertEqual(resp.status, 200)
-                self.assertIn("text/html", resp.headers.get("Content-Type", ""))
-                html = resp.read().decode("utf-8")
-                self.assertIn("Oficina ApliArte — Aplicaciones Oficiales", html)
-                self.assertIn("connection-bar", html)
-                self.assertIn("apps-grid", html)
-
-    def test_vista_paquetes(self):
-        for ruta in ("/vista/paquetes", "/paquetes", "/vistas/paquetes.html"):
-            with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
-                self.assertEqual(resp.status, 200)
-                self.assertIn("text/html", resp.headers.get("Content-Type", ""))
-                html = resp.read().decode("utf-8")
-                self.assertIn("Oficina ApliArte — Paquetes Flutter", html)
-                self.assertIn("connection-bar", html)
-                self.assertIn("packages-list", html)
-
     def test_endpoint_aplicaciones(self):
         with urllib.request.urlopen(f"{self.base_url}/api/aplicaciones") as resp:
             self.assertEqual(resp.status, 200)
@@ -376,13 +309,6 @@ class TestServidorOficina(unittest.TestCase):
                 self.assertIn("Instala tu Oficina en Hostinger", html)
                 self.assertIn("Pestaña Privada", html)
 
-    def test_archivo_escaparate_js(self):
-        with urllib.request.urlopen(f"{self.base_url}/vistas/escaparate.js") as resp:
-            self.assertEqual(resp.status, 200)
-            self.assertIn("javascript", resp.headers.get("Content-Type", ""))
-            js = resp.read().decode("utf-8")
-            self.assertIn("PESTANAS_ECOSISTEMA", js)
-
     def test_vista_raiz_index(self):
         for ruta in ("/", "/index.html"):
             with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
@@ -391,6 +317,8 @@ class TestServidorOficina(unittest.TestCase):
                 html = resp.read().decode("utf-8")
                 self.assertIn("Oficina ApliArte", html)
                 self.assertIn("Panel de control operativo ApliArte", html)
+                self.assertIn("Tablero de tareas", html)
+                self.assertNotIn("vistas/", html)
 
     def test_recursos_css_autenticos(self):
         for ruta in ("/panel-shell.css", "/estilos/tokens.css", "/estilos/componentes.css"):
@@ -400,11 +328,40 @@ class TestServidorOficina(unittest.TestCase):
                 contenido = resp.read().decode("utf-8")
                 self.assertTrue(len(contenido) > 50)
 
-    def test_paridad_rutas_html_directas(self):
-        for ruta in ("/vistas/skills.html", "/vistas/resenas.html", "/vistas/instala-tu-oficina.html", "/vistas/aplicaciones.html", "/vistas/paquetes.html", "/vistas/tareas.html", "/vistas/propuestas.html"):
-            with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
-                self.assertEqual(resp.status, 200)
-                self.assertIn("text/html", resp.headers.get("Content-Type", ""))
+    def test_vistas_secundarias_retiradas(self):
+        for ruta in (
+            "/vistas/skills.html",
+            "/vistas/resenas.html",
+            "/vistas/instala-tu-oficina.html",
+            "/vistas/aplicaciones.html",
+            "/vistas/paquetes.html",
+            "/vistas/tareas.html",
+            "/vistas/propuestas.html",
+            "/vistas/escaparate.js",
+        ):
+            try:
+                urllib.request.urlopen(f"{self.base_url}{ruta}")
+                self.fail(f"Ruta obsoleta {ruta} deberia devolver 404")
+            except urllib.error.HTTPError as e:
+                self.assertEqual(e.code, 404)
+
+    def test_archivos_obsoletos_en_control_erbolamm(self):
+        dir_archivo = DIR_REPOSITORIO / "control-erbolamm" / "archivado-vistas"
+        dir_vistas = DIR_REPOSITORIO / "vistas"
+        self.assertTrue(dir_archivo.exists())
+        archivos_esperados = [
+            "aplicaciones.html",
+            "paquetes.html",
+            "propuestas.html",
+            "skills.html",
+            "tareas.html",
+            "resenas.html",
+            "instala-tu-oficina.html",
+            "escaparate.js",
+        ]
+        for nombre in archivos_esperados:
+            self.assertTrue((dir_archivo / nombre).exists(), f"{nombre} debe existir en archivado-vistas")
+            self.assertFalse((dir_vistas / nombre).exists(), f"{nombre} no debe existir en vistas/")
 
     def test_datos_estaticos_json(self):
         for ruta in ("/datos/habilidades.json", "/datos/resenas.json", "/datos/pestanas.json", "/datos/aplicaciones.json", "/datos/paquetes.json", "/datos/tareas.json", "/datos/propuestas.json"):

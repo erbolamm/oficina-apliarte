@@ -238,48 +238,6 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 self.responder_html(archivo_index.read_text(encoding="utf-8"))
                 return
 
-        if ruta in ("/vista/tareas", "/tareas", "/vistas/tareas.html"):
-            archivo_vista = DIR_VISTAS / "tareas.html"
-            if archivo_vista.exists():
-                self.responder_html(archivo_vista.read_text(encoding="utf-8"))
-                return
-
-        if ruta in ("/vista/propuestas", "/propuestas", "/vistas/propuestas.html"):
-            archivo_vista = DIR_VISTAS / "propuestas.html"
-            if archivo_vista.exists():
-                self.responder_html(archivo_vista.read_text(encoding="utf-8"))
-                return
-
-        if ruta in ("/vista/aplicaciones", "/aplicaciones", "/vistas/aplicaciones.html"):
-            archivo_vista = DIR_VISTAS / "aplicaciones.html"
-            if archivo_vista.exists():
-                self.responder_html(archivo_vista.read_text(encoding="utf-8"))
-                return
-
-        if ruta in ("/vista/paquetes", "/paquetes", "/vistas/paquetes.html"):
-            archivo_vista = DIR_VISTAS / "paquetes.html"
-            if archivo_vista.exists():
-                self.responder_html(archivo_vista.read_text(encoding="utf-8"))
-                return
-
-        if ruta in ("/vista/skills", "/skills", "/vistas/skills.html"):
-            archivo_vista = DIR_VISTAS / "skills.html"
-            if archivo_vista.exists():
-                self.responder_html(archivo_vista.read_text(encoding="utf-8"))
-                return
-
-        if ruta in ("/resenas", "/vista/resenas", "/vistas/resenas.html"):
-            archivo_vista = DIR_VISTAS / "resenas.html"
-            if archivo_vista.exists():
-                self.responder_html(archivo_vista.read_text(encoding="utf-8"))
-                return
-
-        if ruta in ("/vista/instala-tu-oficina", "/instala-tu-oficina", "/vistas/instala-tu-oficina.html"):
-            archivo_vista = DIR_VISTAS / "instala-tu-oficina.html"
-            if archivo_vista.exists():
-                self.responder_html(archivo_vista.read_text(encoding="utf-8"))
-                return
-
         if ruta.startswith("/datos/"):
             archivo_dato = RAIZ_PROYECTO / ruta.lstrip("/")
             if archivo_dato.exists() and archivo_dato.is_file() and archivo_dato.suffix == ".json":
