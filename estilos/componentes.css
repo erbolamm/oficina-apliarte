@@ -1,0 +1,171 @@
+/* Shared flat components of the Oficina. Served at /estilos/componentes.css and
+ * imported by panel-shell.css after tokens.css. Only tokens are used; the only
+ * box-shadow is the keyboard focus ring. No gradients, no decorative shadows. */
+
+.cz-info-button {
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--control-size);
+  block-size: var(--control-size);
+  padding: 0;
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--blue);
+  font: inherit;
+  cursor: pointer;
+}
+
+.cz-info-button svg,
+.cz-info-button .cz-icon {
+  inline-size: var(--icon-size);
+  block-size: var(--icon-size);
+}
+
+.cz-step-list {
+  display: grid;
+  gap: var(--space-unit);
+  margin: 0;
+  padding: 0 0 0 1.5rem;
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+.cz-step-list__titulo {
+  display: block;
+  font-weight: 600;
+}
+
+.cz-step-list__detalle {
+  display: block;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.cz-step-list li::marker {
+  color: var(--navy);
+}
+
+.cz-empty-state {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-unit);
+  padding: calc(var(--space-unit) * 2);
+  border: var(--border-width) dashed var(--border);
+  border-radius: var(--radius-md);
+  background: var(--subtle);
+  color: var(--muted);
+  text-align: center;
+}
+
+.cz-captura-real {
+  display: block;
+  max-inline-size: 100%;
+  margin: 0;
+  padding: var(--space-unit);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.cz-captura-real img {
+  display: block;
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+.cz-captura-real figcaption {
+  margin-block-start: var(--space-unit);
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.cz-validation-report {
+  display: grid;
+  gap: var(--space-unit);
+  margin: 0;
+  padding: var(--space-unit);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+  list-style: none;
+}
+
+.cz-validation-report [data-result="pass"] {
+  color: var(--navy);
+}
+
+.cz-validation-report [data-result="fail"] {
+  color: var(--brown);
+  font-weight: 600;
+}
+
+.cz-status-pill {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--control-size);
+  padding: 0 var(--space-unit);
+  border: var(--border-width) solid var(--border);
+  border-radius: 999px;
+  background: var(--subtle);
+  color: var(--navy);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.cz-status-pill[data-tone="warn"] {
+  color: var(--brown);
+}
+
+.cz-status-pill[data-tone="muted"] {
+  color: var(--muted);
+}
+
+.cz-info-button:focus-visible,
+.cz-status-pill:focus-visible,
+.cz-captura-real:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.cz-narracion-control {
+  display: grid;
+  gap: var(--space-unit);
+  margin: var(--space-unit) 0;
+  padding: calc(var(--space-unit) * 1.5);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.cz-narracion__row {
+  display: flex;
+  gap: var(--space-unit);
+  flex-wrap: wrap;
+}
+
+.cz-narracion__field {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space-unit) * 0.5);
+  font-size: 0.85rem;
+  color: var(--ink);
+  flex: 1 1 140px;
+}
+
+.cz-narracion__field textarea,
+.cz-narracion__field select {
+  font: inherit;
+  padding: calc(var(--space-unit) * 0.6);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--page);
+  color: var(--ink);
+}
+
+.cz-narracion__note {
+  margin: calc(var(--space-unit) * 0.5) 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}

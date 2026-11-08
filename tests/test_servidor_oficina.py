@@ -75,8 +75,8 @@ class TestServidorOficina(unittest.TestCase):
             self.assertEqual(datos["estado"], "activo")
             self.assertTrue(datos["total_habilidades"] >= 1)
             self.assertTrue(datos["total_resenas"] >= 1)
-            self.assertEqual(datos.get("total_pestanas"), 30)
-            self.assertEqual(datos.get("pestanas_publicas"), 7)
+            self.assertEqual(datos.get("total_pestanas"), 27)
+            self.assertEqual(datos.get("pestanas_publicas"), 5)
 
     def test_endpoint_habilidades_lista(self):
         with urllib.request.urlopen(f"{self.base_url}/api/habilidades") as resp:
@@ -188,9 +188,9 @@ class TestServidorOficina(unittest.TestCase):
             self.assertEqual(resp.status, 200)
             datos = json.loads(resp.read().decode("utf-8"))
             self.assertEqual(datos["modo"], "solo_lectura")
-            self.assertEqual(datos["total"], 30)
+            self.assertEqual(datos["total"], 27)
             slugs_publicos = [p["slug"] for p in datos["pestanas"] if p["publica"]]
-            self.assertEqual(set(slugs_publicos), {"tareas", "propuestas", "aplicaciones", "paquetes", "skills", "resenas", "instala-tu-oficina"})
+            self.assertEqual(set(slugs_publicos), {"oficina", "propuestas", "aplicaciones", "paquetes", "skills"})
 
     def test_vista_tareas(self):
         for ruta in ("/vista/tareas", "/tareas", "/vistas/tareas.html"):
@@ -390,7 +390,15 @@ class TestServidorOficina(unittest.TestCase):
                 self.assertIn("text/html", resp.headers.get("Content-Type", ""))
                 html = resp.read().decode("utf-8")
                 self.assertIn("Oficina ApliArte", html)
-                self.assertIn("Suite Soberana", html)
+                self.assertIn("Panel de control operativo ApliArte", html)
+
+    def test_recursos_css_autenticos(self):
+        for ruta in ("/panel-shell.css", "/estilos/tokens.css", "/estilos/componentes.css"):
+            with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
+                self.assertEqual(resp.status, 200)
+                self.assertIn("text/css", resp.headers.get("Content-Type", ""))
+                contenido = resp.read().decode("utf-8")
+                self.assertTrue(len(contenido) > 50)
 
     def test_paridad_rutas_html_directas(self):
         for ruta in ("/vistas/skills.html", "/vistas/resenas.html", "/vistas/instala-tu-oficina.html", "/vistas/aplicaciones.html", "/vistas/paquetes.html", "/vistas/tareas.html", "/vistas/propuestas.html"):

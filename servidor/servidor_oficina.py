@@ -18,36 +18,33 @@ DIR_RESENAS = RAIZ_PROYECTO / "resenas"
 DIR_DATOS = RAIZ_PROYECTO / "datos"
 
 PESTANAS_ECOSISTEMA = [
-    {"slug": "tareas", "titulo": "Tareas del Ecosistema", "ruta": "/vista/tareas", "publica": True},
-    {"slug": "propuestas", "titulo": "Propuestas Comunitarias", "ruta": "/vista/propuestas", "publica": True},
-    {"slug": "aplicaciones", "titulo": "Aplicaciones Oficiales", "ruta": "/vista/aplicaciones", "publica": True},
-    {"slug": "paquetes", "titulo": "Paquetes Flutter", "ruta": "/vista/paquetes", "publica": True},
-    {"slug": "skills", "titulo": "Banco de Habilidades", "ruta": "/vista/skills", "publica": True},
-    {"slug": "resenas", "titulo": "Reseñas de Tiendas", "ruta": "/resenas", "publica": True},
-    {"slug": "instala-tu-oficina", "titulo": "Instala tu Oficina", "ruta": "/vista/instala-tu-oficina", "publica": True},
-    {"slug": "aplichat", "titulo": "ApliChat y Buzón de Conversación", "ruta": "/vista/aplichat", "publica": False},
-    {"slug": "tiendas", "titulo": "Tiendas y Metadatos ASO", "ruta": "/vista/tiendas", "publica": False},
-    {"slug": "diseno", "titulo": "Capturas Retina y Mockups", "ruta": "/vista/diseno", "publica": False},
-    {"slug": "musica", "titulo": "Música Procedural Strudel", "ruta": "/vista/musica", "publica": False},
-    {"slug": "mercado", "titulo": "Estudio de Mercado y Tendencias", "ruta": "/vista/mercado", "publica": False},
-    {"slug": "locucion", "titulo": "Locución y Doblaje", "ruta": "/vista/locucion", "publica": False},
-    {"slug": "facturas", "titulo": "Facturas y Gestoría Trimestral", "ruta": "/vista/facturas", "publica": False},
-    {"slug": "correos", "titulo": "Correos de Soporte de Usuarios", "ruta": "/vista/correos", "publica": False},
-    {"slug": "pnl", "titulo": "Programación Neurolingüística (PNL)", "ruta": "/vista/pnl", "publica": False},
-    {"slug": "herramientas", "titulo": "Catálogo de Herramientas", "ruta": "/vista/herramientas", "publica": False},
-    {"slug": "auditor-tiendas", "titulo": "Auditoría de Tiendas y Versiones", "ruta": "/vista/auditor-tiendas", "publica": False},
-    {"slug": "auditoria-web", "titulo": "Auditoría Web y Conversión", "ruta": "/vista/auditoria-web", "publica": False},
-    {"slug": "admob", "titulo": "AdMob y Publicidad Dual", "ruta": "/vista/admob", "publica": False},
-    {"slug": "aislar-voces", "titulo": "Aislamiento Vocal y Peritaje", "ruta": "/vista/aislar-voces", "publica": False},
-    {"slug": "campana-visual", "titulo": "Campaña Visual Multiformato", "ruta": "/vista/campana-visual", "publica": False},
-    {"slug": "edicion-video", "titulo": "Edición y Mezcla de Vídeo", "ruta": "/vista/edicion-video", "publica": False},
-    {"slug": "presentaciones", "titulo": "Presentaciones Multilingües", "ruta": "/vista/presentaciones", "publica": False},
-    {"slug": "blogger", "titulo": "Publicaciones en Blogger", "ruta": "/vista/blogger", "publica": False},
-    {"slug": "conciliacion", "titulo": "Conciliación Bancaria", "ruta": "/vista/conciliacion", "publica": False},
-    {"slug": "ses-hospedajes", "titulo": "Registro SES Hospedajes", "ruta": "/vista/ses-hospedajes", "publica": False},
-    {"slug": "vps", "titulo": "Estado de Infraestructura VPS", "ruta": "/vista/vps", "publica": False},
-    {"slug": "apliarte-bot", "titulo": "Supervisión de ApliArteBot", "ruta": "/vista/apliarte-bot", "publica": False},
-    {"slug": "directo", "titulo": "Monitor de Directo y Streaming", "ruta": "/vista/directo", "publica": False},
+    {"slug": "oficina", "titulo": "Oficina", "subtitulo": "Tablero de tareas", "ruta": "/vista/tareas", "publica": True, "activa": True, "icono": "⌂"},
+    {"slug": "propuestas", "titulo": "Propuestas", "subtitulo": "Bandeja comunitaria", "ruta": "/vista/propuestas", "publica": True, "activa": True, "icono": "💡"},
+    {"slug": "aplicaciones", "titulo": "Aplicaciones", "subtitulo": "Catálogo oficial", "ruta": "/vista/aplicaciones", "publica": True, "activa": True, "icono": "📱"},
+    {"slug": "paquetes", "titulo": "Paquetes", "subtitulo": "Librerías Flutter", "ruta": "/vista/paquetes", "publica": True, "activa": True, "icono": "📦"},
+    {"slug": "skills", "titulo": "Skills", "subtitulo": "Botonera y catálogo", "ruta": "/vista/skills", "publica": True, "activa": True, "icono": "⌘"},
+    {"slug": "javier", "titulo": "Espacio Javier", "subtitulo": "Control personal y ja--", "ruta": "/vista/javier", "publica": False, "activa": False, "icono": "👤"},
+    {"slug": "inicio-dia", "titulo": "Inicio del día", "subtitulo": "Checklist matutino", "ruta": "/vista/inicio-dia", "publica": False, "activa": False, "icono": "☼"},
+    {"slug": "aplichat", "titulo": "ApliChat", "subtitulo": "Chat accesible", "ruta": "/vista/aplichat", "publica": False, "activa": False, "icono": "💬"},
+    {"slug": "conectores", "titulo": "Conectores", "subtitulo": "Servicios y credenciales", "ruta": "/vista/conectores", "publica": False, "activa": False, "icono": "⇄"},
+    {"slug": "plugins", "titulo": "Plugins", "subtitulo": "Módulos de la Oficina", "ruta": "/vista/plugins", "publica": False, "activa": False, "icono": "⊞"},
+    {"slug": "reflect", "titulo": "Reflect", "subtitulo": "Directivas y memoria", "ruta": "/vista/reflect", "publica": False, "activa": False, "icono": "◐"},
+    {"slug": "diseno", "titulo": "Estudio de Diseño", "subtitulo": "Vídeo, marcos y SFX", "ruta": "/vista/diseno", "publica": False, "activa": False, "icono": "🎨"},
+    {"slug": "tiendas", "titulo": "Tiendas y ASO", "subtitulo": "Auditoría y keywords", "ruta": "/vista/tiendas", "publica": False, "activa": False, "icono": "🎯"},
+    {"slug": "mercado", "titulo": "Radar de Mercado", "subtitulo": "Tendencias y noticias", "ruta": "/vista/mercado", "publica": False, "activa": False, "icono": "📊"},
+    {"slug": "correos", "titulo": "Correos y Alertas", "subtitulo": "erbolamm y javier", "ruta": "/vista/correos", "publica": False, "activa": False, "icono": "✉"},
+    {"slug": "pnl", "titulo": "Estudio PNL", "subtitulo": "Enganche y microcopy", "ruta": "/vista/pnl", "publica": False, "activa": False, "icono": "🧠"},
+    {"slug": "musica", "titulo": "Estudio Musical", "subtitulo": "Música procedural", "ruta": "/vista/musica", "publica": False, "activa": False, "icono": "🎵"},
+    {"slug": "locucion", "titulo": "Locución y Guiones", "subtitulo": "TTS y guiones cortos", "ruta": "/vista/locucion", "publica": False, "activa": False, "icono": "🎙"},
+    {"slug": "voicestudio", "titulo": "Voice Studio", "subtitulo": "Clonación ultrarrápida", "ruta": "/vista/voicestudio", "publica": False, "activa": False, "icono": "⚡"},
+    {"slug": "terminales", "titulo": "Terminales", "subtitulo": "Lanzadores locales", "ruta": "/vista/terminales", "publica": False, "activa": False, "icono": "▣"},
+    {"slug": "facturas", "titulo": "Facturas", "subtitulo": "Gestor de facturas", "ruta": "/vista/facturas", "publica": False, "activa": False, "icono": "€"},
+    {"slug": "blogger", "titulo": "Blogger", "subtitulo": "Monitor y difusión", "ruta": "/vista/blogger", "publica": False, "activa": False, "icono": "✎"},
+    {"slug": "bitacora", "titulo": "Bitácora", "subtitulo": "Proyectos y enlaces", "ruta": "/vista/bitacora", "publica": False, "activa": False, "icono": "☰"},
+    {"slug": "directo", "titulo": "Directo", "subtitulo": "Centro de retransmisión", "ruta": "/vista/directo", "publica": False, "activa": False, "icono": "▶"},
+    {"slug": "diapositivas", "titulo": "Diapositivas", "subtitulo": "Presentaciones y difusión", "ruta": "/vista/diapositivas", "publica": False, "activa": False, "icono": "⎘"},
+    {"slug": "shorts", "titulo": "Shorts", "subtitulo": "Vídeo acelerado a 60 s", "ruta": "/vista/shorts", "publica": False, "activa": False, "icono": "⏩"},
+    {"slug": "resenas", "titulo": "Reseñas", "subtitulo": "Contestador inteligente", "ruta": "/resenas", "publica": False, "activa": False, "icono": "★"}
 ]
 
 
@@ -169,6 +166,15 @@ class ManejadorOficina(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(cuerpo)
 
+    def responder_css(self, css_texto: str, codigo: int = 200):
+        cuerpo = css_texto.encode("utf-8")
+        self.send_response(codigo)
+        self.send_header("Content-Type", "text/css; charset=utf-8")
+        self.send_header("Content-Length", str(len(cuerpo)))
+        self.send_header("X-Modo-Oficina", "solo_lectura")
+        self.end_headers()
+        self.wfile.write(cuerpo)
+
     def responder_svg(self, svg_texto: str, codigo: int = 200):
         cuerpo = svg_texto.encode("utf-8")
         self.send_response(codigo)
@@ -212,6 +218,18 @@ class ManejadorOficina(BaseHTTPRequestHandler):
             archivo_js = DIR_VISTAS / "escaparate.js"
             if archivo_js.exists():
                 self.responder_js(archivo_js.read_text(encoding="utf-8"))
+                return
+
+        if ruta == "/panel-shell.css":
+            archivo_css = RAIZ_PROYECTO / "panel-shell.css"
+            if archivo_css.exists():
+                self.responder_css(archivo_css.read_text(encoding="utf-8"))
+                return
+
+        if ruta.startswith("/estilos/") and ruta.endswith(".css"):
+            archivo_css = RAIZ_PROYECTO / ruta.lstrip("/")
+            if archivo_css.exists() and archivo_css.is_file():
+                self.responder_css(archivo_css.read_text(encoding="utf-8"))
                 return
 
         if ruta in ("", "/", "/index.html"):
