@@ -111,10 +111,14 @@
           <span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span>
           <span class="badge-dev">[En desarrollo]</span>
         </a>
-        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
-          <span class="nav-icon" aria-hidden="true">📱</span>
+        <a class="nav-card" href="#aplicaciones" id="sidebar-nav-aplicaciones">
+          <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+              <line x1="12" y1="18" x2="12.01" y2="18"></line>
+            </svg>
+          </span>
           <span class="nav-copy"><strong>Aplicaciones</strong><small>Catálogo oficial</small></span>
-          <span class="badge-dev">[En desarrollo]</span>
         </a>
         <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
           <span class="nav-icon" aria-hidden="true">📦</span>
@@ -260,6 +264,13 @@
         <button type="button" class="pill-btn active" role="tab" id="tab-btn-tablero" aria-selected="true" aria-controls="tablero" data-tab="tablero">
           <span aria-hidden="true">📋</span> Tablero de tareas
         </button>
+        <button type="button" class="pill-btn pill-btn-destacado" role="tab" id="tab-btn-aplicaciones" aria-selected="false" aria-controls="aplicaciones-panel" data-tab="aplicaciones">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align: -2px; margin-right: 4px;">
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+            <line x1="12" y1="18" x2="12.01" y2="18"></line>
+          </svg>Aplicaciones
+          <span class="tab-badge" id="badge-total-apps">4</span>
+        </button>
         <button type="button" class="pill-btn" role="tab" id="tab-btn-recurrentes" aria-selected="false" aria-controls="recurrentes-panel" data-tab="recurrentes">
           <span aria-hidden="true">🔁</span> Tareas recurrentes
         </button>
@@ -325,6 +336,37 @@
             </h3>
             <ul id="lane-hecho"></ul>
           </section>
+        </div>
+      </section>
+
+      <!-- Sección Aplicaciones (Escaparate Interactivo) -->
+      <section class="panel aplicaciones-panel" id="aplicaciones-panel" aria-labelledby="apps-panel-title" hidden>
+        <div class="panel-head">
+          <div class="panel-head-title">
+            <div>
+              <h2 id="apps-panel-title">Catálogo de Aplicaciones</h2>
+              <p id="apps-panel-subtitle">Escaparate interactivo público del ecosistema ApliArte y ErBolamm.</p>
+            </div>
+          </div>
+          <div class="panel-head-actions">
+            <a href="/vista/aplicaciones" class="panel-action-btn primary" title="Abrir vista oficial de Aplicaciones">
+              <span aria-hidden="true">↗</span> Vista oficial
+            </a>
+          </div>
+        </div>
+
+        <!-- Filtros interactivos por categoría -->
+        <div class="apps-filters" id="apps-filters" role="toolbar" aria-label="Filtro de aplicaciones por categoría">
+          <button type="button" class="apps-filter-btn active" data-categoria="todas">Todas</button>
+          <button type="button" class="apps-filter-btn" data-categoria="Creatividad y Diseno">Creatividad y Diseño</button>
+          <button type="button" class="apps-filter-btn" data-categoria="Productividad y Gestiones">Productividad y Gestiones</button>
+          <button type="button" class="apps-filter-btn" data-categoria="Accesibilidad y Comunicacion">Accesibilidad y Comunicación</button>
+          <button type="button" class="apps-filter-btn" data-categoria="Herramientas de Oficina">Herramientas de Oficina</button>
+        </div>
+
+        <!-- Rejilla de tarjetas de aplicaciones -->
+        <div class="apps-showcase-grid" id="apps-showcase-grid" aria-live="polite">
+          <div class="apps-loading-msg">Cargando catálogo de aplicaciones...</div>
         </div>
       </section>
 
@@ -464,10 +506,11 @@
       });
     }
 
-    // 3. Conmutador de secciones del panel (Tablero, Recurrentes, Agentes)
+    // 3. Conmutador de secciones del panel (Tablero, Aplicaciones, Recurrentes, Agentes)
     const tabs = document.querySelectorAll(".panel-tabs .pill-btn[data-tab]");
     const panels = {
       "tablero": document.getElementById("tablero"),
+      "aplicaciones": document.getElementById("aplicaciones-panel"),
       "recurrentes": document.getElementById("recurrentes-panel"),
       "agentes": document.getElementById("agentes-panel")
     };
@@ -487,8 +530,24 @@
             panels[key].hidden = (key !== targetTab);
           }
         });
+
+        if (targetTab === "aplicaciones" && catalogoAppsMemoria.length === 0) {
+          cargarAplicacionesEscaparate();
+        }
       });
     });
+
+    const sidebarApps = document.getElementById("sidebar-nav-aplicaciones");
+    if (sidebarApps) {
+      sidebarApps.addEventListener("click", (e) => {
+        e.preventDefault();
+        const tabBtnApps = document.getElementById("tab-btn-aplicaciones");
+        if (tabBtnApps) {
+          tabBtnApps.click();
+          if (isMobile()) closeDrawer();
+        }
+      });
+    }
 
     // 4. Carga y renderizado de las 4 columnas del tablero
     function abrirModalTarea(tarea) {
@@ -604,7 +663,165 @@
       document.getElementById("count-hecho").textContent = countHecho;
     }
 
-    document.addEventListener("DOMContentLoaded", cargarTablero);
+    // 5. Escaparate interactivo de aplicaciones del ecosistema (sin emojis)
+    let catalogoAppsMemoria = [];
+    let filtroCategoriaActivo = "todas";
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function obtenerIconoSvgApp(id) {
+      switch (id) {
+        case "calca-app":
+          return '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path></svg>';
+        case "inem-sellar":
+          return '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="m9 14 2 2 4-4"></path></svg>';
+        case "aplichat":
+          return '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path><line x1="8" y1="10" x2="16" y2="10"></line></svg>';
+        case "dictado-oficina":
+          return '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>';
+        default:
+          return '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>';
+      }
+    }
+
+    function renderizarTarjetaApp(app) {
+      const card = document.createElement("article");
+      card.className = "app-showcase-card";
+      card.dataset.categoria = app.categoria || "";
+
+      const esProd = String(app.estado || "").toLowerCase().includes("produccion");
+      const estadoBadgeClass = esProd ? "app-badge-prod" : "app-badge-dev";
+
+      let tiendasHtml = "";
+      if (Array.isArray(app.tiendas) && app.tiendas.length > 0) {
+        tiendasHtml = `
+          <div class="app-card-stores">
+            <span class="app-stores-label">Disponibilidad en tiendas:</span>
+            <div class="app-stores-row">
+              ${app.tiendas.map(t => {
+                if (t.disponible && t.url) {
+                  return `<a href="${escapeHtml(t.url)}" target="_blank" rel="noopener" class="app-store-pill app-store-pill-active" title="Abrir en ${escapeHtml(t.tienda)}">${escapeHtml(t.tienda)} <span aria-hidden="true">↗</span></a>`;
+                } else {
+                  return `<span class="app-store-pill app-store-pill-disabled" title="Proximamente en ${escapeHtml(t.tienda)}">${escapeHtml(t.tienda)} (Proximamente)</span>`;
+                }
+              }).join("")}
+            </div>
+          </div>
+        `;
+      }
+
+      let featsHtml = "";
+      if (Array.isArray(app.caracteristicas) && app.caracteristicas.length > 0) {
+        featsHtml = `
+          <ul class="app-features-list">
+            ${app.caracteristicas.map(c => `<li>${escapeHtml(c)}</li>`).join("")}
+          </ul>
+        `;
+      }
+
+      let landingHtml = "";
+      if (app.enlace_principal && app.enlace_principal.url) {
+        landingHtml = `
+          <a href="${escapeHtml(app.enlace_principal.url)}" target="_blank" rel="noopener" class="app-main-btn">
+            <span>${escapeHtml(app.enlace_principal.texto || "Sitio Web Oficial")}</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        `;
+      }
+
+      card.innerHTML = `
+        <div class="app-card-header">
+          <div class="app-icon-badge">
+            ${obtenerIconoSvgApp(app.id)}
+          </div>
+          <div class="app-card-headings">
+            <h3 class="app-card-title">${escapeHtml(app.nombre)}</h3>
+            <p class="app-card-subtitle">${escapeHtml(app.subtitulo || "")}</p>
+          </div>
+          <span class="app-status-badge ${estadoBadgeClass}">${escapeHtml(app.estado || "")} · v${escapeHtml(app.version || "1.0")}</span>
+        </div>
+        <p class="app-card-desc">${escapeHtml(app.descripcion || "")}</p>
+        ${featsHtml}
+        <div class="app-card-footer">
+          ${landingHtml}
+          ${tiendasHtml}
+        </div>
+      `;
+
+      return card;
+    }
+
+    function renderizarGridAplicaciones() {
+      const grid = document.getElementById("apps-showcase-grid");
+      if (!grid) return;
+      grid.innerHTML = "";
+
+      const appsFiltradas = filtroCategoriaActivo === "todas"
+        ? catalogoAppsMemoria
+        : catalogoAppsMemoria.filter(a => a.categoria === filtroCategoriaActivo);
+
+      if (appsFiltradas.length === 0) {
+        grid.innerHTML = '<div class="apps-empty-msg">No hay aplicaciones en esta categoría.</div>';
+        return;
+      }
+
+      appsFiltradas.forEach(app => {
+        grid.appendChild(renderizarTarjetaApp(app));
+      });
+    }
+
+    async function cargarAplicacionesEscaparate() {
+      const badge = document.getElementById("badge-total-apps");
+      const grid = document.getElementById("apps-showcase-grid");
+
+      try {
+        let apps = [];
+        try {
+          const res = await fetch("datos/aplicaciones.json?v=" + Date.now());
+          if (res.ok) {
+            apps = await res.json();
+          }
+        } catch (_) {}
+
+        if (!Array.isArray(apps) || apps.length === 0) {
+          const resApi = await fetch("/api/aplicaciones");
+          if (resApi.ok) apps = await resApi.json();
+        }
+
+        if (Array.isArray(apps) && apps.length > 0) {
+          catalogoAppsMemoria = apps;
+          if (badge) badge.textContent = apps.length;
+          renderizarGridAplicaciones();
+        }
+      } catch (err) {
+        if (grid) {
+          grid.innerHTML = `<div class="apps-empty-msg">Error al cargar aplicaciones: ${escapeHtml(err.message)}</div>`;
+        }
+      }
+    }
+
+    const filterBtns = document.querySelectorAll(".apps-filters .apps-filter-btn");
+    filterBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        filterBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        filtroCategoriaActivo = btn.dataset.categoria || "todas";
+        renderizarGridAplicaciones();
+      });
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      cargarTablero();
+      cargarAplicacionesEscaparate();
+    });
   </script>
 </body>
 </html>

@@ -407,5 +407,27 @@ class TestServidorOficina(unittest.TestCase):
             self.assertEqual(datos.get("display"), "standalone")
 
 
+    def test_pestana_aplicaciones_escaparate(self):
+        with urllib.request.urlopen(f"{self.base_url}/index.html") as resp:
+            self.assertEqual(resp.status, 200)
+            html = resp.read().decode("utf-8")
+            self.assertIn('id="tab-btn-aplicaciones"', html)
+            self.assertIn('pill-btn-destacado', html)
+            self.assertIn('id="aplicaciones-panel"', html)
+            self.assertIn('id="apps-showcase-grid"', html)
+            self.assertIn('id="apps-filters"', html)
+            self.assertIn('id="sidebar-nav-aplicaciones"', html)
+
+    def test_tablero_cuatro_columnas_intacto(self):
+        with urllib.request.urlopen(f"{self.base_url}/index.html") as resp:
+            self.assertEqual(resp.status, 200)
+            html = resp.read().decode("utf-8")
+            self.assertIn('id="lane-propuestas"', html)
+            self.assertIn('id="lane-por-hacer"', html)
+            self.assertIn('id="lane-en-curso"', html)
+            self.assertIn('id="lane-hecho"', html)
+            self.assertIn('repeat(4, minmax(0, 1fr))', html)
+
+
 if __name__ == "__main__":
     unittest.main()

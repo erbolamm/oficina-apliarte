@@ -2882,6 +2882,284 @@ html[data-theme="dark"] .pane-card.selected {
   color: #ffffff;
 }
 
+/* Pestaña Destacada de Aplicaciones y Escaparate Interactivo */
+.pill-btn-destacado {
+  border-color: var(--blue);
+  background: rgba(0, 95, 169, 0.08);
+  color: var(--ink);
+  font-weight: 700;
+  box-shadow: 0 0 8px rgba(0, 95, 169, 0.12);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+html[data-theme="dark"] .pill-btn-destacado {
+  border-color: var(--cyan);
+  background: rgba(94, 206, 245, 0.12);
+  color: var(--ink);
+  box-shadow: 0 0 10px rgba(94, 206, 245, 0.18);
+}
+.panel-tabs .pill-btn-destacado.active {
+  background: var(--blue);
+  color: #ffffff;
+  border-color: var(--blue);
+}
+html[data-theme="dark"] .panel-tabs .pill-btn-destacado.active {
+  background: var(--navy);
+  border-color: var(--cyan);
+  color: #ffffff;
+}
+
+.aplicaciones-panel {
+  margin-top: 0.5rem;
+}
+.apps-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem 0.25rem 1rem;
+}
+.apps-filter-btn {
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--light);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+.apps-filter-btn:hover {
+  border-color: var(--cyan);
+  color: var(--navy);
+}
+html[data-theme="dark"] .apps-filter-btn:hover {
+  color: var(--glow);
+}
+.apps-filter-btn.active {
+  background: var(--blue);
+  color: #ffffff;
+  border-color: var(--blue);
+}
+html[data-theme="dark"] .apps-filter-btn.active {
+  background: var(--navy);
+  border-color: var(--cyan);
+  color: #ffffff;
+}
+
+.apps-showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+  padding: 0.5rem 0.25rem 1.5rem;
+}
+.app-showcase-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--light);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.app-showcase-card:hover {
+  border-color: var(--cyan);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.app-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+.app-icon-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 95, 169, 0.1);
+  color: var(--blue);
+  flex-shrink: 0;
+  border: 1px solid rgba(0, 95, 169, 0.2);
+}
+html[data-theme="dark"] .app-icon-badge {
+  background: rgba(94, 206, 245, 0.15);
+  color: var(--glow);
+  border-color: rgba(94, 206, 245, 0.3);
+}
+.app-card-headings {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.app-card-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--navy);
+  font-family: "Fira Sans Condensed", sans-serif;
+  line-height: 1.2;
+}
+html[data-theme="dark"] .app-card-title {
+  color: var(--glow);
+}
+.app-card-subtitle {
+  margin: 0.2rem 0 0;
+  font-size: 0.82rem;
+  color: var(--border);
+  line-height: 1.3;
+}
+.app-status-badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.app-badge-prod {
+  background: rgba(52, 211, 153, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(52, 211, 153, 0.35);
+}
+html[data-theme="dark"] .app-badge-prod {
+  color: #34d399;
+}
+.app-badge-dev {
+  background: rgba(251, 191, 36, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(251, 191, 36, 0.35);
+}
+html[data-theme="dark"] .app-badge-dev {
+  color: #fbbf24;
+}
+
+.app-card-desc {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--ink);
+  flex-grow: 1;
+}
+
+.app-features-list {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.app-features-list li {
+  font-size: 0.8rem;
+  color: var(--ink);
+  opacity: 0.9;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+.app-features-list li::before {
+  content: "•";
+  color: var(--cyan);
+  font-weight: bold;
+}
+
+.app-card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: auto;
+  border-top: 1px solid var(--subtle);
+  padding-top: 1rem;
+}
+.app-main-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius-sm);
+  background: var(--blue);
+  color: #ffffff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.16s ease;
+}
+.app-main-btn:hover {
+  background: var(--navy);
+  box-shadow: 0 2px 8px rgba(0, 70, 123, 0.25);
+  color: #ffffff;
+}
+html[data-theme="dark"] .app-main-btn {
+  background: #0284c7;
+}
+html[data-theme="dark"] .app-main-btn:hover {
+  background: var(--blue);
+}
+
+.app-card-stores {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.app-stores-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--border);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.app-stores-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.app-store-pill {
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 0.25rem 0.55rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: all 0.16s ease;
+}
+.app-store-pill-active {
+  background: var(--subtle);
+  color: var(--ink);
+  border: 1px solid var(--light);
+}
+.app-store-pill-active:hover {
+  border-color: var(--cyan);
+  color: var(--blue);
+}
+html[data-theme="dark"] .app-store-pill-active:hover {
+  color: var(--glow);
+}
+.app-store-pill-disabled {
+  background: transparent;
+  color: var(--border);
+  border: 1px dashed var(--light);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.apps-loading-msg, .apps-empty-msg {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--border);
+  font-size: 0.9rem;
+  font-style: italic;
+  grid-column: 1 / -1;
+}
+
 /* Tareas Recurrentes */
 .recurrentes-panel {
   margin-top: 1rem;
