@@ -2,15 +2,15 @@
   {
     "id": "calca-app",
     "nombre": "CalcaApp",
-    "subtitulo": "Trazar y Dibujar con Realidad Aumentada",
-    "descripcion": "Proyecta cualquier imagen de tu galeria o de tu entorno sobre papel o lienzo para calcar, bocetar y pintar con precision asistida por camara.",
+    "subtitulo": "Trazar y Dibujar con Cámara y Papel Transparente",
+    "descripcion": "Proyecta cualquier dibujo o boceto sobre papel o lienzo para calcar y aprender a dibujar con precisión asistida por cámara en Android e iOS.",
     "categoria": "Creatividad y Diseno",
     "estado": "Disponible en Produccion",
     "version": "2.5.7",
-    "icono": "🎨",
+    "icono": "palette",
     "enlace_principal": {
       "texto": "Sitio Web Oficial",
-      "url": "https://calca.app"
+      "url": "https://calcaapp.com"
     },
     "tiendas": [
       {
@@ -23,40 +23,28 @@
         "tienda": "App Store",
         "plataforma": "iOS",
         "disponible": true,
-        "url": "https://apps.apple.com/app/calca-app/id6449416560"
-      },
-      {
-        "tienda": "Huawei AppGallery",
-        "plataforma": "Huawei",
-        "disponible": true,
-        "url": "https://appgallery.huawei.com"
-      },
-      {
-        "tienda": "Amazon Appstore",
-        "plataforma": "Amazon",
-        "disponible": true,
-        "url": "https://www.amazon.es"
+        "url": "https://apps.apple.com/es/app/id1567655347"
       }
     ],
     "caracteristicas": [
-      "Fijacion de punto de vista mediante realidad aumentada",
-      "Control de opacidad y bloqueo de enfoque",
-      "Modo linterna para iluminacion del lienzo",
-      "Filtros de contraste para resaltar trazos y bordes"
+      "Modo Papel Transparente automático para ver mano y lápiz con nitidez",
+      "Enfoque táctil directo sobre la cámara incluso con el lienzo bloqueado",
+      "Acceso libre desde la portada a Galería y buscador de dibujos en web",
+      "Control fino de opacidad, linterna integrada y filtros de contraste"
     ]
   },
   {
     "id": "inem-sellar",
     "nombre": "Inem Sellar",
-    "subtitulo": "Renovacion de Demanda de Empleo DARDE y Citas",
-    "descripcion": "Aplicacion utilitaria para la gestion rapida, sellado de demanda de empleo autonomico y solicitud de cita previa en los servicios publicos de empleo de Espana.",
+    "subtitulo": "Renovación de Demanda de Empleo DARDE y Citas",
+    "descripcion": "Utilidad práctica para gestionar de forma rápida el sellado autonómico de la demanda de empleo y la solicitud de cita previa en toda España.",
     "categoria": "Productividad y Gestiones",
     "estado": "Disponible en Produccion",
-    "version": "226.0.0",
-    "icono": "📋",
+    "version": "225.1.0",
+    "icono": "clipboard-check",
     "enlace_principal": {
-      "texto": "Sitio Web Oficial",
-      "url": "https://inemsellar.apliarte.com"
+      "texto": "Portal Oficial ApliArte",
+      "url": "https://apliarte.com"
     },
     "tiendas": [
       {
@@ -66,71 +54,167 @@
         "url": "https://play.google.com/store/apps/details?id=com.mobincube.android.sc_WRTRG.app_72671"
       },
       {
-        "tienda": "Huawei AppGallery",
-        "plataforma": "Huawei",
+        "tienda": "App Store",
+        "plataforma": "iOS",
         "disponible": true,
-        "url": "https://appgallery.huawei.com"
-      },
-      {
-        "tienda": "Amazon Appstore",
-        "plataforma": "Amazon",
-        "disponible": true,
-        "url": "https://www.amazon.es"
+        "url": "https://apps.apple.com/es/app/id902527321"
       }
     ],
     "caracteristicas": [
-      "Acceso directo a todas las comunidades autonomas (SEPE, SAE, LABORA, SOC)",
-      "Recordatorios calendarizados antes de la fecha de renovacion",
-      "Gestion de citas previas telefonicas y presenciales",
-      "Guia informativa de tramites y prestaciones frecuentes"
+      "Acceso directo a los servicios autonómicos de empleo (SEPE, SAE, LABORA, SOC)",
+      "Recordatorios en calendario antes de cada fecha de renovación",
+      "Gestión guiada de citas previas telefónicas y presenciales",
+      "Guía clara de trámites y consultas frecuentes"
     ]
   },
   {
-    "id": "aplichat",
-    "nombre": "ApliChat",
-    "subtitulo": "Chat Accesible con Grandes Tipografias y Lectura por Voz",
-    "descripcion": "Mensajeria inteligente adaptada para personas mayores o con dificultades visuales, con interfaz limpia, botones de gran contraste y lectura por voz integrada.",
-    "categoria": "Accesibilidad y Comunicacion",
+    "id": "me-llaman",
+    "nombre": "Me llaman",
+    "subtitulo": "Alarmas Como Llamadas y Avisos Inteligentes",
+    "descripcion": "Programa alarmas y recordatorios cotidianos con la apariencia y el sonido de una llamada telefónica entrante personalizada.",
+    "categoria": "Productividad y Gestiones",
     "estado": "Disponible en Produccion",
-    "version": "1.2.43",
-    "icono": "💬",
+    "version": "80.0.1",
+    "icono": "phone-ring",
     "enlace_principal": {
-      "texto": "Sitio Web Oficial",
-      "url": "https://aplichat.apliarte.com"
+      "texto": "Portal Oficial ApliArte",
+      "url": "https://apliarte.com"
     },
     "tiendas": [
       {
         "tienda": "Google Play",
         "plataforma": "Android",
         "disponible": true,
-        "url": "https://play.google.com/store/apps/details?id=com.apliarte.aplichat"
+        "url": "https://play.google.com/store/apps/details?id=com.mobincube.mellaman.app_apliarte"
       },
       {
-        "tienda": "App Store (TestFlight)",
+        "tienda": "App Store",
         "plataforma": "iOS",
-        "disponible": true,
-        "url": "https://testflight.apple.com"
+        "disponible": false,
+        "url": null
       }
     ],
     "caracteristicas": [
-      "Tipografia dinamica con tamano extragrande ajustable",
+      "Alarmas programables con interfaz realista de llamada entrante",
+      "Personajes, tonos y voces personalizables para cada aviso",
+      "Recordatorios discretos para reuniones, medicación o rutinas",
+      "Configuración rápida con un toque para avisos inmediatos"
+    ]
+  },
+  {
+    "id": "afinar-de-oido",
+    "nombre": "Afinar de Oído",
+    "subtitulo": "Entrenamiento Auditivo y Referencia Musical",
+    "descripcion": "Herramienta musical ligera para entrenar el oído y afinar guitarra e instrumentos de cuerda mediante tonos reales de referencia.",
+    "categoria": "Creatividad y Diseno",
+    "estado": "Disponible en Produccion",
+    "version": "77.0.0",
+    "icono": "music-tuning",
+    "enlace_principal": {
+      "texto": "Portal Oficial ApliArte",
+      "url": "https://apliarte.com"
+    },
+    "tiendas": [
+      {
+        "tienda": "Google Play",
+        "plataforma": "Android",
+        "disponible": true,
+        "url": "https://play.google.com/store/apps/details?id=com.mobincube.android.sc_33ICKJ"
+      },
+      {
+        "tienda": "App Store",
+        "plataforma": "iOS",
+        "disponible": true,
+        "url": "https://apps.apple.com/es/app/id993493296"
+      }
+    ],
+    "caracteristicas": [
+      "Referencias acústicas cuerda por cuerda para afinación natural",
+      "Repetición continua de notas para ajustar clavijas sin prisas",
+      "Interfaz directa pensada para ensayos y clases de música",
+      "Educación progresiva del oído musical sin distracciones"
+    ]
+  },
+  {
+    "id": "mira-quien-llama",
+    "nombre": "Mira quién llama",
+    "subtitulo": "Identificación Visual y Sonora de Llamadas y Avisos",
+    "descripcion": "Asistente accesible de identificación sonora y visual para reconocer al instante avisos y llamadas importantes sin mirar la pantalla.",
+    "categoria": "Accesibilidad y Comunicacion",
+    "estado": "Disponible en Produccion",
+    "version": "85.0.0",
+    "icono": "caller-voice",
+    "enlace_principal": {
+      "texto": "Portal Oficial ApliArte",
+      "url": "https://apliarte.com"
+    },
+    "tiendas": [
+      {
+        "tienda": "Google Play",
+        "plataforma": "Android",
+        "disponible": true,
+        "url": "https://play.google.com/store/apps/details?id=com.mobincube.android.sc_33GQM3"
+      },
+      {
+        "tienda": "App Store",
+        "plataforma": "iOS",
+        "disponible": true,
+        "url": "https://apps.apple.com/es/app/id990577711"
+      }
+    ],
+    "caracteristicas": [
+      "Anuncio por voz claro para identificar llamadas a distancia",
+      "Pensada para personas mayores o situaciones de manos ocupadas",
+      "Controles amplios de lectura inmediata y alto contraste",
+      "Ajuste sencillo de volumen y modos de aviso"
+    ]
+  },
+  {
+    "id": "aplichat",
+    "nombre": "ApliChat",
+    "subtitulo": "Mensajería Accesible con Grandes Tipografías y Lectura por Voz",
+    "descripcion": "Comunicación adaptada con interfaz limpia, tipografía extragrande, botones de alto contraste y lectura por voz integrada.",
+    "categoria": "Accesibilidad y Comunicacion",
+    "estado": "En Desarrollo Activo",
+    "version": "1.2.43",
+    "icono": "chat-accessible",
+    "enlace_principal": {
+      "texto": "Portal Oficial ApliArte",
+      "url": "https://apliarte.com"
+    },
+    "tiendas": [
+      {
+        "tienda": "Google Play",
+        "plataforma": "Android",
+        "disponible": false,
+        "url": null
+      },
+      {
+        "tienda": "App Store",
+        "plataforma": "iOS",
+        "disponible": false,
+        "url": null
+      }
+    ],
+    "caracteristicas": [
+      "Tipografía dinámica con tamaño extragrande ajustable",
       "Lectura por voz de mensajes entrantes con un solo toque",
       "Entrada por dictado vocal guiado",
-      "Proteccion de privacidad sin publicidad invasiva"
+      "Experiencia limpia centrada en claridad y privacidad"
     ]
   },
   {
     "id": "dictado-oficina",
     "nombre": "Dictado Oficina",
-    "subtitulo": "Dictado Flotante y Centinela por Voz",
-    "descripcion": "Herramienta de escritorio flotante para captura por voz desatendida, transcripcion local inmediata e integracion directa con el panel de tareas de Oficina ApliArte.",
+    "subtitulo": "Dictado Flotante y Captura por Voz de Escritorio",
+    "descripcion": "Utilidad ligera de escritorio para captura por voz, transcripción local inmediata e integración con el flujo de tareas de Oficina ApliArte.",
     "categoria": "Herramientas de Oficina",
     "estado": "En Desarrollo Activo",
     "version": "0.5.0",
-    "icono": "🎙️",
+    "icono": "mic-desk",
     "enlace_principal": {
-      "texto": "Sitio Web Oficial",
-      "url": "https://oficina.apliarte.com"
+      "texto": "Escaparate Oficina ApliArte",
+      "url": "https://erbolamm.github.io/oficina-apliarte/"
     },
     "tiendas": [
       {
@@ -147,10 +231,10 @@
       }
     ],
     "caracteristicas": [
-      "Ventana flotante ligera siempre visible",
-      "Activacion por atajo global de teclado",
-      "Conexion directa con el buzon de tareas de la Oficina",
-      "Deteccion de silencio y envio automatico"
+      "Ventana flotante ligera siempre disponible",
+      "Activación inmediata mediante atajo global de teclado",
+      "Integración directa con el buzón de notas y tareas",
+      "Detección de pausa y transcripción automática"
     ]
   }
 ]

@@ -4,6 +4,7 @@ test_servidor_oficina.py — Pruebas unitarias del servidor de Oficina ApliArte.
 """
 
 import json
+import re
 import threading
 import unittest
 import urllib.request
@@ -281,12 +282,26 @@ class TestServidorOficina(unittest.TestCase):
             self.assertEqual(resp.status, 200)
             datos = json.loads(resp.read().decode("utf-8"))
             self.assertIsInstance(datos, list)
-            self.assertTrue(len(datos) >= 4)
+            self.assertGreaterEqual(len(datos), 7)
             ids = [a["id"] for a in datos]
-            self.assertIn("calca-app", ids)
-            self.assertIn("inem-sellar", ids)
-            self.assertIn("aplichat", ids)
-            self.assertIn("dictado-oficina", ids)
+            expected_ids = {
+                "calca-app", "inem-sellar", "me-llaman", "afinar-de-oido",
+                "mira-quien-llama", "aplichat", "dictado-oficina",
+            }
+            self.assertTrue(expected_ids.issubset(ids))
+
+            catalog_json = json.dumps(datos, ensure_ascii=False)
+            emoji_pattern = re.compile(
+                "[\\U0001F000-\\U0001FAFF\\U00002600-\\U000027BF"
+                "\\U00002300-\\U000023FF\\uFE0F\\u20E3]"
+            )
+            self.assertIsNone(emoji_pattern.search(catalog_json))
+            broken_domains = (
+                "calca.app", "id6449416560", "appgallery.huawei.com", "amazon.es",
+                "inemsellar.apliarte.com", "aplichat.apliarte.com", "oficina.apliarte.com",
+            )
+            for domain in broken_domains:
+                self.assertNotIn(domain, catalog_json)
 
     def test_endpoint_paquetes(self):
         with urllib.request.urlopen(f"{self.base_url}/api/paquetes") as resp:
@@ -417,6 +432,7 @@ class TestServidorOficina(unittest.TestCase):
             self.assertIn('id="apps-showcase-grid"', html)
             self.assertIn('id="apps-filters"', html)
             self.assertIn('id="sidebar-nav-aplicaciones"', html)
+            self.assertNotIn("/vista/aplicaciones", html)
 
     def test_tablero_cuatro_columnas_intacto(self):
         with urllib.request.urlopen(f"{self.base_url}/index.html") as resp:
