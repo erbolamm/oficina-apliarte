@@ -789,14 +789,14 @@
       try {
         let apps = [];
         try {
-          const res = await fetch("datos/aplicaciones.json?v=" + Date.now());
+          const res = await fetch("./datos/aplicaciones.json?v=" + Date.now());
           if (res.ok) {
             apps = await res.json();
           }
         } catch (_) {}
 
         if (!Array.isArray(apps) || apps.length === 0) {
-          const resApi = await fetch("/api/aplicaciones");
+          const resApi = await fetch("./api/aplicaciones");
           if (resApi.ok) apps = await resApi.json();
         }
 

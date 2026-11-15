@@ -433,6 +433,10 @@ class TestServidorOficina(unittest.TestCase):
             self.assertIn('id="apps-filters"', html)
             self.assertIn('id="sidebar-nav-aplicaciones"', html)
             self.assertNotIn("/vista/aplicaciones", html)
+            self.assertNotIn('fetch("/', html)
+            self.assertNotIn("fetch('/", html)
+            self.assertNotIn('href="/', html)
+            self.assertNotIn('src="/', html)
 
     def test_tablero_cuatro_columnas_intacto(self):
         with urllib.request.urlopen(f"{self.base_url}/index.html") as resp:
