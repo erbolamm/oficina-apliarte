@@ -7,13 +7,51 @@
   <meta name="theme-color" content="#005fa9">
   <title>Agentes · Oficina local de ErBolamm</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23005fa9%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2246%22%20font-size%3D%2234%22%20text-anchor%3D%22middle%22%3E%F0%9F%A4%96%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="/panel-shell.css">
+  <style>
+  html, body { margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+  .app-shell { display: flex; height: 100vh; }
+  .office-sidebar { width: 260px; background: #0a1020; color: #e8f4fb; }
+  .sidebar-brand { padding: 16px; display: flex; align-items: center; gap: 8px; }
+  .sidebar-brand strong { display: block; }
+  .sidebar-brand small { font-size: 0.75rem; color: #94a3b8; }
+  .sidebar-toggle { background: none; border: none; color: #e8f4fb; }
+  .side-nav { padding: 12px; }
+  .nav-card { display: block; padding: 10px 12px; margin: 4px 0; border-radius: 8px; color: inherit; text-decoration: none; border: 1px solid transparent; }
+  .nav-card:hover { background: rgba(255,255,255,0.05); }
+  .nav-icon { font-size: 1.25rem; }
+  .nav-copy strong { display: block; }
+  .nav-copy small { font-size: 0.7rem; color: #94a3b8; }
+  .sidebar-note { padding: 12px; font-size: 0.75rem; color: #94a3b8; }
+  .sidebar-scrim { display: none; }
+  .office-content { flex: 1; padding: 24px; overflow-y: auto; }
+  .topbar { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+  .topbar h1 { margin: 0; font-size: 1.5rem; }
+  .private-chip { font-size: 0.75rem; color: #94a3b8; }
+  .connection { font-size: 0.75rem; color: #94a3b8; }
+  .btn-refresh, .theme-toggle { background: none; border: none; cursor: pointer; }
+  .panel { margin-bottom: 24px; }
+  .panel-head h2 { margin: 0 0 8px 0; }
+  .panel-head p { margin: 0; color: #94a3b8; font-size: 0.875rem; }
+  .updated { color: #94a3b8; font-size: 0.875rem; }
+  .agent-list { list-style: none; padding: 0; }
+  .agent-row { display: flex; gap: 12px; padding: 12px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; margin-bottom: 8px; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; background: #5ecef5; }
+  .agent-copy { flex: 1; }
+  .limits-panel h3 { margin-top: 0; }
+  .cost-list { list-style: none; padding: 0; }
+  .limit-list { list-style: none; padding: 0; }
+  .cost-state { padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; }
+  .state-activo { background: #2e7d32; color: white; }
+  .state-cancelado { background: #c62828; color: white; }
+  .state-desconocido { background: #757575; color: white; }
+  .charge-alert { color: #d32f2f; font-size: 0.875rem; }
+  .costs-note { font-size: 0.875rem; color: #94a3b8; }
+  .public-note { margin-top: 24px; font-size: 0.75rem; color: #94a3b8; }
+</style>
   <script>
     try {
       document.documentElement.dataset.theme =
-        localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
-      document.documentElement.dataset.sidebar =
-        localStorage.getItem("erbolamm-panel-sidebar") === "icons" ? "icons" : "full";
+        localStorage.getItem("oficina-panel-theme") === "dark" ? "dark" : "light";
     } catch (_) {}
   </script>
 </head>
@@ -32,28 +70,28 @@
         </button>
       </div>
       <nav class="side-nav" aria-label="Secciones">
-        <a class="nav-card" href="/"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
-        <a class="nav-card" href="/vista/inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
-        <a class="nav-card" href="/vista/aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
-        <a class="nav-card" href="/vista/skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
-        <a class="nav-card" href="/vista/conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
-        <a class="nav-card" href="/vista/plugins"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
-        <a class="nav-card" href="/vista/reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
-        <a class="nav-card" href="/vista/propuestas"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
-        <a class="nav-card" href="/vista/diseno"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
-        <a class="nav-card" href="/vista/tiendas"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
-        <a class="nav-card" href="/vista/mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
-        <a class="nav-card" href="/vista/musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
-        <a class="nav-card" href="/vista/idiomas"><span class="nav-icon" aria-hidden="true">🌐</span><span class="nav-copy"><strong>Idiomas</strong><small>Traducción y locución</small></span></a>
-        <a class="nav-card" href="/vista/locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
-        <a class="nav-card" href="/vista/voicestudio"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
-        <a class="nav-card" href="/vista/terminales"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
-        <a class="nav-card" href="/vista/blogger"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
-        <a class="nav-card" href="/vista/bitacora"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
-        <a class="nav-card" href="/vista/directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
-        <a class="nav-card" href="/resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
-        <a class="nav-card" href="/vista/settings"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-copy"><strong>Ajustes</strong><small>Opciones por defecto</small></span></a>
-        <a class="nav-card" href="/vista/como-funciona"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
+        <a class="nav-card" href="../"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
+        <a class="nav-card" href="inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
+        <a class="nav-card" href="aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
+        <a class="nav-card" href="skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
+        <a class="nav-card" href="conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
+        <a class="nav-card" href="plugins"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
+        <a class="nav-card" href="reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
+        <a class="nav-card" href="propuestas"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
+        <a class="nav-card" href="diseno"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
+        <a class="nav-card" href="tiendas"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
+        <a class="nav-card" href="mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
+        <a class="nav-card" href="musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
+        <a class="nav-card" href="idiomas"><span class="nav-icon" aria-hidden="true">🌐</span><span class="nav-copy"><strong>Idiomas</strong><small>Traducción y locución</small></span></a>
+        <a class="nav-card" href="locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
+        <a class="nav-card" href="voicestudio"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
+        <a class="nav-card" href="terminales"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
+        <a class="nav-card" href="blogger"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
+        <a class="nav-card" href="bitacora"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
+        <a class="nav-card" href="directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
+        <a class="nav-card" href="resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
+        <a class="nav-card" href="settings"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-copy"><strong>Ajustes</strong><small>Opciones por defecto</small></span></a>
+        <a class="nav-card" href="como-funciona"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
       </nav>
       <p class="sidebar-note"><strong>Privada y local</strong>No conecta la oficina pública, no consulta cuotas y no muestra historial.</p>
     </aside>
@@ -124,7 +162,5 @@
       <span class="agent-zone"></span>
     </li>
   </template>
-
-  <script src="/panel-shell.js"></script>
 </body>
 </html>

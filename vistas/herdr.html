@@ -7,14 +7,49 @@
   <meta name="theme-color" content="#005fa9">
   <title>Herdr · Consola Móvil · Oficina ApliArte</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23005fa9%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2246%22%20font-size%3D%2238%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-weight%3D%22bold%22%20text-anchor%3D%22middle%22%20fill%3D%22%235ecef5%22%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="/panel-shell.css">
-  <link rel="stylesheet" href="/herdr-movil.css">
+  <style>
+    html, body { margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; background: #0a1020; color: #e8f4fb; }
+    .app-shell { display: flex; min-height: 100vh; }
+    .office-sidebar { width: 260px; background: #0a1020; color: #e8f4fb; border-right: 1px solid rgba(255,255,255,0.1); }
+    .sidebar-brand { padding: 16px; display: flex; align-items: center; gap: 8px; }
+    .sidebar-brand strong { display: block; }
+    .sidebar-brand small { font-size: 0.75rem; color: #94a3b8; }
+    .sidebar-toggle { background: none; border: none; color: #e8f4fb; }
+    .side-nav { padding: 12px; }
+    .nav-card { display: block; padding: 10px 12px; margin: 4px 0; border-radius: 8px; color: inherit; text-decoration: none; border: 1px solid transparent; }
+    .nav-card:hover { background: rgba(255,255,255,0.05); }
+    .nav-icon { font-size: 1.25rem; }
+    .nav-copy strong { display: block; }
+    .nav-copy small { font-size: 0.7rem; color: #94a3b8; }
+    .sidebar-note { padding: 12px; font-size: 0.75rem; color: #94a3b8; }
+    .sidebar-scrim { display: none; }
+    .office-content { flex: 1; padding: 24px; overflow-y: auto; }
+    .topbar { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+    .topbar h1 { margin: 0; font-size: 1.5rem; }
+    .private-chip { font-size: 0.75rem; color: #94a3b8; }
+    .connection { font-size: 0.75rem; color: #94a3b8; }
+    .btn-refresh, .theme-toggle { background: none; border: none; cursor: pointer; }
+    .demo-badge { display: inline-block; padding: 4px 12px; background: rgba(94,206,245,0.2); border: 1px solid #5ecef5; border-radius: 999px; font-size: 0.75rem; color: #5ecef5; margin-left: 12px; }
+    .workspace-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+    .workspace-title { font-weight: 600; margin-bottom: 8px; }
+    .pane-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .pane-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 12px; }
+    .pane-name { font-weight: 500; color: #5ecef5; }
+    .pane-status { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; }
+    .pane-status.idle { background: rgba(120,120,120,0.3); color: #94a3b8; }
+    .pane-status.running { background: rgba(46,125,50,0.3); color: #4caf50; }
+    .terminal-demo { background: #05080f; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 16px; font-family: 'JetBrains Mono', 'SF Mono', monospace; font-size: 0.85rem; line-height: 1.6; max-height: 300px; overflow: auto; }
+    .terminal-line { margin: 4px 0; }
+    .terminal-prompt { color: #5ecef5; }
+    .terminal-output { color: #c7d3e2; }
+    .terminal-command { color: #fbbf24; }
+    .demo-note { color: #94a3b8; font-size: 0.875rem; margin-top: 16px; padding: 12px; background: rgba(94,206,245,0.1); border-radius: 8px; border: 1px solid rgba(94,206,245,0.2); }
+    .section-label { font-weight: 600; margin-bottom: 12px; color: #94a3b8; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
+  </style>
   <script>
     try {
       document.documentElement.dataset.theme =
-        localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
-      document.documentElement.dataset.sidebar =
-        localStorage.getItem("erbolamm-panel-sidebar") === "icons" ? "icons" : "full";
+        localStorage.getItem("oficina-panel-theme") === "dark" ? "dark" : "light";
     } catch (_) {}
   </script>
 </head>
@@ -27,28 +62,28 @@
         <button id="sidebar-toggle" class="sidebar-toggle" type="button" aria-controls="office-sidebar" aria-expanded="true" aria-label="Plegar la barra lateral a solo iconos" title="Plegar la barra lateral"><span class="chev" aria-hidden="true">‹</span></button>
       </div>
       <nav class="side-nav" aria-label="Secciones">
-        <a class="nav-card" href="/"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
-        <a class="nav-card" href="/vista/inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
-        <a class="nav-card" href="/vista/aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
-        <a class="nav-card" href="/vista/skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
-        <a class="nav-card" href="/vista/conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
-        <a class="nav-card" href="/vista/plugins"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
-        <a class="nav-card" href="/vista/reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
-        <a class="nav-card" href="/vista/propuestas"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
-        <a class="nav-card" href="/vista/diseno"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
-        <a class="nav-card" href="/vista/tiendas"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
-        <a class="nav-card" href="/vista/mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
-        <a class="nav-card" href="/vista/musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
-        <a class="nav-card" href="/vista/idiomas"><span class="nav-icon" aria-hidden="true">🌐</span><span class="nav-copy"><strong>Idiomas</strong><small>Traducción y locución</small></span></a>
-        <a class="nav-card" href="/vista/locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
-        <a class="nav-card" href="/vista/voicestudio"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
-        <a class="nav-card" href="/vista/terminales"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
-        <a class="nav-card" href="/vista/blogger"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
-        <a class="nav-card" href="/vista/bitacora"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
-        <a class="nav-card" href="/vista/directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
-        <a class="nav-card" href="/resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
-        <a class="nav-card" href="/vista/settings"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-copy"><strong>Ajustes</strong><small>Opciones por defecto</small></span></a>
-        <a class="nav-card" href="/vista/como-funciona"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
+        <a class="nav-card" href="../"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
+        <a class="nav-card" href="inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
+        <a class="nav-card" href="aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
+        <a class="nav-card" href="skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
+        <a class="nav-card" href="conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
+        <a class="nav-card" href="plugins"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
+        <a class="nav-card" href="reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
+        <a class="nav-card" href="propuestas"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
+        <a class="nav-card" href="diseno"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
+        <a class="nav-card" href="tiendas"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
+        <a class="nav-card" href="mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
+        <a class="nav-card" href="musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
+        <a class="nav-card" href="idiomas"><span class="nav-icon" aria-hidden="true">🌐</span><span class="nav-copy"><strong>Idiomas</strong><small>Traducción y locución</small></span></a>
+        <a class="nav-card" href="locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
+        <a class="nav-card" href="voicestudio"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
+        <a class="nav-card" href="terminales"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
+        <a class="nav-card" href="blogger"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
+        <a class="nav-card" href="bitacora"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
+        <a class="nav-card" href="directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
+        <a class="nav-card" href="resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
+        <a class="nav-card" href="settings"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-copy"><strong>Ajustes</strong><small>Opciones por defecto</small></span></a>
+        <a class="nav-card" href="como-funciona"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
       </nav>
       <p class="sidebar-note"><strong>Privada y local</strong>Control táctil de Herdr sobre Tailscale. Sin servicios externos ni telemetría.</p>
     </aside>
@@ -61,6 +96,7 @@
           <h1>Herdr · Consola Móvil</h1>
         </div>
         <span class="private-chip">Consola Herdr</span>
+        <span class="demo-badge">Demo no interactiva</span>
         <span class="connection" id="connection" data-kind="loading">Conectando</span>
         <button id="refresh-btn" class="btn-refresh" type="button" onclick="window.location.reload()" aria-label="Actualizar vista" title="Actualizar">↻</button>
         <button id="theme-toggle" type="button" aria-label="Activar modo oscuro" title="Cambiar tema"><span id="theme-icon" aria-hidden="true">☾</span></button>
@@ -68,16 +104,45 @@
 
       
 
-        <!-- 1. Workspaces (selector flexible táctil con disposición wrap) -->
+        <!-- Demo: workspaces sintéticos -->
         <section aria-labelledby="workspaces-heading">
           <div class="section-label" id="workspaces-heading">Workspaces activos</div>
-          <div class="workspaces-scroll workspaces-wrap" id="workspaces-list" role="tablist" aria-label="Workspaces de Herdr"></div>
+          <div class="workspace-card">
+            <div class="workspace-title">Demo workspace</div>
+            <div class="pane-grid">
+              <div class="pane-card">
+                <div class="pane-name">panel-1</div>
+                <span class="pane-status running">running</span>
+              </div>
+              <div class="pane-card">
+                <div class="pane-name">panel-2</div>
+                <span class="pane-status idle">idle</span>
+              </div>
+              <div class="pane-card">
+                <div class="pane-name">panel-3</div>
+                <span class="pane-status idle">idle</span>
+              </div>
+            </div>
+          </div>
         </section>
 
         <!-- 2. Paneles del Workspace -->
         <section aria-labelledby="panes-heading">
           <div class="section-label" id="panes-heading">Paneles y Agentes</div>
-          <div class="panes-grid" id="panes-list" role="list" aria-label="Paneles disponibles"></div>
+          <div class="pane-grid" aria-label="Paneles disponibles">
+            <div class="pane-card">
+              <div class="pane-name">agent-frontend</div>
+              <span class="pane-status running">running</span>
+            </div>
+            <div class="pane-card">
+              <div class="pane-name">agent-backend</div>
+              <span class="pane-status idle">idle</span>
+            </div>
+            <div class="pane-card">
+              <div class="pane-name">agent-tests</div>
+              <span class="pane-status idle">idle</span>
+            </div>
+          </div>
         </section>
 
         <!-- 3. Visor de Terminal en Vivo -->
@@ -99,36 +164,29 @@
               <button type="button" id="btn-zoom-in" class="term-btn" title="Aumentar tamaño de letra">A+</button>
             </div>
           </div>
-          <pre id="terminal-output" class="terminal-box" tabindex="0">Cargando consola de Herdr…</pre>
-
-          <!-- Teclas Rápidas de Terminal -->
-          <div class="quick-keys-strip" aria-label="Teclas rápidas de terminal">
-            <button type="button" class="quick-key-btn btn-ctrl-c" data-key="ctrl-c" title="Detener proceso actual con Ctrl+C">🛑 Ctrl+C</button>
-            <button type="button" class="quick-key-btn" data-key="enter" title="Enviar tecla Enter">↵ Enter</button>
-            <button type="button" class="quick-key-btn" data-key="esc" title="Enviar tecla Escape">⎋ Esc</button>
-            <button type="button" class="quick-key-btn" data-key="tab" title="Enviar tecla Tab">Tab</button>
-            <button type="button" class="quick-key-btn" data-key="clear" title="Limpiar buffer en pantalla">Limpiar</button>
+          <div class="terminal-demo" id="terminal-output" tabindex="0">
+            <div class="terminal-line"><span class="terminal-prompt">$</span> <span class="terminal-command">ls -la</span></div>
+            <div class="terminal-line"><span class="terminal-output">total 48</span></div>
+            <div class="terminal-line"><span class="terminal-output">drwxr-xr-x  5 user  staff  160 Nov 18 10:00 project</span></div>
+            <div class="terminal-line"><span class="terminal-output">-rw-r--r--  1 user  staff  1024 Nov 18 10:00 README.md</span></div>
+            <div class="terminal-line"><span class="terminal-prompt">$</span> <span class="terminal-command">git status</span></div>
+            <div class="terminal-line"><span class="terminal-output">On branch main</span></div>
+            <div class="terminal-line"><span class="terminal-output">Your branch is up to date with 'origin/main'.</span></div>
+            <div class="terminal-line"><span class="terminal-output">nothing to commit, working tree clean</span></div>
+            <div class="terminal-line"><span class="terminal-prompt">$</span> <span class="terminal-command">▊</span></div>
+          </div>
+          <div class="demo-note">
+            Demostración no interactiva. Esta es una captura estática de la consola Herdr; no se conecta a terminales reales ni envía comandos.
           </div>
         </section>
       </div>
 
-      <!-- 4. Barra Fija Inferior Adaptada para el Pulgar -->
+      <!-- 4. Barra Fija Inferior Adaptada para el Pulgar (demo no interactiva) -->
       <footer class="herdr-thumb-bar" id="herdr-thumb-bar">
         <div class="thumb-bar-inner">
-          <div class="quick-commands-carousel" aria-label="Comandos frecuentes sugeridos">
-            <button type="button" class="cmd-pill" data-cmd="git status">git status</button>
-            <button type="button" class="cmd-pill" data-cmd="git diff">git diff</button>
-            <button type="button" class="cmd-pill" data-cmd="dart test">dart test</button>
-            <button type="button" class="cmd-pill" data-cmd="dart analyze">dart analyze</button>
-            <button type="button" class="cmd-pill" data-cmd="herdr agent list">agent list</button>
-            <button type="button" class="cmd-pill" data-cmd="herdr pane list">pane list</button>
-          </div>
+          <!-- Quick commands carousel removed for non-interactive demo -->
 
-          <form id="herdr-input-form" class="input-row">
-            <button type="button" id="btn-mode-toggle" class="mode-toggle-btn" title="Cambiar modo de envío">💬 Prompt</button>
-            <textarea id="herdr-input-text" class="herdr-textarea" rows="1" placeholder="Instrucción o prompt para el agente…" enterkeyhint="send" maxlength="2000"></textarea>
-            <button type="submit" id="btn-send" class="send-action-btn" title="Enviar">Enviar</button>
-          </form>
+          <!-- Formulario de entrada removido para demo no interactiva -->
         </div>
       </footer>
 
@@ -137,7 +195,6 @@
   </div>
 
   <p class="sr-only" id="announcer" aria-live="polite"></p>
-  <script src="/panel-shell.js"></script>
   
 </body>
 </html>
