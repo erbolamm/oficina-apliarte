@@ -353,12 +353,44 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 return
             for p in PESTANAS_ECOSISTEMA:
                 if p["slug"] == slug:
-                    plantilla_privada = DIR_VISTAS / "pestana_privada.html"
-                    if plantilla_privada.exists():
-                        contenido = plantilla_privada.read_text(encoding="utf-8")
-                        contenido = contenido.replace("{{TITULO_PESTANA}}", p["titulo"])
-                        self.responder_html(contenido)
-                        return
+                    # Página dinámica en lugar de pestana_privada.html estática
+                    contenido = f"""<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{p["titulo"]} · Oficina ApliArte</title>
+  <link rel="stylesheet" href="/panel-shell.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="office-sidebar">
+      <div class="sidebar-brand">
+        <svg viewBox="0 0 40 40" width="40" height="40"><path d="M5 32 20 5l15 27h-8l-7-13-7 13Z" fill="#005fa9"/><path d="M14 32h12l-6-11Z" fill="#5ecef5"/></svg>
+        <span><strong>Oficina ApliArte</strong><small>Panel de control operativo</small></span>
+      </div>
+      <nav class="side-nav">
+        <a class="nav-card" href="/"><span><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
+        <a class="nav-card" href="/vista/agentes"><span><strong>Agentes</strong><small>Fichas de agentes</small></span></a>
+        <a class="nav-card" href="/vista/como-funciona"><span><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
+        <a class="nav-card" href="/vista/herdr"><span><strong>Herdr</strong><small>Consola móvil</small></span></a>
+        <a class="nav-card" href="/vista/radar"><span><strong>Radar</strong><small>Multi-agente</small></span></a>
+      </nav>
+    </aside>
+    <main class="office-content">
+      <header class="topbar">
+        <div class="brand"><h1>{p["titulo"]}</h1></div>
+      </header>
+      <section class="panel">
+        <div class="panel-head"><h2>En desarrollo</h2></div>
+        <p>Esta pestaña esta en construccion. Pronto tendra su contenido propio.</p>
+      </section>
+    </main>
+  </div>
+</body>
+</html>"""
+                    self.responder_html(contenido)
+                    return
                     break
         elif ruta.startswith("/vistas/"):
             slug = ruta.replace("/vistas/", "").strip("/")
