@@ -49,6 +49,6 @@ oficina-apliarte/
 
 - [x] **Fase 0**: Inicialización del repositorio soberano, desacoplamiento, pruebas unitarias y blindaje ADR-0013.
 - [x] **Fase 1**: Escaparate público con catálogos declarativos en JSON (`datos/aplicaciones.json`, `datos/paquetes.json`), vistas web dedicadas y navegación relativa de seis pestañas sin sondeo a red local.
-- [x] **Fase 2**: Oficina Comunitaria con modelo unificado de siete campos (`datos/tareas.json`, `datos/propuestas.json`), vistas con formulario integrado y tope de 800 caracteres con contador en vivo, bifurcación limpia (puerto 8791 local vs visitante público con guardado en navegador y redirección a GitHub Issues), plantillas en `.github/ISSUE_TEMPLATE/` y 40 pruebas unitarias superadas.
+- [x] **Fase 2**: Oficina Comunitaria con modelo unificado de siete campos (`datos/tareas.json`, `datos/propuestas.json`), vistas con formulario integrado y tope de 800 caracteres con contador en vivo, bifurcación limpia (puerto 8795 local vs visitante público con guardado en navegador y redirección a GitHub Issues), plantillas en `.github/ISSUE_TEMPLATE/` y 40 pruebas unitarias superadas.
 - [ ] **Fase 3**: Migración progresiva de las siguientes herramientas del ecosistema a modo conectado y escaparate interactivo.
 - [ ] **Fase 4**: Despliegue en el Servidor Privado Virtual (Hostinger) y activación de Cloudflare Zero Trust en `oficina.apliarte.com`.

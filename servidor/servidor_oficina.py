@@ -423,7 +423,7 @@ class ManejadorOficina(BaseHTTPRequestHandler):
         pass
 
 
-def arrancar_servidor(puerto: int = 8791, host: str = "0.0.0.0"):
+def arrancar_servidor(puerto: int = 8795, host: str = "0.0.0.0"):
     servidor = HTTPServer((host, puerto), ManejadorOficina)
     print(f"Servidor Oficina ApliArte escuchando en http://{host}:{puerto} (solo lectura)")
     try:
@@ -434,6 +434,6 @@ def arrancar_servidor(puerto: int = 8791, host: str = "0.0.0.0"):
 
 
 if __name__ == "__main__":
-    puerto_env = int(os.environ.get("OFICINA_PUERTO", "8791"))
+    puerto_env = int(os.environ.get("OFICINA_PUERTO", "8795"))
     host_env = os.environ.get("OFICINA_HOST", "0.0.0.0")
     arrancar_servidor(puerto=puerto_env, host=host_env)
