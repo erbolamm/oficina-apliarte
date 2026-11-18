@@ -342,6 +342,11 @@ class ManejadorOficina(BaseHTTPRequestHandler):
 
         if ruta.startswith("/vista/"):
             slug = ruta.replace("/vista/", "").strip("/")
+            archivo_vista = DIR_VISTAS / f"{slug}.html"
+            if archivo_vista.exists() and archivo_vista.name != "pestana_privada.html":
+                contenido = archivo_vista.read_text(encoding="utf-8")
+                self.responder_html(contenido)
+                return
             for p in PESTANAS_ECOSISTEMA:
                 if p["slug"] == slug:
                     plantilla_privada = DIR_VISTAS / "pestana_privada.html"
@@ -351,6 +356,13 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                         self.responder_html(contenido)
                         return
                     break
+        elif ruta.startswith("/vistas/"):
+            slug = ruta.replace("/vistas/", "").strip("/")
+            archivo_vista = DIR_VISTAS / f"{slug}.html"
+            if archivo_vista.exists():
+                contenido = archivo_vista.read_text(encoding="utf-8")
+                self.responder_html(contenido)
+                return
 
         self.responder_error(f"Ruta '{ruta}' no encontrada en modo solo lectura", 404)
 
