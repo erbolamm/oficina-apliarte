@@ -27,6 +27,7 @@ PESTANAS_ECOSISTEMA = [
     {"slug": "como-funciona", "titulo": "Cómo funciona", "subtitulo": "Guía de la Oficina", "ruta": "/vista/como-funciona", "publica": True, "activa": True, "icono": "?"},
     {"slug": "herdr", "titulo": "Herdr", "subtitulo": "Consola móvil", "ruta": "/vista/herdr", "publica": True, "activa": True, "icono": "⚡"},
     {"slug": "radar", "titulo": "Radar", "subtitulo": "Multi-agente", "ruta": "/vista/radar", "publica": True, "activa": True, "icono": "📡"},
+    {"slug": "visita-guiada", "titulo": "Visita Guiada", "subtitulo": "Tour interactivo", "ruta": "/vista/visita-guiada", "publica": True, "activa": True, "icono": "🗺️"},
     {"slug": "javier", "titulo": "Espacio Javier", "subtitulo": "Control personal y ja--", "ruta": "/vista/javier", "publica": False, "activa": False, "icono": "👤"},
     {"slug": "inicio-dia", "titulo": "Inicio del día", "subtitulo": "Checklist matutino", "ruta": "/vista/inicio-dia", "publica": False, "activa": False, "icono": "☼"},
     {"slug": "aplichat", "titulo": "ApliChat", "subtitulo": "Chat accesible", "ruta": "/vista/aplichat", "publica": False, "activa": False, "icono": "💬"},
