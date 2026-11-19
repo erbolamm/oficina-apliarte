@@ -42,7 +42,7 @@ PESTANAS_ECOSISTEMA = [
     {"slug": "pnl", "titulo": "Estudio PNL", "subtitulo": "Enganche y microcopy", "ruta": "/vista/pnl", "publica": False, "activa": False, "icono": "🧠"},
     {"slug": "musica", "titulo": "Estudio Musical", "subtitulo": "Música procedural", "ruta": "/vista/musica", "publica": False, "activa": False, "icono": "🎵"},
     {"slug": "locucion", "titulo": "Locución y Guiones", "subtitulo": "TTS y guiones cortos", "ruta": "/vista/locucion", "publica": False, "activa": False, "icono": "🎙"},
-    {"slug": "voicestudio", "titulo": "Voice Studio", "subtitulo": "Clonación ultrarrápida", "ruta": "/vista/voicestudio", "publica": False, "activa": False, "icono": "⚡"},
+    {"slug": "voicestudio", "titulo": "Voces ApliArte", "subtitulo": "Clonación ultrarrápida", "ruta": "/vista/voicestudio", "publica": False, "activa": False, "icono": "⚡"},
     {"slug": "terminales", "titulo": "Terminales", "subtitulo": "Lanzadores locales", "ruta": "/vista/terminales", "publica": False, "activa": False, "icono": "▣"},
     {"slug": "facturas", "titulo": "Facturas", "subtitulo": "Gestor de facturas", "ruta": "/vista/facturas", "publica": False, "activa": False, "icono": "€"},
     {"slug": "blogger", "titulo": "Blogger", "subtitulo": "Monitor y difusión", "ruta": "/vista/blogger", "publica": False, "activa": False, "icono": "✎"},
@@ -268,14 +268,16 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 return
 
         if ruta.startswith("/componentes/") and ruta.endswith(".js"):
-            archivo_js = RAIZ_PROYECTO / ruta.lstrip("/")
-            if archivo_js.exists() and archivo_js.is_file():
+            raiz_comp = (RAIZ_PROYECTO / "componentes").resolve()
+            archivo_js = (RAIZ_PROYECTO / ruta.lstrip("/")).resolve()
+            if archivo_js.is_relative_to(raiz_comp) and archivo_js.exists() and archivo_js.is_file():
                 self.responder_js(archivo_js.read_text(encoding="utf-8"))
                 return
 
         if ruta.startswith("/estilos/") and ruta.endswith(".css"):
-            archivo_css = RAIZ_PROYECTO / ruta.lstrip("/")
-            if archivo_css.exists() and archivo_css.is_file():
+            raiz_est = (RAIZ_PROYECTO / "estilos").resolve()
+            archivo_css = (RAIZ_PROYECTO / ruta.lstrip("/")).resolve()
+            if archivo_css.is_relative_to(raiz_est) and archivo_css.exists() and archivo_css.is_file():
                 self.responder_css(archivo_css.read_text(encoding="utf-8"))
                 return
 
@@ -286,8 +288,9 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 return
 
         if ruta.startswith("/datos/"):
-            archivo_dato = RAIZ_PROYECTO / ruta.lstrip("/")
-            if archivo_dato.exists() and archivo_dato.is_file() and archivo_dato.suffix == ".json":
+            raiz_datos = DIR_DATOS.resolve()
+            archivo_dato = (RAIZ_PROYECTO / ruta.lstrip("/")).resolve()
+            if archivo_dato.is_relative_to(raiz_datos) and archivo_dato.exists() and archivo_dato.is_file() and archivo_dato.suffix == ".json":
                 try:
                     datos = json.loads(archivo_dato.read_text(encoding="utf-8"))
                     self.responder_json(datos)
@@ -397,8 +400,9 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 if index_file.exists():
                     self.responder_html(index_file.read_text(encoding="utf-8"))
                     return
-            archivo_vista = DIR_VISTAS / f"{slug}.html"
-            if archivo_vista.exists() and archivo_vista.name != "pestana_privada.html":
+            raiz_vistas = DIR_VISTAS.resolve()
+            archivo_vista = (DIR_VISTAS / f"{slug}.html").resolve()
+            if archivo_vista.is_relative_to(raiz_vistas) and archivo_vista.exists() and archivo_vista.name != "pestana_privada.html":
                 contenido = archivo_vista.read_text(encoding="utf-8")
                 self.responder_html(contenido)
                 return
@@ -428,8 +432,9 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 return
         elif ruta.startswith("/vistas/"):
             slug = ruta.replace("/vistas/", "").strip("/")
-            archivo_vista = DIR_VISTAS / f"{slug}.html"
-            if archivo_vista.exists():
+            raiz_vistas = DIR_VISTAS.resolve()
+            archivo_vista = (DIR_VISTAS / f"{slug}.html").resolve()
+            if archivo_vista.is_relative_to(raiz_vistas) and archivo_vista.exists() and archivo_vista.is_file():
                 contenido = archivo_vista.read_text(encoding="utf-8")
                 self.responder_html(contenido)
                 return
@@ -441,6 +446,10 @@ class ManejadorOficina(BaseHTTPRequestHandler):
         ruta = parsed.path.rstrip("/")
 
         if ruta in ("/api/propuestas", "/api/tareas"):
+            accion_hdr = (self.headers.get("X-ErBolamm-Action") or "").strip()
+            if not accion_hdr:
+                self.responder_error("Cabecera X-ErBolamm-Action requerida", 403)
+                return
             try:
                 longitud = int(self.headers.get("Content-Length", 0))
             except (ValueError, TypeError):

@@ -205,7 +205,7 @@ class TestServidorOficina(unittest.TestCase):
         req = urllib.request.Request(
             f"{self.base_url}/api/propuestas",
             data=json.dumps(nueva).encode("utf-8"),
-            headers={"Content-Type": "application/json; charset=utf-8"},
+            headers={"Content-Type": "application/json; charset=utf-8", "X-ErBolamm-Action": "crear"},
             method="POST"
         )
         with urllib.request.urlopen(req) as resp:
@@ -226,7 +226,7 @@ class TestServidorOficina(unittest.TestCase):
         req = urllib.request.Request(
             f"{self.base_url}/api/tareas",
             data=json.dumps(nueva).encode("utf-8"),
-            headers={"Content-Type": "application/json; charset=utf-8"},
+            headers={"Content-Type": "application/json; charset=utf-8", "X-ErBolamm-Action": "crear"},
             method="POST"
         )
         with urllib.request.urlopen(req) as resp:
@@ -247,7 +247,7 @@ class TestServidorOficina(unittest.TestCase):
         req = urllib.request.Request(
             f"{self.base_url}/api/propuestas",
             data=json.dumps(invalida).encode("utf-8"),
-            headers={"Content-Type": "application/json; charset=utf-8"},
+            headers={"Content-Type": "application/json; charset=utf-8", "X-ErBolamm-Action": "crear"},
             method="POST"
         )
         try:
@@ -268,7 +268,7 @@ class TestServidorOficina(unittest.TestCase):
         req = urllib.request.Request(
             f"{self.base_url}/api/propuestas",
             data=json.dumps(incompleta).encode("utf-8"),
-            headers={"Content-Type": "application/json; charset=utf-8"},
+            headers={"Content-Type": "application/json; charset=utf-8", "X-ErBolamm-Action": "crear"},
             method="POST"
         )
         try:
@@ -276,6 +276,36 @@ class TestServidorOficina(unittest.TestCase):
             self.fail("Deberia haber lanzado HTTPError 400 por campo faltante")
         except urllib.error.HTTPError as e:
             self.assertEqual(e.code, 400)
+
+    def test_endpoint_post_sin_accion_403(self):
+        nueva = {
+            "id": "propuesta-sin-cabecera",
+            "titulo": "Sin cabecera de accion",
+            "descripcion": "Debe rechazarse con 403.",
+            "categoria": "General",
+            "estado": "Propuesta",
+            "autor": "Tester",
+            "fecha": "2026-11-19"
+        }
+        req = urllib.request.Request(
+            f"{self.base_url}/api/propuestas",
+            data=json.dumps(nueva).encode("utf-8"),
+            headers={"Content-Type": "application/json; charset=utf-8"},
+            method="POST"
+        )
+        try:
+            urllib.request.urlopen(req)
+            self.fail("Deberia haber lanzado HTTPError 403 sin X-ErBolamm-Action")
+        except urllib.error.HTTPError as e:
+            self.assertEqual(e.code, 403)
+
+    def test_confinamiento_rutas_404(self):
+        for ruta in ("/datos/../panel-shell.js", "/estilos/../index.html", "/componentes/../package.json", "/vistas/../index.html"):
+            try:
+                urllib.request.urlopen(f"{self.base_url}{ruta}")
+                self.fail(f"Ruta fuera de confinamiento respondio 200: {ruta}")
+            except urllib.error.HTTPError as e:
+                self.assertEqual(e.code, 404)
 
     def test_endpoint_aplicaciones(self):
         with urllib.request.urlopen(f"{self.base_url}/api/aplicaciones") as resp:
@@ -363,10 +393,6 @@ class TestServidorOficina(unittest.TestCase):
         dir_vistas = DIR_REPOSITORIO / "vistas"
         self.assertTrue(dir_archivo.exists())
         archivos_esperados = [
-            "aplicaciones.html",
-            "paquetes.html",
-            "propuestas.html",
-            "skills.html",
             "tareas.html",
             "resenas.html",
             "instala-tu-oficina.html",
@@ -375,6 +401,8 @@ class TestServidorOficina(unittest.TestCase):
         for nombre in archivos_esperados:
             self.assertTrue((dir_archivo / nombre).exists(), f"{nombre} debe existir en archivado-vistas")
             self.assertFalse((dir_vistas / nombre).exists(), f"{nombre} no debe existir en vistas/")
+        for nombre in ("aplicaciones.html", "paquetes.html", "propuestas.html", "skills.html"):
+            self.assertTrue((dir_vistas / nombre).exists(), f"{nombre} debe existir como vista activa en vistas/")
 
     def test_datos_estaticos_json(self):
         for ruta in ("/datos/habilidades.json", "/datos/resenas.json", "/datos/pestanas.json", "/datos/aplicaciones.json", "/datos/paquetes.json", "/datos/tareas.json", "/datos/propuestas.json"):
