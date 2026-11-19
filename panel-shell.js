@@ -715,23 +715,25 @@
     const messages = [];
     if (!valid) messages.push(...errors);
     if (!orchestrator) messages.push("Sin orquestador — elige uno.");
-    const pendingJavierTasks = ["haciendo", "por-hacer", "pendiente"].reduce(
+    const pendingUsuarioTasks = ["haciendo", "por-hacer", "pendiente"].reduce(
       (tasks, state) =>
         tasks.concat(
           (Array.isArray(states[state]) ? states[state] : []).filter(
             (task) =>
               task.role === "ja" ||
+              task.role === "usuario" ||
+              String(task.responsible || "").toLowerCase().includes("usuario") ||
               String(task.responsible || "").toLowerCase().includes("javier"),
           ),
         ),
       [],
     );
-    const javierTasks = pendingJavierTasks.length;
-    if (javierTasks) {
-      const firstTask = pendingJavierTasks[0];
+    const usuarioTasks = pendingUsuarioTasks.length;
+    if (usuarioTasks) {
+      const firstTask = pendingUsuarioTasks[0];
       const targetFile = String(firstTask?.fileName || firstTask?.file || "");
       messages.push({
-        text: `Tienes ${javierTasks} tarea${javierTasks === 1 ? "" : "s"} por hacer.`,
+        text: `Tienes ${usuarioTasks} tarea${usuarioTasks === 1 ? "" : "s"} por hacer.`,
         href: "/vista/tablero?rol=ja",
         linkText: "Ver mis tareas →",
         editor: true,
@@ -988,7 +990,7 @@
         body: JSON.stringify({
           reportId,
           text,
-          responder: "javier",
+          responder: "usuario",
         }),
       });
       let result;
@@ -1561,10 +1563,11 @@
       const item = document.createElement("li");
       item.className = "inbox-message";
       item.dataset.author = String(message.author);
+      const isUser = message.author === "usuario" || message.author === "javier";
       const who = document.createElement("strong");
       who.textContent =
-        message.author === "javier"
-          ? "Javier"
+        isUser
+          ? "Usuario"
           : `Orquestador [${String(message.author)}]`;
       const body = document.createElement("p");
       body.textContent = String(message.text);
@@ -1574,9 +1577,9 @@
         ? "Fecha desconocida"
         : when.toLocaleString("es-ES");
       item.append(who, body, meta);
-      // Cada nota de Javier se puede convertir en tarea. Se abre en la MISMA
+      // Cada nota de usuario se puede convertir en tarea. Se abre en la MISMA
       // ficha que edita las tareas: un solo editor en toda la oficina.
-      if (message.author === "javier") {
+      if (isUser) {
         const edit = document.createElement("button");
         edit.type = "button";
         edit.className = "inbox-edit";
