@@ -477,6 +477,14 @@ class TestServidorOficina(unittest.TestCase):
             html = resp.read().decode("utf-8")
             self.assertIn('id="lane-propuestas"', html)
             self.assertIn('id="lane-por-hacer"', html)
+
+    def test_vista_tareas_y_tablero_con_y_sin_barra(self):
+        for ruta in ("/vista/tareas", "/vista/tareas/", "/vista/tablero", "/vista/tablero/"):
+            with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
+                self.assertEqual(resp.status, 200)
+                html = resp.read().decode("utf-8")
+                self.assertIn("resolverRutaRaiz", html)
+                self.assertIn('href="/panel-shell.css', html)
             self.assertIn('id="lane-en-curso"', html)
             self.assertIn('id="lane-hecho"', html)
             self.assertIn('repeat(4, minmax(0, 1fr))', html)

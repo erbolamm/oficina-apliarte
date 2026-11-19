@@ -7,9 +7,9 @@
   <meta name="theme-color" content="#005fa9">
   <meta name="description" content="Oficina ApliArte — Panel de control operativo ApliArte. Suite modular soberana para el ecosistema ErBolamm y ApliArte.">
   <title>Tablero · Oficina ApliArte</title>
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="panel-shell.css?v=20261115_1">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="/panel-shell.css?v=20261115_1">
   <style>
     /* Distribución de cuatro columnas para el tablero auténtico */
     @media (min-width: 960px) {
@@ -536,18 +536,21 @@
       return li;
     }
 
+    function resolverRutaRaiz(rel) {
+      return new URL(String(rel || "").replace(/^\/+/, ""), window.location.origin + "/").href;
+    }
+
     async function cargarTablero() {
       let tareas = [];
       let propuestas = [];
-      const basePrefix = window.location.pathname.startsWith("/vista/") ? "../" : "./";
 
       try {
-        const resTareas = await fetch(basePrefix + "datos/tareas.json?v=20261108_2");
+        const resTareas = await fetch(resolverRutaRaiz("datos/tareas.json?v=20261108_2"));
         if (resTareas.ok) tareas = await resTareas.json();
       } catch (_) {}
 
       try {
-        const resProp = await fetch(basePrefix + "datos/propuestas.json?v=20261108_2");
+        const resProp = await fetch(resolverRutaRaiz("datos/propuestas.json?v=20261108_2"));
         if (resProp.ok) propuestas = await resProp.json();
       } catch (_) {}
 
@@ -742,16 +745,15 @@
 
       try {
         let apps = [];
-        const basePrefix = window.location.pathname.startsWith("/vista/") ? "../" : "./";
         try {
-          const res = await fetch(basePrefix + "datos/aplicaciones.json?v=" + Date.now());
+          const res = await fetch(resolverRutaRaiz("datos/aplicaciones.json?v=" + Date.now()));
           if (res.ok) {
             apps = await res.json();
           }
         } catch (_) {}
 
         if (!Array.isArray(apps) || apps.length === 0) {
-          const resApi = await fetch(basePrefix + "api/aplicaciones");
+          const resApi = await fetch(resolverRutaRaiz("api/aplicaciones"));
           if (resApi.ok) apps = await resApi.json();
         }
 
