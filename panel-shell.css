@@ -3831,3 +3831,22 @@ html[data-theme="dark"] .catalog-tag.accent {
   width: auto;
   object-fit: cover;
 }
+.badge-dev {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgba(232, 149, 94, 0.14);
+  color: var(--brown);
+  border: 1px solid rgba(180, 103, 52, 0.32);
+  margin-left: auto;
+  white-space: nowrap;
+}
+html[data-theme="dark"] .badge-dev {
+  color: var(--warm);
+  border-color: rgba(232, 149, 94, 0.38);
+}
+html[data-sidebar="icons"] .badge-dev {
+  display: none;
+}

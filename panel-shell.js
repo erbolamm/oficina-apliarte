@@ -156,6 +156,15 @@
       ].join("\n");
       document.head.appendChild(st);
     }
+  } else if (
+    window.self === window.top &&
+    window.location.pathname.startsWith("/vista/")
+  ) {
+    const slug = window.location.pathname.replace(/^\/vista\//, "").replace(/\/$/, "");
+    if (slug && slug !== "tareas" && slug !== "tablero") {
+      window.location.replace("/?vista=" + encodeURIComponent(slug));
+      return;
+    }
   }
 
   function queuedFor(role, valid, states) {
@@ -1990,29 +1999,28 @@
     { href: "/vista/como-funciona", label: "Cómo funciona", desc: "Guía de la Oficina", icon: "?" },
     { href: "/vista/agentes", label: "Agentes", desc: "Fichas de agentes", icon: "🤖" },
     { href: "/vista/herdr", label: "Herdr", desc: "Consola móvil", icon: "⚡" },
-    { href: "/vista/seo", label: "Espacio SEO", desc: "Auditoría y posicionamiento", icon: "🔍", id: "nav-seo" },
-    { href: "/vista/inicio-dia", label: "Inicio del día", desc: "Checklist matutino", icon: "☼" },
-    { href: "/vista/aplichat", label: "ApliChat", desc: "Chat accesible", icon: "💬" },
-    { href: "/vista/conectores", label: "Conectores", desc: "Servicios y credenciales", icon: "⇄" },
-    { href: "/vista/plugins", label: "Plugins", desc: "Módulos de la Oficina", icon: "⊞" },
-    { href: "/vista/reflect", label: "Reflect", desc: "Directivas y memoria", icon: "◐" },
-    { href: "/vista/diseno", label: "Estudio de Diseño", desc: "Vídeo, marcos y SFX", icon: "🎨" },
-    { href: "/vista/tiendas", label: "Tiendas y ASO", desc: "Auditoría y keywords", icon: "🎯" },
-    { href: "/vista/mercado", label: "Radar de Mercado", desc: "Tendencias y noticias", icon: "📊" },
-    { href: "/vista/correos", label: "Correos y Alertas", desc: "erbolamm y javier", icon: "✉" },
-    { href: "/vista/pnl", label: "Estudio PNL", desc: "Enganche y microcopy", icon: "🧠" },
-    { href: "/vista/musica", label: "Estudio Musical", desc: "Música procedural", icon: "🎵" },
-    { href: "/vista/locucion", label: "Locución y Guiones", desc: "TTS y guiones cortos", icon: "🎙" },
-    { href: "/vista/voicestudio", label: "Voces ApliArte", desc: "Clonación ultrarrápida", icon: "⚡" },
-    { href: "/vista/terminales", label: "Terminales", desc: "Lanzadores locales", icon: "▣" },
-    { href: "/vista/facturas", label: "Facturas", desc: "Gestor de facturas", icon: "€" },
-    { href: "/vista/blogger", label: "Blogger", desc: "Monitor y difusión", icon: "✎" },
-    { href: "/vista/bitacora", label: "Bitácora", desc: "Proyectos y enlaces", icon: "☰" },
-    { href: "/vista/directo", label: "Directo", desc: "Centro de retransmisión", icon: "▶" },
-    { href: "/vista/diapositivas", label: "Diapositivas", desc: "Presentaciones y difusión", icon: "⎘" },
-    { href: "/vista/shorts", label: "Shorts", desc: "Vídeo acelerado a 60 s", icon: "⏩" },
-    { href: "/vista/resenas", label: "Reseñas", desc: "Contestador inteligente", icon: "★" },
-    { href: "/vista/settings", label: "Ajustes", desc: "Opciones por defecto", icon: "⚙" },
+    { href: "/vista/seo", label: "Espacio SEO", desc: "Auditoría y posicionamiento", icon: "🔍", id: "nav-seo", dev: true },
+    { href: "/vista/inicio-dia", label: "Inicio del día", desc: "Checklist matutino", icon: "☼", dev: true },
+    { href: "/vista/aplichat", label: "ApliChat", desc: "Chat accesible", icon: "💬", dev: true },
+    { href: "/vista/conectores", label: "Conectores", desc: "Servicios y credenciales", icon: "⇄", dev: true },
+    { href: "/vista/plugins", label: "Plugins", desc: "Módulos de la Oficina", icon: "⊞", dev: true },
+    { href: "/vista/reflect", label: "Reflect", desc: "Directivas y memoria", icon: "◐", dev: true },
+    { href: "/vista/diseno", label: "Estudio de Diseño", desc: "Vídeo, marcos y SFX", icon: "🎨", dev: true },
+    { href: "/vista/tiendas", label: "Tiendas y ASO", desc: "Auditoría y keywords", icon: "🎯", dev: true },
+    { href: "/vista/mercado", label: "Radar de Mercado", desc: "Tendencias y noticias", icon: "📊", dev: true },
+    { href: "/vista/correos", label: "Correos y Alertas", desc: "erbolamm y javier", icon: "✉", dev: true },
+    { href: "/vista/pnl", label: "Estudio PNL", desc: "Enganche y microcopy", icon: "🧠", dev: true },
+    { href: "/vista/musica", label: "Estudio Musical", desc: "Música procedural", icon: "🎵", dev: true },
+    { href: "/vista/locucion", label: "Locución y Guiones", desc: "TTS y guiones cortos", icon: "🎙", dev: true },
+    { href: "/vista/voicestudio", label: "Voces ApliArte", desc: "Clonación ultrarrápida", icon: "⚡", dev: true },
+    { href: "/vista/terminales", label: "Terminales", desc: "Lanzadores locales", icon: "▣", dev: true },
+    { href: "/vista/facturas", label: "Facturas", desc: "Gestor de facturas", icon: "€", dev: true },
+    { href: "/vista/blogger", label: "Blogger", desc: "Monitor y difusión", icon: "✎", dev: true },
+    { href: "/vista/bitacora", label: "Bitácora", desc: "Proyectos y enlaces", icon: "☰", dev: true },
+    { href: "/vista/diapositivas", label: "Diapositivas", desc: "Presentaciones y difusión", icon: "⎘", dev: true },
+    { href: "/vista/shorts", label: "Shorts", desc: "Vídeo acelerado a 60 s", icon: "⏩", dev: true },
+    { href: "/vista/resenas", label: "Reseñas", desc: "Contestador inteligente", icon: "★", dev: true },
+    { href: "/vista/settings", label: "Ajustes", desc: "Opciones por defecto", icon: "⚙", dev: true },
   ];
   // The server registry (/api/modulos) replaces this list once loaded; the
   // built-in array above stays as the fallback when it cannot be reached.
@@ -2053,20 +2061,6 @@
     return list;
   }
 
-  const PUBLIC_NAV_HREFS = new Set([
-    "/vista/visita-guiada",
-    "/vista/directo",
-    "/vista/radar",
-    "/",
-    "/vista/aplicaciones",
-    "/vista/paquetes",
-    "/vista/skills",
-    "/vista/propuestas",
-    "/vista/como-funciona",
-    "/vista/agentes",
-    "/vista/herdr",
-  ]);
-
   function syncCanonicalSideNav() {
     const nav = document.querySelector(".office-sidebar .side-nav");
     if (!nav) return;
@@ -2088,7 +2082,6 @@
       }
       if (item.href === "/vista/aplichat" && currentPath.includes("traductor")) isCurrent = true;
       if (item.href === "/vista/directo" && currentPath.includes("twitch")) isCurrent = true;
-      if (!isCurrent && isPublicReadOnlyMode && !PUBLIC_NAV_HREFS.has(item.href)) continue;
       // La página abierta se pinta siempre, aunque su pestaña esté oculta.
       if (!isCurrent && hiddenNav.includes(item.href)) continue;
 
@@ -2117,6 +2110,13 @@
 
       a.appendChild(iconSpan);
       a.appendChild(copySpan);
+
+      if (item.dev) {
+        const badge = document.createElement("span");
+        badge.className = "badge-dev";
+        badge.textContent = "En desarrollo";
+        a.appendChild(badge);
+      }
 
       a.addEventListener("click", (e) => {
         if (isMobileView()) closeDrawer();
@@ -2185,7 +2185,8 @@
             } catch (_) {}
           }
         } else {
-          window.location.href = targetUrl;
+          const fallbackSlug = (item.href || "").replace(/^\/vista\//, "").replace(/^\//, "");
+          window.location.href = fallbackSlug ? "/?vista=" + encodeURIComponent(fallbackSlug) : "/";
         }
       });
 

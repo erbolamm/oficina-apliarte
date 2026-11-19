@@ -539,14 +539,15 @@
     async function cargarTablero() {
       let tareas = [];
       let propuestas = [];
+      const basePrefix = window.location.pathname.startsWith("/vista/") ? "../" : "./";
 
       try {
-        const resTareas = await fetch("datos/tareas.json?v=20261108_2");
+        const resTareas = await fetch(basePrefix + "datos/tareas.json?v=20261108_2");
         if (resTareas.ok) tareas = await resTareas.json();
       } catch (_) {}
 
       try {
-        const resProp = await fetch("datos/propuestas.json?v=20261108_2");
+        const resProp = await fetch(basePrefix + "datos/propuestas.json?v=20261108_2");
         if (resProp.ok) propuestas = await resProp.json();
       } catch (_) {}
 
