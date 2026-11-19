@@ -1980,6 +1980,8 @@
   // con los mismos títulos, subtítulos e iconos, evitando saltos visuales al navegar.
   const CANONICAL_SIDE_NAV = [
     { href: "/vista/visita-guiada", label: "Visita Guiada", desc: "30 diapositivas interactivas", icon: "🗺️" },
+    { href: "/vista/directo", label: "Directo", desc: "Demo de retransmisión", icon: "▶" },
+    { href: "/vista/radar", label: "Radar", desc: "Multi-agente · 2D y 3D", icon: "📡" },
     { href: "/", label: "Oficina", desc: "Tablero de tareas", icon: "⌂", id: "casita" },
     { href: "/vista/aplicaciones", label: "Aplicaciones", desc: "Catálogo oficial", icon: "📱" },
     { href: "/vista/paquetes", label: "Paquetes", desc: "Librerías Flutter", icon: "📦" },
@@ -1987,7 +1989,6 @@
     { href: "/vista/propuestas", label: "Propuestas", desc: "Bandeja de Orquestadores", icon: "💡" },
     { href: "/vista/como-funciona", label: "Cómo funciona", desc: "Guía de la Oficina", icon: "?" },
     { href: "/vista/agentes", label: "Agentes", desc: "Fichas de agentes", icon: "🤖" },
-    { href: "/vista/radar", label: "Radar", desc: "Multi-agente", icon: "📡" },
     { href: "/vista/herdr", label: "Herdr", desc: "Consola móvil", icon: "⚡" },
     { href: "/vista/seo", label: "Espacio SEO", desc: "Auditoría y posicionamiento", icon: "🔍", id: "nav-seo" },
     { href: "/vista/inicio-dia", label: "Inicio del día", desc: "Checklist matutino", icon: "☼" },
@@ -2054,6 +2055,8 @@
 
   const PUBLIC_NAV_HREFS = new Set([
     "/vista/visita-guiada",
+    "/vista/directo",
+    "/vista/radar",
     "/",
     "/vista/aplicaciones",
     "/vista/paquetes",
@@ -2061,7 +2064,6 @@
     "/vista/propuestas",
     "/vista/como-funciona",
     "/vista/agentes",
-    "/vista/radar",
     "/vista/herdr",
   ]);
 

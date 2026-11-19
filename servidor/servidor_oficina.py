@@ -47,7 +47,7 @@ PESTANAS_ECOSISTEMA = [
     {"slug": "facturas", "titulo": "Facturas", "subtitulo": "Gestor de facturas", "ruta": "/vista/facturas", "publica": False, "activa": False, "icono": "€"},
     {"slug": "blogger", "titulo": "Blogger", "subtitulo": "Monitor y difusión", "ruta": "/vista/blogger", "publica": False, "activa": False, "icono": "✎"},
     {"slug": "bitacora", "titulo": "Bitácora", "subtitulo": "Proyectos y enlaces", "ruta": "/vista/bitacora", "publica": False, "activa": False, "icono": "☰"},
-    {"slug": "directo", "titulo": "Directo", "subtitulo": "Centro de retransmisión", "ruta": "/vista/directo", "publica": False, "activa": False, "icono": "▶"},
+    {"slug": "directo", "titulo": "Directo", "subtitulo": "Centro de retransmisión", "ruta": "/vista/directo", "publica": True, "activa": True, "icono": "▶"},
     {"slug": "diapositivas", "titulo": "Diapositivas", "subtitulo": "Presentaciones y difusión", "ruta": "/vista/diapositivas", "publica": False, "activa": False, "icono": "⎘"},
     {"slug": "shorts", "titulo": "Shorts", "subtitulo": "Vídeo acelerado a 60 s", "ruta": "/vista/shorts", "publica": False, "activa": False, "icono": "⏩"},
     {"slug": "resenas", "titulo": "Reseñas", "subtitulo": "Contestador inteligente", "ruta": "/vista/resenas", "publica": False, "activa": False, "icono": "★"}

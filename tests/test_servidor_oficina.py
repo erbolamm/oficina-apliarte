@@ -77,7 +77,7 @@ class TestServidorOficina(unittest.TestCase):
             self.assertTrue(datos["total_habilidades"] >= 1)
             self.assertTrue(datos["total_resenas"] >= 1)
             self.assertEqual(datos.get("total_pestanas"), 32)
-            self.assertEqual(datos.get("pestanas_publicas"), 10)
+            self.assertEqual(datos.get("pestanas_publicas"), 11)
 
     def test_endpoint_habilidades_lista(self):
         with urllib.request.urlopen(f"{self.base_url}/api/habilidades") as resp:
@@ -164,7 +164,16 @@ class TestServidorOficina(unittest.TestCase):
             self.assertEqual(datos["modo"], "solo_lectura")
             self.assertEqual(datos["total"], 32)
             slugs_publicos = [p["slug"] for p in datos["pestanas"] if p["publica"]]
-            self.assertEqual(set(slugs_publicos), {"oficina", "propuestas", "aplicaciones", "paquetes", "skills", "agentes", "como-funciona", "herdr", "radar", "visita-guiada"})
+            self.assertEqual(set(slugs_publicos), {"oficina", "propuestas", "aplicaciones", "paquetes", "skills", "agentes", "como-funciona", "herdr", "radar", "visita-guiada", "directo"})
+
+    def test_vista_directo_demo_segura(self):
+        with urllib.request.urlopen(f"{self.base_url}/vista/directo") as resp:
+            self.assertEqual(resp.status, 200)
+            html = resp.read().decode("utf-8")
+            self.assertIn("Demo no interactiva", html)
+            self.assertIn("twitch.tv/apliarte", html)
+            self.assertNotIn("192.168.", html)
+            self.assertNotIn("rtmp://", html)
 
     def test_endpoint_tareas_get(self):
         with urllib.request.urlopen(f"{self.base_url}/api/tareas") as resp:
