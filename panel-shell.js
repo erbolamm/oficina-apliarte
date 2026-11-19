@@ -2038,7 +2038,15 @@
         if (isMobileView()) closeDrawer();
         e.preventDefault();
         const iframe = document.createElement('iframe');
-        iframe.src = a.href;
+        try {
+          const url = new URL(a.href, window.location.origin);
+          url.searchParams.set("modo", "limpio");
+          iframe.src = url.toString();
+        } catch (_) {
+          const rawHref = a.href || "/";
+          const sep = rawHref.includes("?") ? "&" : "?";
+          iframe.src = `${rawHref}${sep}modo=limpio`;
+        }
         iframe.style.width = '100%';
         iframe.style.height = '100%';
         iframe.style.border = 'none';
