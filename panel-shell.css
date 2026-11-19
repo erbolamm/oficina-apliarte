@@ -3499,3 +3499,18 @@ html[data-theme="dark"] .nav-card-context-btn:focus {
 }
 
 
+
+#office-topbar{position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;gap:12px;padding:0 16px;background:#0b1017;color:#e2e8f0;border-bottom:1px solid #26354a;z-index:1000}
+html[data-theme="light"] #office-topbar{background:#fff;color:#182230;border-bottom-color:#dde2e8}
+#office-topbar .brand-mark{width:28px;height:28px;flex:none}
+#office-topbar strong{font-size:14px;white-space:nowrap}
+#active-tab-title{font-size:14px;font-weight:600;margin:0;white-space:nowrap;color:#5ecef5}
+#top-nav{display:flex;align-items:center;gap:4px;overflow-x:auto;flex:1;scrollbar-width:thin;min-width:0}
+#top-nav .nav-card{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border-radius:10px;white-space:nowrap;text-decoration:none;color:inherit;font-size:13px}
+#top-nav .nav-card small{display:none}
+#top-nav .nav-card .nav-icon{font-size:16px}
+#top-nav .nav-card.active{background:rgba(94,206,245,.16);color:#5ecef5}
+#office-topbar button{min-height:40px;min-width:40px;border:1px solid #26354a;border-radius:10px;background:transparent;color:inherit;cursor:pointer;font:inherit;font-size:13px}
+html[data-theme="light"] #office-topbar button{border-color:#dde2e8}
+body{padding-top:64px}
+@media(max-width:720px){#office-topbar{gap:8px;padding:0 10px}#office-topbar strong{display:none}#active-tab-title{max-width:120px;overflow:hidden;text-overflow:ellipsis}#top-nav .nav-card span:not(.nav-icon){display:none}}

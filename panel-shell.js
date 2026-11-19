@@ -1985,7 +1985,7 @@
   }
 
   function syncCanonicalSideNav() {
-    const nav = document.querySelector(".office-sidebar .side-nav");
+    const nav = document.getElementById("top-nav") || document.querySelector(".office-sidebar .side-nav");
     if (!nav) return;
     const hiddenNav = readHiddenNav();
 
@@ -2037,6 +2037,8 @@
       a.addEventListener("click", (e) => {
         if (isMobileView()) closeDrawer();
         e.preventDefault();
+        const t = document.getElementById("active-tab-title"); if (t) t.textContent = item.label;
+        document.querySelectorAll("#top-nav .nav-card").forEach((x) => { x.classList.toggle("active", x === a); if (x === a) x.setAttribute("aria-current","page"); else x.removeAttribute("aria-current"); });
         const iframe = document.createElement('iframe');
         try {
           const url = new URL(a.href, window.location.origin);
@@ -2047,6 +2049,7 @@
           const sep = rawHref.includes("?") ? "&" : "?";
           iframe.src = `${rawHref}${sep}modo=limpio`;
         }
+        iframe.addEventListener("load", () => { try { iframe.contentDocument.documentElement.dataset.theme = document.documentElement.dataset.theme; } catch (_) {} });
         iframe.style.width = '100%';
         iframe.style.height = '100%';
         iframe.style.border = 'none';
@@ -3918,3 +3921,6 @@
     },
   });
 })();
+
+const topTheme = document.getElementById("top-theme-toggle"); if (topTheme) { topTheme.addEventListener("click", () => { const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark"; document.documentElement.dataset.theme = next; try { localStorage.setItem("erbolamm-panel-theme", next); } catch (_) {} document.querySelectorAll("iframe").forEach((frame) => { try { frame.contentDocument.documentElement.dataset.theme = next; } catch (_) {} }); }); }
+const topRefresh = document.getElementById("top-refresh-btn"); if (topRefresh) topRefresh.addEventListener("click", () => location.reload());
