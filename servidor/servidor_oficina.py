@@ -213,6 +213,12 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 self.responder_svg(archivo_fav.read_text(encoding="utf-8"))
                 return
 
+        if ruta == "/en-construccion.svg":
+            archivo_construccion = RAIZ_PROYECTO / "vistas" / "en-construccion.svg"
+            if archivo_construccion.exists():
+                self.responder_svg(archivo_construccion.read_text(encoding="utf-8"))
+                return
+
         if ruta == "/manifest.json":
             archivo_man = RAIZ_PROYECTO / "manifest.json"
             if archivo_man.exists():
@@ -376,7 +382,28 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 return
             for p in PESTANAS_ECOSISTEMA:
                 if p["slug"] == slug:
-                    # Página dinámica en lugar de pestana_privada.html estática
+                    query = parse_qs(parsed.query)
+                    modo = query.get("modo", [""])[0].strip().lower()
+                    aislado = query.get("aislado", [""])[0].strip()
+                    modo_limpio = modo == "limpio" or aislado == "1"
+                    if modo_limpio:
+                        contenido = f"""<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{p["titulo"]} · Oficina ApliArte</title>
+</head>
+<body>
+  <main style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; text-align:center;">
+    <img src="/en-construccion.svg" alt="Escena en construccion" width="360" />
+    <h1>{p["titulo"]}</h1>
+    <p>{p["subtitulo"]}</p>
+  </main>
+</body>
+</html>"""
+                        self.responder_html(contenido)
+                        return
                     contenido = f"""<!doctype html>
 <html lang="es" data-theme="light">
 <head>
@@ -384,6 +411,7 @@ class ManejadorOficina(BaseHTTPRequestHandler):
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{p["titulo"]} · Oficina ApliArte</title>
   <link rel="stylesheet" href="/panel-shell.css">
+  <script src="/panel-shell.js"></script>
 </head>
 <body>
   <div class="app-shell">
