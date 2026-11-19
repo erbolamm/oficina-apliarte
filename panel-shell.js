@@ -179,12 +179,13 @@
         const left = Math.max(0, Math.round(window.screenX + (window.outerWidth - width) / 2));
         const top = Math.max(0, Math.round(window.screenY + (window.outerHeight - height) / 2));
         const features = `popup=yes,width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`;
-        const win = window.open(
-          `/vista/agente.html?agent=${agent.role}`,
-          `oficina-agente-${agent.role}`,
-          features,
-        );
-        if (win) win.focus();
+        // Abrir ficha de agente dentro del mismo marco (panel interno)
+        const iframe = document.createElement('iframe');
+        iframe.src = `/vista/agente.html?agent=${agent.role}`;
+        iframe.style.width = '100%';
+        iframe.style.height = '820px';
+        iframe.style.border = 'none';
+        document.body.appendChild(iframe);
       });
       fragment.append(row);
     }
@@ -1585,11 +1586,13 @@
             note: String(message.timestamp),
             author: String(message.author),
           });
-          window.open(
-            `/vista/tarea-ficha.html?${params.toString()}`,
-            "oficina-nota-ficha",
-            "popup=yes,width=560,height=900,resizable=yes,scrollbars=yes",
-          )?.focus();
+          // Abrir ficha de tarea dentro del mismo marco (panel interno)
+          const iframe = document.createElement('iframe');
+          iframe.src = `/vista/tarea-ficha.html?${params.toString()}`;
+          iframe.style.width = '100%';
+          iframe.style.height = '900px';
+          iframe.style.border = 'none';
+          document.body.appendChild(iframe);
         });
         item.append(edit);
       }
@@ -1611,7 +1614,13 @@
     }
     // La vista dedicada mantiene el mismo formulario y almacén local.
     if (window.location.pathname !== "/vista/buzon") {
-      window.location.assign("/vista/buzon#buzon");
+      // Cargar vista de buzón dentro del mismo marco (panel interno)
+      const iframe = document.createElement('iframe');
+      iframe.src = "/vista/buzon#buzon";
+      iframe.style.width = '100%';
+      iframe.style.height = '100vh';
+      iframe.style.border = 'none';
+      document.body.appendChild(iframe);
     }
   });
 
@@ -2025,8 +2034,19 @@
       a.appendChild(iconSpan);
       a.appendChild(copySpan);
 
-      a.addEventListener("click", () => {
+      a.addEventListener("click", (e) => {
         if (isMobileView()) closeDrawer();
+        e.preventDefault();
+        const iframe = document.createElement('iframe');
+        iframe.src = a.href;
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.border = 'none';
+        const office = document.querySelector('#office');
+        if (office) {
+          office.innerHTML = '';
+          office.appendChild(iframe);
+        }
       });
 
       nav.appendChild(a);
@@ -2255,14 +2275,19 @@
     btn.addEventListener("click", () => {
       dismissNavContextMenu();
       const rawHref = card.getAttribute("href") || card.href || "/";
+      const iframe = document.createElement('iframe');
+      iframe.style.width = '100%';
+      iframe.style.height = '100vh';
+      iframe.style.border = 'none';
       try {
         const url = new URL(rawHref, window.location.origin);
         url.searchParams.set("modo", "limpio");
-        window.open(url.toString(), "_blank");
+        iframe.src = url.toString();
       } catch (_) {
         const sep = rawHref.includes("?") ? "&" : "?";
-        window.open(`${rawHref}${sep}modo=limpio`, "_blank");
+        iframe.src = `${rawHref}${sep}modo=limpio`;
       }
+      document.body.appendChild(iframe);
     });
 
     menu.appendChild(btn);
@@ -3641,20 +3666,13 @@
         if (!e.ctrlKey && !e.metaKey && !e.shiftKey) {
           e.preventDefault();
           const targetUrl = popoutLink.getAttribute("href") || "/vista/plano";
-          const width = 1100;
-          const height = 800;
-          const left = Math.max(0, Math.round(window.screenX + (window.outerWidth - width) / 2));
-          const top = Math.max(0, Math.round(window.screenY + (window.outerHeight - height) / 2));
-          const win = window.open(
-            targetUrl,
-            "erbolamm_plano_window",
-            `popup=yes,width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
-          );
-          if (!win || win.closed) {
-            window.open(targetUrl, "_blank");
-          } else {
-            win.focus();
-          }
+          // Abrir plano dentro del mismo marco (panel interno)
+          const iframe = document.createElement('iframe');
+          iframe.src = targetUrl;
+          iframe.style.width = '100%';
+          iframe.style.height = '100vh';
+          iframe.style.border = 'none';
+          document.body.appendChild(iframe);
         }
       });
     }
