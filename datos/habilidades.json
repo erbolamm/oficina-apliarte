@@ -1,21 +1,371 @@
 {
   "modo": "solo_lectura",
-  "total": 3,
+  "total": 71,
+  "herramientas_destacadas": [
+    "release_preflight.py",
+    "testflight --finalizar",
+    "tiendas-lanzamientos",
+    "yandex-mobile-ads",
+    "reverse-engineer-anything 6.5.0",
+    "amazon-afiliados",
+    "pruebas-geolocalizacion-vpn",
+    "microjuegos-espera-carga"
+  ],
   "habilidades": [
     {
+      "nombre": "accessibility",
+      "descripcion": "Audit and improve web accessibility following WCAG 2.2 guidelines. Use when asked to \"improve accessibility\", \"a11y audit\", \"WCAG compliance\", \"screen reader support\", \"keyboard navigation\", or \"make accessible\".",
+      "ruta_relativa": "skills/accessibility/SKILL.md"
+    },
+    {
+      "nombre": "actualizar-orquestadores",
+      "descripcion": "Sincroniza y reasimila en caliente las directivas soberanas actualizadas en los orquestadores activos del ecosistema sin perder el contexto conversacional ni el estado de la tarea en curso.",
+      "ruta_relativa": "skills/actualizar-orquestadores/SKILL.md"
+    },
+    {
+      "nombre": "admob-publicidad",
+      "descripcion": "Audita y genera configuraciones de publicidad AdMob, bloques de prueba y app-ads.txt bajo ADR-0013.",
+      "ruta_relativa": "skills/admob-publicidad/SKILL.md"
+    },
+    {
+      "nombre": "aislar-voces-demucs",
+      "descripcion": "Aislamiento vocal puro e inmutable con Meta HTDemucs v4 en Apple Silicon MPS. Elimina música de fondo, ruidos complejos y ambiente para peritajes judiciales y WhatsApp sin alucinaciones, preservando la pista residual como contraprueba.",
+      "ruta_relativa": "skills/aislar-voces-demucs/SKILL.md"
+    },
+    {
+      "nombre": "amazon-afiliados",
+      "descripcion": "Trigger: Amazon Afiliados, Experto Amazon, ASIN, OneLink. Audit exports, validate mobile links, and curate marketplace-specific product catalogs.",
+      "ruta_relativa": "skills/amazon-afiliados/SKILL.md"
+    },
+    {
+      "nombre": "anatomy",
+      "descripcion": "Build crafted, highly detailed, interactive isometric SVG figures that explain a technical idea as a real physical object (a test rig, a dial gauge, a cabinet of drawers, a plotter, a lock), with many small precise solid parts, four-tone shading, correct painter's order, a framed card with title, hint and live readout, and calm eased motion. Use this whenever someone wants an isometric illustration, an explanatory diagram or figure for docs, a blog post, a landing page or an article, a \"Linear-style\" or \"premium\" technical drawing, an interactive explainer, or an SVG that shows how a system, algorithm or component works, even if they never say \"isometric\". Works framework-free (TypeScript/JS that writes SVG and HTML) and in React/Next.js, and can add realistic WebGL shaders (fire, exhaust, water, caustics, lamp light) that live inside the drawing in the same isometric perspective.",
+      "ruta_relativa": "skills/anatomy/SKILL.md"
+    },
+    {
+      "nombre": "apliarte-bot",
+      "descripcion": "Operativa, mantenimiento, auditoría y reglas de modificación de ApliArteBot (OpenClaw en VPS servidor-remoto). Modificación exclusiva por agy.",
+      "ruta_relativa": "skills/apliarte-bot/SKILL.md"
+    },
+    {
+      "nombre": "apliarte-design",
+      "descripcion": "Motor de diseno, animacion y video promocional para proyectos del ecosistema ErBolamm basado en HTML, React, Babel standalone, Playwright y ffmpeg, entregando soberanamente en control-erbolamm/difusion/video/ bajo ADR-0013.",
+      "ruta_relativa": "skills/apliarte-design/SKILL.md"
+    },
+    {
+      "nombre": "audit-hosting",
+      "descripcion": "Audit a Hostinger web hosting account (Shared, Cloud and Agency plans) and report what needs attention: every plan and website, SSL problems, broken or vulnerable WordPress installs, failed Node.js builds and vulnerable npm packages, databases and Agency Plan orders near their limits, and hosting plans about to lapse. Read-only; produces a prioritised to-do list and names the skill that fixes each item. Triggers: what do I have on Hostinger, audit my hosting, check all my websites, what needs attention, health check my sites, are any of my sites broken, which of my sites are insecure.",
+      "ruta_relativa": "skills/audit-hosting/SKILL.md"
+    },
+    {
+      "nombre": "auditor-tiendas",
+      "descripcion": "Audita metadatos de tiendas (Apple Guideline 2.3.3 anti-rechazo y límites de caracteres) y genera notas de versión multilingües listas para Google Play y App Store bajo ADR-0013.",
+      "ruta_relativa": "skills/auditor-tiendas/SKILL.md"
+    },
+    {
+      "nombre": "auditoria-web",
+      "descripcion": "Audita una web existente por URL para detectar fricciones de conversión, SEO on-page y accesibilidad básica, con hallazgos verificables.",
+      "ruta_relativa": "skills/auditoria-web/SKILL.md"
+    },
+    {
+      "nombre": "autonomo-facturacion-proyectos",
+      "descripcion": "Generación canónica de facturas y presupuestos legales de autónomo en España para cualquier proyecto del ecosistema ApliArte.",
+      "ruta_relativa": "skills/autonomo-facturacion-proyectos/SKILL.md"
+    },
+    {
+      "nombre": "benchmark-competitivo",
+      "descripcion": "Compara hasta cinco competidores a partir de una organización y su mercado, con datos públicos, fuentes y recomendaciones.",
+      "ruta_relativa": "skills/benchmark-competitivo/SKILL.md"
+    },
+    {
+      "nombre": "big-school-webs",
+      "descripcion": "Crea o adapta una landing editorial de marca en @sites para presentar un negocio, producto o servicio. No cubre menús con carrito ni propuestas comerciales para un cliente.",
+      "ruta_relativa": "skills/big-school-webs/SKILL.md"
+    },
+    {
+      "nombre": "brief-a-presentacion",
+      "descripcion": "Crea una presentación editable a partir de un brief y materiales de marca. Para una presentación nueva, no para traducir una existente.",
+      "ruta_relativa": "skills/brief-a-presentacion/SKILL.md"
+    },
+    {
+      "nombre": "buzon-guardia",
+      "descripcion": "Registra recordatorios, tareas y notas de Javier en el buzon de guardia persistente de ApliArteBot para que el orquestador en el Mac los lea al arrancar la jornada.",
+      "ruta_relativa": "skills/buzon-guardia/SKILL.md"
+    },
+    {
+      "nombre": "campana-visual",
+      "descripcion": "Produce creatividades visuales y textos para varios formatos publicitarios a partir de un brief de campaña y activos de marca.",
+      "ruta_relativa": "skills/campana-visual/SKILL.md"
+    },
+    {
+      "nombre": "capturas-tienda",
+      "descripcion": "Genera capturas de pantalla promocionales profesionales enmarcadas para App Store y Google Play en multiples idiomas y dispositivos, entregando soberanamente en control-erbolamm/difusion/capturas/ bajo ADR-0013.",
+      "ruta_relativa": "skills/capturas-tienda/SKILL.md"
+    },
+    {
+      "nombre": "catalogo-herramientas",
+      "descripcion": "Catalogo de herramientas de la Oficina (skills, endpoints y comandos de CLI). Se consulta por intencion para saber que herramienta usar antes de improvisar.",
+      "ruta_relativa": "skills/catalogo-herramientas/SKILL.md"
+    },
+    {
+      "nombre": "cierre-fiscal-trimestral",
+      "descripcion": "Cierra el trimestre fiscal de Javier Mateo con su gestoría: cuadra Ingresos y Gastos en Google Sheets (IVA extranjero vs nacional, devengo de AdSense, suscripciones in-app, no deducibles, suministros) y exporta los PDFs oficiales.",
+      "ruta_relativa": "skills/cierre-fiscal-trimestral/SKILL.md"
+    },
+    {
+      "nombre": "conciliacion-bancaria",
+      "descripcion": "Cruza extractos bancarios con ventas y gastos para identificar facturas conciliadas, movimientos dudosos y pagos sin localizar.",
+      "ruta_relativa": "skills/conciliacion-bancaria/SKILL.md"
+    },
+    {
+      "nombre": "connect-domain",
+      "descripcion": "Connect a custom domain to a website on Hostinger web hosting (Shared, Cloud or Agency plans) end to end: attach the domain to the site, point DNS at Hostinger without breaking existing email or verification records, install SSL, turn on the HTTPS redirect, and verify it resolves. Handles domains registered at Hostinger or elsewhere, moving a site off its free *.hostingersite.com subdomain, subdomains and aliases. Triggers: connect my domain, point my domain to my site, use my own domain, move off the free subdomain, add a subdomain, park a domain, add a domain alias, my domain is not working.",
+      "ruta_relativa": "skills/connect-domain/SKILL.md"
+    },
+    {
+      "nombre": "consultar-manual",
+      "descripcion": "Trigger: consultar manual, living manual, DOCUMENTACION/manual, read before edit. Read the matching manual chapter and the on-disk source before editing a core component, and update that documentation when delivering a receipt.",
+      "ruta_relativa": "skills/consultar-manual/SKILL.md"
+    },
+    {
+      "nombre": "contenido-multiformato",
+      "descripcion": "Reutiliza un artículo, informe o ponencia existente en publicaciones, newsletter, guiones e imágenes para varios canales.",
+      "ruta_relativa": "skills/contenido-multiformato/SKILL.md"
+    },
+    {
+      "nombre": "correo-transaccional",
+      "descripcion": "Generación y gestión de plantillas de correo transaccional, configuración SMTP segura y guías de integración bajo ADR-0013.",
+      "ruta_relativa": "skills/correo-transaccional/SKILL.md"
+    },
+    {
+      "nombre": "deploy-to-hosting",
+      "descripcion": "Deploy an existing project to a website on Hostinger web hosting (Shared, Cloud or Agency plans) and keep it deployed: picks the right deploy for static sites, Node.js apps (Next.js, Nuxt, Express, Vite and similar), PHP apps and WordPress plugins or themes, sets up auto-deploy from GitHub or GitLab, manages Node.js environment variables and MySQL databases, and verifies the live site. Triggers: deploy this project, deploy to Hostinger, push my app live, redeploy, set up auto-deploy, connect my GitHub repo, add environment variables, my app needs a database, deploy my WordPress plugin or theme.",
+      "ruta_relativa": "skills/deploy-to-hosting/SKILL.md"
+    },
+    {
+      "nombre": "desarrollo-doble-dispositivo",
+      "descripcion": "Flujo de trabajo en doble dispositivo (Flutter nativo y Aplicaciones Web como la Oficina ApliArte :8791) asignando un teléfono de mando en Release para ApliChat y un banco de pruebas (ordenador + navegador/app del segundo teléfono) integrado con commit quirúrgico y entrega verificada.",
+      "ruta_relativa": "skills/desarrollo-doble-dispositivo/SKILL.md"
+    },
+    {
+      "nombre": "difusion-blogger-capturas",
+      "descripcion": "Protocolo canónico para maquetar y publicar artículos técnicos, crónicas y noticias en Blogger con capturas de pantalla u optimizadas en CDN permanente y despacho desatendido vía n8n webhook.",
+      "ruta_relativa": "skills/difusion-blogger-capturas/SKILL.md"
+    },
+    {
+      "nombre": "difusion-presentaciones-multilingues",
+      "descripcion": "Estandar canonico para la creacion, sincronizacion de audios multilingues y difusion de mazos de diapositivas interactivas en <repo>/control-erbolamm/difusion/directo/.",
+      "ruta_relativa": "skills/difusion-presentaciones-multilingues/SKILL.md"
+    },
+    {
+      "nombre": "edicion-video",
+      "descripcion": "Procesa, concatena, apila (vstack) y mezcla pistas de audio/locución en vídeos para la Oficina y orquestadores.",
+      "ruta_relativa": "skills/edicion-video/SKILL.md"
+    },
+    {
+      "nombre": "emil-design-eng",
+      "descripcion": "Filosofía de ingeniería de diseño (Design Engineering) y pulido de interfaz (UI polish) de Emil Kowalski adaptada a ErBolamm y ApliArte. Incluye microinteracciones, curvas de aceleración, duraciones, reglas de animación y formato de revisión Before/After.",
+      "ruta_relativa": "skills/emil-design-eng/SKILL.md"
+    },
+    {
+      "nombre": "espejo-drive-tras-push",
+      "descripcion": "Copia a Google Drive los archivos que cambian en cada git push para que Gemini Web lea el codigo actual. Usar al instalar el espejo en un repositorio soberano o al revisar que el espejo funciona.",
+      "ruta_relativa": "skills/espejo-drive-tras-push/SKILL.md"
+    },
+    {
+      "nombre": "estudio-mercado",
+      "descripcion": "Analiza tendencias en vivo y genera ganchos de difusion y newsjacking para proyectos del ecosistema ErBolamm, entregando soberanamente en control-erbolamm/difusion/marketing/ bajo ADR-0013.",
+      "ruta_relativa": "skills/estudio-mercado/SKILL.md"
+    },
+    {
+      "nombre": "fal-generacion",
+      "descripcion": "Inferencia acelerada de modelos generativos de imagen, audio y vídeo con Fal.ai.",
+      "ruta_relativa": "skills/fal-generacion/SKILL.md"
+    },
+    {
+      "nombre": "feedback-a-plan",
+      "descripcion": "Analiza comentarios de reseñas, encuestas o entrevistas para cuantificar temas y convertirlos en un plan de acción.",
+      "ruta_relativa": "skills/feedback-a-plan/SKILL.md"
+    },
+    {
+      "nombre": "firebase-auditor",
+      "descripcion": "Audita la configuración de Firebase, archivos de plataforma, SDKs y seguridad bajo ADR-0013.",
+      "ruta_relativa": "skills/firebase-auditor/SKILL.md"
+    },
+    {
+      "nombre": "frontend-design",
+      "descripcion": "Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, artifacts, posters, or applications (examples include websites, landing pages, dashboards, React components, HTML/CSS layouts, or when styling/beautifying any web UI). Generates creative, polished code and UI design that avoids generic AI aesthetics.",
+      "ruta_relativa": "skills/frontend-design/SKILL.md"
+    },
+    {
+      "nombre": "grok-multimedia",
+      "descripcion": "Generación de vídeo e imágenes de alta coherencia con Grok (xAI).",
+      "ruta_relativa": "skills/grok-multimedia/SKILL.md"
+    },
+    {
+      "nombre": "guion-a-storyboard",
+      "descripcion": "Convierte un guion o secuencia narrativa en imágenes de storyboard con tiempos, encuadres y continuidad visual para producir un vídeo.",
+      "ruta_relativa": "skills/guion-a-storyboard/SKILL.md"
+    },
+    {
+      "nombre": "hostinger-headless",
+      "descripcion": "Orchestrator for the Hostinger Headless build flow — build and deploy a real website on the user's Hostinger account from a single prompt that names a domain. Holds the stage flow and the state contract, and drives each stage in sequence: connect, check state, refine, provision, content model, design, frontend, validate, deploy, done. Triggers: build a headless site for <domain>, build me a site, create a website, make me a website, deploy this to Hostinger, host this on Hostinger, connect this project to Hostinger.",
+      "ruta_relativa": "skills/hostinger-headless/SKILL.md"
+    },
+    {
+      "nombre": "hyperframes",
+      "descripcion": "Framework declarativo para crear, previsualizar en Studio y renderizar vídeos programáticos en HTML/CSS/JS con HyperFrames y entrega soberana en control-erbolamm/difusion/video/ bajo ADR-0013.",
+      "ruta_relativa": "skills/hyperframes/SKILL.md"
+    },
+    {
+      "nombre": "hyperframes-cli",
+      "descripcion": "The HyperFrames CLI by job - scaffold, check, look at frames, edit the timeline, preview, render locally or in the cloud, publish, project history - plus reading its JSON and recovering from build or render failures.",
+      "ruta_relativa": "skills/hyperframes-cli/SKILL.md"
+    },
+    {
+      "nombre": "hyperframes-registry",
+      "descripcion": "About 450 ready-made HyperFrames blocks and components installed as editable source - transitions, overlays, titles, kinetic type, captions, charts, map overlays, 3D, camera moves. Use it before hand-building any named visual (CRT scanlines, glitch, film grain, a chart); also for hyperframes add and catalog.",
+      "ruta_relativa": "skills/hyperframes-registry/SKILL.md"
+    },
+    {
+      "nombre": "ingredientes-categoria",
+      "descripcion": "Identifica automáticamente la categoría de un repositorio en ErBolamm (app, webapp, bot, paquete, etc.) y audita la lista estricta de ingredientes canónicos obligatorios y blindaje ADR-0013.",
+      "ruta_relativa": "skills/ingredientes-categoria/SKILL.md"
+    },
+    {
+      "nombre": "maintain-wordpress",
+      "descripcion": "Keep WordPress sites on Hostinger web hosting updated and secure: checks core, plugin and theme versions, known vulnerabilities and install health on one site or every site in the account, reports what needs doing, applies updates in a safe order, and confirms each site still loads. Also covers cache purges, the Memcached object cache, maintenance mode and one-click wp-admin login links. Triggers: update my WordPress, update plugins, are my WordPress sites secure, WordPress vulnerabilities, outdated plugins or themes, WordPress maintenance, speed up WordPress, log me into wp-admin.",
+      "ruta_relativa": "skills/maintain-wordpress/SKILL.md"
+    },
+    {
+      "nombre": "media-use",
+      "descripcion": "Get or make any media for a HyperFrames video - music, sound effects, images, icons, logos, voiceover, avatar and generated video, transcripts, cutouts, colour grades and looks - with HeyGen or free local tools, and mix placed audio. Also for footage that looks dark, flat or dull, or should be stylized or hidden.",
+      "ruta_relativa": "skills/media-use/SKILL.md"
+    },
+    {
+      "nombre": "mesa-redonda",
+      "descripcion": "Protocolo de deliberación colegiada entre modelos heterogéneos (Claude Code, Grok, Codex, Pi y Antigravity/Agy) para auditorías de arquitectura, evaluación de nuevas IAs/librerías y decisiones técnicas críticas.",
+      "ruta_relativa": "skills/mesa-redonda/SKILL.md"
+    },
+    {
+      "nombre": "microjuegos-espera-carga",
+      "descripcion": "Trigger: microjuegos de espera, loading widgets, Google Playground prototypes. Catalog and adapt lightweight optional loading interactions.",
+      "ruta_relativa": "skills/microjuegos-espera-carga/SKILL.md"
+    },
+    {
+      "nombre": "midjourney-imagen",
+      "descripcion": "Genera imágenes de alta calidad con Midjourney mediante websockets y decodificación CBOR.",
+      "ruta_relativa": "skills/midjourney-imagen/SKILL.md"
+    },
+    {
+      "nombre": "migrate-to-hosting",
+      "descripcion": "Move an existing website from another host to Hostinger web hosting (Shared, Cloud or Agency plans) without downtime: WordPress sites from a files archive and SQL dump, static and PHP sites from an archive, Node.js apps from source. Creates the website on the real domain, imports files and database, tests the copy before any DNS change, then switches the domain and SSL. Triggers: migrate my site to Hostinger, move my website from another host, transfer my WordPress site, import my website, switch hosting to Hostinger.",
+      "ruta_relativa": "skills/migrate-to-hosting/SKILL.md"
+    },
+    {
+      "nombre": "musica-strudel",
+      "descripcion": "Genera música procedural en código Strudel (strudel.cc / Tone.js) y reproductores web autónomos para proyectos del ecosistema ErBolamm, entregando soberanamente en control-erbolamm/difusion/musica/ bajo ADR-0013.",
+      "ruta_relativa": "skills/musica-strudel/SKILL.md"
+    },
+    {
+      "nombre": "orquestador-apliarte",
+      "descripcion": "Protocolo canónico, contratos soberanos, sincronizador bin/sync.py y plantilla de arranque para los orquestadores locales de repositorio en el ecosistema ApliArte / ErBolamm.",
+      "ruta_relativa": "skills/orquestador-apliarte/SKILL.md"
+    },
+    {
+      "nombre": "palabras-clave-aso",
+      "descripcion": "Genera y optimiza conjuntos de palabras clave para App Store (campo de 100 caracteres sin espacios) y Google Play bajo directrices oficiales y ADR-0013.",
+      "ruta_relativa": "skills/palabras-clave-aso/SKILL.md"
+    },
+    {
       "nombre": "paso-a-paso",
-      "descripcion": "Protocolo canonico de ejecucion atomica, hoja de ruta secuencial y verificacion paso a paso con confirmacion y commit por hito.",
-      "ruta_relativa": "habilidades/paso-a-paso/SKILL.md"
+      "descripcion": "Protocolo canonico de ejecucion atomica, hoja de ruta secuencial y verificacion paso a paso con confirmacion y commit por hito. Se activa con «paso por paso», «paso a paso», «vamos paso a paso» o «vamos paso por paso».",
+      "ruta_relativa": "skills/paso-a-paso/SKILL.md"
     },
     {
       "nombre": "patito-de-goma",
-      "descripcion": "Protocolo canonico de repaso guiado, explicacion paso a paso y descubrimiento de cabos sueltos o flecos pendientes.",
-      "ruta_relativa": "habilidades/patito-de-goma/SKILL.md"
+      "descripcion": "Protocolo canónico de repaso guiado, explicación paso a paso y descubrimiento de cabos sueltos o flecos pendientes. Se activa con «haz un pato», «un pt», «un patito de goma» o «patito de goma».",
+      "ruta_relativa": "skills/patito-de-goma/SKILL.md"
     },
     {
-      "nombre": "ritmo-y-rigor",
-      "descripcion": "Trifecta canonica de ritmo y cautela dictada por Javier Mateo. Modula la velocidad de ejecucion y la profundidad de verificacion.",
-      "ruta_relativa": "habilidades/ritmo-y-rigor/SKILL.md"
+      "nombre": "pizarra-a-plan",
+      "descripcion": "Transcribe imágenes de pizarras o notas adhesivas y convierte su contenido legible en objetivos, decisiones y tareas editables.",
+      "ruta_relativa": "skills/pizarra-a-plan/SKILL.md"
+    },
+    {
+      "nombre": "pruebas-geolocalizacion-vpn",
+      "descripcion": "Trigger: Proton VPN, pruebas de geolocalizacion, RU, Yandex vs AdMob. Test regional app behavior without disrupting Office or ADB.",
+      "ruta_relativa": "skills/pruebas-geolocalizacion-vpn/SKILL.md"
+    },
+    {
+      "nombre": "publicacion-tiendas-asimetrica",
+      "descripcion": "Protocolo canónico de publicación asimétrica en tiendas: Apple 100% automatizado con Fastlane oficial (.p8) para TestFlight y notas en 24 idiomas; Google Play con subida manual de .aab para blindar versiones; privacidad DSA con teléfono Pixel, soberanía ADR-0013, y cumplimiento de Data Safety, firma Android y eliminación de cuenta.",
+      "ruta_relativa": "skills/publicacion-tiendas-asimetrica/SKILL.md"
+    },
+    {
+      "nombre": "red-emulacion-navegador",
+      "descripcion": "Emulación de perfiles de navegador TLS/JA3, mitigación Cloudflare y almacén RFC 6265 de cookies.",
+      "ruta_relativa": "skills/red-emulacion-navegador/SKILL.md"
+    },
+    {
+      "nombre": "revenuecat-monetizacion",
+      "descripcion": "Genera y audita especificaciones de monetización, suscripciones y paywalls con RevenueCat bajo ADR-0013.",
+      "ruta_relativa": "skills/revenuecat-monetizacion/SKILL.md"
+    },
+    {
+      "nombre": "reverse-engineer-anything",
+      "descripcion": "Ingenieria inversa y analisis de artefactos (v6.5.0). Reverse engineer native, managed, Electron/JavaScript, packaged, firmware, and browser targets with REA. Use shipped-artifact or requested runtime evidence to explain features, compare versions, decompile code, or guide a reconstruction. Skip REA for ordinary source-repository architecture analysis.",
+      "ruta_relativa": "skills/reverse-engineer-anything/SKILL.md"
+    },
+    {
+      "nombre": "seo",
+      "descripcion": "Optimize for search engine visibility and ranking. Use when asked to \"improve SEO\", \"optimize for search\", \"fix meta tags\", \"add structured data\", \"sitemap optimization\", or \"search engine optimization\".",
+      "ruta_relativa": "skills/seo/SKILL.md"
+    },
+    {
+      "nombre": "ses-hospedajes",
+      "descripcion": "Generación canónica de ficheros XML oficiales para alta masiva en SES.Hospedajes (Ministerio del Interior, RD 933/2021), check-in digital con firma móvil, regularización retroactiva y libro-registro en PDF para alojamientos y casas rurales.",
+      "ruta_relativa": "skills/ses-hospedajes/SKILL.md"
+    },
+    {
+      "nombre": "slideshow",
+      "descripcion": "Build a HyperFrames slideshow to present live - slides, fragment reveals, branching hotspots and presenter mode with speaker notes, served by `hyperframes present` - or turn an existing page into one. Use when the person wants a deck or presentation rather than a rendered video.",
+      "ruta_relativa": "skills/slideshow/SKILL.md"
+    },
+    {
+      "nombre": "sora-video",
+      "descripcion": "Genera, remezcla y gestiona vídeos con OpenAI Sora 2 y recetas de ArtCraft.",
+      "ruta_relativa": "skills/sora-video/SKILL.md"
+    },
+    {
+      "nombre": "subir-testflight",
+      "descripcion": "Valida binarios IPA, credenciales de App Store Connect, sube compilaciones a TestFlight via altool y sincroniza simbolos dSYM bajo ADR-0013.",
+      "ruta_relativa": "skills/subir-testflight/SKILL.md"
+    },
+    {
+      "nombre": "traducir-presentacion",
+      "descripcion": "Traduce el texto editable de un PowerPoint existente a otro idioma y entrega una copia PPTX que conserva su diseño.",
+      "ruta_relativa": "skills/traducir-presentacion/SKILL.md"
+    },
+    {
+      "nombre": "troubleshoot-website",
+      "descripcion": "Diagnose and fix a website on Hostinger web hosting (Shared, Cloud or Agency plans) that is down, slow, erroring, insecure or failing to build. Checks the site from outside, reads builds, runtime logs, WordPress health, SSL, cache and PHP settings through the Hostinger MCP, names the cause with evidence, and applies the fix once the user agrees. Triggers: my site is down, site not loading, 500 / 502 / 503 error, white screen, error establishing a database connection, site is slow, SSL or certificate warning, not secure, changes not showing, Node.js build failed, app keeps crashing.",
+      "ruta_relativa": "skills/troubleshoot-website/SKILL.md"
+    },
+    {
+      "nombre": "vps",
+      "descripcion": "Auditoría de recursos, inventario de Docker, servicios activos e inspección de infraestructura en el VPS servidor-remoto. Modificación exclusiva por agy.",
+      "ruta_relativa": "skills/vps/SKILL.md"
+    },
+    {
+      "nombre": "worldlabs-3d",
+      "descripcion": "Generación de mundos espaciales 3D interactivos y assets inmersivos con WorldLabs.",
+      "ruta_relativa": "skills/worldlabs-3d/SKILL.md"
+    },
+    {
+      "nombre": "yandex-mobile-ads",
+      "descripcion": "Integrate reusable Yandex Mobile Ads Flutter app-open and adaptive inline placements with the same app-level guards as AdMob.",
+      "ruta_relativa": "skills/yandex-mobile-ads/SKILL.md"
     }
   ]
 }

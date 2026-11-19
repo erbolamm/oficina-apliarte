@@ -3,165 +3,121 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#005fa9">
-  <title>Agentes · Oficina local de ErBolamm</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23005fa9%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2246%22%20font-size%3D%2234%22%20text-anchor%3D%22middle%22%3E%F0%9F%A4%96%3C/text%3E%3C/svg%3E">
-  <style>
-  html, body { margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-  .app-shell { display: flex; height: 100vh; }
-  .office-sidebar { width: 260px; background: #0a1020; color: #e8f4fb; }
-  .sidebar-brand { padding: 16px; display: flex; align-items: center; gap: 8px; }
-  .sidebar-brand strong { display: block; }
-  .sidebar-brand small { font-size: 0.75rem; color: #94a3b8; }
-  .sidebar-toggle { background: none; border: none; color: #e8f4fb; }
-  .side-nav { padding: 12px; }
-  .nav-card { display: block; padding: 10px 12px; margin: 4px 0; border-radius: 8px; color: inherit; text-decoration: none; border: 1px solid transparent; }
-  .nav-card:hover { background: rgba(255,255,255,0.05); }
-  .nav-icon { font-size: 1.25rem; }
-  .nav-copy strong { display: block; }
-  .nav-copy small { font-size: 0.7rem; color: #94a3b8; }
-  .sidebar-note { padding: 12px; font-size: 0.75rem; color: #94a3b8; }
-  .sidebar-scrim { display: none; }
-  .office-content { flex: 1; padding: 24px; overflow-y: auto; }
-  .topbar { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
-  .topbar h1 { margin: 0; font-size: 1.5rem; }
-  .private-chip { font-size: 0.75rem; color: #94a3b8; }
-  .connection { font-size: 0.75rem; color: #94a3b8; }
-  .btn-refresh, .theme-toggle { background: none; border: none; cursor: pointer; }
-  .panel { margin-bottom: 24px; }
-  .panel-head h2 { margin: 0 0 8px 0; }
-  .panel-head p { margin: 0; color: #94a3b8; font-size: 0.875rem; }
-  .updated { color: #94a3b8; font-size: 0.875rem; }
-  .agent-list { list-style: none; padding: 0; }
-  .agent-row { display: flex; gap: 12px; padding: 12px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; margin-bottom: 8px; }
-  .avatar { width: 32px; height: 32px; border-radius: 50%; background: #5ecef5; }
-  .agent-copy { flex: 1; }
-  .limits-panel h3 { margin-top: 0; }
-  .cost-list { list-style: none; padding: 0; }
-  .limit-list { list-style: none; padding: 0; }
-  .cost-state { padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; }
-  .state-activo { background: #2e7d32; color: white; }
-  .state-cancelado { background: #c62828; color: white; }
-  .state-desconocido { background: #757575; color: white; }
-  .charge-alert { color: #d32f2f; font-size: 0.875rem; }
-  .costs-note { font-size: 0.875rem; color: #94a3b8; }
-  .public-note { margin-top: 24px; font-size: 0.75rem; color: #94a3b8; }
-</style>
-  <script>
-    try {
-      document.documentElement.dataset.theme =
-        localStorage.getItem("oficina-panel-theme") === "dark" ? "dark" : "light";
-    } catch (_) {}
-  </script>
-<script src="/panel-shell.js"></script>
+  <title>Agentes · Oficina ApliArte</title>
+  <link rel="stylesheet" href="/panel-shell.css">
 </head>
 <body>
-  <div class="app-shell">
-    <aside class="office-sidebar" id="office-sidebar" aria-label="Navegación de la oficina">
-      <div class="sidebar-brand">
-        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
-          <path d="M5 32 20 5l15 27h-8l-7-13-7 13Z" fill="#005fa9"/>
-          <path d="M14 32h12l-6-11Z" fill="#5ecef5"/>
-        </svg>
-        <span><strong>Oficina ApliArte</strong><small>Panel de control operativo ApliArte</small></span>
-        <button id="sidebar-toggle" class="sidebar-toggle" type="button"
-          aria-controls="office-sidebar" aria-expanded="true" aria-label="Plegar la barra lateral a solo iconos" title="Plegar la barra lateral">
-          <span class="chev" aria-hidden="true">‹</span>
-        </button>
+  <main class="catalog-wrap">
+    <section class="catalog-hero">
+      <div>
+        <h1>Agentes y Orquestadores</h1>
+        <p>Un agente, un personaje. Equipo heterogéneo coordinado bajo la escalera de ejecución de cinco escalones y modo público de solo lectura.</p>
       </div>
-      <nav class="side-nav" aria-label="Secciones">
-        <a class="nav-card" href="../"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
-        <a class="nav-card" href="inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
-        <a class="nav-card" href="aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
-        <a class="nav-card" href="skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
-        <a class="nav-card" href="conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
-        <a class="nav-card" href="plugins"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
-        <a class="nav-card" href="reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
-        <a class="nav-card" href="propuestas"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
-        <a class="nav-card" href="diseno"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
-        <a class="nav-card" href="tiendas"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
-        <a class="nav-card" href="mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
-        <a class="nav-card" href="musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
-        <a class="nav-card" href="idiomas"><span class="nav-icon" aria-hidden="true">🌐</span><span class="nav-copy"><strong>Idiomas</strong><small>Traducción y locución</small></span></a>
-        <a class="nav-card" href="locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
-        <a class="nav-card" href="voicestudio"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
-        <a class="nav-card" href="terminales"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
-        <a class="nav-card" href="blogger"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
-        <a class="nav-card" href="bitacora"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
-        <a class="nav-card" href="directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
-        <a class="nav-card" href="resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
-        <a class="nav-card" href="settings"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-copy"><strong>Ajustes</strong><small>Opciones por defecto</small></span></a>
-        <a class="nav-card" href="como-funciona"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
-      </nav>
-      <p class="sidebar-note"><strong>Privada y local</strong>No conecta la oficina pública, no consulta cuotas y no muestra historial.</p>
-    </aside>
-    <div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
-
-    <main class="office-content" id="office">
-    <header class="topbar">
-      <div class="brand">
-        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
-          <path d="M5 32 20 5l15 27h-8l-7-13-7 13Z" fill="#005fa9"/>
-          <path d="M14 32h12l-6-11Z" fill="#5ecef5"/>
-        </svg>
-        <h1>Agentes</h1>
-      </div>
-      <span class="private-chip">Oficina local · privada</span>
-      <span class="connection" id="connection" data-kind="loading">Conectando</span>
-      <button id="refresh-btn" class="btn-refresh" type="button" onclick="window.location.reload()" aria-label="Actualizar vista" title="Actualizar">↻</button>
-      <button id="theme-toggle" type="button" aria-label="Activar modo oscuro" title="Cambiar tema">
-        <span id="theme-icon" aria-hidden="true">☾</span>
-      </button>
-    </header>
-    <p class="updated" id="updated">Esperando la primera lectura</p>
-
-    <section class="panel agents-panel" aria-labelledby="agents-title">
-      <div class="panel-head"><h2 id="agents-title">Agentes</h2><p>Un agente, un personaje.</p></div>
-      <ul class="agent-list" id="agent-list"></ul>
+      <span class="catalog-tag accent">7 agentes del ecosistema</span>
     </section>
 
-    <section class="panel limits-panel" aria-labelledby="limits-title">
-      <div class="panel-head">
-        <h2 id="limits-title">Costes y suscripciones</h2>
-        <p>Registro local, no consulta importes en vivo. La comprobación real se hace en la consola de Google.</p>
-      </div>
+    <div id="agents-grid" class="catalog-grid">
+      <article class="catalog-card">
+        <div class="catalog-card-top">
+          <div>
+            <h2>agy · Antigravity</h2>
+            <p class="catalog-subtitle">Orquestador principal y ejecución</p>
+          </div>
+          <span class="catalog-tag accent">Orquestador</span>
+        </div>
+        <p class="catalog-desc">Coordina tareas, ejecuta ediciones quirúrgicas paso por paso, verifica pruebas y custodia las reglas soberanas del ecosistema.</p>
+        <div class="catalog-meta">
+          <span class="catalog-tag">Nodo Mac</span>
+          <span class="catalog-tag">Solo lectura pública</span>
+        </div>
+      </article>
 
-      <section class="costs-section" aria-labelledby="costs-title">
-        <h3 id="costs-title">Servicios, planes y cargos conocidos</h3>
-        <p class="costs-note">Cada ficha dice cuándo y de dónde se leyó. «Manual» nunca significa verificado. Los huecos se muestran como «Sin dato».</p>
-        <ul class="cost-state-legend" aria-label="Estados posibles">
-          <li><span class="cost-state state-activo">activo</span></li>
-          <li><span class="cost-state state-cancelado">cancelado</span></li>
-          <li><span class="cost-state state-desconocido">desconocido</span></li>
-        </ul>
-        <div class="charge-alert" id="charge-alert" role="alert" hidden></div>
-        <p class="costs-status" id="costs-status" role="status" aria-live="polite"></p>
-        <ul class="cost-list" id="cost-subscriptions"></ul>
-      </section>
+      <article class="catalog-card">
+        <div class="catalog-card-top">
+          <div>
+            <h2>cl · Claude Code</h2>
+            <p class="catalog-subtitle">Arquitectura e interfaz</p>
+          </div>
+          <span class="catalog-tag accent">Especialista</span>
+        </div>
+        <p class="catalog-desc">Especialista en refactorización profunda, diseño de interfaz accesible y revisión de calidad estructural.</p>
+        <div class="catalog-meta">
+          <span class="catalog-tag">Diseño y código</span>
+        </div>
+      </article>
 
-      <section class="ai-limits" aria-labelledby="ai-limits-title">
-        <h3 id="ai-limits-title">Disponibilidad por perfil de ejecución</h3>
-        <p class="costs-note">Observaciones manuales o de terminal. Se guardan solo en el servidor local.</p>
-        <ul class="limit-list" id="subscription-limits"></ul>
+      <article class="catalog-card">
+        <div class="catalog-card-top">
+          <div>
+            <h2>co · Codex</h2>
+            <p class="catalog-subtitle">Pruebas y análisis estático</p>
+          </div>
+          <span class="catalog-tag accent">Especialista</span>
+        </div>
+        <p class="catalog-desc">Automatización de pruebas unitarias, auditoría de rutas, tipado seguro y verificación determinista.</p>
+        <div class="catalog-meta">
+          <span class="catalog-tag">Verificación</span>
+        </div>
+      </article>
 
-        
+      <article class="catalog-card">
+        <div class="catalog-card-top">
+          <div>
+            <h2>ge · Gemini</h2>
+            <p class="catalog-subtitle">Contexto amplio y síntesis</p>
+          </div>
+          <span class="catalog-tag accent">Especialista</span>
+        </div>
+        <p class="catalog-desc">Lectura transversal de repositorios grandes, sincronización de memoria y análisis documental.</p>
+        <div class="catalog-meta">
+          <span class="catalog-tag">Documentación</span>
+        </div>
+      </article>
 
-        </section>
-    </section>
+      <article class="catalog-card">
+        <div class="catalog-card-top">
+          <div>
+            <h2>gr · Grok</h2>
+            <p class="catalog-subtitle">Tendencias y contraste</p>
+          </div>
+          <span class="catalog-tag accent">Mesa redonda</span>
+        </div>
+        <p class="catalog-desc">Contraste de decisiones en mesa redonda y análisis de actualidad y ganchos de difusión.</p>
+        <div class="catalog-meta">
+          <span class="catalog-tag">Deliberación</span>
+        </div>
+      </article>
 
-    <p class="public-note">Oficina pública (nube): sin conectar · tarea aparte</p>
-    </main>
-  </div>
+      <article class="catalog-card">
+        <div class="catalog-card-top">
+          <div>
+            <h2>op · OpenCode</h2>
+            <p class="catalog-subtitle">Ejecución ligera en consola</p>
+          </div>
+          <span class="catalog-tag accent">Escalón económico</span>
+        </div>
+        <p class="catalog-desc">Ejecutor externo de bajo coste para inspecciones rápidas, comprobaciones puntuales y tareas acotadas.</p>
+        <div class="catalog-meta">
+          <span class="catalog-tag">Consola local</span>
+        </div>
+      </article>
 
-  <p class="sr-only" id="announcer" aria-live="polite"></p>
+      <article class="catalog-card">
+        <div class="catalog-card-top">
+          <div>
+            <h2>pi · Pi</h2>
+            <p class="catalog-subtitle">Asistente local ligero</p>
+          </div>
+          <span class="catalog-tag accent">Escalón económico</span>
+        </div>
+        <p class="catalog-desc">Apoyo rápido en tareas auxiliares, generación de textos cortos y consultas sin consumo de modelos pesados.</p>
+        <div class="catalog-meta">
+          <span class="catalog-tag">Consola local</span>
+        </div>
+      </article>
+    </div>
+  </main>
 
-  <template id="agent-template">
-    <li class="agent-row">
-      <span class="avatar" aria-hidden="true"></span>
-      <span class="agent-copy"><strong></strong><span></span></span>
-      <span class="agent-zone"></span>
-    </li>
-  </template>
+  <script src="/panel-shell.js"></script>
 </body>
 </html>
