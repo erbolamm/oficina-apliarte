@@ -257,7 +257,7 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 self.responder_js(archivo_js.read_text(encoding="utf-8"))
                 return
 
-        if ruta == "/tareas/oficina-modulos.json":
+        if ruta in ("/tareas/oficina-modulos.json", "/api/como-funciona"):
             archivo_json = RAIZ_PROYECTO / "datos/oficina-modulos.json"
             if archivo_json.exists():
                 try:
@@ -266,6 +266,10 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 except json.JSONDecodeError:
                     self.responder_error("Error al leer oficina-modulos.json", 500)
                 return
+
+        if ruta == "/images/abyss.jpg":
+            self.responder_svg('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><rect width="16" height="16" fill="#0b1116"/></svg>')
+            return
 
         if ruta.startswith("/componentes/") and ruta.endswith(".js"):
             raiz_comp = (RAIZ_PROYECTO / "componentes").resolve()

@@ -3741,6 +3741,7 @@
     const topbar = document.querySelector(".topbar");
     const header = document.querySelector("header");
     const host = topbar || header || document.body;
+    if (!host) return;
     const theme = host.querySelector("#theme-toggle, .theme-toggle");
     if (theme && theme.parentElement === host) host.insertBefore(link, theme);
     else host.appendChild(link);
