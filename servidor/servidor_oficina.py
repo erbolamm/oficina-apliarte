@@ -214,7 +214,7 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 self.responder_svg(archivo_fav.read_text(encoding="utf-8"))
                 return
 
-        if ruta == "/en-construccion.svg":
+        if ruta in ("/en-construccion.svg", "/vista/en-construccion.svg"):
             archivo_construccion = RAIZ_PROYECTO / "vistas" / "en-construccion.svg"
             if archivo_construccion.exists():
                 self.responder_svg(archivo_construccion.read_text(encoding="utf-8"))
@@ -238,13 +238,13 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 self.responder_css(archivo_css.read_text(encoding="utf-8"))
                 return
 
-        if ruta == "/construccion.css":
+        if ruta in ("/construccion.css", "/vista/construccion.css"):
             archivo_css = DIR_VISTAS / "construccion.css"
             if archivo_css.exists():
                 self.responder_css(archivo_css.read_text(encoding="utf-8"))
                 return
 
-        if ruta == "/construccion.js":
+        if ruta in ("/construccion.js", "/vista/construccion.js"):
             archivo_js = DIR_VISTAS / "construccion.js"
             if archivo_js.exists():
                 self.responder_js(archivo_js.read_text(encoding="utf-8"))
@@ -402,7 +402,14 @@ class ManejadorOficina(BaseHTTPRequestHandler):
             if slug in ("tareas", "tablero"):
                 index_file = RAIZ_PROYECTO / "index.html"
                 if index_file.exists():
-                    self.responder_html(index_file.read_text(encoding="utf-8"))
+                    contenido_index = (
+                        index_file.read_text(encoding="utf-8")
+                        .replace('href="favicon.svg"', 'href="/favicon.svg"')
+                        .replace('href="manifest.json"', 'href="/manifest.json"')
+                        .replace('href="panel-shell.css', 'href="/panel-shell.css')
+                        .replace('src="panel-shell.js', 'src="/panel-shell.js')
+                    )
+                    self.responder_html(contenido_index)
                     return
             raiz_vistas = DIR_VISTAS.resolve()
             archivo_vista = (DIR_VISTAS / f"{slug}.html").resolve()

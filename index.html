@@ -7,9 +7,9 @@
   <meta name="theme-color" content="#005fa9">
   <meta name="description" content="Oficina ApliArte — Panel de control operativo ApliArte. Suite modular soberana para el ecosistema ErBolamm y ApliArte.">
   <title>Tablero · Oficina ApliArte</title>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="manifest" href="/manifest.json">
-  <link rel="stylesheet" href="/panel-shell.css?v=20261115_1">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="panel-shell.css?v=20261115_1">
   <style>
     /* Distribución de cuatro columnas para el tablero auténtico */
     @media (min-width: 960px) {
@@ -320,7 +320,7 @@
             <a href="#lanes" class="panel-action-btn" title="Ir a las columnas de tareas" onclick="event.preventDefault(); document.getElementById('lanes')?.scrollIntoView({behavior:'smooth'});">
               <span aria-hidden="true">📋</span> Lista de tareas
             </a>
-            <a href="/vista/skills" class="panel-action-btn" title="Abrir catálogo de Skills" onclick="const c=document.querySelector('.office-sidebar .nav-card[href=\'/vista/skills\']'); if(c){event.preventDefault(); c.click();}">
+            <a href="?vista=skills" class="panel-action-btn" title="Abrir catálogo de Skills" onclick="const c=document.querySelector('.office-sidebar .nav-card[data-vista-href=\'/vista/skills\'], .office-sidebar .nav-card[href=\'/vista/skills\']'); if(c){event.preventDefault(); c.click();}">
               <span aria-hidden="true">⌘</span> Skills
             </a>
           </div>
@@ -536,8 +536,9 @@
       return li;
     }
 
+    const OFICINA_BASE = window.location.pathname.startsWith("/oficina-apliarte") ? "/oficina-apliarte" : "";
     function resolverRutaRaiz(rel) {
-      return new URL(String(rel || "").replace(/^\/+/, ""), window.location.origin + "/").href;
+      return new URL(String(rel || "").replace(/^\/+/, ""), window.location.origin + OFICINA_BASE + "/").href;
     }
 
     async function cargarTablero() {
@@ -786,6 +787,6 @@
       cargarAplicacionesEscaparate();
     });
   </script>
-  <script src="/panel-shell.js?v=20261119_1"></script>
+  <script src="panel-shell.js?v=20261119_1"></script>
 </body>
 </html>

@@ -1,9 +1,37 @@
 (() => {
   const $ = (s) => document.querySelector(s);
   try{const t=window.parent.document.documentElement.dataset.theme||localStorage.getItem('erbolamm-panel-theme');if(t)document.documentElement.dataset.theme=t;}catch{}
-  const slug = document.body.dataset.slug || '';
+  const params = new URLSearchParams(location.search);
+  let slug = document.body.dataset.slug || '';
+  if (!slug || slug === '{{SLUG}}') {
+    slug = params.get('slug') || 'en-construccion';
+    document.body.dataset.slug = slug;
+  }
+  const paramTitulo = params.get('titulo');
+  const paramSubtitulo = params.get('subtitulo');
+  if (paramTitulo) {
+    document.title = `${paramTitulo} · Oficina ApliArte`;
+    const h1 = $('h1');
+    if (h1) h1.textContent = paramTitulo;
+    const lead = $('.lead');
+    if (lead) {
+      const sub = paramSubtitulo || 'Sección en desarrollo';
+      lead.textContent = `${sub}. Esta herramienta está cobrando vida ahora mismo entre bastidores.`;
+    }
+    const issueBtn = $('.btn-issues');
+    if (issueBtn) {
+      issueBtn.href = `https://github.com/erbolamm/oficina-apliarte/issues/new?title=${encodeURIComponent('[' + paramTitulo + '] ')}`;
+      const span = issueBtn.querySelector('span');
+      if (span) span.textContent = `Enviar idea o fallo sobre ${paramTitulo}`;
+    }
+    const issueStrong = $('.issues-copy strong');
+    if (issueStrong) {
+      issueStrong.textContent = `¿Tienes una idea o has visto algo que mejorar en ${paramTitulo}?`;
+    }
+  }
   const origin = location.origin;
-  const urls = { tab: `${origin}/vista/${slug}`, office: `${origin}/` };
+  const base = location.pathname.startsWith('/oficina-apliarte') ? '/oficina-apliarte' : '';
+  const urls = { tab: `${origin}${base}/?vista=${encodeURIComponent(slug)}`, office: `${origin}${base}/` };
   const ic=(d)=>'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+d+'</svg>'; const icons={WhatsApp:ic('<path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L3 21l2-5.4A8.5 8.5 0 1 1 21 11.5z"/>'),Telegram:ic('<path d="M22 2 11 13M22 2 15 22l-4-9-9-4z"/>'),X:ic('<path d="M4 4l16 16M20 4 4 20"/>'),Facebook:ic('<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>'),LinkedIn:ic('<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>'),Correo:ic('<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/>'),Copiar:ic('<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>'),Compartir:ic('<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.7 15.4 6.3M8.6 13.3l6.8 4.4"/>')};
   const share = $('#share');
   const status = $('#status');

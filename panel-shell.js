@@ -8,6 +8,49 @@
  * API expuesta en `window.Oficina` para inspecciones y pruebas.
  */
 (() => {
+  const OFICINA_BASE = window.location.pathname.startsWith("/oficina-apliarte")
+    ? "/oficina-apliarte"
+    : "";
+  let isStaticMode = Boolean(
+    OFICINA_BASE || window.location.hostname.endsWith(".github.io")
+  );
+  const STATIC_VISTAS_CON_FICHA = new Set([
+    "agentes",
+    "aplicaciones",
+    "como-funciona",
+    "directo",
+    "herdr",
+    "paquetes",
+    "propuestas",
+    "radar",
+    "skills",
+    "visita-guiada",
+  ]);
+  function resolveVistaIframeUrl(href, item) {
+    const raw = String(href || "/");
+    if (!raw.startsWith("/vista/")) return OFICINA_BASE + raw;
+    const [pathOnly, hashPart] = raw.split("#");
+    const [cleanPath, queryPart] = pathOnly.split("?");
+    const slug = cleanPath.replace(/^\/vista\//, "").replace(/\/$/, "");
+    const params = new URLSearchParams(queryPart || "");
+    params.set("modo", "limpio");
+    let targetPath;
+    if (isStaticMode) {
+      if (STATIC_VISTAS_CON_FICHA.has(slug)) {
+        targetPath = OFICINA_BASE + "/vistas/" + slug + ".html";
+      } else {
+        targetPath = OFICINA_BASE + "/vistas/construccion.html";
+        params.set("slug", slug);
+        if (item && item.label) params.set("titulo", item.label);
+        if (item && item.desc) params.set("subtitulo", item.desc);
+      }
+    } else {
+      targetPath = OFICINA_BASE + "/vista/" + slug;
+    }
+    const qs = params.toString();
+    return targetPath + (qs ? "?" + qs : "") + (hashPart ? "#" + hashPart : "");
+  }
+
   const fallbackAgents = [
     {
       role: "co",
@@ -158,11 +201,25 @@
     }
   } else if (
     window.self === window.top &&
-    window.location.pathname.startsWith("/vista/")
+    (window.location.pathname.startsWith(OFICINA_BASE + "/vista/") ||
+      (isStaticMode &&
+        window.location.pathname.startsWith(OFICINA_BASE + "/vistas/")))
   ) {
-    const slug = window.location.pathname.replace(/^\/vista\//, "").replace(/\/$/, "");
-    if (slug && slug !== "tareas" && slug !== "tablero") {
-      window.location.replace("/?vista=" + encodeURIComponent(slug));
+    const slug = window.location.pathname
+      .slice(OFICINA_BASE.length)
+      .replace(/^\/vistas?\//, "")
+      .replace(/\.html$/, "")
+      .replace(/\/$/, "");
+    if (
+      slug &&
+      slug !== "tareas" &&
+      slug !== "tablero" &&
+      slug !== "construccion" &&
+      slug !== "pestana_privada"
+    ) {
+      window.location.replace(
+        OFICINA_BASE + "/?vista=" + encodeURIComponent(slug)
+      );
       return;
     }
   }
@@ -1669,12 +1726,19 @@
   });
 
   let isPublicReadOnlyMode = Boolean(
-    document.querySelector(".private-chip")?.textContent?.toLowerCase().includes("pública")
+    isStaticMode ||
+      document.querySelector(".private-chip")?.textContent?.toLowerCase().includes("pública")
   );
   const isPublicReadOnlyPromise =
-    typeof fetch === "function"
+    !isStaticMode && typeof fetch === "function"
       ? fetch("/api/estado", { cache: "no-store" })
-          .then((r) => (r.ok ? r.json() : null))
+          .then((r) => {
+            if (!r.ok) {
+              isStaticMode = true;
+              return null;
+            }
+            return r.json();
+          })
           .then((d) => {
             const detected = Boolean(d && d.modo === "solo_lectura");
             if (detected !== isPublicReadOnlyMode) {
@@ -1683,7 +1747,10 @@
             }
             return isPublicReadOnlyMode;
           })
-          .catch(() => isPublicReadOnlyMode)
+          .catch(() => {
+            isStaticMode = true;
+            return isPublicReadOnlyMode;
+          })
       : Promise.resolve(isPublicReadOnlyMode);
 
   async function refresh() {
@@ -2066,7 +2133,11 @@
     if (!nav) return;
     const hiddenNav = readHiddenNav();
 
-    const currentPath = window.location.pathname.replace(/\/index\.html$/, "/") || "/";
+    let rawPath = window.location.pathname;
+    if (OFICINA_BASE && rawPath.startsWith(OFICINA_BASE)) {
+      rawPath = rawPath.slice(OFICINA_BASE.length) || "/";
+    }
+    const currentPath = rawPath.replace(/\/index\.html$/, "/") || "/";
 
     // Vaciar hijos existentes de forma segura
     while (nav.firstChild) {
@@ -2087,7 +2158,15 @@
 
       const a = document.createElement("a");
       a.className = "nav-card" + (isCurrent ? " active" : "");
-      a.href = item.href;
+      a.dataset.vistaHref = item.href;
+      if (item.href === "/") {
+        a.href = OFICINA_BASE + "/";
+      } else if (isStaticMode) {
+        const vistaSlugLink = item.href.replace(/^\/vista\//, "").replace(/^\//, "");
+        a.href = OFICINA_BASE + "/?vista=" + encodeURIComponent(vistaSlugLink);
+      } else {
+        a.href = OFICINA_BASE + item.href;
+      }
       if (item.id) a.id = item.id;
       if (isCurrent) a.setAttribute("aria-current", "page");
 
@@ -2138,7 +2217,7 @@
           if (frameView) frameView.style.display = "none";
           if (iframe) iframe.src = "about:blank";
           if (!e.isFromPopstate) {
-            try { window.history.pushState(null, "", "/"); } catch (_) {}
+            try { window.history.pushState(null, "", OFICINA_BASE + "/"); } catch (_) {}
           }
           return;
         }
@@ -2157,15 +2236,7 @@
         const frameView = document.getElementById("office-frame-view");
         const iframe = document.getElementById("office-iframe");
 
-        let targetUrl = a.href || "/";
-        try {
-          const url = new URL(a.href, window.location.origin);
-          url.searchParams.set("modo", "limpio");
-          targetUrl = url.toString();
-        } catch (_) {
-          const sep = targetUrl.includes("?") ? "&" : "?";
-          targetUrl = `${targetUrl}${sep}modo=limpio`;
-        }
+        const targetUrl = resolveVistaIframeUrl(item.href || a.dataset.vistaHref || "/", item);
 
         if (nativeView && frameView && iframe) {
           nativeView.style.display = "none";
@@ -2181,12 +2252,18 @@
           const vistaSlug = (item.href || "").replace(/^\/vista\//, "").replace(/^\//, "");
           if (!e.isFromPopstate) {
             try {
-              window.history.pushState({ vista: vistaSlug }, "", vistaSlug ? "/?vista=" + encodeURIComponent(vistaSlug) : "/");
+              window.history.pushState(
+                { vista: vistaSlug },
+                "",
+                vistaSlug ? OFICINA_BASE + "/?vista=" + encodeURIComponent(vistaSlug) : OFICINA_BASE + "/"
+              );
             } catch (_) {}
           }
         } else {
           const fallbackSlug = (item.href || "").replace(/^\/vista\//, "").replace(/^\//, "");
-          window.location.href = fallbackSlug ? "/?vista=" + encodeURIComponent(fallbackSlug) : "/";
+          window.location.href = fallbackSlug
+            ? OFICINA_BASE + "/?vista=" + encodeURIComponent(fallbackSlug)
+            : OFICINA_BASE + "/";
         }
       });
 
@@ -2201,7 +2278,7 @@
         const targetHref = "/vista/" + initialVista;
         const cards = Array.from(nav.querySelectorAll(".nav-card"));
         const match = cards.find((c) => {
-          const h = c.getAttribute("href") || "";
+          const h = c.dataset.vistaHref || c.getAttribute("href") || "";
           return h === targetHref || h === "/" + initialVista;
         });
         if (match) {
@@ -2214,10 +2291,14 @@
   window.addEventListener("popstate", () => {
     const params = new URLSearchParams(window.location.search);
     const vista = params.get("vista");
-    const current = vista ? "/vista/" + vista : (window.location.pathname.replace(/\/index\.html$/, "/") || "/");
+    let rawPath = window.location.pathname;
+    if (OFICINA_BASE && rawPath.startsWith(OFICINA_BASE)) {
+      rawPath = rawPath.slice(OFICINA_BASE.length) || "/";
+    }
+    const current = vista ? "/vista/" + vista : (rawPath.replace(/\/index\.html$/, "/") || "/");
     const cards = Array.from(document.querySelectorAll(".office-sidebar .nav-card"));
     const match = cards.find((c) => {
-      const h = c.getAttribute("href") || "";
+      const h = c.dataset.vistaHref || c.getAttribute("href") || "";
       return h === current || (h !== "/" && (current.startsWith(h + "/") || current === h + ".html"));
     });
     if (match) {
@@ -3690,7 +3771,12 @@
     link.className = "guide-info";
     const tip = "Abre la sección " + label + " de la guía Cómo funciona";
     link.dataset.tip = tip;
-    link.setAttribute("href", "/vista/como-funciona#" + sectionId);
+    link.setAttribute(
+      "href",
+      isStaticMode
+        ? OFICINA_BASE + "/?vista=como-funciona#" + sectionId
+        : OFICINA_BASE + "/vista/como-funciona#" + sectionId
+    );
     link.setAttribute("aria-label", "Cómo funciona: " + label);
     link.setAttribute("data-tip", tip);
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -3779,7 +3865,11 @@
       });
       const popoutLink = $("#open-plano-popout");
       if (popoutLink) {
-        popoutLink.href = mode === "radar" ? "/vista/radar" : "/vista/plano";
+        popoutLink.href = isStaticMode
+          ? OFICINA_BASE + "/?vista=" + (mode === "radar" ? "radar" : "plano")
+          : mode === "radar"
+          ? "/vista/radar"
+          : "/vista/plano";
         popoutLink.title = mode === "radar"
           ? "Abrir radar elástico en ventana nueva"
           : "Abrir plano en ventana nueva";
@@ -3847,7 +3937,10 @@
       popoutLink.addEventListener("click", (e) => {
         if (!e.ctrlKey && !e.metaKey && !e.shiftKey) {
           e.preventDefault();
-          const targetUrl = popoutLink.getAttribute("href") || "/vista/plano";
+          const rawHref = popoutLink.getAttribute("href") || "/vista/plano";
+          const targetUrl = isStaticMode
+            ? resolveVistaIframeUrl(rawHref.includes("radar") ? "/vista/radar" : "/vista/plano")
+            : rawHref;
           // Abrir plano dentro del mismo marco (panel interno)
           const iframe = document.createElement('iframe');
           iframe.src = targetUrl;

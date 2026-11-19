@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Propuestas · Oficina ApliArte</title>
-  <link rel="stylesheet" href="/panel-shell.css">
+  <link rel="stylesheet" href="../panel-shell.css">
 </head>
 <body>
   <main class="catalog-wrap">
@@ -26,7 +26,7 @@
     <div id="prop-grid" class="catalog-grid"></div>
   </main>
 
-  <script src="/panel-shell.js"></script>
+  <script src="../panel-shell.js"></script>
   <script>
     (function () {
       const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -63,7 +63,10 @@
         render();
       });
 
-      fetch("/api/propuestas", { cache: "no-store" })
+      const esEstatico = location.pathname.startsWith("/oficina-apliarte") || location.hostname.endsWith(".github.io");
+      const urlPropuestas = esEstatico ? "../datos/propuestas.json?v=" + Date.now() : "/api/propuestas";
+      fetch(urlPropuestas, { cache: "no-store" })
+        .then((r) => (r.ok ? r : fetch("../datos/propuestas.json?v=" + Date.now(), { cache: "no-store" })))
         .then((r) => (r.ok ? r.json() : []))
         .then((data) => {
           items = Array.isArray(data) ? data : [];

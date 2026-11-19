@@ -1,4 +1,4 @@
-@import url("/estilos/tokens.css");
+@import url("../estilos/tokens.css");
 
 body{margin:0;background-color:var(--page);background-image:radial-gradient(rgba(0,97,170,.08) 1px,transparent 1px);background-size:20px 20px;color:var(--ink);font-family:Abel,system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;padding:24px;box-sizing:border-box;transition:background-color 180ms var(--ease-out),color 180ms var(--ease-out)}
 html[data-theme='dark'] body{background-image:radial-gradient(ellipse 80% 45% at 50% -10%,rgba(89,212,253,.08),transparent 65%),radial-gradient(rgba(89,212,253,.06) 1px,transparent 1px);background-size:100% 100%,20px 20px}

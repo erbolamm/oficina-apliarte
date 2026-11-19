@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#005fa9">
   <title>Cómo funciona · Guía de la Oficina ApliArte</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23005fa9%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2248%22%20font-size%3D%2242%22%20font-family%3D%22system-ui%2C%20-apple-system%2C%20sans-serif%22%20font-weight%3D%22bold%22%20text-anchor%3D%22middle%22%20fill%3D%22%235ecef5%22%3E%3F%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="/panel-shell.css">
+  <link rel="stylesheet" href="../panel-shell.css">
   <script>
     try {
       document.documentElement.dataset.theme =
@@ -659,8 +659,8 @@
     </main>
   </div>
 
-  <script src="/panel-shell.js"></script>
-  <script src="/componentes/captura-real.js"></script>
+  <script src="../panel-shell.js"></script>
+  <script src="../componentes/captura-real.js"></script>
   <script>
     (() => {
       let catalogData = null;
@@ -668,7 +668,8 @@
 
       async function loadCatalog() {
         try {
-          const res = await fetch('/api/como-funciona');
+          const esEstatico = location.pathname.startsWith('/oficina-apliarte') || location.hostname.endsWith('.github.io');
+          const res = await fetch(esEstatico ? '../datos/oficina-modulos.json' : '/api/como-funciona');
           if (!res.ok) throw new Error('Status: ' + res.status);
           catalogData = await res.json();
           renderModules();
@@ -676,7 +677,7 @@
           console.warn('Error al cargar /api/como-funciona, usando respaldo local:', err);
           // Intentar rescatar archivo directo si está en entorno estático
           try {
-            const fallbackRes = await fetch('/tareas/oficina-modulos.json');
+            const fallbackRes = await fetch('../datos/oficina-modulos.json');
             if (fallbackRes.ok) {
               catalogData = await fallbackRes.json();
               renderModules();
