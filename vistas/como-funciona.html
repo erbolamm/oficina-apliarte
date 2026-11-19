@@ -23,6 +23,18 @@
       --brand-ink: #303030;
       --brand-paper: #fdfdfd;
     }
+    .badge-dev {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: rgba(251, 191, 36, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      margin-left: auto;
+      white-space: nowrap;
+    }
     .guide-hero {
       background: linear-gradient(135deg, rgba(0, 95, 169, 0.07) 0%, rgba(94, 206, 245, 0.12) 100%);
       border: 1px solid rgba(0, 95, 169, 0.18);
@@ -452,31 +464,40 @@
         </button>
       </div>
       <nav class="side-nav" aria-label="Secciones">
-        <a class="nav-card" href="/"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
-        <a class="nav-card" href="/vista/javier"><span class="nav-icon" aria-hidden="true">👤</span><span class="nav-copy"><strong>Espacio Javier</strong><small>Control personal y ja--</small></span></a>
-        <a class="nav-card" href="/vista/inicio-dia"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span></a>
-        <a class="nav-card" href="/vista/aplichat"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span></a>
-        <a class="nav-card" href="/vista/skills"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span></a>
-        <a class="nav-card" href="/vista/conectores"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span></a>
-        <a class="nav-card" href="/vista/plugins"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span></a>
-        <a class="nav-card" href="/vista/reflect"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span></a>
-        <a class="nav-card" href="/vista/propuestas"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja de Orquestadores</small></span></a>
-        <a class="nav-card" href="/vista/diseno"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span></a>
-        <a class="nav-card" href="/vista/tiendas"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span></a>
-        <a class="nav-card" href="/vista/mercado"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span></a>
-        <a class="nav-card" href="/vista/correos"><span class="nav-icon" aria-hidden="true">✉</span><span class="nav-copy"><strong>Correos y Alertas</strong><small>erbolamm y javier</small></span></a>
-        <a class="nav-card" href="/vista/pnl"><span class="nav-icon" aria-hidden="true">🧠</span><span class="nav-copy"><strong>Estudio PNL</strong><small>Enganche y microcopy</small></span></a>
-        <a class="nav-card" href="/vista/musica"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span></a>
-        <a class="nav-card" href="/vista/idiomas"><span class="nav-icon" aria-hidden="true">🌐</span><span class="nav-copy"><strong>Idiomas</strong><small>Traducción y locución</small></span></a>
-        <a class="nav-card" href="/vista/locucion"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span></a>
-        <a class="nav-card" href="/vista/voicestudio"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span></a>
-        <a class="nav-card" href="/vista/terminales"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span></a>
-        <a class="nav-card" href="/vista/facturas"><span class="nav-icon" aria-hidden="true">€</span><span class="nav-copy"><strong>Facturas</strong><small>Gestor de facturas</small></span></a>
-        <a class="nav-card" href="/vista/blogger"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span></a>
-        <a class="nav-card" href="/vista/bitacora"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span></a>
-        <a class="nav-card" href="/vista/directo"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span></a>
-        <a class="nav-card" href="/resenas"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span></a>
-        <a class="nav-card" href="/vista/como-funciona" aria-current="page"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
+        <a class="nav-card" href="/" target="_top"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">💡</span><span class="nav-copy"><strong>Propuestas</strong><small>Bandeja comunitaria</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">⌘</span><span class="nav-copy"><strong>Skills</strong><small>Botonera y catálogo</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card" href="/#aplicaciones" target="_top"><span class="nav-icon" aria-hidden="true">📱</span><span class="nav-copy"><strong>Aplicaciones</strong><small>Catálogo oficial</small></span></a>
+        <a class="nav-card" href="/vista/agentes" target="_top"><span class="nav-icon" aria-hidden="true">🤖</span><span class="nav-copy"><strong>Agentes</strong><small>Fichas de agentes</small></span></a>
+        <a class="nav-card active" href="/vista/como-funciona" aria-current="page"><span class="nav-icon" aria-hidden="true">?</span><span class="nav-copy"><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
+        <a class="nav-card" href="/vista/herdr" target="_top"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Herdr</strong><small>Consola móvil</small></span></a>
+        <a class="nav-card" href="/vista/radar" target="_top"><span class="nav-icon" aria-hidden="true">📡</span><span class="nav-copy"><strong>Radar</strong><small>Multi-agente</small></span></a>
+        <a class="nav-card" href="/vista/visita-guiada" target="_top"><span class="nav-icon" aria-hidden="true">🗺️</span><span class="nav-copy"><strong>Visita Guiada</strong><small>Tour interactivo</small></span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">📦</span><span class="nav-copy"><strong>Paquetes</strong><small>Librerías Flutter</small></span><span class="badge-dev">[En desarrollo]</span></a>
+
+        <!-- 22 pestañas privadas en desarrollo atenuadas -->
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">👤</span><span class="nav-copy"><strong>Espacio Javier</strong><small>Control personal y ja--</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">☼</span><span class="nav-copy"><strong>Inicio del día</strong><small>Checklist matutino</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">💬</span><span class="nav-copy"><strong>ApliChat</strong><small>Chat accesible</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">⇄</span><span class="nav-copy"><strong>Conectores</strong><small>Servicios y credenciales</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">⊞</span><span class="nav-copy"><strong>Plugins</strong><small>Módulos de la Oficina</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">◐</span><span class="nav-copy"><strong>Reflect</strong><small>Directivas y memoria</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">🎨</span><span class="nav-copy"><strong>Estudio de Diseño</strong><small>Vídeo, marcos y SFX</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">🎯</span><span class="nav-copy"><strong>Tiendas y ASO</strong><small>Auditoría y keywords</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">📊</span><span class="nav-copy"><strong>Radar de Mercado</strong><small>Tendencias y noticias</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">✉</span><span class="nav-copy"><strong>Correos y Alertas</strong><small>erbolamm y javier</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">🧠</span><span class="nav-copy"><strong>Estudio PNL</strong><small>Enganche y microcopy</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">🎵</span><span class="nav-copy"><strong>Estudio Musical</strong><small>Música procedural</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">🎙</span><span class="nav-copy"><strong>Locución y Guiones</strong><small>TTS y guiones cortos</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">▣</span><span class="nav-copy"><strong>Terminales</strong><small>Lanzadores locales</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">€</span><span class="nav-copy"><strong>Facturas</strong><small>Gestor de facturas</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">✎</span><span class="nav-copy"><strong>Blogger</strong><small>Monitor y difusión</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">☰</span><span class="nav-copy"><strong>Bitácora</strong><small>Proyectos y enlaces</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">▶</span><span class="nav-copy"><strong>Directo</strong><small>Centro de retransmisión</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">⎘</span><span class="nav-copy"><strong>Diapositivas</strong><small>Presentaciones y difusión</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">⏩</span><span class="nav-copy"><strong>Shorts</strong><small>Vídeo acelerado a 60 s</small></span><span class="badge-dev">[En desarrollo]</span></a>
+        <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;"><span class="nav-icon" aria-hidden="true">★</span><span class="nav-copy"><strong>Reseñas</strong><small>Contestador inteligente</small></span><span class="badge-dev">[En desarrollo]</span></a>
       </nav>
       <p class="sidebar-note"><strong>Privada y local</strong>No conecta la oficina pública, no consulta cuotas y no muestra historial.</p>
     </aside>

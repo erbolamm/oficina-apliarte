@@ -3514,3 +3514,5 @@ html[data-theme="light"] #office-topbar{background:#fff;color:#182230;border-bot
 html[data-theme="light"] #office-topbar button{border-color:#dde2e8}
 body{padding-top:64px}
 @media(max-width:720px){#office-topbar{gap:8px;padding:0 10px}#office-topbar strong{display:none}#active-tab-title{max-width:120px;overflow:hidden;text-overflow:ellipsis}#top-nav .nav-card span:not(.nav-icon){display:none}}
+.office-sidebar{display:none!important}
+.app-shell{grid-template-columns:1fr!important}

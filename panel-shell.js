@@ -2036,6 +2036,11 @@
 
       a.addEventListener("click", (e) => {
         if (isMobileView()) closeDrawer();
+        const targetPath = item.href || a.getAttribute("href") || "";
+        if (targetPath === "/" || targetPath === "" || targetPath === "/index.html") {
+          window.location.href = "/";
+          return;
+        }
         e.preventDefault();
         const t = document.getElementById("active-tab-title"); if (t) t.textContent = item.label;
         document.querySelectorAll("#top-nav .nav-card").forEach((x) => { x.classList.toggle("active", x === a); if (x === a) x.setAttribute("aria-current","page"); else x.removeAttribute("aria-current"); });
@@ -2051,8 +2056,9 @@
         }
         iframe.addEventListener("load", () => { try { iframe.contentDocument.documentElement.dataset.theme = document.documentElement.dataset.theme; } catch (_) {} });
         iframe.style.width = '100%';
-        iframe.style.height = '100%';
+        iframe.style.height = 'calc(100vh - 64px)';
         iframe.style.border = 'none';
+        iframe.style.display = 'block';
         const office = document.querySelector('#office');
         if (office) {
           office.innerHTML = '';

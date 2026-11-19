@@ -1,79 +1,212 @@
-<svg width="720" height="480" viewBox="0 0 720 480" xmlns="http://www.w3.org/2000/svg">
-  <style>
-    @media (prefers-reduced-motion: reduce) {
-      animate, animateTransform { display: none; }
-    }
-    .primary { fill: #005fa9; }
-    .accent { fill: #5ecef5; }
-    .neutral-1 { fill: #ffffff; }
-    .neutral-2 { fill: #dde2e8; }
-    .neutral-3 { fill: #c5cdd8; }
-    .neutral-4 { fill: #b0bac7; }
-    .bg { fill: #f6f5f0; }
-    .border { stroke: #182230; stroke-width: 1.25; }
-  </style>
+<svg width="720" height="480" viewBox="0 0 720 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Degradados canónicos ApliArte -->
+    <linearGradient id="apliarte-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0077d4" />
+      <stop offset="100%" stop-color="#004e8a" />
+    </linearGradient>
+    <linearGradient id="apliarte-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#72dbfe" />
+      <stop offset="100%" stop-color="#22b2eb" />
+    </linearGradient>
+    <linearGradient id="panel-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="rgba(10, 26, 48, 0.85)" />
+      <stop offset="100%" stop-color="rgba(3, 12, 26, 0.92)" />
+    </linearGradient>
+    <linearGradient id="panel-header" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="rgba(0, 97, 170, 0.45)" />
+      <stop offset="100%" stop-color="rgba(89, 212, 253, 0.25)" />
+    </linearGradient>
+    <radialGradient id="aura-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#59d4fd" stop-opacity="0.28" />
+      <stop offset="45%" stop-color="#0061aa" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#0061aa" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="platform-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#59d4fd" stop-opacity="0.32" />
+      <stop offset="100%" stop-color="#59d4fd" stop-opacity="0" />
+    </radialGradient>
 
-  <rect width="100%" height="100%" class="bg" />
+    <filter id="soft-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <filter id="orb-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
 
-  <!-- Escritorio isometrico -->
-  <g transform="translate(100,320)">
-    <rect x="0" y="0" width="520" height="100" class="primary" rx="15" />
+    <style>
+      @keyframes float-bot {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+      }
+      @keyframes float-left {
+        0%, 100% { transform: translateY(0px) rotate(-1deg); }
+        50% { transform: translateY(7px) rotate(0.5deg); }
+      }
+      @keyframes float-right {
+        0%, 100% { transform: translateY(0px) rotate(1deg); }
+        50% { transform: translateY(-7px) rotate(-0.5deg); }
+      }
+      @keyframes pulse-aura {
+        0%, 100% { opacity: 0.35; transform: scale(0.96); transform-origin: 360px 220px; }
+        50% { opacity: 0.75; transform: scale(1.04); transform-origin: 360px 220px; }
+      }
+      @keyframes blink-eyes {
+        0%, 88%, 100% { transform: scaleY(1); }
+        92% { transform: scaleY(0.12); }
+      }
+      @keyframes stream-flow {
+        to { stroke-dashoffset: -20; }
+      }
+      @keyframes gem-pulse {
+        0%, 100% { transform: scale(1) translateY(0px); }
+        50% { transform: scale(1.08) translateY(-4px); }
+      }
 
-    <!-- Monitor con lineas de codigo -->
-    <g transform="translate(40, -180)">
-      <rect x="0" y="0" width="480" height="200" class="neutral-1" rx="10" />
-      <g transform="translate(40, 40)">
-        <path d="M 0 20 L 180 20" class="neutral-3 border" />
-        <path d="M 0 40 L 180 40" class="neutral-4 border" />
-        <path d="M 0 60 L 120 60" class="neutral-4 border" />
-        <path d="M 0 80 L 180 80" class="neutral-3 border" />
-        <path d="M 60 100 L 180 100" class="neutral-2 border" />
-        <path d="M 0 120 L 140 120" class="neutral-3 border" />
-      </g>
+      .anim-bot { animation: float-bot 4.2s ease-in-out infinite; }
+      .anim-left { animation: float-left 5.4s ease-in-out infinite; }
+      .anim-right { animation: float-right 4.8s ease-in-out infinite; }
+      .anim-aura { animation: pulse-aura 3.8s ease-in-out infinite; }
+      .anim-eyes { transform-origin: 360px 146px; animation: blink-eyes 4.6s infinite; }
+      .anim-stream { animation: stream-flow 1.4s linear infinite; }
+      .anim-gem { transform-origin: 360px 250px; animation: gem-pulse 3s ease-in-out infinite; }
+
+      @media (prefers-reduced-motion: reduce) {
+        .anim-bot, .anim-left, .anim-right, .anim-aura, .anim-eyes, .anim-stream, .anim-gem {
+          animation: none !important;
+          transform: none !important;
+        }
+      }
+    </style>
+  </defs>
+
+  <!-- Halo de luz ambiental centrado -->
+  <circle cx="360" cy="220" r="210" fill="url(#aura-glow)" class="anim-aura" />
+
+  <!-- Plataforma tecnológica inferior (fondo transparente) -->
+  <g opacity="0.85">
+    <ellipse cx="360" cy="400" rx="190" ry="38" fill="url(#platform-glow)" />
+    <ellipse cx="360" cy="400" rx="210" ry="42" stroke="#0061aa" stroke-width="1.5" stroke-dasharray="10 8" opacity="0.45" />
+    <ellipse cx="360" cy="400" rx="160" ry="32" stroke="#59d4fd" stroke-width="1.8" opacity="0.75" />
+    <ellipse cx="360" cy="400" rx="110" ry="22" stroke="#59d4fd" stroke-width="1" stroke-dasharray="4 4" opacity="0.5" />
+    <!-- Líneas de retícula isométrica de proyección -->
+    <line x1="200" y1="400" x2="250" y2="400" stroke="#59d4fd" stroke-width="1.5" opacity="0.7" />
+    <line x1="470" y1="400" x2="520" y2="400" stroke="#59d4fd" stroke-width="1.5" opacity="0.7" />
+    <line x1="360" y1="368" x2="360" y2="378" stroke="#59d4fd" stroke-width="1.5" opacity="0.7" />
+    <line x1="360" y1="422" x2="360" y2="432" stroke="#59d4fd" stroke-width="1.5" opacity="0.7" />
+  </g>
+
+  <!-- Partículas geométricas de fondo (ApliArte sparks) -->
+  <g opacity="0.7">
+    <polygon points="170,110 176,116 170,122 164,116" fill="#59d4fd" opacity="0.8" />
+    <polygon points="560,95 567,102 560,109 553,102" fill="#59d4fd" opacity="0.8" />
+    <polygon points="215,310 220,315 215,320 210,315" fill="#0061aa" opacity="0.9" />
+    <polygon points="525,315 531,321 525,327 519,321" fill="#0061aa" opacity="0.9" />
+    <circle cx="280" cy="85" r="2.5" fill="#59d4fd" opacity="0.6" />
+    <circle cx="445" cy="80" r="2" fill="#59d4fd" opacity="0.6" />
+  </g>
+
+  <!-- Pantalla holográfica izquierda: Código y estado -->
+  <g class="anim-left">
+    <rect x="95" y="145" width="180" height="130" rx="14" fill="url(#panel-bg)" stroke="#59d4fd" stroke-width="1.6" filter="url(#soft-glow)" />
+    <!-- Cabecera de ventana -->
+    <rect x="95" y="145" width="180" height="26" rx="14" fill="url(#panel-header)" />
+    <circle cx="112" cy="158" r="4" fill="#59d4fd" />
+    <circle cx="124" cy="158" r="4" fill="#0061aa" />
+    <circle cx="136" cy="158" r="4" fill="#ffffff" opacity="0.8" />
+    <text x="260" y="162" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#59d4fd" text-anchor="end" opacity="0.85">MODULO.DART</text>
+    <!-- Líneas de código estilizadas -->
+    <rect x="112" y="184" width="60" height="6" rx="3" fill="#59d4fd" opacity="0.95" />
+    <rect x="178" y="184" width="40" height="6" rx="3" fill="#0061aa" opacity="0.8" />
+    <rect x="122" y="196" width="95" height="5" rx="2.5" fill="#59d4fd" opacity="0.65" />
+    <rect x="122" y="207" width="115" height="5" rx="2.5" fill="rgba(89, 212, 253, 0.45)" />
+    <rect x="122" y="218" width="75" height="5" rx="2.5" fill="#0061aa" opacity="0.75" />
+    <rect x="112" y="229" width="45" height="5" rx="2.5" fill="#59d4fd" opacity="0.85" />
+    <!-- Barra de progreso de compilación -->
+    <rect x="112" y="248" width="146" height="8" rx="4" fill="rgba(0, 97, 170, 0.4)" stroke="rgba(89, 212, 253, 0.3)" stroke-width="0.8" />
+    <rect x="112" y="248" width="102" height="8" rx="4" fill="url(#apliarte-cyan)" />
+  </g>
+
+  <!-- Pantalla holográfica derecha: Arquitectura y wireframe 3D -->
+  <g class="anim-right">
+    <rect x="445" y="135" width="180" height="145" rx="14" fill="url(#panel-bg)" stroke="#0061aa" stroke-width="1.8" filter="url(#soft-glow)" />
+    <!-- Cabecera de ventana -->
+    <rect x="445" y="135" width="180" height="26" rx="14" fill="url(#panel-header)" />
+    <circle cx="462" cy="148" r="4" fill="#59d4fd" />
+    <circle cx="474" cy="148" r="4" fill="#0061aa" />
+    <circle cx="486" cy="148" r="4" fill="#ffffff" opacity="0.8" />
+    <text x="610" y="152" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#59d4fd" text-anchor="end" opacity="0.85">BLUEPRINT.UI</text>
+    <!-- Retícula isométrica técnica -->
+    <line x1="465" y1="205" x2="605" y2="205" stroke="rgba(89, 212, 253, 0.25)" stroke-width="1" stroke-dasharray="3 3" />
+    <line x1="535" y1="172" x2="535" y2="255" stroke="rgba(89, 212, 253, 0.25)" stroke-width="1" stroke-dasharray="3 3" />
+    <!-- Cubo wireframe en construcción -->
+    <polygon points="535,178 565,193 535,208 505,193" fill="rgba(89, 212, 253, 0.12)" stroke="#59d4fd" stroke-width="1.6" />
+    <polygon points="505,193 535,208 535,238 505,223" fill="rgba(0, 97, 170, 0.25)" stroke="#59d4fd" stroke-width="1.6" />
+    <polygon points="565,193 535,208 535,238 565,223" fill="rgba(89, 212, 253, 0.2)" stroke="#59d4fd" stroke-width="1.6" />
+    <!-- Nodo de conexión -->
+    <circle cx="535" cy="208" r="3.5" fill="#59d4fd" filter="url(#orb-glow)" />
+    <text x="535" y="266" font-family="system-ui, -apple-system, sans-serif" font-size="8.5" font-weight="800" fill="#59d4fd" text-anchor="middle" letter-spacing="1.2">APLIARTE // ARQUITECTURA</text>
+  </g>
+
+  <!-- Haz de datos entre manos y pantallas -->
+  <path d="M 292 238 Q 280 215 275 208" stroke="#59d4fd" stroke-width="1.8" stroke-dasharray="5 5" fill="none" class="anim-stream" opacity="0.75" />
+  <path d="M 428 238 Q 440 215 445 208" stroke="#59d4fd" stroke-width="1.8" stroke-dasharray="5 5" fill="none" class="anim-stream" opacity="0.75" />
+
+  <!-- Bot Principal ApliArte (Cuerpo, cabeza, brazos) -->
+  <g class="anim-bot">
+    <!-- Antena con orbe pulsante -->
+    <line x1="360" y1="108" x2="360" y2="82" stroke="#59d4fd" stroke-width="2.5" stroke-linecap="round" />
+    <circle cx="360" cy="78" r="6.5" fill="#59d4fd" filter="url(#orb-glow)" />
+    <circle cx="360" cy="78" r="3" fill="#ffffff" />
+
+    <!-- Auriculares / Nodos laterales -->
+    <rect x="310" y="132" width="10" height="28" rx="5" fill="#59d4fd" />
+    <rect x="400" y="132" width="10" height="28" rx="5" fill="#59d4fd" />
+
+    <!-- Cabeza del Bot -->
+    <rect x="318" y="108" width="84" height="68" rx="24" fill="url(#apliarte-blue)" stroke="#59d4fd" stroke-width="2" filter="url(#soft-glow)" />
+    <!-- Visor oscuro del rostro -->
+    <rect x="328" y="124" width="64" height="38" rx="14" fill="#040d1a" stroke="rgba(89, 212, 253, 0.45)" stroke-width="1.2" />
+    <!-- Ojos digitales expresivos en cyan -->
+    <g class="anim-eyes">
+      <rect x="339" y="136" width="15" height="15" rx="7.5" fill="#59d4fd" filter="url(#orb-glow)" />
+      <circle cx="343" cy="140" r="2.5" fill="#ffffff" />
+      <rect x="366" y="136" width="15" height="15" rx="7.5" fill="#59d4fd" filter="url(#orb-glow)" />
+      <circle cx="370" cy="140" r="2.5" fill="#ffffff" />
     </g>
 
-    <!-- Bot pequeño -->
-    <g transform="translate(220, -140)">
-      <circle cx="0" cy="0" r="20" class="primary" />
-      <circle cx="-8" cy="-5" r="4" class="neutral-3" />
-      <circle cx="8" cy="-5" r="4" class="neutral-3" />
+    <!-- Cuello -->
+    <rect x="348" y="176" width="24" height="12" rx="4" fill="#004e8a" stroke="#59d4fd" stroke-width="1" />
 
-      <!-- Brazo izquierdo (digitando) -->
-      <g transform="translate(0, 60)">
-        <line x1="0" y1="-20" x2="0" y2="60" class="border">
-          <animateTransform attributeName="transform" type="rotate"
-            values="0 0 0; 10 0 0" dur="3.2s" repeatCount="indefinite" additive="sum" />
-        </line>
-      </g>
+    <!-- Torso / Pecho -->
+    <rect x="322" y="188" width="76" height="82" rx="20" fill="url(#apliarte-blue)" stroke="#0061aa" stroke-width="2" filter="url(#soft-glow)" />
+    <!-- Placa de pecho -->
+    <rect x="332" y="198" width="56" height="54" rx="12" fill="#051224" stroke="rgba(89, 212, 253, 0.4)" stroke-width="1.2" />
 
-      <!-- Brazo derecho -->
-      <g transform="translate(40, 60)">
-        <line x1="0" y1="-20" x2="0" y2="60" class="border">
-          <animateTransform attributeName="transform" type="rotate"
-            values="0 0 0; -10 0 0" dur="3.2s" repeatCount="indefinite" additive="sum" />
-        </line>
-      </g>
-
-      <!-- Cursor parpadeante -->
-      <g transform="translate(-20, 80)">
-        <circle cx="0" cy="0" r="8" class="neutral-1">
-          <animate attributeName="opacity" from="0" to="1" dur="1.2s" begin="0s" repeatCount="indefinite" />
-        </circle>
-      </g>
-
-      <!-- Chispas flotantes -->
-      <g transform="translate(0, 60)">
-        <circle cx="-25" cy="-20" r="4" class="neutral-1">
-          <animateTransform attributeName="transform" type="translate"
-            values="0 0; 0 -10; 0 0" dur="3.6s" repeatCount="indefinite" additive="sum" />
-        </circle>
-      </g>
-      <g transform="translate(60, 60)">
-        <circle cx="0" cy="-20" r="4" class="neutral-1">
-          <animateTransform attributeName="transform" type="translate"
-            values="0 0; 0 -10; 0 0" dur="3.6s" repeatCount="indefinite" additive="sum" />
-        </circle>
-      </g>
+    <!-- Logotipo origami ApliArte oficial en el pecho -->
+    <g transform="translate(343, 207) scale(0.85)">
+      <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa" />
+      <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.95" />
     </g>
+
+    <!-- Manos magnéticas flotantes del Bot -->
+    <!-- Mano izquierda -->
+    <g transform="translate(284, 230)">
+      <rect x="0" y="0" width="18" height="22" rx="9" fill="url(#apliarte-cyan)" filter="url(#soft-glow)" />
+      <circle cx="9" cy="11" r="4.5" fill="#ffffff" opacity="0.8" />
+    </g>
+    <!-- Mano derecha -->
+    <g transform="translate(418, 230)">
+      <rect x="0" y="0" width="18" height="22" rx="9" fill="url(#apliarte-cyan)" filter="url(#soft-glow)" />
+      <circle cx="9" cy="11" r="4.5" fill="#ffffff" opacity="0.8" />
+    </g>
+  </g>
+
+  <!-- Núcleo de datos central flotante (Gema ApliArte) -->
+  <g class="anim-gem">
+    <polygon points="360,285 372,298 360,311 348,298" fill="url(#apliarte-cyan)" opacity="0.9" filter="url(#orb-glow)" />
+    <polygon points="360,288 369,298 360,307 351,298" fill="#ffffff" opacity="0.6" />
   </g>
 </svg>
