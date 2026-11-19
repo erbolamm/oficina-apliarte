@@ -369,7 +369,7 @@
             </div>
           </div>
           <div class="panel-head-actions">
-            <a href="https://play.google.com/store/apps/dev?id=6466996461793257312" target="_blank" rel="noopener" class="panel-action-btn primary" title="Abrir catálogo oficial de ApliArte en Google Play"><span aria-hidden="true">↗</span> Catálogo Google Play</a>
+            <a href="https://play.google.com/store/apps/dev?id=6466996461793257312" class="panel-action-btn primary" title="Abrir catálogo oficial de ApliArte en Google Play"><span aria-hidden="true">↗</span> Catálogo Google Play</a>
           </div>
         </div>
 
@@ -732,7 +732,7 @@
             <div class="app-stores-row">
               ${app.tiendas.map(t => {
                 if (t.disponible && t.url) {
-                  return `<a href="${escapeHtml(t.url)}" target="_blank" rel="noopener" class="app-store-pill app-store-pill-active" title="Abrir en ${escapeHtml(t.tienda)}">${escapeHtml(t.tienda)} <span aria-hidden="true">↗</span></a>`;
+                  return `<a href="${escapeHtml(t.url)}" class="app-store-pill app-store-pill-active" title="Abrir en ${escapeHtml(t.tienda)}">${escapeHtml(t.tienda)} <span aria-hidden="true">↗</span></a>`;
                 } else {
                   return `<span class="app-store-pill app-store-pill-disabled" title="Proximamente en ${escapeHtml(t.tienda)}">${escapeHtml(t.tienda)} (Proximamente)</span>`;
                 }
@@ -754,7 +754,7 @@
       let landingHtml = "";
       if (app.enlace_principal && app.enlace_principal.url) {
         landingHtml = `
-          <a href="${escapeHtml(app.enlace_principal.url)}" target="_blank" rel="noopener" class="app-main-btn">
+          <a href="${escapeHtml(app.enlace_principal.url)}" class="app-main-btn">
             <span>${escapeHtml(app.enlace_principal.texto || "Sitio Web Oficial")}</span>
             <span aria-hidden="true">↗</span>
           </a>

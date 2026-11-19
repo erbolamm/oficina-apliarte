@@ -450,24 +450,7 @@ function aoInit(root, opts){
   }
 
   function aoOpen() {
-    var url = "";
-    var win = null;
-    try {
-      var blob = new Blob([aoDoc()], { type: "text/html;charset=utf-8" });
-      url = URL.createObjectURL(blob);
-      win = window.open(url, "_blank");
-    } catch (e) {
-      win = null;
-    }
-    if (!win) {
-      if (url) { try { URL.revokeObjectURL(url); } catch (e) {} }
-      aoInline();
-      return;
-    }
-    try { win.opener = null; } catch (e) {}
-    window.setTimeout(function () {
-      try { URL.revokeObjectURL(url); } catch (e) {}
-    }, 60000);
+    aoInline();
   }
 
   var button = document.getElementById("ao-open");
