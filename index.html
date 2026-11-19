@@ -214,7 +214,7 @@
         </a>
         <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
           <span class="nav-icon" aria-hidden="true">⚡</span>
-          <span class="nav-copy"><strong>Voice Studio</strong><small>Clonación ultrarrápida</small></span>
+          <span class="nav-copy"><strong>Voces ApliArte</strong><small>Clonación ultrarrápida</small></span>
           <span class="badge-dev">[En desarrollo]</span>
         </a>
         <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
@@ -291,7 +291,7 @@
             <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
             <line x1="12" y1="18" x2="12.01" y2="18"></line>
           </svg>Aplicaciones
-          <span class="tab-badge" id="badge-total-apps">7</span>
+          <span class="tab-badge" id="badge-total-apps">12</span>
         </button>
         <button type="button" class="pill-btn" role="tab" id="tab-btn-recurrentes" aria-selected="false" aria-controls="recurrentes-panel" data-tab="recurrentes">
           <span aria-hidden="true">🔁</span> Tareas recurrentes
@@ -486,36 +486,7 @@
       }
     }
 
-    // 3. Conmutador de secciones del panel (Tablero, Aplicaciones, Recurrentes, Agentes)
-    const tabs = document.querySelectorAll(".panel-tabs .pill-btn[data-tab]");
-    const panels = {
-      "tablero": document.getElementById("tablero"),
-      "aplicaciones": document.getElementById("aplicaciones-panel"),
-      "recurrentes": document.getElementById("recurrentes-panel"),
-      "agentes": document.getElementById("agentes-panel")
-    };
-
-    tabs.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const targetTab = btn.getAttribute("data-tab");
-        tabs.forEach(b => {
-          b.classList.remove("active");
-          b.setAttribute("aria-selected", "false");
-        });
-        btn.classList.add("active");
-        btn.setAttribute("aria-selected", "true");
-
-        Object.keys(panels).forEach(key => {
-          if (panels[key]) {
-            panels[key].hidden = (key !== targetTab);
-          }
-        });
-
-        if (targetTab === "aplicaciones" && catalogoAppsMemoria.length === 0) {
-          cargarAplicacionesEscaparate();
-        }
-      });
-    });
+    // 3. Acceso directo lateral hacia la sección Aplicaciones (el conmutador vive en panel-shell.js)
 
     const sidebarApps = document.getElementById("sidebar-nav-aplicaciones");
     if (sidebarApps) {
@@ -770,15 +741,16 @@
 
       try {
         let apps = [];
+        const basePrefix = window.location.pathname.startsWith("/vista/") ? "../" : "./";
         try {
-          const res = await fetch("./datos/aplicaciones.json?v=" + Date.now());
+          const res = await fetch(basePrefix + "datos/aplicaciones.json?v=" + Date.now());
           if (res.ok) {
             apps = await res.json();
           }
         } catch (_) {}
 
         if (!Array.isArray(apps) || apps.length === 0) {
-          const resApi = await fetch("./api/aplicaciones");
+          const resApi = await fetch(basePrefix + "api/aplicaciones");
           if (resApi.ok) apps = await resApi.json();
         }
 
@@ -803,6 +775,8 @@
         renderizarGridAplicaciones();
       });
     });
+
+    window.cargarAplicacionesEscaparate = cargarAplicacionesEscaparate;
 
     document.addEventListener("DOMContentLoaded", () => {
       cargarTablero();

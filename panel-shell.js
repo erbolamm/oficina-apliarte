@@ -1659,17 +1659,23 @@
     }
   });
 
-  let isPublicReadOnlyMode = false;
+  let isPublicReadOnlyMode = Boolean(
+    document.querySelector(".private-chip")?.textContent?.toLowerCase().includes("pública")
+  );
   const isPublicReadOnlyPromise =
     typeof fetch === "function"
       ? fetch("/api/estado", { cache: "no-store" })
           .then((r) => (r.ok ? r.json() : null))
           .then((d) => {
-            isPublicReadOnlyMode = Boolean(d && d.modo === "solo_lectura");
+            const detected = Boolean(d && d.modo === "solo_lectura");
+            if (detected !== isPublicReadOnlyMode) {
+              isPublicReadOnlyMode = detected;
+              syncCanonicalSideNav();
+            }
             return isPublicReadOnlyMode;
           })
-          .catch(() => false)
-      : Promise.resolve(false);
+          .catch(() => isPublicReadOnlyMode)
+      : Promise.resolve(isPublicReadOnlyMode);
 
   async function refresh() {
     if (isPublicReadOnlyMode || polling || document.hidden) return;
@@ -1973,15 +1979,22 @@
   // lateral tenga la misma lista idéntica de 10 enlaces en el mismo orden exacto,
   // con los mismos títulos, subtítulos e iconos, evitando saltos visuales al navegar.
   const CANONICAL_SIDE_NAV = [
+    { href: "/vista/visita-guiada", label: "Visita Guiada", desc: "30 diapositivas interactivas", icon: "🗺️" },
     { href: "/", label: "Oficina", desc: "Tablero de tareas", icon: "⌂", id: "casita" },
+    { href: "/vista/aplicaciones", label: "Aplicaciones", desc: "Catálogo oficial", icon: "📱" },
+    { href: "/vista/paquetes", label: "Paquetes", desc: "Librerías Flutter", icon: "📦" },
+    { href: "/vista/skills", label: "Skills", desc: "Botonera y catálogo", icon: "⌘" },
+    { href: "/vista/propuestas", label: "Propuestas", desc: "Bandeja de Orquestadores", icon: "💡" },
+    { href: "/vista/como-funciona", label: "Cómo funciona", desc: "Guía de la Oficina", icon: "?" },
+    { href: "/vista/agentes", label: "Agentes", desc: "Fichas de agentes", icon: "🤖" },
+    { href: "/vista/radar", label: "Radar", desc: "Multi-agente", icon: "📡" },
+    { href: "/vista/herdr", label: "Herdr", desc: "Consola móvil", icon: "⚡" },
     { href: "/vista/seo", label: "Espacio SEO", desc: "Auditoría y posicionamiento", icon: "🔍", id: "nav-seo" },
     { href: "/vista/inicio-dia", label: "Inicio del día", desc: "Checklist matutino", icon: "☼" },
     { href: "/vista/aplichat", label: "ApliChat", desc: "Chat accesible", icon: "💬" },
-    { href: "/vista/skills", label: "Skills", desc: "Botonera y catálogo", icon: "⌘" },
     { href: "/vista/conectores", label: "Conectores", desc: "Servicios y credenciales", icon: "⇄" },
     { href: "/vista/plugins", label: "Plugins", desc: "Módulos de la Oficina", icon: "⊞" },
     { href: "/vista/reflect", label: "Reflect", desc: "Directivas y memoria", icon: "◐" },
-    { href: "/vista/propuestas", label: "Propuestas", desc: "Bandeja de Orquestadores", icon: "💡" },
     { href: "/vista/diseno", label: "Estudio de Diseño", desc: "Vídeo, marcos y SFX", icon: "🎨" },
     { href: "/vista/tiendas", label: "Tiendas y ASO", desc: "Auditoría y keywords", icon: "🎯" },
     { href: "/vista/mercado", label: "Radar de Mercado", desc: "Tendencias y noticias", icon: "📊" },
@@ -1989,7 +2002,7 @@
     { href: "/vista/pnl", label: "Estudio PNL", desc: "Enganche y microcopy", icon: "🧠" },
     { href: "/vista/musica", label: "Estudio Musical", desc: "Música procedural", icon: "🎵" },
     { href: "/vista/locucion", label: "Locución y Guiones", desc: "TTS y guiones cortos", icon: "🎙" },
-    { href: "/vista/voicestudio", label: "Voice Studio", desc: "Clonación ultrarrápida", icon: "⚡" },
+    { href: "/vista/voicestudio", label: "Voces ApliArte", desc: "Clonación ultrarrápida", icon: "⚡" },
     { href: "/vista/terminales", label: "Terminales", desc: "Lanzadores locales", icon: "▣" },
     { href: "/vista/facturas", label: "Facturas", desc: "Gestor de facturas", icon: "€" },
     { href: "/vista/blogger", label: "Blogger", desc: "Monitor y difusión", icon: "✎" },
@@ -1999,8 +2012,6 @@
     { href: "/vista/shorts", label: "Shorts", desc: "Vídeo acelerado a 60 s", icon: "⏩" },
     { href: "/vista/resenas", label: "Reseñas", desc: "Contestador inteligente", icon: "★" },
     { href: "/vista/settings", label: "Ajustes", desc: "Opciones por defecto", icon: "⚙" },
-    { href: "/vista/como-funciona", label: "Cómo funciona", desc: "Guía de la Oficina", icon: "?" },
-    { href: "/vista/visita-guiada", label: "Visita Guiada", desc: "30 diapositivas interactivas", icon: "🗺️" },
   ];
   // The server registry (/api/modulos) replaces this list once loaded; the
   // built-in array above stays as the fallback when it cannot be reached.
@@ -2041,6 +2052,19 @@
     return list;
   }
 
+  const PUBLIC_NAV_HREFS = new Set([
+    "/vista/visita-guiada",
+    "/",
+    "/vista/aplicaciones",
+    "/vista/paquetes",
+    "/vista/skills",
+    "/vista/propuestas",
+    "/vista/como-funciona",
+    "/vista/agentes",
+    "/vista/radar",
+    "/vista/herdr",
+  ]);
+
   function syncCanonicalSideNav() {
     const nav = document.querySelector(".office-sidebar .side-nav");
     if (!nav) return;
@@ -2062,6 +2086,7 @@
       }
       if (item.href === "/vista/aplichat" && currentPath.includes("traductor")) isCurrent = true;
       if (item.href === "/vista/directo" && currentPath.includes("twitch")) isCurrent = true;
+      if (!isCurrent && isPublicReadOnlyMode && !PUBLIC_NAV_HREFS.has(item.href)) continue;
       // La página abierta se pinta siempre, aunque su pestaña esté oculta.
       if (!isCurrent && hiddenNav.includes(item.href)) continue;
 
@@ -3843,9 +3868,10 @@
 
     const sections = {
       tablero: $("#tablero"),
+      aplicaciones: $("#aplicaciones-panel"),
       recurrentes: $("#recurrentes-panel"),
       buzon: $("#office-tools-buzon"),
-      agentes: $("#office-tools-agentes"),
+      agentes: $("#agentes-panel") || $("#office-tools-agentes"),
     };
 
     function activateTab(targetId, persist = true) {
@@ -3882,6 +3908,8 @@
       // Si se activa recurrentes y hay lista, refrescar
       if (targetId === "recurrentes") {
         loadRecurrentes();
+      } else if (targetId === "aplicaciones" && typeof window.cargarAplicacionesEscaparate === "function") {
+        window.cargarAplicacionesEscaparate();
       }
     }
 
@@ -3895,7 +3923,9 @@
     // Determinar pestaña inicial: 1. Hash en URL, 2. localStorage, 3. 'tablero'
     let initialTab = "tablero";
     const hash = window.location.hash.replace(/^#/, "");
-    if (hash === "recurrentes" || hash === "recurrentes-panel") {
+    if (hash === "aplicaciones" || hash === "aplicaciones-panel") {
+      initialTab = "aplicaciones";
+    } else if (hash === "recurrentes" || hash === "recurrentes-panel") {
       initialTab = "recurrentes";
     } else if (hash === "buzon" || hash === "inbox") {
       initialTab = "buzon";
