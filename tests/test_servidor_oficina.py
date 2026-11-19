@@ -170,7 +170,8 @@ class TestServidorOficina(unittest.TestCase):
         with urllib.request.urlopen(f"{self.base_url}/vista/directo") as resp:
             self.assertEqual(resp.status, 200)
             html = resp.read().decode("utf-8")
-            self.assertIn("Demo no interactiva", html)
+            self.assertIn("https://directo.apliarte.com/", html)
+            self.assertIn("<iframe", html)
             self.assertIn("twitch.tv/apliarte", html)
             self.assertNotIn("192.168.", html)
             self.assertNotIn("rtmp://", html)
