@@ -231,6 +231,12 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 self.responder_css(archivo_css.read_text(encoding="utf-8"))
                 return
 
+        if ruta == "/panel-shell.js":
+            archivo_js = RAIZ_PROYECTO / "panel-shell.js"
+            if archivo_js.exists():
+                self.responder_js(archivo_js.read_text(encoding="utf-8"))
+                return
+
         if ruta.startswith("/estilos/") and ruta.endswith(".css"):
             archivo_css = RAIZ_PROYECTO / ruta.lstrip("/")
             if archivo_css.exists() and archivo_css.is_file():
