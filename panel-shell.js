@@ -1659,8 +1659,20 @@
     }
   });
 
+  let isPublicReadOnlyMode = false;
+  const isPublicReadOnlyPromise =
+    typeof fetch === "function"
+      ? fetch("/api/estado", { cache: "no-store" })
+          .then((r) => (r.ok ? r.json() : null))
+          .then((d) => {
+            isPublicReadOnlyMode = Boolean(d && d.modo === "solo_lectura");
+            return isPublicReadOnlyMode;
+          })
+          .catch(() => false)
+      : Promise.resolve(false);
+
   async function refresh() {
-    if (polling || document.hidden) return;
+    if (isPublicReadOnlyMode || polling || document.hidden) return;
     // Servidor caído: no se insiste hasta que toque, y así no se llena la consola.
     if (Date.now() < esperaHasta) return;
     polling = true;
@@ -1988,6 +2000,7 @@
     { href: "/vista/resenas", label: "Reseñas", desc: "Contestador inteligente", icon: "★" },
     { href: "/vista/settings", label: "Ajustes", desc: "Opciones por defecto", icon: "⚙" },
     { href: "/vista/como-funciona", label: "Cómo funciona", desc: "Guía de la Oficina", icon: "?" },
+    { href: "/vista/visita-guiada", label: "Visita Guiada", desc: "30 diapositivas interactivas", icon: "🗺️" },
   ];
   // The server registry (/api/modulos) replaces this list once loaded; the
   // built-in array above stays as the fallback when it cannot be reached.
@@ -2345,12 +2358,13 @@
     return true;
   }
 
-  if (typeof fetch === "function") {
+  isPublicReadOnlyPromise.then((isPublic) => {
+    if (isPublic || typeof fetch !== "function") return;
     fetch("/api/modulos", { cache: "no-store" })
       .then((res) => (res.ok ? res.json() : null))
       .then(applyModulesRegistry)
       .catch(() => {});
-  }
+  });
 
   watchBloggerProposal();
   window.addEventListener("blogger:state", watchBloggerProposal);
@@ -4003,10 +4017,13 @@
   initHeaderPlanoButtons();
   initPanelTabs();
   mountGuideInfoIcons();
-  initSystemTelemetry();
 
-  refresh();
-  window.setInterval(refresh, 5000);
+  isPublicReadOnlyPromise.then((isPublic) => {
+    if (isPublic) return;
+    initSystemTelemetry();
+    refresh();
+    window.setInterval(refresh, 5000);
+  });
 
   // Superficie pública mínima para inspecciones y tests headless.
   window.Oficina = Object.freeze({

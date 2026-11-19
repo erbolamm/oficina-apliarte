@@ -274,6 +274,7 @@
           <h1 id="tablero-titulo">Oficina · Tablero de tareas</h1>
         </div>
         <span class="private-chip">Oficina pública · lectura</span>
+        <a id="issues-btn" class="topbar-issues-btn" href="https://github.com/erbolamm/oficina-apliarte/issues/new/choose" target="_blank" rel="noopener noreferrer" title="Proponer una idea, mejora o avisar de un fallo en GitHub" aria-label="Proponer idea o fallo en GitHub">Proponer idea o fallo</a>
         <button id="refresh-btn" class="btn-refresh" type="button" aria-label="Actualizar vista" title="Actualizar">↻</button>
         <button id="theme-toggle" type="button" aria-label="Cambiar tema" title="Cambiar tema">
           <span id="theme-icon" aria-hidden="true">☾</span>
@@ -295,7 +296,7 @@
         <button type="button" class="pill-btn" role="tab" id="tab-btn-recurrentes" aria-selected="false" aria-controls="recurrentes-panel" data-tab="recurrentes">
           <span aria-hidden="true">🔁</span> Tareas recurrentes
         </button>
-        <a href="#" class="pill-btn" role="tab" id="tab-btn-buzon" title="Ideas y recordatorios" onclick="return false;">
+        <a href="https://github.com/erbolamm/oficina-apliarte/issues/new/choose" target="_blank" rel="noopener noreferrer" class="pill-btn" role="tab" id="tab-btn-buzon" title="Enviar ideas y recordatorios en GitHub">
           <span aria-hidden="true">💡</span> Ideas y recordatorios
         </a>
         <button type="button" class="pill-btn" role="tab" id="tab-btn-agentes" aria-selected="false" aria-controls="agentes-panel" data-tab="agentes">
@@ -313,13 +314,13 @@
             </div>
           </div>
           <div class="panel-head-actions">
-            <a href="#" class="panel-action-btn primary" title="Nueva propuesta" onclick="return false;">
+            <a href="https://github.com/erbolamm/oficina-apliarte/issues/new?title=%5BPropuesta%5D%20" target="_blank" rel="noopener noreferrer" class="panel-action-btn primary" title="Proponer una idea o mejora en GitHub">
               <span aria-hidden="true">＋</span> Nueva propuesta
             </a>
-            <a href="#" class="panel-action-btn" title="Lista de tareas" onclick="return false;">
+            <a href="#lanes" class="panel-action-btn" title="Ir a las columnas de tareas" onclick="event.preventDefault(); document.getElementById('lanes')?.scrollIntoView({behavior:'smooth'});">
               <span aria-hidden="true">📋</span> Lista de tareas
             </a>
-            <a href="#" class="panel-action-btn" title="Skills" onclick="return false;">
+            <a href="/vista/skills" class="panel-action-btn" title="Abrir catálogo de Skills" onclick="const c=document.querySelector('.office-sidebar .nav-card[href=\'/vista/skills\']'); if(c){event.preventDefault(); c.click();}">
               <span aria-hidden="true">⌘</span> Skills
             </a>
           </div>
@@ -401,12 +402,12 @@
         </div>
         <ul class="recurrentes-list" style="padding: 1rem; list-style: none; display: grid; gap: 0.75rem;">
           <li class="card" style="padding: 1rem; border: 1px solid var(--border, #475569); border-radius: var(--radius-sm, 6px); background: var(--surface);">
-            <strong style="color: var(--navy, #38bdf8); display: block; margin-bottom: 0.25rem;">Sincronización matutina de repositorios y memoria</strong>
+            <strong class="accent-heading" style="display: block; margin-bottom: 0.25rem;">Sincronización matutina de repositorios y memoria</strong>
             <small style="color: var(--text-muted); display: block;">Responsable: ge (Orquestador) · Frecuencia: Diario 08:30</small>
             <p style="font-size: 0.85rem; margin-top: 0.5rem; color: var(--text);">Actualización de ramas remotas, comprobación de estado y recolección de contexto de trabajo.</p>
           </li>
           <li class="card" style="padding: 1rem; border: 1px solid var(--border, #475569); border-radius: var(--radius-sm, 6px); background: var(--surface);">
-            <strong style="color: var(--navy, #38bdf8); display: block; margin-bottom: 0.25rem;">Auditoría de seguridad y solo lectura en endpoints</strong>
+            <strong class="accent-heading" style="display: block; margin-bottom: 0.25rem;">Auditoría de seguridad y solo lectura en endpoints</strong>
             <small style="color: var(--text-muted); display: block;">Responsable: agy · Frecuencia: Diario 19:00</small>
             <p style="font-size: 0.85rem; margin-top: 0.5rem; color: var(--text);">Verificación de contratos HTTP seguros, bloqueo de escrituras remotas no autorizadas y pruebas unitarias.</p>
           </li>
@@ -425,15 +426,15 @@
         </div>
         <div style="padding: 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem;">
           <div class="card" style="padding: 1rem; border: 1px solid var(--border, #475569); border-radius: var(--radius-sm, 6px); background: var(--surface);">
-            <div style="font-weight: 700; font-size: 1rem; color: var(--navy, #38bdf8);">agy · Antigravity</div>
+            <div class="accent-heading" style="font-weight: 700; font-size: 1rem;">agy · Antigravity</div>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Orquestador central, desarrollo guiado por resultados e integración continua.</p>
           </div>
           <div class="card" style="padding: 1rem; border: 1px solid var(--border, #475569); border-radius: var(--radius-sm, 6px); background: var(--surface);">
-            <div style="font-weight: 700; font-size: 1rem; color: var(--navy, #38bdf8);">cl · Claude Code</div>
+            <div class="accent-heading" style="font-weight: 700; font-size: 1rem;">cl · Claude Code</div>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Especialista en refactorización profunda, diseño de interfaz y accesibilidad.</p>
           </div>
           <div class="card" style="padding: 1rem; border: 1px solid var(--border, #475569); border-radius: var(--radius-sm, 6px); background: var(--surface);">
-            <div style="font-weight: 700; font-size: 1rem; color: var(--navy, #38bdf8);">co · Codex</div>
+            <div class="accent-heading" style="font-weight: 700; font-size: 1rem;">co · Codex</div>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Automatización de pruebas unitarias, análisis estático y tipado seguro.</p>
           </div>
         </div>
@@ -471,9 +472,8 @@
   </dialog>
 
   <script>
-    // 1. Manejo de la barra lateral (escritorio y móvil)
+    // 1. Utilidades locales de barra lateral (el control de sidebar-toggle y theme-toggle vive en panel-shell.js)
     const sidebar = document.getElementById("office-sidebar");
-    const sidebarToggle = document.getElementById("sidebar-toggle");
     const sidebarScrim = document.getElementById("sidebar-scrim");
     const isMobile = () => window.innerWidth <= 820;
 
@@ -484,50 +484,6 @@
         sidebarScrim.dataset.active = "false";
         sidebarScrim.setAttribute("aria-hidden", "true");
       }
-    }
-
-    function openDrawer() {
-      if (!sidebar) return;
-      sidebar.dataset.drawerOpen = "true";
-      if (sidebarScrim) {
-        sidebarScrim.dataset.active = "true";
-        sidebarScrim.setAttribute("aria-hidden", "false");
-      }
-    }
-
-    if (sidebarToggle) {
-      sidebarToggle.addEventListener("click", () => {
-        if (isMobile()) {
-          const isOpen = sidebar.dataset.drawerOpen === "true";
-          if (isOpen) closeDrawer();
-          else openDrawer();
-        } else {
-          const isIcons = document.documentElement.dataset.sidebar === "icons";
-          const next = isIcons ? "full" : "icons";
-          document.documentElement.dataset.sidebar = next;
-          try { localStorage.setItem("erbolamm-panel-sidebar", next); } catch (_) {}
-        }
-      });
-    }
-
-    if (sidebarScrim) {
-      sidebarScrim.addEventListener("click", closeDrawer);
-    }
-
-    // 2. Cambio de tema claro / oscuro
-    const themeBtn = document.getElementById("theme-toggle");
-    if (themeBtn) {
-      const icon = document.getElementById("theme-icon");
-      if (icon) {
-        icon.textContent = document.documentElement.dataset.theme === "dark" ? "☼" : "☾";
-      }
-      themeBtn.addEventListener("click", () => {
-        const isDark = document.documentElement.dataset.theme === "dark";
-        const next = isDark ? "light" : "dark";
-        document.documentElement.dataset.theme = next;
-        if (icon) icon.textContent = next === "dark" ? "☼" : "☾";
-        try { localStorage.setItem("erbolamm-panel-theme", next); } catch (_) {}
-      });
     }
 
     // 3. Conmutador de secciones del panel (Tablero, Aplicaciones, Recurrentes, Agentes)
