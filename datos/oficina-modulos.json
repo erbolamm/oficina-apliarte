@@ -168,7 +168,7 @@
         "Seguir el progreso y cancelar la conversión, sin dejar salida a medias.",
         "Colocar una marca de agua en una esquina con opacidad, y arrastrar los textos sobre la vista previa con entrada en fundido o deslizamiento.",
         "Guardar el formulario como preset validado (por ejemplo anuncio-directo) y montar varios vídeos en una lista reordenable.",
-        "Añadir una locución con el motor de Voice Studio, comprobada contra la duración final."
+        "Añadir una locución con el motor de Voces ApliArte, comprobada contra la duración final."
       ],
       "automatizaciones": "Solo ffmpeg y ffprobe ya instalados en el Mac, sin dependencias nuevas y sin tocar Google Drive. La salida nunca sobrescribe un archivo existente.",
       "captura": {
@@ -446,11 +446,11 @@
     },
     {
       "id": "voicestudio",
-      "titulo": "Voice Studio (Clonación ultrarrápida)",
+      "titulo": "Voces ApliArte (Clonación ultrarrápida)",
       "icono": "⚡",
       "ruta": "/vista/voicestudio",
       "sidebar": true,
-      "resumen": "Clonación zero-shot inmediata y síntesis de voz acelerada por Apple Silicon con OmniVoice.",
+      "resumen": "Clonación zero-shot inmediata y síntesis de voz acelerada por Apple Silicon con Voces ApliArte.",
       "para_que_sirve": "Permite clonar la voz de Javier Mateo a partir de una muestra de calibración de 3 segundos y generar voz en alta fidelidad en tiempo récord sobre la GPU del Mac mini M2 Pro, sin suscripciones a ElevenLabs ni consumo de cuotas en la nube.",
       "que_puedes_hacer": [
         "Sintetizar textos en español e idiomas secundarios con la voz clonada de Javier Mateo.",
@@ -953,13 +953,13 @@
       "fecha": "2026-10-23",
       "estado": "hecho",
       "titulo": "Shorts: corte, texto, voz y editor visual",
-      "detalle": "La pestaña Shorts ya corta un tramo, gira el vídeo, superpone textos (fuente, contorno, sombra, caja, arrastrar sobre la vista previa, entrada con fundido o deslizamiento), pone marca de agua en una esquina, guarda presets (incluido anuncio-directo), arma un montaje con varios vídeos y puede añadir una locución con el motor de Voice Studio comprobada contra la duración final. El original nunca se modifica."
+      "detalle": "La pestaña Shorts ya corta un tramo, gira el vídeo, superpone textos (fuente, contorno, sombra, caja, arrastrar sobre la vista previa, entrada con fundido o deslizamiento), pone marca de agua en una esquina, guarda presets (incluido anuncio-directo), arma un montaje con varios vídeos y puede añadir una locución con el motor de Voces ApliArte comprobada contra la duración final. El original nunca se modifica."
     },
     {
       "fecha": "2026-10-23",
       "estado": "hecho",
       "titulo": "Skills: catálogo de herramientas de la Oficina",
-      "detalle": "La pestaña /vista/skills tiene ahora la caja \"Qué quieres hacer\": busca por intención entre 46 skills, 170 endpoints y 49 comandos y recomienda una herramienta o da una lista numerada. Misma fuente (tareas/catalogo-herramientas.json) para la pestaña, la API /api/herramientas/buscar, la CLI `dart run bin/trabajo.dart herramientas buscar` y la skill catalogo-herramientas. Sin MCP ni IA."
+      "detalle": "La pestaña /vista/skills cuenta con buscador en vivo sobre el catálogo actualizado de 71 skills de motor-apliarte (incluidas yandex-mobile-ads, reverse-engineer-anything 6.5.0, amazon-afiliados, pruebas-geolocalizacion-vpn, microjuegos-espera-carga, release_preflight.py y testflight --finalizar), sin exponer contratos privados."
     },
     {
       "fecha": "2026-10-23",

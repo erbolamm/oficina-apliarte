@@ -186,7 +186,7 @@
     },
     {
       "slug": "voicestudio",
-      "titulo": "Voice Studio",
+      "titulo": "Voces ApliArte",
       "subtitulo": "Clonación ultrarrápida",
       "ruta": "vistas/instala-tu-oficina.html",
       "activa": false,
