@@ -1,4 +1,4 @@
-body{margin:0;background:#f6f5f0;color:#182230;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;display:grid;place-items:center;min-height:100vh;padding:24px}
+body{margin:0;background:#f6f5f0;color:#182230;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;display:grid;place-items:center;min-height:100%;padding:24px}
 .card{background:#fff;border:1px solid #dde2e8;border-radius:18px;max-width:680px;width:100%;padding:32px;box-shadow:0 6px 20px rgba(0,0,0,.06);text-align:center}
 .badge{display:inline-block;background:#fff3e6;color:#b45309;border:1px solid #ffd7a8;border-radius:999px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:5px 12px}
 h1{font-size:clamp(24px,4vw,34px);margin:14px 0 0}
@@ -16,3 +16,12 @@ h1{font-size:clamp(24px,4vw,34px);margin:14px 0 0}
 :focus-visible{outline:3px solid #5ecef5;outline-offset:2px}
 @media (max-width:520px){.card{padding:22px}.share span{display:none}.share a,.share button{min-width:44px;padding:8px}}
 @media (prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition:none!important}}
+
+[hidden]{display:none!important}
+
+html[data-theme='dark'] body{background:#0b1017;color:#e2e8f0}
+html[data-theme='dark'] .card{background:#111827}
+html[data-theme='dark'] .lead{color:#94a3b8}
+html[data-theme='dark'] .seg{background:#1e293b}
+html[data-theme='dark'] .share a,html[data-theme='dark'] .share button{background:#172133;border-color:#26354a;color:#e2e8f0}
+html[data-theme='dark'] .status{color:#5eead4}
