@@ -37,7 +37,7 @@
   };
 
   const hashtags = '#ApliArte #ErBolamm #OficinaApliArte';
-  const msg = (u, t) => `${t} ${hashtags} ${u}`;
+  const msg = (u, t) => `Mira cómo evoluciona ${t} en la Oficina de ApliArte. Código en directo y herramientas abiertas: ${u} ${hashtags}`;
 
   const targets = [
     ['WhatsApp', (u, t) => `https://wa.me/?text=${encodeURIComponent(msg(u, t))}`],
