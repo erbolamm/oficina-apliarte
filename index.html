@@ -81,17 +81,6 @@
   </script>
 </head>
 <body>
-  <header id="office-topbar">
-    <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
-      <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
-      <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
-    </svg>
-    <strong>Oficina ApliArte</strong>
-    <h1 id="active-tab-title">Oficina</h1>
-    <nav id="top-nav"></nav>
-    <button id="top-refresh-btn" type="button">Actualizar</button>
-    <button id="top-theme-toggle" type="button">Tema</button>
-  </header>
   <div class="app-shell">
     <aside class="office-sidebar" id="office-sidebar" aria-label="Navegación de la oficina">
       <div class="sidebar-brand">
@@ -282,16 +271,17 @@
             <polygon points="20,4 28,12 4,36 4,20" fill="#0061aa"/>
             <polygon points="20,4 12,12 36,36 36,20" fill="#59d4fd" opacity="0.9"/>
           </svg>
-          <h1>Oficina · Tablero de tareas</h1>
+          <h1 id="tablero-titulo">Oficina · Tablero de tareas</h1>
         </div>
         <span class="private-chip">Oficina pública · lectura</span>
-        <button id="refresh-btn" class="btn-refresh" type="button" onclick="window.location.reload()" aria-label="Actualizar vista" title="Actualizar">↻</button>
+        <button id="refresh-btn" class="btn-refresh" type="button" aria-label="Actualizar vista" title="Actualizar">↻</button>
         <button id="theme-toggle" type="button" aria-label="Cambiar tema" title="Cambiar tema">
           <span id="theme-icon" aria-hidden="true">☾</span>
         </button>
       </header>
 
-      <nav class="panel-tabs" id="panel-tabs" role="tablist" aria-label="Secciones del panel">
+      <div id="office-native-view">
+        <nav class="panel-tabs" id="panel-tabs" role="tablist" aria-label="Secciones del panel">
         <button type="button" class="pill-btn active" role="tab" id="tab-btn-tablero" aria-selected="true" aria-controls="tablero" data-tab="tablero">
           <span aria-hidden="true">📋</span> Tablero de tareas
         </button>
@@ -452,6 +442,11 @@
       <p class="public-note" style="margin-top: 1.5rem; text-align: center; font-size: 0.82rem; color: var(--text-muted, #64748b);">
         Oficina ApliArte · Ecosistema ErBolamm · Modo público de solo lectura
       </p>
+      </div>
+
+      <div id="office-frame-view" style="display: none; width: 100%; height: calc(100vh - 4.5rem); margin-top: 0.5rem;">
+        <iframe id="office-iframe" title="Contenido de sección" style="width: 100%; height: 100%; border: none; border-radius: var(--radius-lg); background: var(--surface);" src="about:blank"></iframe>
+      </div>
     </main>
   </div>
 

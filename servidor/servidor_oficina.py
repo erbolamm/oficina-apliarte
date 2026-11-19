@@ -50,7 +50,7 @@ PESTANAS_ECOSISTEMA = [
     {"slug": "directo", "titulo": "Directo", "subtitulo": "Centro de retransmisión", "ruta": "/vista/directo", "publica": False, "activa": False, "icono": "▶"},
     {"slug": "diapositivas", "titulo": "Diapositivas", "subtitulo": "Presentaciones y difusión", "ruta": "/vista/diapositivas", "publica": False, "activa": False, "icono": "⎘"},
     {"slug": "shorts", "titulo": "Shorts", "subtitulo": "Vídeo acelerado a 60 s", "ruta": "/vista/shorts", "publica": False, "activa": False, "icono": "⏩"},
-    {"slug": "resenas", "titulo": "Reseñas", "subtitulo": "Contestador inteligente", "ruta": "/resenas", "publica": False, "activa": False, "icono": "★"}
+    {"slug": "resenas", "titulo": "Reseñas", "subtitulo": "Contestador inteligente", "ruta": "/vista/resenas", "publica": False, "activa": False, "icono": "★"}
 ]
 
 
@@ -387,8 +387,16 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 self.responder_error(f"Resena '{id_resena}' no encontrada", 404)
             return
 
+        if ruta == "/resenas":
+            ruta = "/vista/resenas"
+
         if ruta.startswith("/vista/"):
             slug = ruta.replace("/vista/", "").strip("/")
+            if slug in ("tareas", "tablero"):
+                index_file = RAIZ_PROYECTO / "index.html"
+                if index_file.exists():
+                    self.responder_html(index_file.read_text(encoding="utf-8"))
+                    return
             archivo_vista = DIR_VISTAS / f"{slug}.html"
             if archivo_vista.exists() and archivo_vista.name != "pestana_privada.html":
                 contenido = archivo_vista.read_text(encoding="utf-8")
@@ -403,6 +411,21 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                         .replace("{{SLUG}}", html.escape(slug)))
                     self.responder_html(contenido)
                     return
+            vistas_apoyo = {
+                "settings": ("Ajustes", "Opciones por defecto"),
+                "manual": ("Manual", "Guía de uso y arquitectura"),
+                "buzon": ("Buzón de ideas", "Ideas y recordatorios"),
+                "informes": ("Informes", "Resumen y auditoría operativa"),
+            }
+            if slug in vistas_apoyo:
+                titulo, subtitulo = vistas_apoyo[slug]
+                plantilla = (DIR_VISTAS / "construccion.html").read_text(encoding="utf-8")
+                contenido = (plantilla
+                    .replace("{{TITULO}}", html.escape(titulo))
+                    .replace("{{SUBTITULO}}", html.escape(subtitulo))
+                    .replace("{{SLUG}}", html.escape(slug)))
+                self.responder_html(contenido)
+                return
         elif ruta.startswith("/vistas/"):
             slug = ruta.replace("/vistas/", "").strip("/")
             archivo_vista = DIR_VISTAS / f"{slug}.html"

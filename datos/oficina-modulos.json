@@ -199,7 +199,7 @@
       "id": "resenas",
       "titulo": "Reseñas (Contestador inteligente)",
       "icono": "★",
-      "ruta": "/resenas",
+      "ruta": "/vista/resenas",
       "sidebar": true,
       "resumen": "Atención al usuario y respuestas automáticas para tus apps en Google Play.",
       "para_que_sirve": "Descarga y organiza las opiniones que los usuarios dejan en tus aplicaciones de Google Play y App Store. Traduce al momento cualquier reseña escrita en otro idioma y te prepara una propuesta de respuesta respetuosa, profesional y adaptada a tus normas.",

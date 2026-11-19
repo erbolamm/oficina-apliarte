@@ -124,6 +124,38 @@
     urlParams.has("limpio");
   if (esModoLimpio) {
     root.dataset.modo = "limpio";
+    if (document.head && !document.getElementById("modo-limpio-guard")) {
+      const st = document.createElement("style");
+      st.id = "modo-limpio-guard";
+      st.textContent = [
+        'html[data-modo="limpio"] .office-sidebar,',
+        'html[data-modo="limpio"] #office-sidebar,',
+        'html[data-modo="limpio"] .sidebar-toggle,',
+        'html[data-modo="limpio"] #sidebar-toggle,',
+        'html[data-modo="limpio"] .sidebar-scrim,',
+        'html[data-modo="limpio"] #sidebar-scrim,',
+        'html[data-modo="limpio"] .office-content > .topbar,',
+        'html[data-modo="limpio"] .topbar:not(.office-content-aplichat .topbar):not(.office-content-traductor .topbar),',
+        'html[data-modo="limpio"] #tablero-topbar {',
+        '  display: none !important;',
+        '  visibility: hidden !important;',
+        '  height: 0 !important;',
+        '  width: 0 !important;',
+        '  margin: 0 !important;',
+        '  padding: 0 !important;',
+        '}',
+        'html[data-modo="limpio"] .app-shell {',
+        '  display: block !important;',
+        '  grid-template-columns: 1fr !important;',
+        '}',
+        'html[data-modo="limpio"] .office-content {',
+        '  width: 100% !important;',
+        '  max-width: 100% !important;',
+        '  padding-top: 0.5rem !important;',
+        '}',
+      ].join("\n");
+      document.head.appendChild(st);
+    }
   }
 
   function queuedFor(role, valid, states) {
@@ -1796,7 +1828,16 @@
 
   const refreshBtn = $("#refresh-btn") || $(".btn-refresh");
   if (refreshBtn) {
-    refreshBtn.addEventListener("click", () => {
+    refreshBtn.addEventListener("click", (e) => {
+      const frameView = document.getElementById("office-frame-view");
+      const iframe = document.getElementById("office-iframe");
+      if (frameView && frameView.style.display !== "none" && iframe && iframe.contentWindow) {
+        e.preventDefault();
+        try {
+          iframe.contentWindow.location.reload();
+          return;
+        } catch (_) {}
+      }
       window.location.reload();
     });
   }
@@ -1944,7 +1985,7 @@
     { href: "/vista/directo", label: "Directo", desc: "Centro de retransmisión", icon: "▶" },
     { href: "/vista/diapositivas", label: "Diapositivas", desc: "Presentaciones y difusión", icon: "⎘" },
     { href: "/vista/shorts", label: "Shorts", desc: "Vídeo acelerado a 60 s", icon: "⏩" },
-    { href: "/resenas", label: "Reseñas", desc: "Contestador inteligente", icon: "★" },
+    { href: "/vista/resenas", label: "Reseñas", desc: "Contestador inteligente", icon: "★" },
     { href: "/vista/settings", label: "Ajustes", desc: "Opciones por defecto", icon: "⚙" },
     { href: "/vista/como-funciona", label: "Cómo funciona", desc: "Guía de la Oficina", icon: "?" },
   ];
@@ -1988,7 +2029,7 @@
   }
 
   function syncCanonicalSideNav() {
-    const nav = document.getElementById("top-nav") || document.querySelector(".office-sidebar .side-nav");
+    const nav = document.querySelector(".office-sidebar .side-nav");
     if (!nav) return;
     const hiddenNav = readHiddenNav();
 
@@ -2041,38 +2082,116 @@
         if (isMobileView()) closeDrawer();
         const targetPath = item.href || a.getAttribute("href") || "";
         if (targetPath === "/" || targetPath === "" || targetPath === "/index.html") {
-          window.location.href = "/";
+          e.preventDefault();
+          document.querySelectorAll(".office-sidebar .nav-card").forEach((x) => {
+            const isActive = x === a;
+            x.classList.toggle("active", isActive);
+            if (isActive) x.setAttribute("aria-current", "page");
+            else x.removeAttribute("aria-current");
+          });
+          const title = document.querySelector("#tablero-topbar h1");
+          if (title) title.textContent = "Oficina · Tablero de tareas";
+          const nativeView = document.getElementById("office-native-view");
+          const frameView = document.getElementById("office-frame-view");
+          const iframe = document.getElementById("office-iframe");
+          if (nativeView) nativeView.style.display = "";
+          if (frameView) frameView.style.display = "none";
+          if (iframe) iframe.src = "about:blank";
+          if (!e.isFromPopstate) {
+            try { window.history.pushState(null, "", "/"); } catch (_) {}
+          }
           return;
         }
+
         e.preventDefault();
-        const t = document.getElementById("active-tab-title"); if (t) t.textContent = item.label;
-        document.querySelectorAll("#top-nav .nav-card").forEach((x) => { x.classList.toggle("active", x === a); if (x === a) x.setAttribute("aria-current","page"); else x.removeAttribute("aria-current"); });
-        const iframe = document.createElement('iframe');
+        document.querySelectorAll(".office-sidebar .nav-card").forEach((x) => {
+          const isActive = x === a;
+          x.classList.toggle("active", isActive);
+          if (isActive) x.setAttribute("aria-current", "page");
+          else x.removeAttribute("aria-current");
+        });
+        const title = document.querySelector("#tablero-topbar h1");
+        if (title) title.textContent = "Oficina · " + item.label;
+
+        const nativeView = document.getElementById("office-native-view");
+        const frameView = document.getElementById("office-frame-view");
+        const iframe = document.getElementById("office-iframe");
+
+        let targetUrl = a.href || "/";
         try {
           const url = new URL(a.href, window.location.origin);
           url.searchParams.set("modo", "limpio");
-          iframe.src = url.toString();
+          targetUrl = url.toString();
         } catch (_) {
-          const rawHref = a.href || "/";
-          const sep = rawHref.includes("?") ? "&" : "?";
-          iframe.src = `${rawHref}${sep}modo=limpio`;
+          const sep = targetUrl.includes("?") ? "&" : "?";
+          targetUrl = `${targetUrl}${sep}modo=limpio`;
         }
-        iframe.addEventListener("load", () => { try { iframe.contentDocument.documentElement.dataset.theme = document.documentElement.dataset.theme; } catch (_) {} });
-        iframe.style.width = '100%';
-        iframe.style.height = 'calc(100vh - 64px)';
-        iframe.style.border = 'none';
-        iframe.style.display = 'block';
-        const office = document.querySelector('#office');
-        if (office) {
-          office.innerHTML = '';
-          office.appendChild(iframe);
+
+        if (nativeView && frameView && iframe) {
+          nativeView.style.display = "none";
+          frameView.style.display = "block";
+          iframe.src = targetUrl;
+          iframe.onload = () => {
+            try {
+              if (iframe.contentDocument && iframe.contentDocument.documentElement) {
+                iframe.contentDocument.documentElement.dataset.theme = document.documentElement.dataset.theme;
+              }
+            } catch (_) {}
+          };
+          const vistaSlug = (item.href || "").replace(/^\/vista\//, "").replace(/^\//, "");
+          if (!e.isFromPopstate) {
+            try {
+              window.history.pushState({ vista: vistaSlug }, "", vistaSlug ? "/?vista=" + encodeURIComponent(vistaSlug) : "/");
+            } catch (_) {}
+          }
+        } else {
+          window.location.href = targetUrl;
         }
       });
 
       nav.appendChild(a);
     }
     syncBloggerNavBadge();
+
+    if (!esModoLimpio && !window.__oficinaVistaRestaurada) {
+      const initialVista = new URLSearchParams(window.location.search).get("vista");
+      if (initialVista) {
+        window.__oficinaVistaRestaurada = true;
+        const targetHref = "/vista/" + initialVista;
+        const cards = Array.from(nav.querySelectorAll(".nav-card"));
+        const match = cards.find((c) => {
+          const h = c.getAttribute("href") || "";
+          return h === targetHref || h === "/" + initialVista;
+        });
+        if (match) {
+          match.dispatchEvent(new CustomEvent("click", { bubbles: true }));
+        }
+      }
+    }
   }
+
+  window.addEventListener("popstate", () => {
+    const params = new URLSearchParams(window.location.search);
+    const vista = params.get("vista");
+    const current = vista ? "/vista/" + vista : (window.location.pathname.replace(/\/index\.html$/, "/") || "/");
+    const cards = Array.from(document.querySelectorAll(".office-sidebar .nav-card"));
+    const match = cards.find((c) => {
+      const h = c.getAttribute("href") || "";
+      return h === current || (h !== "/" && (current.startsWith(h + "/") || current === h + ".html"));
+    });
+    if (match) {
+      const ev = new Event("click", { bubbles: true });
+      ev.isFromPopstate = true;
+      match.dispatchEvent(ev);
+    } else if (current === "/" || current === "" || current === "/index.html") {
+      const officeCard = cards.find((c) => (c.getAttribute("href") || "") === "/") || cards[0];
+      if (officeCard) {
+        const ev = new Event("click", { bubbles: true });
+        ev.isFromPopstate = true;
+        officeCard.dispatchEvent(ev);
+      }
+    }
+  });
 
   // ─── Aviso de propuesta de Blogger lista ───
   // La vista de Blogger anota en localStorage el trabajo editorial en curso.
@@ -3930,6 +4049,3 @@
     },
   });
 })();
-
-const topTheme = document.getElementById("top-theme-toggle"); if (topTheme) { topTheme.addEventListener("click", () => { const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark"; document.documentElement.dataset.theme = next; try { localStorage.setItem("erbolamm-panel-theme", next); } catch (_) {} document.querySelectorAll("iframe").forEach((frame) => { try { frame.contentDocument.documentElement.dataset.theme = next; } catch (_) {} }); }); }
-const topRefresh = document.getElementById("top-refresh-btn"); if (topRefresh) topRefresh.addEventListener("click", () => location.reload());
