@@ -4,6 +4,7 @@ servidor_oficina.py — Servidor HTTP ligero y soberano de Oficina ApliArte.
 Modo de solo lectura para consulta y descarga de habilidades y metadatos.
 """
 
+import html
 import json
 import os
 import re
@@ -237,6 +238,19 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 self.responder_css(archivo_css.read_text(encoding="utf-8"))
                 return
 
+        if ruta == "/construccion.css":
+            archivo_css = DIR_VISTAS / "construccion.css"
+            if archivo_css.exists():
+                self.responder_css(archivo_css.read_text(encoding="utf-8"))
+                return
+
+        if ruta == "/construccion.js":
+            archivo_js = DIR_VISTAS / "construccion.js"
+            if archivo_js.exists():
+                self.responder_js(archivo_js.read_text(encoding="utf-8"))
+                return
+
+
         if ruta == "/panel-shell.js":
             archivo_js = RAIZ_PROYECTO / "panel-shell.js"
             if archivo_js.exists():
@@ -382,67 +396,13 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 return
             for p in PESTANAS_ECOSISTEMA:
                 if p["slug"] == slug:
-                    query = parse_qs(parsed.query)
-                    modo = query.get("modo", [""])[0].strip().lower()
-                    aislado = query.get("aislado", [""])[0].strip()
-                    modo_limpio = modo == "limpio" or aislado == "1"
-                    if modo_limpio:
-                        contenido = f"""<!doctype html>
-<html lang="es" data-theme="light">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{p["titulo"]} · Oficina ApliArte</title>
-</head>
-<body>
-  <main style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; text-align:center;">
-    <img src="/en-construccion.svg" alt="Escena en construccion" width="360" />
-    <h1>{p["titulo"]}</h1>
-    <p>{p["subtitulo"]}</p>
-  </main>
-</body>
-</html>"""
-                        self.responder_html(contenido)
-                        return
-                    contenido = f"""<!doctype html>
-<html lang="es" data-theme="light">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{p["titulo"]} · Oficina ApliArte</title>
-  <link rel="stylesheet" href="/panel-shell.css">
-  <script src="/panel-shell.js"></script>
-</head>
-<body>
-  <div class="app-shell">
-    <aside class="office-sidebar">
-      <div class="sidebar-brand">
-        <svg viewBox="0 0 40 40" width="40" height="40"><path d="M5 32 20 5l15 27h-8l-7-13-7 13Z" fill="#005fa9"/><path d="M14 32h12l-6-11Z" fill="#5ecef5"/></svg>
-        <span><strong>Oficina ApliArte</strong><small>Panel de control operativo</small></span>
-      </div>
-      <nav class="side-nav">
-        <a class="nav-card" href="/"><span><strong>Oficina</strong><small>Tablero de tareas</small></span></a>
-        <a class="nav-card" href="/vista/agentes"><span><strong>Agentes</strong><small>Fichas de agentes</small></span></a>
-        <a class="nav-card" href="/vista/como-funciona"><span><strong>Cómo funciona</strong><small>Guía de la Oficina</small></span></a>
-        <a class="nav-card" href="/vista/herdr"><span><strong>Herdr</strong><small>Consola móvil</small></span></a>
-        <a class="nav-card" href="/vista/radar"><span><strong>Radar</strong><small>Multi-agente</small></span></a>
-      </nav>
-    </aside>
-    <main class="office-content">
-      <header class="topbar">
-        <div class="brand"><h1>{p["titulo"]}</h1></div>
-      </header>
-      <section class="panel">
-        <div class="panel-head"><h2>En desarrollo</h2></div>
-        <p>Esta pestaña esta en construccion. Pronto tendra su contenido propio.</p>
-      </section>
-    </main>
-  </div>
-</body>
-</html>"""
+                    plantilla = (DIR_VISTAS / "construccion.html").read_text(encoding="utf-8")
+                    contenido = (plantilla
+                        .replace("{{TITULO}}", html.escape(p["titulo"]))
+                        .replace("{{SUBTITULO}}", html.escape(p["subtitulo"]))
+                        .replace("{{SLUG}}", html.escape(slug)))
                     self.responder_html(contenido)
                     return
-                    break
         elif ruta.startswith("/vistas/"):
             slug = ruta.replace("/vistas/", "").strip("/")
             archivo_vista = DIR_VISTAS / f"{slug}.html"
