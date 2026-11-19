@@ -17,9 +17,18 @@ body {
   min-height: 100vh;
   margin: 0;
   color: var(--ink);
-  background: var(--page);
+  background-color: var(--page);
+  background-image: radial-gradient(rgba(0, 97, 170, 0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
   font-family: Abel, system-ui, sans-serif;
   line-height: 1.45;
+  transition: background-color 180ms var(--ease-out), color 180ms var(--ease-out);
+}
+html[data-theme="dark"] body {
+  background-image:
+    radial-gradient(ellipse 80% 45% at 50% -10%, rgba(89, 212, 253, 0.08), transparent 65%),
+    radial-gradient(rgba(89, 212, 253, 0.06) 1px, transparent 1px);
+  background-size: 100% 100%, 20px 20px;
 }
 button,
 input,
@@ -36,14 +45,17 @@ button {
   background: var(--surface);
   cursor: pointer;
   transition:
-    border-color 0.16s ease,
-    box-shadow 0.16s ease,
-    transform 0.16s ease;
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 150ms var(--ease-out);
 }
 button:hover {
   border-color: var(--cyan);
   box-shadow: var(--shadow-sm);
   transform: translateY(-1px);
+}
+button:active {
+  transform: scale(0.97);
 }
 button:focus-visible,
 summary:focus-visible,
@@ -533,6 +545,12 @@ h1 {
 html[data-theme="dark"] h1 {
   color: var(--glow);
 }
+.accent-heading {
+  color: var(--navy);
+}
+html[data-theme="dark"] .accent-heading {
+  color: var(--cyan);
+}
 .private-chip,
 .connection {
   display: inline-flex;
@@ -547,6 +565,37 @@ html[data-theme="dark"] h1 {
   color: #fdfdfd;
   border-color: var(--navy);
   background: var(--navy);
+}
+.topbar-issues-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0.25rem 0.65rem;
+  border: 1px solid rgba(180, 103, 52, 0.35);
+  border-radius: 999px;
+  background: rgba(232, 149, 94, 0.12);
+  color: var(--brown);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 150ms var(--ease-out), border-color 150ms ease, background-color 150ms ease;
+}
+.topbar-issues-btn:hover {
+  border-color: var(--brown);
+  background: rgba(232, 149, 94, 0.2);
+}
+.topbar-issues-btn:active {
+  transform: scale(0.97);
+}
+html[data-theme="dark"] .topbar-issues-btn {
+  color: var(--warm);
+  border-color: rgba(232, 149, 94, 0.38);
+  background: rgba(232, 149, 94, 0.14);
+}
+html[data-theme="dark"] .topbar-issues-btn:hover {
+  border-color: var(--warm);
+  background: rgba(232, 149, 94, 0.22);
 }
 .connection::before {
   content: "";
