@@ -159,8 +159,8 @@
 
         <!-- 22 pestañas en desarrollo con diseño atenuado -->
         <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
-          <span class="nav-icon" aria-hidden="true">👤</span>
-          <span class="nav-copy"><strong>Espacio Javier</strong><small>Control personal y ja--</small></span>
+          <span class="nav-icon" aria-hidden="true">🔍</span>
+          <span class="nav-copy"><strong>Espacio SEO</strong><small>Auditoría y posicionamiento</small></span>
           <span class="badge-dev">[En desarrollo]</span>
         </a>
         <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
@@ -456,13 +456,13 @@
   </div>
 
   <!-- Diálogo Ficha de Tarea -->
-  <dialog id="javier-task-modal" style="max-width:650px; width:92vw; border:1px solid var(--border, #475569); border-radius:var(--radius-md, 8px); background:var(--surface, #1e293b); color:var(--ink, inherit); padding:0; box-shadow:0 12px 36px rgba(0,0,0,0.35);">
+  <dialog id="task-detail-modal" style="max-width:650px; width:92vw; border:1px solid var(--border, #475569); border-radius:var(--radius-md, 8px); background:var(--surface, #1e293b); color:var(--ink, inherit); padding:0; box-shadow:0 12px 36px rgba(0,0,0,0.35);">
     <div style="display:flex; justify-content:space-between; align-items:center; padding:1rem 1.25rem; border-bottom:1px solid var(--border, #475569); background:rgba(0,95,169,0.08);">
       <div>
         <h3 id="modal-task-title" style="margin:0; font-size:1.15rem; color:var(--primary, #38bdf8);">Ficha de Tarea</h3>
         <small id="modal-task-meta" style="color:var(--text-muted, #94a3b8); font-size:0.75rem;"></small>
       </div>
-      <button type="button" onclick="document.getElementById('javier-task-modal').close()" style="border:0; background:transparent; font-size:1.4rem; cursor:pointer; color:inherit;" aria-label="Cerrar">✕</button>
+      <button type="button" onclick="document.getElementById('task-detail-modal').close()" style="border:0; background:transparent; font-size:1.4rem; cursor:pointer; color:inherit;" aria-label="Cerrar">✕</button>
     </div>
     <div style="padding:1.25rem; display:flex; flex-direction:column; gap:1rem;">
       <div>
@@ -470,7 +470,7 @@
         <p id="modal-task-desc" style="font-size:0.95rem; line-height:1.5; margin:0; white-space:pre-wrap;"></p>
       </div>
       <div style="display:flex; justify-content:flex-end; gap:0.5rem; padding-top:0.75rem; border-top:1px solid var(--border, #475569);">
-        <button type="button" class="btn btn-secondary" onclick="document.getElementById('javier-task-modal').close()" style="padding:0.4rem 1rem; cursor:pointer;">Cerrar</button>
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('task-detail-modal').close()" style="padding:0.4rem 1rem; cursor:pointer;">Cerrar</button>
       </div>
     </div>
   </dialog>
@@ -580,7 +580,7 @@
 
     // 4. Carga y renderizado de las 4 columnas del tablero
     function abrirModalTarea(tarea) {
-      const modal = document.getElementById("javier-task-modal");
+      const modal = document.getElementById("task-detail-modal");
       if (!modal) return;
       document.getElementById("modal-task-title").textContent = tarea.titulo || "Detalle de tarea";
       document.getElementById("modal-task-meta").textContent = `[${tarea.categoria || "General"}] · ${tarea.autor || "Oficina"} · ${tarea.fecha || ""}`;

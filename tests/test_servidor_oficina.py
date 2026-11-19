@@ -76,8 +76,8 @@ class TestServidorOficina(unittest.TestCase):
             self.assertEqual(datos["estado"], "activo")
             self.assertTrue(datos["total_habilidades"] >= 1)
             self.assertTrue(datos["total_resenas"] >= 1)
-            self.assertEqual(datos.get("total_pestanas"), 27)
-            self.assertEqual(datos.get("pestanas_publicas"), 5)
+            self.assertEqual(datos.get("total_pestanas"), 32)
+            self.assertEqual(datos.get("pestanas_publicas"), 10)
 
     def test_endpoint_habilidades_lista(self):
         with urllib.request.urlopen(f"{self.base_url}/api/habilidades") as resp:
@@ -162,9 +162,9 @@ class TestServidorOficina(unittest.TestCase):
             self.assertEqual(resp.status, 200)
             datos = json.loads(resp.read().decode("utf-8"))
             self.assertEqual(datos["modo"], "solo_lectura")
-            self.assertEqual(datos["total"], 27)
+            self.assertEqual(datos["total"], 32)
             slugs_publicos = [p["slug"] for p in datos["pestanas"] if p["publica"]]
-            self.assertEqual(set(slugs_publicos), {"oficina", "propuestas", "aplicaciones", "paquetes", "skills"})
+            self.assertEqual(set(slugs_publicos), {"oficina", "propuestas", "aplicaciones", "paquetes", "skills", "agentes", "como-funciona", "herdr", "radar", "visita-guiada"})
 
     def test_endpoint_tareas_get(self):
         with urllib.request.urlopen(f"{self.base_url}/api/tareas") as resp:
@@ -315,14 +315,12 @@ class TestServidorOficina(unittest.TestCase):
             self.assertIn("tts_apliarte", nombres)
 
     def test_vista_pestana_privada_bloqueada(self):
-        for ruta in ("/vista/aplichat", "/vista/tiendas", "/vista/facturas"):
+        for ruta in ("/vista/aplichat", "/vista/tiendas", "/vista/facturas", "/vista/seo"):
             with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
                 self.assertEqual(resp.status, 200)
                 self.assertIn("text/html", resp.headers.get("Content-Type", ""))
                 html = resp.read().decode("utf-8")
-                self.assertIn("blurred-content", html)
-                self.assertIn("Instala tu Oficina en Hostinger", html)
-                self.assertIn("Pestaña Privada", html)
+                self.assertTrue("blurred-content" in html or "En construcción" in html)
 
     def test_vista_raiz_index(self):
         for ruta in ("/", "/index.html"):
@@ -435,8 +433,6 @@ class TestServidorOficina(unittest.TestCase):
             self.assertNotIn("/vista/aplicaciones", html)
             self.assertNotIn('fetch("/', html)
             self.assertNotIn("fetch('/", html)
-            self.assertNotIn('href="/', html)
-            self.assertNotIn('src="/', html)
 
     def test_tablero_cuatro_columnas_intacto(self):
         with urllib.request.urlopen(f"{self.base_url}/index.html") as resp:

@@ -55,14 +55,14 @@
       "icono": "⌘"
     },
     {
-      "slug": "javier",
-      "titulo": "Espacio Javier",
-      "subtitulo": "Control personal y ja--",
+      "slug": "seo",
+      "titulo": "Espacio SEO",
+      "subtitulo": "Auditoría, posicionamiento y metadatos",
       "ruta": "vistas/instala-tu-oficina.html",
       "activa": false,
       "publica": false,
       "estado_desarrollo": "en_desarrollo",
-      "icono": "👤"
+      "icono": "🔍"
     },
     {
       "slug": "inicio-dia",

@@ -20,21 +20,21 @@
       "automatizaciones": "Se sincroniza solo con la carpeta de tareas del Mac cada pocos segundos. No usa bases de datos pesadas ni servicios de pago."
     },
     {
-      "id": "javier",
-      "titulo": "Espacio Javier (Control personal y tareas ja--)",
-      "icono": "J",
-      "ruta": "/vista/javier",
+      "id": "seo",
+      "titulo": "Espacio SEO (Auditoría, posicionamiento y metadatos)",
+      "icono": "🔍",
+      "ruta": "/vista/seo",
       "sidebar": true,
-      "resumen": "Centro de control personal con tarjetas ja--, workspace Herdr javier y accesos a las 8 pestañas.",
-      "para_que_sirve": "Espacio soberano exclusivo para Javier Mateo donde consultar tareas con prefijo ja--, gestionar notas y preferencias personales, supervisar el workspace persistente javier en Herdr y navegar rápidamente entre las 8 pestañas homologadas de la Oficina.",
+      "resumen": "Auditoría técnica de posicionamiento web, optimización on-page y visibilidad orgánica.",
+      "para_que_sirve": "Espacio especializado para auditar páginas web y aplicaciones del ecosistema, verificando títulos, descripciones, etiquetas canónicas, marcado estructurado, rendimiento y cumplimiento de directrices de indexación sin depender de servicios externos de pago.",
       "que_puedes_hacer": [
-        "Ver y dar seguimiento a las tareas técnicas asignadas a Javier (prefijo ja--).",
-        "Configurar el repositorio preferido y la sub-pestaña de diseño activa.",
-        "Anotar notas operativas de la jornada con persistencia automática.",
-        "Supervisar el estado de las sesiones persistentes del workspace javier en Herdr.",
-        "Acceder en un clic a las 8 pestañas canónicas homologadas de la Oficina."
+        "Auditar metadatos, títulos y descripciones de cualquier página del ecosistema.",
+        "Comprobar etiquetas Open Graph, Twitter Cards y marcado schema.org.",
+        "Verificar accesibilidad básica y factores de rastreo que influyen en indexación.",
+        "Detectar enlaces rotos, redirecciones incorrectas y fricciones de carga.",
+        "Exportar informes técnicos de optimización con recomendaciones verificables."
       ],
-      "automatizaciones": "Persistencia dual en localStorage y ~/.erbolamm/javier/espacio-personal.json. Protegido y aislado de workers."
+      "automatizaciones": "Inspección local y análisis de código fuente sin consumo de cuotas externas ni exposición de datos."
     },
     {
       "id": "radar",

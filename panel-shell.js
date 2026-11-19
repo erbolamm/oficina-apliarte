@@ -1918,7 +1918,7 @@
   // con los mismos títulos, subtítulos e iconos, evitando saltos visuales al navegar.
   const CANONICAL_SIDE_NAV = [
     { href: "/", label: "Oficina", desc: "Tablero de tareas", icon: "⌂", id: "casita" },
-    { href: "/vista/javier", label: "Espacio Javier", desc: "Control personal y ja--", icon: "👤", id: "nav-javier" },
+    { href: "/vista/seo", label: "Espacio SEO", desc: "Auditoría y posicionamiento", icon: "🔍", id: "nav-seo" },
     { href: "/vista/inicio-dia", label: "Inicio del día", desc: "Checklist matutino", icon: "☼" },
     { href: "/vista/aplichat", label: "ApliChat", desc: "Chat accesible", icon: "💬" },
     { href: "/vista/skills", label: "Skills", desc: "Botonera y catálogo", icon: "⌘" },
@@ -1954,7 +1954,7 @@
   // La Oficina y la propia vista de Plugins no se pueden ocultar, para que
   // siempre haya un camino de vuelta.
   const HIDDEN_NAV_KEY = "erbolamm-panel-hidden-nav";
-  const LOCKED_NAV = Object.freeze(["/", "/vista/javier", "/vista/plugins", "/vista/correos"]);
+  const LOCKED_NAV = Object.freeze(["/", "/vista/seo", "/vista/plugins", "/vista/correos"]);
 
   function readHiddenNav() {
     try {
