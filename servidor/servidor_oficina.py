@@ -237,6 +237,22 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                 self.responder_js(archivo_js.read_text(encoding="utf-8"))
                 return
 
+        if ruta == "/tareas/oficina-modulos.json":
+            archivo_json = RAIZ_PROYECTO / "datos/oficina-modulos.json"
+            if archivo_json.exists():
+                try:
+                    datos = json.loads(archivo_json.read_text(encoding="utf-8"))
+                    self.responder_json(datos)
+                except json.JSONDecodeError:
+                    self.responder_error("Error al leer oficina-modulos.json", 500)
+                return
+
+        if ruta.startswith("/componentes/") and ruta.endswith(".js"):
+            archivo_js = RAIZ_PROYECTO / ruta.lstrip("/")
+            if archivo_js.exists() and archivo_js.is_file():
+                self.responder_js(archivo_js.read_text(encoding="utf-8"))
+                return
+
         if ruta.startswith("/estilos/") and ruta.endswith(".css"):
             archivo_css = RAIZ_PROYECTO / ruta.lstrip("/")
             if archivo_css.exists() and archivo_css.is_file():

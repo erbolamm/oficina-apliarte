@@ -1,0 +1,1007 @@
+{
+  "version": "1.6.0",
+  "actualizado": "2026-10-24",
+  "descripcion": "Catálogo maestro y documentación viva de la Oficina ApliArte. Fuente canónica para /api/como-funciona.",
+  "modulos_principales": [
+    {
+      "id": "oficina",
+      "titulo": "Oficina (Plano operativo)",
+      "icono": "⌂",
+      "ruta": "/",
+      "sidebar": true,
+      "resumen": "El mapa visual de tu oficina con tus 8 agentes y el reloj oficial.",
+      "para_que_sirve": "Es la vista principal. Aquí ves a vista de pájaro tu oficina con sus cuatro salas (despacho de Javier, sala de trabajo de los agentes, sala de reuniones y descanso). Cada agente tiene su muñeco o avatar: si está trabajando en una tarea se sienta en su mesa, y si está libre o en descanso se va al sofá. Arriba tienes siempre visible el reloj oficial con la hora exacta de España.",
+      "que_puedes_hacer": [
+        "Pulsar sobre cualquier agente para ver qué tarea tiene entre manos y qué modelo de IA usa.",
+        "Mover o reubicar agentes en sus mesas según el trabajo del día.",
+        "Copiar la hora oficial de Madrid con un solo clic para fechar tus notas y tareas.",
+        "Cambiar entre modo claro y oscuro con el botón sol/luna."
+      ],
+      "automatizaciones": "Se sincroniza solo con la carpeta de tareas del Mac cada pocos segundos. No usa bases de datos pesadas ni servicios de pago."
+    },
+    {
+      "id": "javier",
+      "titulo": "Espacio Javier (Control personal y tareas ja--)",
+      "icono": "J",
+      "ruta": "/vista/javier",
+      "sidebar": true,
+      "resumen": "Centro de control personal con tarjetas ja--, workspace Herdr javier y accesos a las 8 pestañas.",
+      "para_que_sirve": "Espacio soberano exclusivo para Javier Mateo donde consultar tareas con prefijo ja--, gestionar notas y preferencias personales, supervisar el workspace persistente javier en Herdr y navegar rápidamente entre las 8 pestañas homologadas de la Oficina.",
+      "que_puedes_hacer": [
+        "Ver y dar seguimiento a las tareas técnicas asignadas a Javier (prefijo ja--).",
+        "Configurar el repositorio preferido y la sub-pestaña de diseño activa.",
+        "Anotar notas operativas de la jornada con persistencia automática.",
+        "Supervisar el estado de las sesiones persistentes del workspace javier en Herdr.",
+        "Acceder en un clic a las 8 pestañas canónicas homologadas de la Oficina."
+      ],
+      "automatizaciones": "Persistencia dual en localStorage y ~/.erbolamm/javier/espacio-personal.json. Protegido y aislado de workers."
+    },
+    {
+      "id": "radar",
+      "titulo": "Radar de Nodos (Red elástica multi-agente)",
+      "icono": "◎",
+      "ruta": "/vista/radar",
+      "sidebar": true,
+      "resumen": "Visualización física y elástica de los agentes, tareas y estados del ecosistema.",
+      "para_que_sirve": "Muestra un grafo interactivo con física de resortes que conecta al orquestador, agentes especialistas y tareas vivas. Permite monitorizar de un vistazo la actividad, dependencias y flujos de trabajo en tiempo real con soporte para temas claro y oscuro.",
+      "que_puedes_hacer": [
+        "Arrastrar y soltar nodos para reorganizar visualmente el mapa de procesos.",
+        "Inspeccionar el estado de los agentes (trabajando, libre, en descanso, bloqueado).",
+        "Conmutar entre la maqueta 3D, el plano 2D y el radar elástico en el visor principal.",
+        "Consultar cuotas y modelos activos de cada agente sobre la red de nodos."
+      ],
+      "automatizaciones": "Se sincroniza con el estado de tareas y sesiones de Herdr sin consumo de APIs externas."
+    },
+    {
+      "id": "terminales",
+      "titulo": "Terminales (Lanzadores locales)",
+      "icono": "▣",
+      "ruta": "/vista/terminales",
+      "sidebar": true,
+      "resumen": "Consolas protegidas para arrancar, vigilar y parar a los agentes.",
+      "para_que_sirve": "Es el cuadro de mandos de las consolas del Mac. Los agentes (Claude, Codex, Antigravity/Gemini, Pi, Grok, OpenCode) corren en sesiones persistentes aisladas con tmux y herdr. Si cierras la ventana o el navegador, la sesión no se corta: el agente sigue trabajando hasta que termine.",
+      "que_puedes_hacer": [
+        "Arrancar un agente eligiendo su proveedor y modelo con un clic.",
+        "Comprobar el consumo de tokens y ver cuándo se renueva la cuota de cada cuenta.",
+        "Mandar instrucciones o comandos a una terminal sin abrir la consola negra del sistema.",
+        "Parar ordenadamente cualquier terminal cuando el trabajo esté finalizado."
+      ],
+      "automatizaciones": "Detecta automáticamente qué consolas siguen vivas y las recupera si se reinicia el servidor de la oficina."
+    },
+    {
+      "id": "herdr",
+      "titulo": "Herdr (Consola móvil)",
+      "icono": "⚡",
+      "ruta": "/vista/herdr",
+      "sidebar": true,
+      "resumen": "Consola táctil optimizada para gestionar Herdr desde el móvil por Tailscale.",
+      "para_que_sirve": "Centro de control completo de Herdr diseñado específicamente para smartphones y tablets. Permite inspeccionar workspaces y paneles, ver el estado en tiempo real de cada agente, leer logs con auto-scroll ergonómico y enviar instrucciones o comandos rápidos con el pulgar.",
+      "que_puedes_hacer": [
+        "Ver workspaces activos y alternar entre paneles táctilmente.",
+        "Monitorear la salida de terminal en directo con auto-scroll y zoom.",
+        "Detener procesos en seco con el botón rápido de Ctrl+C.",
+        "Enviar prompts a los agentes o comandos shell directamente desde la barra fija inferior.",
+        "Dividir (split) o cerrar paneles con un solo toque."
+      ],
+      "automatizaciones": "Se comunica directamente con el socket y CLI local de Herdr sin intermediarios ni consumo de API externa."
+    },
+    {
+      "id": "facturas",
+      "titulo": "Facturas (Gestor de facturas)",
+      "icono": "€",
+      "ruta": "/vista/facturas",
+      "sidebar": true,
+      "resumen": "Organizador automático de recibos, gastos, ingresos y trimestres.",
+      "para_que_sirve": "Lleva la contabilidad de tus proyectos sin complicaciones. Se conecta con el robot local en Python que revisa tus descargas y clasifica los recibos en carpetas por año, trimestre y proveedor, alertándote de inmediato si encuentra una factura repetida.",
+      "que_puedes_hacer": [
+        "Ver el total de gastos e ingresos del trimestre en curso de un vistazo.",
+        "Revisar los archivos que el robot tiene preparados para archivar.",
+        "Aprobar con un clic el guardado definitivo de un recibo en su carpeta correcta.",
+        "Abrir el PDF original en pantalla para verificar cualquier detalle."
+      ],
+      "automatizaciones": "El robot extrae fechas, importes y CIFs de los PDFs en tu propio Mac sin subir documentos privados a servidores ajenos."
+    },
+    {
+      "id": "blogger",
+      "titulo": "Blogger (Monitor y difusión)",
+      "icono": "✎",
+      "ruta": "/vista/blogger",
+      "sidebar": true,
+      "resumen": "El altavoz de tus proyectos: de la actualización a tus redes con 1 clic.",
+      "para_que_sirve": "Supervisa tus blogs (apliarte.com, tutograti, etc.) y contiene el embudo de difusión automática. Cada vez que cierras una versión de una app o terminas un trabajo importante, aquí tienes listo el artículo en HTML para Blogger y los mensajes redactados para tus redes sociales.",
+      "que_puedes_hacer": [
+        "Copiar el código HTML del artículo con un clic para pegarlo en Blogger Draft.",
+        "Pegar la URL pública del post para activar los enlaces automáticos a redes.",
+        "Disparar publicaciones listas en 𝕏 (Twitter), Telegram, WhatsApp, LinkedIn y YouTube Comunidad.",
+        "Archivar el borrador con un botón para dejar la bandeja limpia para la próxima ocasión."
+      ],
+      "automatizaciones": "Aplica tu Kit de Marca oficial (colores, estilos y logos) y verifica que el texto para 𝕏 no sobrepase los 280 caracteres."
+    },
+    {
+      "id": "bitacora",
+      "titulo": "Bitácora (Proyectos y enlaces)",
+      "icono": "☰",
+      "ruta": "/vista/bitacora",
+      "sidebar": true,
+      "resumen": "El inventario interactivo de tus 48 proyectos, dominios y enlaces.",
+      "para_que_sirve": "Es el registro cartográfico de todo tu ecosistema en internet. Recoge tus dominios principales y sus 44 subdominios, indicándote si cada web está funcionando, si está en Blogger, Firebase o GitHub Pages, y a qué IP apunta en Cloudflare.",
+      "que_puedes_hacer": [
+        "Buscar cualquier proyecto por nombre para encontrar sus enlaces al instante.",
+        "Comprobar qué webs están operativas y cuáles están pendientes de revisión o caídas.",
+        "Abrir cualquier página oficial o repositorio de GitHub en una pestaña nueva.",
+        "Usar el tema claro u oscuro integrado respetando el diseño de ApliArte."
+      ],
+      "automatizaciones": "Se incrusta en la oficina mediante un marco limpio que sincroniza el modo claro y oscuro sin recargas bruscas."
+    },
+    {
+      "id": "directo",
+      "titulo": "Directo (Centro de Retransmisiones)",
+      "icono": "▶",
+      "ruta": "/vista/directo",
+      "sidebar": true,
+      "resumen": "Botonera de efectos, escenas de OBS, multi-chat y avisos para Twitch, YouTube y Kick.",
+      "para_que_sirve": "Tu centro de control en vivo mientras emites simultáneamente en Twitch, YouTube y Kick. Ofrece control de escenas en OBS Studio, caja de difusión unificada para el chat y widget de Botrix para leer a todos tus espectadores en una sola pantalla.",
+      "que_puedes_hacer": [
+        "Lanzar efectos de audio y avisos sonoros que suenan al instante en el stream.",
+        "Cambiar de escena en OBS (Plano de trabajo, cámara principal, pantalla completa).",
+        "Escribir o mandar avisos simultáneos a los chats de Twitch, YouTube y Kick.",
+        "Monitorear el chat unificado multi-plataforma mediante Botrix sin pestañas adicionales.",
+        "Comprobar si el servidor local de directos y overlays (:8790) está transmitiendo bien."
+      ],
+      "automatizaciones": "Conexión local instantánea por WebSockets con OBS Studio y retransmisión multi-destino mediante Botrix y relay local sin intermediarios de pago."
+    },
+    {
+      "id": "shorts",
+      "titulo": "Shorts (Vídeo acelerado a 60 s)",
+      "icono": "⏩",
+      "ruta": "/vista/shorts",
+      "sidebar": true,
+      "resumen": "Convierte un vídeo largo (por ejemplo un directo de una o dos horas) en un resumen acelerado de 60 segundos.",
+      "para_que_sirve": "Lista los vídeos de una carpeta local de entrada, lee su duración con ffprobe, calcula el factor (duración / 60) y genera con ffmpeg un vídeo acelerado de 60 segundos en una carpeta de salida. Antes de ejecutar muestra la duración, el factor, la resolución y el comando exacto, y pide confirmación. El original nunca se modifica, mueve ni borra. No usa Google Drive ni instala nada: si falta ffmpeg, lo dice.",
+      "que_puedes_hacer": [
+        "Elegir el vídeo de la carpeta de entrada (por defecto ~/Movies/Shorts/entrada).",
+        "Cortar un tramo (inicio y fin) antes de acelerar: el factor se calcula sobre el tramo.",
+        "Ver el plan completo y el comando de ffmpeg antes de ejecutar nada.",
+        "Elegir el formato: original, vertical 9:16 con recorte central, o giro (1080x1920, empieza girado a la izquierda y se endereza a horizontal; solo vídeos horizontales). El modo activo se marca claramente.",
+        "Superponer uno o varios textos (posición, tamaño, color, inicio y fin en segundos del vídeo final), dibujados con Pillow porque el ffmpeg instalado no trae drawtext.",
+        "Añadir una pista de música opcional; por defecto el resultado va sin audio.",
+        "Seguir el progreso y cancelar la conversión, sin dejar salida a medias.",
+        "Colocar una marca de agua en una esquina con opacidad, y arrastrar los textos sobre la vista previa con entrada en fundido o deslizamiento.",
+        "Guardar el formulario como preset validado (por ejemplo anuncio-directo) y montar varios vídeos en una lista reordenable.",
+        "Añadir una locución con el motor de Voice Studio, comprobada contra la duración final."
+      ],
+      "automatizaciones": "Solo ffmpeg y ffprobe ya instalados en el Mac, sin dependencias nuevas y sin tocar Google Drive. La salida nunca sobrescribe un archivo existente.",
+      "captura": {
+        "archivo": "/capturas/shorts.png",
+        "fecha": "2026-10-24",
+        "origen": "skill"
+      }
+    },
+    {
+      "id": "diapositivas",
+      "titulo": "Diapositivas y Difusión Multilingüe",
+      "icono": "⎘",
+      "ruta": "/vista/diapositivas",
+      "sidebar": true,
+      "resumen": "Mazo interactivo de diapositivas y pistas de audio sincronizadas para directos.",
+      "para_que_sirve": "Permite visualizar y controlar las presentaciones técnicas de cada aplicación de forma autónoma. Cada repositorio aloja soberanamente su mazo HTML5, su escaleta técnica (guion-directo.md) y sus pistas de audio multilingües (ES, EN, DE, FR, IT, PT, RU) bajo control-erbolamm/difusion/directo/presentacion/ sin añadir dependencias en producción.",
+      "que_puedes_hacer": [
+        "Seleccionar el repositorio que deseas presentar con un solo clic.",
+        "Navegar entre las diapositivas con teclado o con la botonera táctil.",
+        "Cambiar el idioma de la locución en tiempo real entre 7 idiomas soportados.",
+        "Pausar o reanudar la reproducción de audio de la diapositiva en pantalla.",
+        "Activar pantalla completa para emisión limpia en OBS o emisiones en vivo.",
+        "Inicializar plantillas soberanas de diapositivas en proyectos nuevos."
+      ],
+      "automatizaciones": "Lectura soberana de recursos en disco sin dependencias externas ni servicios en la nube."
+    },
+    {
+      "id": "resenas",
+      "titulo": "Reseñas (Contestador inteligente)",
+      "icono": "★",
+      "ruta": "/resenas",
+      "sidebar": true,
+      "resumen": "Atención al usuario y respuestas automáticas para tus apps en Google Play.",
+      "para_que_sirve": "Descarga y organiza las opiniones que los usuarios dejan en tus aplicaciones de Google Play y App Store. Traduce al momento cualquier reseña escrita en otro idioma y te prepara una propuesta de respuesta respetuosa, profesional y adaptada a tus normas.",
+      "que_puedes_hacer": [
+        "Filtrar valoraciones por estrellas (1 a 5) o por aplicación.",
+        "Leer la traducción en español de comentarios en inglés, francés, alemán u otros idiomas.",
+        "Generar un borrador de respuesta con inteligencia artificial y retocarlo a tu gusto.",
+        "Elegir el tono de contestación (amable, técnico o directo) según tu criterio."
+      ],
+      "automatizaciones": "Bloquea el uso de claves externas inseguras y guarda las configuraciones en tu carpeta privada local de forma segura."
+    },
+    {
+      "id": "settings",
+      "titulo": "Ajustes (Opciones por defecto)",
+      "icono": "⚙",
+      "ruta": "/vista/settings",
+      "sidebar": true,
+      "resumen": "Panel centralizado de opciones y valores por defecto de la Oficina ApliArte.",
+      "para_que_sirve": "Permite configurar y sincronizar de forma persistente y soberana los valores por defecto de todas las vistas de la Oficina (duración de Shorts, subtítulos, modelos de voz, tema visual y credenciales).",
+      "que_puedes_hacer": [
+        "Ajustar la duración por defecto de generación de Shorts.",
+        "Configurar el formato y visibilidad de subtítulos.",
+        "Definir el modelo y voz por defecto para síntesis.",
+        "Guardar los cambios de forma centralizada con token de acción seguro."
+      ],
+      "automatizaciones": "Almacenamiento soberano en tareas/configuracion-oficina.json con soporte de fallback y validación de tokens de acción."
+    },
+    {
+      "id": "manual",
+      "titulo": "Manual vivo (Documentación canónica)",
+      "ruta": "/vista/manual",
+      "sidebar": false,
+      "resumen": "Manual completo de ErBolamm generado desde DOCUMENTACION/manual/*.md.",
+      "para_que_sirve": "Documentación canónica, estructurada por capítulos, que describe el propósito, las responsabilidades, las fuentes, los puntos de entrada, las reglas de operación, los comandos, las pruebas y la recuperación ante fallos de cada componente del ecosistema. La fuente de verdad son los Markdown en `DOCUMENTACION/manual/`; el HTML servido en `/vista/manual` se regenera automáticamente con `scripts/generar-manual-html.py`.",
+      "que_puedes_hacer": [
+        "Leer el manual completo en `tareas/vista/manual.html` (servido también en `/vista/manual`).",
+        "Editar cualquier capítulo en `DOCUMENTACION/manual/*.md` y regenerar el HTML con `python3 scripts/generar-manual-html.py`.",
+        "Usar el modo `--check` del generador para CI: `python3 scripts/generar-manual-html.py --check` falla si el HTML está desincronizado.",
+        "Mantener un único origen de verdad: nunca edites `tareas/vista/manual.html` a mano, siempre desde Markdown."
+      ],
+      "automatizaciones": "Generado deterministamente desde Markdown. Estilo ApliArte (paleta #005fa9 y #5ecef5), soporta modo claro/oscuro y conserva las mismas clases del shell.",
+      "estilo": "tarjeta plana con borde azul ApliArte"
+    },
+    {
+      "id": "como-funciona",
+      "titulo": "Cómo funciona (Guía de la Oficina)",
+      "icono": "?",
+      "ruta": "/vista/como-funciona",
+      "sidebar": true,
+      "resumen": "Documentación viva, explicaciones en lenguaje llano y buscador interactivo.",
+      "para_que_sirve": "La guía de usuario oficial que tienes ahora mismo delante. Su cometido es recordarte en cualquier momento para qué sirve cada botón, dónde consultar cualquier información y cómo se relacionan entre sí las distintas partes de tu oficina, sin rodeos ni vocabulario difícil.",
+      "que_puedes_hacer": [
+        "Buscar en tiempo real cualquier palabra o concepto ('facturas', 'directo', 'difusión', 'agente').",
+        "Pulsar en 'Abrir pestaña' para ir directamente a la sección que necesites.",
+        "Consultar los comandos de terminal más habituales explicados paso a paso.",
+        "Tener la tranquilidad de que esta página nunca se desactualiza sola."
+      ],
+      "automatizaciones": "Se alimenta directamente del servidor de la oficina. Un test guardián en el código asegura que si se añade una pestaña nueva, obligatoriamente se documente aquí."
+    },
+    {
+      "id": "inicio-dia",
+      "titulo": "Inicio de Día (Radar de servicios)",
+      "icono": "☀",
+      "ruta": "/vista/inicio-dia",
+      "sidebar": true,
+      "resumen": "Radar de arranque matutino: estado de puertos locales, radar VPS y servicios.",
+      "para_que_sirve": "Permite auditar el estado general de tu ecosistema cada mañana antes de empezar la jornada. Comprueba los puertos locales (:8790, :8791), la memoria RAM, los contenedores Docker en tu VPS remote-72 y te permite encender o parar servicios de forma ordenada.",
+      "que_puedes_hacer": [
+        "Ver de un vistazo si la Oficina, el Directo o las Facturas están encendidos o parados.",
+        "Comprobar los recursos libres en tu servidor VPS (RAM libre, contenedores activos).",
+        "Arrancar los servicios necesarios con un solo clic según el plan del día."
+      ],
+      "automatizaciones": "Se comunica con el script radar-ecosistema y el endpoint /api/vps/estado con caché inteligente para no saturar conexiones."
+    },
+    {
+      "id": "aplichat",
+      "titulo": "ApliChat (Chat accesible)",
+      "icono": "💬",
+      "ruta": "/vista/aplichat",
+      "sidebar": true,
+      "resumen": "Canal de chat accesible y limpio entre Javier y el Intérprete.",
+      "para_que_sirve": "Canal de comunicación directo, cómodo y libre de tecnicismos entre Javier y el Intérprete en ApliChat. Presenta una interfaz de mensajería limpia tipo chat con fuentes ampliables (Normal, Grande, Gigante), lectura por voz (TTS) a varias velocidades, cita rápida de respuestas, conformidad ('✓ Leído y de acuerdo') y adjuntos con galería y portapapeles.",
+      "que_puedes_hacer": [
+        "Conversar con el Intérprete sin ver comandos de terminal ni ruido técnico.",
+        "Cambiar el tamaño de letra con el botón 'A' para leer sin fatiga visual.",
+        "Escuchar los mensajes con el botón de voz (TTS) a 1.0x, 1.25x, 1.5x o 2.0x.",
+        "Pulsar '✓ Leído y de acuerdo' en las propuestas del Intérprete para enviar conformidad verificada.",
+        "Citar mensajes anteriores con un clic para puntualizar o responder con contexto.",
+        "Adjuntar capturas del portapapeles o archivos desde la galería cómodamente.",
+        "Capturar los paneles de Herdr con el botón de cámara de la cabecera (lectura puntual, secretos enmascarados).",
+        "Copiar al portapapeles el texto de los paneles con agente para pegarlo donde haga falta; en ApliChat Pro, copiar solo la terminal elegida."
+      ],
+      "automatizaciones": "Se comunica directamente con el almacén local /api/chat sin servicios de terceros ni fugas de privacidad, compatible con Tailscale móvil."
+    },
+    {
+      "id": "skills",
+      "titulo": "Skills (Botonera y catálogo)",
+      "icono": "⌘",
+      "ruta": "/vista/skills",
+      "sidebar": true,
+      "resumen": "Catálogo interactivo con las skills operativas del ecosistema en cuadrícula 3x3.",
+      "para_que_sirve": "Permite consultar y activar las skills del ecosistema en una botonera ergonómica con buscador en tiempo real, acordeón explicativo por skill y filtros por categoría.",
+      "que_puedes_hacer": [
+        "Escribir lo que quieres hacer en \"Qué quieres hacer\" y obtener la herramienta recomendada o una lista numerada de opciones.",
+        "Filtrar skills por categoría o buscar por nombre y funcionalidad en vivo.",
+        "Desplegar el acordeón interactivo de cada skill para consultar su propósito y casos de uso.",
+        "Copiar comandos de activación y reglas con un solo clic.",
+        "Copiar la invocación de una skill para pegársela al agente en ApliChat o en su terminal."
+      ],
+      "automatizaciones": "Se sincroniza con el catálogo vivo de .agents/skills/ y el SKILL.md de la central.",
+      "captura": {
+        "archivo": "/capturas/skills.png",
+        "fecha": "2026-10-24",
+        "origen": "skill"
+      }
+    },
+    {
+      "id": "conectores",
+      "titulo": "Conectores (Servicios y credenciales)",
+      "icono": "⇄",
+      "ruta": "/vista/conectores",
+      "sidebar": true,
+      "resumen": "Los servicios externos del ecosistema: para qué se usa cada uno, qué credencial necesita y cómo comprobarlo.",
+      "para_que_sirve": "Reúne en una lista los servicios de los que dependen los proyectos (Blogger, Google Play Console, App Store Connect, AdMob, RevenueCat, GitHub, Firebase y otros). De cada uno dice dónde se usa, el nombre de la variable que necesita y el comando para comprobarlo a mano. Nunca muestra ni guarda el valor de una clave.",
+      "que_puedes_hacer": [
+        "Buscar un servicio por nombre o por el nombre de su variable.",
+        "Marcar con un interruptor los servicios que tienes en uso y filtrar por esa marca.",
+        "Abrir la configuración de cada conector para ver dónde se usa y qué credencial necesita.",
+        "Copiar el comando de comprobación manual cuando existe."
+      ],
+      "automatizaciones": "Ninguna todavía: la Oficina no comprueba por sí sola si un servicio está enlazado. La marca de «en uso» se guarda solo en el navegador."
+    },
+    {
+      "id": "plugins",
+      "titulo": "Plugins (Módulos de la Oficina)",
+      "icono": "⊞",
+      "ruta": "/vista/plugins",
+      "sidebar": true,
+      "resumen": "Enciende o apaga las pestañas de la barra lateral para dejar a la vista solo los módulos que usas.",
+      "para_que_sirve": "Cada módulo de la Oficina es una pestaña de la barra lateral. Desde aquí se ocultan las que no se usan y se vuelven a mostrar cuando hagan falta. Ocultar una pestaña no borra nada: la página sigue existiendo.",
+      "que_puedes_hacer": [
+        "Ocultar o mostrar cualquier pestaña de la barra lateral con un interruptor.",
+        "Buscar un módulo y filtrar entre visibles y ocultos.",
+        "Volver a mostrar todas las pestañas con un solo botón.",
+        "Ver qué pestañas pertenecen a un proyecto satélite, como apliarte-directo."
+      ],
+      "automatizaciones": "La barra lateral de todas las vistas se actualiza al momento. La preferencia se guarda solo en el navegador; la Oficina y Plugins no se pueden ocultar."
+    },
+    {
+      "id": "reflect",
+      "titulo": "Reflect (Directivas y notas)",
+      "icono": "◐",
+      "ruta": "/vista/reflect",
+      "sidebar": true,
+      "resumen": "Las directivas consolidadas de la oficina y un cuaderno de notas de reflexión.",
+      "para_que_sirve": "Reúne por lo que se rige la oficina y lo que quieres recordar. Muestra un resumen de las reglas de AGENTS.md con la sección de donde sale cada una y un cuaderno de notas de reflexión. Lo demás vive en su propia pestaña y aquí solo se enlaza.",
+      "que_puedes_hacer": [
+        "Buscar una directiva y ver de qué sección de AGENTS.md procede.",
+        "Apuntar notas de reflexión y copiarlas todas en Markdown.",
+        "Saltar a la pestaña que guarda el estado del trabajo, los informes o el historial."
+      ],
+      "automatizaciones": "Ninguna: no hace peticiones de red. Las directivas van escritas en la propia vista y las notas se guardan solo en el navegador."
+    },
+    {
+      "id": "diseno",
+      "titulo": "Estudio de Diseño (Vídeo, marcos y SFX)",
+      "icono": "🎨",
+      "ruta": "/vista/diseno",
+      "sidebar": true,
+      "resumen": "Estudio interactivo de creatividades, vídeos promocionales y efectos de sonido.",
+      "para_que_sirve": "Permite componer vídeos promocionales en vertical (9:16) y horizontal (16:9), montar capturas en marcos de dispositivos reales y probar el banco sonoro de 37 efectos SFX.",
+      "que_puedes_hacer": [
+        "Ajustar parámetros de vídeo y previsualizar en directo para cualquier app del ecosistema.",
+        "Copiar código JSX y CSS de marcos para iPhone 16 Pro, Samsung Galaxy, macOS y Web.",
+        "Reproducir y copiar rutas del soundboard de 37 efectos de sonido SFX con Web Audio API.",
+        "Copiar comandos de renderizado por lotes con node y ffmpeg."
+      ],
+      "automatizaciones": "Genera comandos listos para render-video.cjs y scripts de producción de erbolamm-studio."
+    },
+    {
+      "id": "tiendas",
+      "titulo": "Tiendas y ASO (Auditoría y metadatos)",
+      "icono": "🎯",
+      "ruta": "/vista/tiendas",
+      "sidebar": true,
+      "resumen": "Auditoría de metadatos para App Store y Google Play y optimización de palabras clave en 6 idiomas.",
+      "para_que_sirve": "Valida en vivo los límites de caracteres de títulos y subtítulos (máx. 30), previene rechazos de Apple por la directriz 2.3.3, optimiza el campo de 100 caracteres exactos de keywords para iOS y previsualiza capturas enmarcadas.",
+      "que_puedes_hacer": [
+        "Comprobar en tiempo real que título y subtítulo cumplen las reglas de Apple y Google.",
+        "Generar el campo de keywords de 100 caracteres exactos sin espacios sobrantes en 6 idiomas.",
+        "Obtener términos recomendados para Google Play evitando keyword stuffing.",
+        "Previsualizar capturas de pantalla con marcos de iPhone 16 Pro y Android.",
+        "Copiar comandos de renderizado y exportación de ASO_SPEC.md."
+      ],
+      "automatizaciones": "Se sincroniza con keywords_aso_engine.dart y store_metadata_auditor_engine.dart bajo ADR-0013."
+    },
+    {
+      "id": "mercado",
+      "titulo": "Radar de Mercado (Tendencias y noticias)",
+      "icono": "📊",
+      "ruta": "/vista/mercado",
+      "sidebar": true,
+      "resumen": "Monitor de tendencias en vivo de Google News y generador de ganchos virales (Newsjacking).",
+      "para_que_sirve": "Conecta con noticias en vivo de tecnología, apps y móviles para cruzar la actualidad con las aplicaciones de ErBolamm (CalcaApp, ApliArte Directo, TTS ApliArte), generando ganchos para redes sociales y monitorizando competidores.",
+      "que_puedes_hacer": [
+        "Filtrar noticias por categorías (Tecnología e IA, Apps Móviles, Streaming, España).",
+        "Generar ganchos promocionales para X, TikTok, LinkedIn y YouTube según el tono deseado.",
+        "Analizar fortalezas y debilidades de los competidores directos de cada proyecto.",
+        "Copiar ganchos formateados y comandos de análisis para la central."
+      ],
+      "automatizaciones": "Conexión con feeds RSS de Google News y adaptación de MarketResearchService de erbolamm-studio."
+    },
+    {
+      "id": "musica",
+      "titulo": "Estudio Musical (Música procedural Strudel)",
+      "icono": "🎵",
+      "ruta": "/vista/musica",
+      "sidebar": true,
+      "resumen": "Generador de pistas de audio procedurales y algorítmicas con Strudel y Web Audio API sin derechos de autor.",
+      "para_que_sirve": "Permite componer, escuchar en vivo y exportar pistas de fondo libres de copyright para vídeos promocionales, cortinillas de directos en Twitch y ambientes sonoros para aplicaciones móviles usando patrones Strudel y síntesis por capas.",
+      "que_puedes_hacer": [
+        "Reproducir 6 estilos procedurales pre-diseñados (Funk 80s, Synthwave, Lo-Fi / Hip-Hop, Electrónica, Ambient, Rock).",
+        "Editar código Strudel interactivo con ajuste de tempo (BPM) y mezcla de pistas (bajo, batería, sintetizador).",
+        "Asociar temas musicales a plantillas de vídeo promocionales y transmisiones de ApliArte Directo.",
+        "Copiar código Strudel y comandos de renderizado headless para exportar en WAV y MP3."
+      ],
+      "automatizaciones": "Síntesis en tiempo real con Web Audio API en el navegador y comandos de renderizado basados en strudel_generator.dart de erbolamm-studio."
+    },
+    {
+      "id": "locucion",
+      "titulo": "Estudio de Locución (TTS y guiones)",
+      "icono": "🎙",
+      "ruta": "/vista/locucion",
+      "sidebar": true,
+      "resumen": "Redacción y cronometraje de guiones para vídeo corto en 6 idiomas con preescucha neuronal y subtítulos.",
+      "para_que_sirve": "Facilita la creación, ajuste de ritmo y narración de guiones para vídeos promocionales de 15s, 30s y 60s. Permite preescuchar la entonación con voces del navegador, generar subtítulos VTT/SRT y automatizar la locución por CLI con mmx bajo ADR-0013.",
+      "que_puedes_hacer": [
+        "Escribir y cronometrar guiones calculando en tiempo real las palabras por minuto (PPM) y el porcentaje de ajuste al formato.",
+        "Probar la locución en vivo con voces neuronales en 6 idiomas (español, inglés, portugués, francés, alemán e italiano).",
+        "Generar y descargar subtítulos sincronizados en formato WebVTT (.vtt) y SubRip (.srt).",
+        "Copiar comandos de terminal para renderizado de voz con mmx y mezcla con música en ffmpeg."
+      ],
+      "automatizaciones": "Cálculo algorítmico de duración por PPM, Web Speech API nativa en navegador y pipeline headless mmx de erbolamm-studio."
+    },
+    {
+      "id": "voicestudio",
+      "titulo": "Voice Studio (Clonación ultrarrápida)",
+      "icono": "⚡",
+      "ruta": "/vista/voicestudio",
+      "sidebar": true,
+      "resumen": "Clonación zero-shot inmediata y síntesis de voz acelerada por Apple Silicon con OmniVoice.",
+      "para_que_sirve": "Permite clonar la voz de Javier Mateo a partir de una muestra de calibración de 3 segundos y generar voz en alta fidelidad en tiempo récord sobre la GPU del Mac mini M2 Pro, sin suscripciones a ElevenLabs ni consumo de cuotas en la nube.",
+      "que_puedes_hacer": [
+        "Sintetizar textos en español e idiomas secundarios con la voz clonada de Javier Mateo.",
+        "Ajustar pasos de difusión (16 ultrarrápido ~0.025 RTF o 32 estándar) y velocidad de reproducción.",
+        "Escuchar el audio en el navegador y descargar el archivo .WAV listo para difusión.",
+        "Ejecutar síntesis en segundo plano o mediante comandos CLI con scripts/voicestudio_tts.py."
+      ],
+      "automatizaciones": "Inferencia local en Python 3.12 con PyTorch MPS sobre Apple Silicon y almacenamiento seguro de modelos en /Volumes/ModelosIA/huggingface."
+    },
+    {
+      "id": "propuestas",
+      "titulo": "Propuestas (Bandeja de Orquestadores)",
+      "icono": "P",
+      "ruta": "/vista/propuestas",
+      "sidebar": true,
+      "resumen": "Bandeja visual de mejoras y aprendizajes emitidos por orquestadores locales.",
+      "para_que_sirve": "Permite a Javier revisar, aprobar o descartar con un clic las propuestas emitidas por los orquestadores soberanos en sus carpetas locales control-erbolamm/aprendizajes/propuestas.json.",
+      "que_puedes_hacer": [
+        "Ver propuestas agrupadas por proyecto.",
+        "Aprobar propuestas para canonizarlas en la memoria central.",
+        "Descartar o editar propuestas directamente en la interfaz."
+      ],
+      "automatizaciones": "Lectura y sincronización automática con control-erbolamm/aprendizajes/propuestas.json."
+    },
+    {
+      "id": "correos",
+      "titulo": "Correos y Alertas (Soporte de usuarios)",
+      "icono": "E",
+      "ruta": "/vista/correos",
+      "sidebar": true,
+      "resumen": "Buzón unificado de soporte a usuarios y alertas de producción.",
+      "para_que_sirve": "Concentra las incidencias y mensajes de soporte de las cuentas erbolamm@gmail.com y javier@apliarte.com, clasificadas por app con botones directos para responder en Gmail o Mail.",
+      "que_puedes_hacer": [
+        "Filtrar correos por app y estado de atención.",
+        "Redactar respuestas y enviarlas vía Gmail o Mail con un solo clic.",
+        "Gestionar plantillas de soporte y clasificar mensajes automáticamente."
+      ],
+      "automatizaciones": "Persiste en control-erbolamm/correo/ y sincroniza tareas pendientes en INBOX.md."
+    },
+    {
+      "id": "pnl",
+      "titulo": "Estudio PNL (Psicología y Enganche)",
+      "icono": "L",
+      "ruta": "/vista/pnl",
+      "sidebar": true,
+      "resumen": "Auditoría de mensajes y reducción de fricción cognitiva en interfaces.",
+      "para_que_sirve": "Analiza textos, botones y diálogos de las apps para detectar puntos de riesgo de abandono y prescribir reencuadres según principios de Programación Neurolingüística.",
+      "que_puedes_hacer": [
+        "Evaluar el índice de enganche de los mensajes de cada app.",
+        "Proponer y exportar reencuadres positivos para dialogos de permisos y estados vacíos.",
+        "Sincronizar tareas de mejora con el orquestador local de la app."
+      ],
+      "automatizaciones": "Genera estudios en control-erbolamm/pnl/estudio-pnl.json y avisa en INBOX.md."
+    }
+  ],
+  "herramientas_apoyo": [
+    {
+      "id": "tablero",
+      "titulo": "Tablero de tareas",
+      "ruta": "/vista/tablero",
+      "resumen": "Vista en columnas estilo Kanban de todas las tarjetas (por-hacer, haciendo, hecho)."
+    },
+    {
+      "id": "buzon",
+      "titulo": "Buzón rápido",
+      "ruta": "/vista/buzon",
+      "resumen": "Para apuntar ideas, notas y encargos rápidos que luego se pueden convertir en tareas formales."
+    },
+    {
+      "id": "agentes",
+      "titulo": "Fichas de agentes",
+      "ruta": "/vista/agentes",
+      "resumen": "Detalle individual de cada personaje, su rol asignado, modelo de IA y tareas completadas."
+    },
+    {
+      "id": "informes",
+      "titulo": "Informes del vigilante",
+      "ruta": "/vista/informes",
+      "resumen": "Buzón de auditorías técnicas y comprobaciones automáticas del sistema."
+    }
+  ],
+  "consola_herramientas": [
+    {
+      "id": "aso",
+      "titulo": "ASO (Optimización para Tiendas de Apps)",
+      "icono": "🎯",
+      "comando": "dart run bin/trabajo.dart aso <proyecto>",
+      "resumen": "Generación canónica de palabras clave y metadatos ASO para App Store y Google Play en 6 idiomas.",
+      "para_que_sirve": "Audita y genera la estrategia ASO del proyecto. Produce el archivo de palabras clave de 100 caracteres exactos para App Store y las listas optimizadas para Google Play en 6 idiomas (es, en, fr, de, it, pt), validando límites de longitud y evitando repeticiones innecesarias.",
+      "que_puedes_hacer": [
+        "Generar las palabras clave exactas de 100 caracteres para iOS sin espacios sobrantes.",
+        "Construir títulos, subtítulos y descripciones breves multilingües optimizadas para Google Play.",
+        "Validar que no se superen los límites de caracteres de cada tienda.",
+        "Consultar la matriz de términos por idioma y relevancia en formato JSON y Markdown."
+      ],
+      "artefactos_generados": [
+        "control-erbolamm/aso/keywords.json",
+        "control-erbolamm/aso/ASO_SPEC.md"
+      ],
+      "automatizaciones": "Detecta automáticamente la categoría del proyecto y no requiere APIs de pago externas."
+    },
+    {
+      "id": "revenuecat",
+      "titulo": "RevenueCat (Monetización y Paywalls)",
+      "icono": "💎",
+      "comando": "dart run bin/trabajo.dart revenuecat <proyecto>",
+      "resumen": "Especificación de suscripciones, productos in-app y textos de paywalls multilingües.",
+      "para_que_sirve": "Centraliza la configuración de compras integradas y suscripciones del proyecto bajo RevenueCat. Define identificadores de paquetes (mensual, anual, vitalicio), entitlements y genera copys persuasivos para paywalls en 6 idiomas, garantizando coherencia con las reglas de App Store y Google Play.",
+      "que_puedes_hacer": [
+        "Definir paquetes de suscripción y productos no consumibles con IDs canónicos.",
+        "Generar copys y llamadas a la acción (CTA) para pantallas de pago en 6 idiomas.",
+        "Validar identificadores de entitlements y productos sin tocar claves privadas.",
+        "Inspeccionar el archivo canónico de configuración de compras del proyecto."
+      ],
+      "artefactos_generados": [
+        "control-erbolamm/revenuecat/REVENUECAT_SPEC.md",
+        "control-erbolamm/revenuecat/paywall_strings.json"
+      ],
+      "automatizaciones": "Opera sin secretos ni tokens en Git; detecta si el SDK purchases_flutter está presente en pubspec.yaml."
+    },
+    {
+      "id": "admob",
+      "titulo": "AdMob (Publicidad Móvil)",
+      "icono": "📢",
+      "comando": "dart run bin/trabajo.dart admob <proyecto>",
+      "resumen": "Auditoría de bloques de anuncios, verificación de IDs de prueba y generación de app-ads.txt.",
+      "para_que_sirve": "Gestiona los formatos publicitarios del proyecto (banners, intersticiales, recompensados). Verifica que en desarrollo se utilicen exclusivamente IDs de prueba oficiales de Google para prevenir baneos de cuenta y genera el archivo app-ads.txt canónico listo para publicar en el dominio del desarrollador.",
+      "que_puedes_hacer": [
+        "Auditar los bloques publicitarios configurados en la aplicación Android e iOS.",
+        "Verificar que el modo de prueba esté activo en compilaciones de desarrollo.",
+        "Generar y actualizar el archivo app-ads.txt para verificación de inventario.",
+        "Comprobar el cumplimiento de las políticas de Google AdMob y la presencia de google_mobile_ads."
+      ],
+      "artefactos_generados": [
+        "control-erbolamm/admob/ADMOB_SPEC.md",
+        "control-erbolamm/admob/app-ads.txt"
+      ],
+      "automatizaciones": "Comprobación estricta de IDs de prueba en local sin interactuar con la consola de Google."
+    },
+    {
+      "id": "firebase",
+      "titulo": "Firebase (Auditoría e Integración)",
+      "icono": "🔥",
+      "comando": "dart run bin/trabajo.dart firebase <proyecto>",
+      "resumen": "Verificación de google-services.json, GoogleService-Info.plist y SDKs activos.",
+      "para_que_sirve": "Audita la integración técnica de Firebase en aplicaciones Flutter, Android e iOS. Comprueba la presencia e integridad de los archivos de configuración de plataforma, detecta qué servicios están enlazados (Analytics, Crashlytics, Auth, Firestore) y valida que no se expongan credenciales sensibles indebidas.",
+      "que_puedes_hacer": [
+        "Comprobar la existencia de google-services.json y GoogleService-Info.plist en las rutas canónicas.",
+        "Detectar qué plugins de Firebase están declarados en pubspec.yaml y en firebase_options.dart.",
+        "Validar que los archivos de configuración no contengan anomalías estructurales o API keys restringidas.",
+        "Generar el informe de estado de servicios y alertas de seguridad en la suite del proyecto."
+      ],
+      "artefactos_generados": [
+        "control-erbolamm/firebase/FIREBASE_SPEC.md",
+        "control-erbolamm/firebase/audit_report.json"
+      ],
+      "automatizaciones": "Auditoría estática 100% en local sin consultar los servidores de Google Cloud."
+    },
+    {
+      "id": "correo",
+      "titulo": "Correo Transaccional",
+      "icono": "✉️",
+      "comando": "dart run bin/trabajo.dart correo <proyecto>",
+      "resumen": "Suite de 5 plantillas duales (HTML responsive + texto plano) y configuración SMTP segura.",
+      "para_que_sirve": "Proporciona a cada proyecto un sistema completo de plantillas de correo transaccional (bienvenida, verificación de email, restablecimiento de contraseña, notificación y aviso legal). Genera versiones duales en HTML adaptable con el Kit de Marca ApliArte y texto plano accesible, además de la plantilla de configuración SMTP sin credenciales hardcodeadas.",
+      "que_puedes_hacer": [
+        "Generar las 5 plantillas canónicas duales (HTML y TXT) para el proyecto.",
+        "Previsualizar el diseño responsive adaptado a clientes móviles y de escritorio.",
+        "Configurar las variables de entorno SMTP requeridas de forma segura en .env.example.",
+        "Verificar los placeholders de personalización de cada correo (usuario, enlaces de acción, soporte)."
+      ],
+      "artefactos_generados": [
+        "control-erbolamm/correo/plantillas/*.html",
+        "control-erbolamm/correo/plantillas/*.txt",
+        "control-erbolamm/correo/CORREO_SPEC.md"
+      ],
+      "automatizaciones": "Generación determinista en disco; diseño responsive inline para máxima compatibilidad de clientes de correo."
+    },
+    {
+      "id": "tiendas",
+      "titulo": "Auditoría de Metadatos de Tiendas",
+      "icono": "🏪",
+      "comando": "dart run bin/trabajo.dart tiendas <proyecto>",
+      "resumen": "Auditoría de metadatos de tienda, límites de caracteres y cumplimiento de Apple 2.3.3.",
+      "para_que_sirve": "Audita los metadatos de tienda para App Store y Google Play. Verifica el cumplimiento de la directriz 2.3.3 de Apple (eliminación de resoluciones legacy y coherencia de capturas), revisa límites de longitud de títulos, subtítulos y novedades de versión (novedades-android.txt y novedades-ios.json).",
+      "que_puedes_hacer": [
+        "Auditar que los textos de la tienda no sobrepasen los límites de caracteres permitidos.",
+        "Comprobar el cumplimiento de la directriz Apple 2.3.3 en capturas y resoluciones.",
+        "Generar los archivos canónicos de novedades de versión listos para las consolas.",
+        "Revisar el informe detallado de incidencias y advertencias previas al envío a revisión."
+      ],
+      "artefactos_generados": [
+        "control-erbolamm/tiendas/novedades-android.txt",
+        "control-erbolamm/tiendas/novedades-ios.json",
+        "control-erbolamm/tiendas/reporte-auditoria-tiendas.md"
+      ],
+      "automatizaciones": "Revisión automatizada de reglas de publicación para evitar rechazos en las tiendas."
+    },
+    {
+      "id": "capturas",
+      "titulo": "Capturas de Tienda (Screenshots)",
+      "icono": "📱",
+      "comando": "dart run bin/trabajo.dart capturas <proyecto>",
+      "resumen": "Generación de capturas de pantalla enmarcadas en alta resolución para tiendas.",
+      "para_que_sirve": "Automatiza la composición de capturas de pantalla de la app enmarcadas en maquetas de dispositivos reales (iPhone, iPad, teléfonos Android y tablets). Aplica los fondos corporativos, tipografías y textos destacados de la propuesta de valor según las especificaciones exactas de Apple App Store y Google Play.",
+      "que_puedes_hacer": [
+        "Enmarcar capturas crudas en maquetas oficiales de dispositivos.",
+        "Incorporar titulares comerciales y características clave en la parte superior.",
+        "Generar las dimensiones exactas requeridas por App Store y Google Play.",
+        "Exportar el paquete listo para subir a App Store Connect y Google Play Console."
+      ],
+      "artefactos_generados": [
+        "control-erbolamm/screenshots/final/",
+        "control-erbolamm/screenshots/manifest.json"
+      ],
+      "automatizaciones": "Procesamiento de imagen local sin servicios externos."
+    },
+    {
+      "id": "abrir",
+      "titulo": "Lanzador Soberano (Herdr / Workspace)",
+      "icono": "🚀",
+      "comando": "dart run bin/trabajo.dart abrir <proyecto>",
+      "resumen": "Apertura de workspace soberano en Herdr con panel or-<proyecto> y terminales tr-*.",
+      "para_que_sirve": "Abre y enfoca el espacio de trabajo de un proyecto en Herdr. Si el workspace no existe, lo crea con la topología canónica bajo ADR-0013: panel principal para el Orquestador Local (or-<proyecto>) en el directorio del proyecto y terminales de ejecución tr-* bajo demanda, respetando la soberanía del repositorio.",
+      "que_puedes_hacer": [
+        "Abrir directamente el workspace de cualquier proyecto en Herdr con una sola orden.",
+        "Crear la estructura inicial del workspace si es la primera vez que se trabaja en él.",
+        "Conectar la sesión de trabajo local con el centinela central de eventos.",
+        "Asegurar el aislamiento de terminales evitando mezclar contextos entre proyectos."
+      ],
+      "artefactos_generados": [
+        "control-erbolamm/roles/orquestador/",
+        "control-erbolamm/tareas/por-hacer/"
+      ],
+      "automatizaciones": "Gestión de sesiones y terminales de Herdr vía loopback seguro."
+    },
+    {
+      "id": "mercado",
+      "titulo": "Estudio de Mercado y Newsjacking",
+      "icono": "📈",
+      "comando": "dart run bin/trabajo.dart mercado <proyecto>",
+      "resumen": "Investigación de tendencias, análisis de competencia y ganchos de difusión.",
+      "para_que_sirve": "Analiza las tendencias actuales del sector y genera ganchos de comunicación y difusión (newsjacking) para posicionar el producto frente a noticias o novedades del momento, integrando las fortalezas únicas de la app en la narrativa pública.",
+      "que_puedes_hacer": [
+        "Analizar tendencias relevantes del nicho de mercado en modo offline o en vivo.",
+        "Generar ganchos comunicativos para publicaciones y notas de prensa.",
+        "Documentar el recibo de marketing en la suite soberana del proyecto.",
+        "Conectar las ventajas competitivas de la aplicación con la actualidad."
+      ],
+      "artefactos_generados": [
+        "control-erbolamm/marketing/recibo-marketing.md"
+      ],
+      "automatizaciones": "Modo offline disponible para operar sin consumo de red ni dependencias externas."
+    },
+    {
+      "id": "musica",
+      "titulo": "Música Procedural (Strudel)",
+      "icono": "🎵",
+      "comando": "dart run bin/trabajo.dart musica <proyecto>",
+      "resumen": "Generación de música ambiental procedural para fondos y vídeos.",
+      "para_que_sirve": "Crea pistas de audio y bandas sonoras procedurales mediante código JavaScript (Strudel/TidalCycles) adaptadas a la identidad y ritmo de la aplicación. Genera un reproductor interactivo en HTML que no requiere archivos pesados de audio pregrabados.",
+      "que_puedes_hacer": [
+        "Generar código procedural Strudel con el tempo (BPM) y estilo seleccionado.",
+        "Probar y escuchar la música en el reproductor web standalone (player.html).",
+        "Ajustar patrones rítmicos y sintéticos sin licencias de terceros.",
+        "Exportar el código para su integración en landings, maquetas o vídeos promocionales."
+      ],
+      "artefactos_generados": [
+        "control-erbolamm/musica/musica.strudel.js",
+        "control-erbolamm/musica/player.html",
+        "control-erbolamm/musica/recibo-musica.md"
+      ],
+      "automatizaciones": "Composición determinista y reproductor HTML ligero sin red externa."
+    }
+  ],
+  "comandos_terminal": [
+    {
+      "comando": "erbolamm facturas [abrir|estado|organizar]",
+      "para_que_sirve": "Gestiona tus facturas desde la consola: comprueba el servidor o pide al robot que organice el lote pendiente."
+    },
+    {
+      "comando": "erbolamm blogger [abrir|estado]",
+      "para_que_sirve": "Abre la vista de difusión o revisa si el monitor de blogs está activo."
+    },
+    {
+      "comando": "dart run bin/trabajo.dart explore <proyecto>",
+      "para_que_sirve": "Compara al instante el estado de un proyecto entre tu Mac local, la copia en iCloud y GitHub."
+    },
+    {
+      "comando": "herdr agent list",
+      "para_que_sirve": "Lista todos los agentes de inteligencia artificial que tienes abiertos en las consolas y su estado (libre o trabajando)."
+    },
+    {
+      "comando": "erbolamm ayuda [modulo]",
+      "para_que_sirve": "Muestra la ayuda general o detallada de cualquier módulo con puertos, servicios y flujos."
+    },
+    {
+      "comando": "erbolamm investigacion-competencia <app_o_idea>",
+      "para_que_sirve": "Genera un informe conciso de competencia y alternativas de mercado en trabajo/ sin costes."
+    },
+    {
+      "comando": "dart run bin/trabajo.dart tareas rutinas [listar|<id>]",
+      "para_que_sirve": "Ejecuta rutinas operativas en consola (cierre-limpio, auditar-hecho, repaso-tablero) sin interfaz web."
+    },
+    {
+      "comando": "dart run bin/trabajo.dart tareas recurrentes [listar|ejecutar]",
+      "para_que_sirve": "Gestiona y ejecuta tareas periódicas programadas en tareas/recurrentes/ según día de la semana y hora fijada."
+    },
+    {
+      "comando": "python3 scripts/transcribir_nota.py <audio>",
+      "para_que_sirve": "Transcribe una nota de voz con el modelo local mlx-whisper (solo lectura, sin red). El texto es aproximado."
+    },
+    {
+      "comando": "dart run bin/trabajo.dart herramientas buscar \"<intención>\"",
+      "para_que_sirve": "Busca por intención entre skills, endpoints y comandos de la Oficina. Con `herramientas skill [--check]` regenera la skill de texto desde el mismo JSON."
+    }
+  ],
+  "vistasNoIA": {
+    "regla": "AGENTS.md §3.1.bis",
+    "auditadoEn": "2026-10-01",
+    "entradas": [
+      {
+        "ruta": "tareas/vista/agentes.html",
+        "veredicto": "revisar",
+        "detalle": "Muestra el bloque 'Pegar el resumen de cuotas' y menciona GROQ_API_KEY; se retira en esta misma tarea (paso 4).",
+        "redesExternas": false
+      },
+      {
+        "ruta": "tareas/vista/bitacora.html",
+        "veredicto": "cumple",
+        "detalle": "Incrusta bitacora.html por iframe local.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "tareas/vista/blogger.html",
+        "veredicto": "cumple",
+        "detalle": "Embudo de difusión local: copia HTML y abre web-intents ya armados.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "tareas/vista/buscar.html",
+        "veredicto": "cumple",
+        "detalle": "Buscador local sobre /api/*.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "tareas/vista/buzon.html",
+        "veredicto": "cumple",
+        "detalle": "Buzón de informes /api/informes locales.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "tareas/vista/como-funciona.html",
+        "veredicto": "cumple",
+        "detalle": "Sirve /api/como-funciona (catálogo estático).",
+        "redesExternas": false
+      },
+      {
+        "ruta": "tareas/vista/delegar.html",
+        "veredicto": "cumple",
+        "detalle": "Creador de tareas; preview + confirmación contra /api/tasks/*.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "tareas/vista/facturas.html",
+        "veredicto": "cumple",
+        "detalle": "Gestor de facturas; consume /api/facturas local.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "tareas/vista/informes.html",
+        "veredicto": "cumple",
+        "detalle": "Listado y detalle de informes del vigilante local.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "tareas/vista/inicio-dia.html",
+        "veredicto": "cumple",
+        "detalle": "Lee 127.0.0.1:8790/api/estado (loopback directo) y /api/* del panel.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "tareas/vista/oficina.html",
+        "veredicto": "cumple",
+        "detalle": "Vista legacy de oficina, redirige al panel.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "tareas/vista/plano.html",
+        "veredicto": "cumple",
+        "detalle": "Plano de la oficina (3D en cliente, sin red externa).",
+        "redesExternas": false
+      },
+      {
+        "ruta": "tareas/vista/tablero.html",
+        "veredicto": "cumple",
+        "detalle": "Tablero Kanban; arrastra tarjetas y llama a /api/tasks/* locales.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "tareas/vista/terminales.html",
+        "veredicto": "cumple",
+        "detalle": "Lanzadores de agentes (tmux/herdr); consume /api/herdr local.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "tareas/vista/herdr.html",
+        "veredicto": "cumple",
+        "detalle": "Consola móvil táctil de Herdr; consume /api/herdr/* locales.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "tareas/vista/aplichat.html",
+        "veredicto": "cumple",
+        "detalle": "Chat accesible ApliChat con el orquestador: consume /api/chat local y Web Speech API del navegador sin red externa.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "tareas/panel.html",
+        "veredicto": "cumple",
+        "detalle": "Casita del panel: monta el shell y los iframes de cada vista; cero fetch externo.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "tareas/oficina-3d/src/**",
+        "veredicto": "cumple",
+        "detalle": "Render 3D del plano (Three.js) y formulario de tareas: solo llamadas a /api/* del panel local. Ningún fetch a api.groq, api.openai o equivalentes.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "directo/codigo-de-hoy.html",
+        "veredicto": "cumple",
+        "detalle": "Panel de tareas del directo servido estático; sin fetch externo.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "directo/panel-twitch-comandos.html",
+        "veredicto": "cumple",
+        "detalle": "Overlay de comandos para Twitch; opera en local.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "directo/public/index.html",
+        "veredicto": "cumple",
+        "detalle": "Landing del directo; HTML estático sin red externa.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "directo/public/chat.html",
+        "veredicto": "cumple",
+        "detalle": "Overlay de chat para OBS; opera en local.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "directo/public/tts-multiplataforma.html",
+        "veredicto": "cumple",
+        "detalle": "TTS vía Web Speech API del navegador (no llama a LLM externo).",
+        "redesExternas": false
+      },
+      {
+        "ruta": "directo/public/tts-twitch.html",
+        "veredicto": "cumple",
+        "detalle": "TTS específico para Twitch; Web Speech API local.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "directo/public/walk.html",
+        "veredicto": "cumple",
+        "detalle": "Overlay 'walk-in'; HTML estático local.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "tareas/vista/manual.html",
+        "veredicto": "cumple",
+        "detalle": "Vista estática generada desde DOCUMENTACION/manual/*.md; sin fetch externo, sin APIs de LLM en el cliente. El shell compartido (/panel-shell.css, /panel-shell.js) se sirve desde la misma oficina local.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "tareas/vista/conectores.html",
+        "veredicto": "cumple",
+        "detalle": "Catálogo estático de servicios; no hace ninguna petición de red y solo muestra nombres de variables, nunca valores.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "tareas/vista/plugins.html",
+        "veredicto": "cumple",
+        "detalle": "Interruptores de la barra lateral; solo lee /api/como-funciona de la oficina local.",
+        "redesExternas": false
+      },
+      {
+        "ruta": "tareas/vista/reflect.html",
+        "veredicto": "cumple",
+        "detalle": "Directivas estáticas y notas en localStorage; no hace ninguna petición de red.",
+        "redesExternas": false
+      }
+    ]
+  },
+  "novedades": [
+    {
+      "fecha": "2026-10-23",
+      "estado": "hecho",
+      "titulo": "Shorts: corte, texto, voz y editor visual",
+      "detalle": "La pestaña Shorts ya corta un tramo, gira el vídeo, superpone textos (fuente, contorno, sombra, caja, arrastrar sobre la vista previa, entrada con fundido o deslizamiento), pone marca de agua en una esquina, guarda presets (incluido anuncio-directo), arma un montaje con varios vídeos y puede añadir una locución con el motor de Voice Studio comprobada contra la duración final. El original nunca se modifica."
+    },
+    {
+      "fecha": "2026-10-23",
+      "estado": "hecho",
+      "titulo": "Skills: catálogo de herramientas de la Oficina",
+      "detalle": "La pestaña /vista/skills tiene ahora la caja \"Qué quieres hacer\": busca por intención entre 46 skills, 170 endpoints y 49 comandos y recomienda una herramienta o da una lista numerada. Misma fuente (tareas/catalogo-herramientas.json) para la pestaña, la API /api/herramientas/buscar, la CLI `dart run bin/trabajo.dart herramientas buscar` y la skill catalogo-herramientas. Sin MCP ni IA."
+    },
+    {
+      "fecha": "2026-10-23",
+      "estado": "hecho",
+      "titulo": "Captura y copia de paneles de Herdr",
+      "detalle": "ApliChat tiene dos botones en la cabecera: capturar los paneles (lee todos los paneles de Herdr una vez, con secretos enmascarados) y copiar el texto de los paneles con agente. En ApliChat Pro, un botón junto al selector de terminal copia solo la terminal elegida. Solo lectura; no envía nada a ningún sitio."
+    },
+    {
+      "fecha": "2026-10-23",
+      "estado": "hecho",
+      "titulo": "Espejo de Drive sin instantáneas de paneles",
+      "detalle": "El espejo de contexto hacia Drive (scripts/drive-espejo-push.py) excluye la carpeta instantaneas-paneles, porque son capturas temporales que pueden contener fragmentos de terminal. Gemini solo ve lo que el espejo publica."
+    },
+    {
+      "fecha": "2026-10-23",
+      "estado": "hecho",
+      "titulo": "Tablero migrado a control-erbolamm",
+      "detalle": "El tablero lee las tarjetas de control-erbolamm/tareas (tablero_migrado: true). Las tarjetas de trabajo de la central siguen versionadas en tareas/ y se cierran a mano moviéndolas a tareas/hecho/ con su ## Recibo."
+    },
+    {
+      "fecha": "2026-10-23",
+      "estado": "hecho",
+      "titulo": "Reglas de commit y de cierre del día alineadas",
+      "detalle": "AGENTS.md dice ya que todo commit y todo push requieren autorización de Javier: la orden de implementar autoriza los commits de esa tarea en su rama, cerrar el día autoriza solo commits locales y el push lo decide siempre Javier. El cierre del día lo ejecuta el Asistente con herramientas/cerrar-dia.py y los paneles solo se cierran con orden expresa, nunca los ja-- ni los marcados no tocar."
+    },
+    {
+      "fecha": "2026-10-23",
+      "estado": "hecho",
+      "titulo": "Notas de voz: transcripción local",
+      "detalle": "scripts/transcribir_nota.py transcribe un audio (m4a, mp3, wav...) con mlx-whisper en local y sin red. La transcripción es aproximada: se confirma con Javier lo entendido antes de actuar."
+    },
+    {
+      "fecha": "2026-10-24",
+      "estado": "hecho",
+      "titulo": "Oficina modular: compuerta server-side y validador de Shorts",
+      "detalle": "Compuerta server-side activa: los módulos desactivados en tareas/registro-modulos.json devuelven una página clara 404 de módulo no activado con enlace a Cómo funciona, protegiendo tanto las vistas como los endpoints /api/. Incorporado validador puro de Shorts en Dart que comprueba duración objetivo, factor de aceleración, proporción vertical/giro y encaje de locución, con visualización de resultados mediante el componente validation-report en la tarjeta del plan."
+    },
+    {
+      "fecha": "2026-10-24",
+      "estado": "hecho",
+      "titulo": "Oficina modular: registro de pestañas, componentes y capturas reales",
+      "detalle": "La barra lateral sale de un registro único (/api/modulos) con interruptor por pestaña preparado. Hay una carpeta de componentes reutilizables, estilos compartidos y un icono de información en cada pestaña que lleva a esta guía. Skills y Shorts abren con una explicación en lenguaje llano y sus capturas reales aparecen aquí. El resto de pestañas se migra en próximos pasos."
+    }
+  ]
+}
