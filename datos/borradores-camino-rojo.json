@@ -1,0 +1,91 @@
+[
+  {
+    "id": "borrador-tributario-modelo-303",
+    "modulo_id": "ejemplo-autonomo",
+    "modulo_nombre": "Ejemplo: Profesional autonomo",
+    "categoria": "Fiscalidad y Finanzas",
+    "camino": "rojo",
+    "modo": "ensayo_previo_dry_run",
+    "accion_solicitada": "Presentacion telematica del borrador del Modelo 303 (Autoliquidacion de IVA)",
+    "destinatario_entidad": "Administracion Tributaria",
+    "motivo_firma_humana": "Operacion tributaria con consecuencias fiscales directas e irreversibles. La normativa legal vigente y el arnes neurosimbolico prohiben que cualquier modelo de lenguaje efectue presentaciones telematicas tributarias sin la supervision y el consentimiento expreso del contribuyente.",
+    "terminal_origen": "Terminal libre del cliente (Antigravity / Codex / Grok / Claude Pro)",
+    "fecha_generacion": "2026-11-20 10:30:00",
+    "resumen": {
+      "Periodo fiscal": "3T (Tercer Trimestre)",
+      "Base imponible repercutida (21%)": "14.250,00 EUR",
+      "Cuota devengada de IVA": "2.992,50 EUR",
+      "IVA deducible en operaciones interiores": "1.120,40 EUR",
+      "Resultado de la autoliquidacion": "1.872,10 EUR (A ingresar)",
+      "Cuenta de domiciliacion bancaria": "ES91 **** **** **** 1234",
+      "Validador formal": "Calculo aritmetico exacto verificado por motor local"
+    },
+    "detalle_tecnico": "{\n  \"modelo\": \"303\",\n  \"ejercicio\": \"2026\",\n  \"periodo\": \"3T\",\n  \"declarante\": {\n    \"nif\": \"ES00000000T\",\n    \"apellidos_nombre\": \"Contribuyente de Ejemplo\"\n  },\n  \"devengado\": {\n    \"base\": 14250.00,\n    \"tipo\": 0.21,\n    \"cuota\": 2992.50\n  },\n  \"deducible\": {\n    \"cuota\": 1120.40\n  },\n  \"resultado\": 1872.10,\n  \"iban_pago\": \"ES91****************1234\",\n  \"firma_requerida\": \"certificado_electronico_titular\"\n}"
+  },
+  {
+    "id": "borrador-recurso-administrativo",
+    "modulo_id": "ejemplo-gestoria",
+    "modulo_nombre": "Ejemplo: Despacho o gestoria",
+    "categoria": "Gestoria y Asesoria Legal",
+    "camino": "rojo",
+    "modo": "ensayo_previo_dry_run",
+    "accion_solicitada": "Presentacion telematica de pliego de alegaciones administrativas",
+    "destinatario_entidad": "Jefatura Provincial de Administracion",
+    "motivo_firma_humana": "Tramite administrativo con validez juridica vinculante ante un organismo publico. El arnes simbolico bloquea cualquier envio administrativo sin la firma previa y ratificacion formal del profesional colegiado o titular del expediente.",
+    "terminal_origen": "Terminal libre del cliente (Antigravity / Codex / Grok / Claude Pro)",
+    "fecha_generacion": "2026-11-20 10:32:00",
+    "resumen": {
+      "Numero de expediente": "EXP-2026-449102-GEN",
+      "Identificador del expediente": "DOC-4821-LXZ",
+      "Precepto alegado": "Reglamento General de Procedimiento Administrativo",
+      "Motivo formal de impugnacion": "Falta de documentacion justificativa preceptiva y defecto de notificacion formal",
+      "Organo destinatario": "Unidad de Resolucion de Expedientes",
+      "Validador formal": "Cotejo documental contrastado por validador determinista"
+    },
+    "detalle_tecnico": "AL ORGANO INSTRUCTOR DEL EXPEDIENTE ADMINISTRATIVO\n\nEXPEDIENTE: EXP-2026-449102-GEN\nTITULAR: Empresa de Ejemplo S.L.\n\nALERTA LEGAL: Pliego de alegaciones estructurado en ensayo previo.\nSolicita la subsanacion del expediente por defecto formal en el computo de plazos y acreditacion de documentacion reglamentaria."
+  },
+  {
+    "id": "borrador-partes-viajeros",
+    "modulo_id": "ejemplo-alojamiento",
+    "modulo_nombre": "Ejemplo: Alojamiento turistico",
+    "categoria": "Turismo y Hospedaje",
+    "camino": "rojo",
+    "modo": "ensayo_previo_dry_run",
+    "accion_solicitada": "Transmision oficial de partes de entrada de viajeros al registro normativo",
+    "destinatario_entidad": "Registro Central de Hospedajes",
+    "motivo_firma_humana": "Envio directo a las bases de datos de seguridad ciudadana del registro oficial. Una vez remitido el registro no puede ser alterado telematicamente sin requerimiento administrativo, por lo que exige verificacion humana previa de identidades y fechas de estancia.",
+    "terminal_origen": "Terminal libre del cliente (Antigravity / Codex / Grok / Claude Pro)",
+    "fecha_generacion": "2026-11-20 10:35:00",
+    "resumen": {
+      "Establecimiento emisor": "Alojamiento Turistico de Ejemplo (Codigo: CR-00000)",
+      "Numero de viajeros incluidos": "4 personas",
+      "Documentos de identidad": "2 Documentos Nacionales de Identidad, 2 Pasaportes de la Union Europea",
+      "Periodo de estancia": "20 al 23 de noviembre de 2026",
+      "Validacion de esquema": "Archivo XML validado con exito contra el esquema oficial",
+      "Canal de despacho": "Servicio web seguro con certificado digital"
+    },
+    "detalle_tecnico": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<comunicacionViajeros xmlns=\"https://registro.ejemplo.gob.es/v1\">\n  <establecimiento>CR-00000</establecimiento>\n  <fechaTransmision>2026-11-20T10:35:00Z</fechaTransmision>\n  <viajeros total=\"4\">\n    <viajero id=\"1\" tipoDoc=\"DNI\" numDoc=\"00000000A\" entrada=\"2026-11-20\" salida=\"2026-11-23\"/>\n    <viajero id=\"2\" tipoDoc=\"DNI\" numDoc=\"00000001B\" entrada=\"2026-11-20\" salida=\"2026-11-23\"/>\n  </viajeros>\n</comunicacionViajeros>"
+  },
+  {
+    "id": "borrador-hosteleria-reserva",
+    "modulo_id": "ejemplo-hosteleria",
+    "modulo_nombre": "Ejemplo: Negocio de hosteleria",
+    "categoria": "Hosteleria y Restauracion",
+    "camino": "rojo",
+    "modo": "ensayo_previo_dry_run",
+    "accion_solicitada": "Confirmacion vinculante de reserva especial para 40 comensales con menu cerrado y fianza",
+    "destinatario_entidad": "Cliente organizador de evento privado",
+    "motivo_firma_humana": "Compromiso comercial vinculante que bloquea el comedor principal y exige condiciones atipicas de fianza y cancelacion. La politica de salvaguarda impide que un modelo de lenguaje comprometa disponibilidad ni condiciones economicas sin aprobacion expresa del responsable de sala.",
+    "terminal_origen": "Terminal libre del cliente (Antigravity / Codex / Grok / Claude Pro)",
+    "fecha_generacion": "2026-11-20 10:38:00",
+    "resumen": {
+      "Evento": "Comida de celebracion empresarial",
+      "Fecha y horario": "Sabado 28 de noviembre de 2026, 14:30 horas",
+      "Numero de comensales": "40 comensales garantizados",
+      "Presupuesto cerrado": "45,00 EUR por comensal (Total: 1.800,00 EUR)",
+      "Senal / Fianza requerida": "400,00 EUR a liquidar en un plazo maximo de 48 horas",
+      "Espacio reservado": "Salon Principal en exclusividad"
+    },
+    "detalle_tecnico": "PROPUESTA DE RESERVA EN FIRME - ESTABLECIMIENTO DE EJEMPLO\n\nEstimado cliente:\nSe confirma el bloqueo preventivo del Salon Principal para su evento del 28 de noviembre a las 14:30 h con 40 comensales.\nCondicion de validez: Transferencia bancaria de fianza de 400 EUR antes del 22 de noviembre.\nBorrador generado por el asistente; pendiente de ratificacion por direccion de sala."
+  }
+]

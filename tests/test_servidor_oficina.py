@@ -76,8 +76,8 @@ class TestServidorOficina(unittest.TestCase):
             self.assertEqual(datos["estado"], "activo")
             self.assertTrue(datos["total_habilidades"] >= 1)
             self.assertTrue(datos["total_resenas"] >= 1)
-            self.assertEqual(datos.get("total_pestanas"), 32)
-            self.assertEqual(datos.get("pestanas_publicas"), 11)
+            self.assertEqual(datos.get("total_pestanas"), 33)
+            self.assertEqual(datos.get("pestanas_publicas"), 12)
 
     def test_endpoint_habilidades_lista(self):
         with urllib.request.urlopen(f"{self.base_url}/api/habilidades") as resp:
@@ -162,9 +162,9 @@ class TestServidorOficina(unittest.TestCase):
             self.assertEqual(resp.status, 200)
             datos = json.loads(resp.read().decode("utf-8"))
             self.assertEqual(datos["modo"], "solo_lectura")
-            self.assertEqual(datos["total"], 32)
+            self.assertEqual(datos["total"], 33)
             slugs_publicos = [p["slug"] for p in datos["pestanas"] if p["publica"]]
-            self.assertEqual(set(slugs_publicos), {"oficina", "propuestas", "aplicaciones", "paquetes", "skills", "agentes", "como-funciona", "herdr", "radar", "visita-guiada", "directo"})
+            self.assertEqual(set(slugs_publicos), {"oficina", "propuestas", "aplicaciones", "paquetes", "skills", "verticales", "agentes", "como-funciona", "herdr", "radar", "visita-guiada", "directo"})
 
     def test_vista_directo_demo_segura(self):
         with urllib.request.urlopen(f"{self.base_url}/vista/directo") as resp:
@@ -354,6 +354,142 @@ class TestServidorOficina(unittest.TestCase):
             self.assertIn("apliarte_remote_control", nombres)
             self.assertIn("tts_apliarte", nombres)
 
+    def test_endpoint_verticales(self):
+        with urllib.request.urlopen(f"{self.base_url}/api/verticales") as resp:
+            self.assertEqual(resp.status, 200)
+            datos = json.loads(resp.read().decode("utf-8"))
+            self.assertIsInstance(datos, list)
+            self.assertGreaterEqual(len(datos), 3)
+            ids = [v["id"] for v in datos]
+            self.assertIn("ejemplo-hosteleria", ids)
+            self.assertIn("ejemplo-gestoria", ids)
+            self.assertIn("ejemplo-autonomo", ids)
+            self.assertIn("ejemplo-alojamiento", ids)
+            for mod in datos:
+                self.assertTrue(len(mod.get("habilidades_motor", [])) > 0)
+                terms_str = " ".join(mod.get("terminales_compatibles", []))
+                self.assertIn("Gemini", terms_str)
+                self.assertIn("Claude", terms_str)
+                self.assertIn("Grok", terms_str)
+                self.assertIn("Codex", terms_str)
+                self.assertTrue(mod.get("terminales_libres"))
+
+            catalog_json = json.dumps(datos, ensure_ascii=False)
+            emoji_pattern = re.compile(
+                "[\\U0001F000-\\U0001FAFF\\U00002600-\\U000027BF"
+                "\\U00002300-\\U000023FF\\uFE0F\\u20E3]"
+            )
+            self.assertIsNone(emoji_pattern.search(catalog_json))
+
+    def test_vista_verticales(self):
+        with urllib.request.urlopen(f"{self.base_url}/vista/verticales") as resp:
+            self.assertEqual(resp.status, 200)
+            html_text = resp.read().decode("utf-8")
+            self.assertIn("Módulos Verticales", html_text)
+            self.assertIn("Capa visual modular para activar en local", html_text)
+            self.assertIn("¿Por qué ApliArte?", html_text)
+            self.assertIn("¿Para qué sirve?", html_text)
+            self.assertIn("¿Con qué fin contratarlo?", html_text)
+            self.assertIn("Salvaguarda del Camino Rojo", html_text)
+            self.assertIn("Confirmación Humana en 1 Clic", html_text)
+            self.assertIn("Validación determinista y control humano", html_text)
+            self.assertIn("simuladores-camino-rojo", html_text)
+            self.assertIn("borrador-tributario-modelo-303", html_text)
+            self.assertIn("Probar borrador (Camino Rojo)", html_text)
+            self.assertIn("btn-contextual-feedback", html_text)
+            self.assertIn("feedback-icon-svg", html_text)
+            self.assertIn("panel-shell.css", html_text)
+            self.assertIn("panel-shell.js", html_text)
+
+    def test_seccion_agradecimientos_proyectos_abiertos(self):
+        # Verificar que la sección existe en vistas/como-funciona.html y README.md
+        with urllib.request.urlopen(f"{self.base_url}/vista/como-funciona") as resp:
+            self.assertEqual(resp.status, 200)
+            html_text = resp.read().decode("utf-8")
+            self.assertIn("Agradecimientos y proyectos abiertos", html_text)
+            self.assertIn("Flutter y Dart", html_text)
+            self.assertIn("Herdr", html_text)
+            self.assertIn("Engram", html_text)
+            self.assertIn("Tailscale", html_text)
+            self.assertIn("Ollama y llama.cpp", html_text)
+            self.assertIn("mlx-whisper, Kokoro y Piper", html_text)
+            self.assertIn("rea-agents", html_text)
+            prohibido = "".join(["gentle", "-", "ai"])
+            self.assertNotIn(prohibido, html_text.lower())
+
+    def test_endpoint_borradores_camino_rojo(self):
+        with urllib.request.urlopen(f"{self.base_url}/api/borradores-camino-rojo") as resp:
+            self.assertEqual(resp.status, 200)
+            datos = json.loads(resp.read().decode("utf-8"))
+            self.assertIsInstance(datos, list)
+            self.assertGreaterEqual(len(datos), 4)
+            modulos = [b["modulo_id"] for b in datos]
+            self.assertIn("ejemplo-autonomo", modulos)
+            self.assertIn("ejemplo-gestoria", modulos)
+            self.assertIn("ejemplo-alojamiento", modulos)
+            self.assertIn("ejemplo-hosteleria", modulos)
+            for b in datos:
+                self.assertIn("id", b)
+                self.assertIn("modulo_nombre", b)
+                self.assertIn("accion_solicitada", b)
+                self.assertIn("motivo_firma_humana", b)
+                self.assertIn("destinatario_entidad", b)
+                self.assertIn("resumen", b)
+                self.assertIn("detalle_tecnico", b)
+                self.assertEqual(b.get("camino"), "rojo")
+
+            raw_json = json.dumps(datos, ensure_ascii=False)
+            emoji_pattern = re.compile(
+                "[\\U0001F000-\\U0001FAFF\\U00002600-\\U000027BF"
+                "\\U00002300-\\U000023FF\\uFE0F\\u20E3]"
+            )
+            self.assertIsNone(emoji_pattern.search(raw_json))
+
+    def test_modal_confirmacion_humana_en_index(self):
+        with urllib.request.urlopen(f"{self.base_url}/index.html") as resp:
+            self.assertEqual(resp.status, 200)
+            html = resp.read().decode("utf-8")
+            self.assertIn('id="modal-confirmacion-humana"', html)
+            self.assertIn('id="modal-confirmacion-titulo"', html)
+            self.assertIn("Confirmación humana en 1 clic", html)
+            self.assertIn("badge-camino-rojo", html)
+            self.assertIn("¿Por qué requiere confirmación humana?", html)
+            self.assertIn('id="btn-ejecutar-confirmacion"', html)
+            self.assertIn("Confirmar y ejecutar", html)
+            self.assertIn('id="btn-cancelar-confirmacion"', html)
+            self.assertIn("Cancelar", html)
+
+    def test_modal_confirmacion_humana_en_panel_shell_js(self):
+        with urllib.request.urlopen(f"{self.base_url}/panel-shell.js") as resp:
+            self.assertEqual(resp.status, 200)
+            js_code = resp.read().decode("utf-8")
+            self.assertIn("abrirConfirmacionCaminoRojo", js_code)
+            self.assertIn("ensureHumanConfirmationModal", js_code)
+            self.assertIn("modal-confirmacion-humana", js_code)
+            self.assertIn("btn-ejecutar-confirmacion", js_code)
+            self.assertIn("btn-cancelar-confirmacion", js_code)
+            self.assertIn("camino-rojo:confirmado", js_code)
+            self.assertIn("camino-rojo:cancelado", js_code)
+
+    def test_topbar_feedback_legend(self):
+        with urllib.request.urlopen(f"{self.base_url}/index.html") as resp:
+            self.assertEqual(resp.status, 200)
+            html = resp.read().decode("utf-8")
+            self.assertIn("topbar-feedback-legend", html)
+            self.assertIn("¿Tienes algo que comentar, proponer o dar una idea de mejora? Pulsa en", html)
+            self.assertIn("btn-contextual-feedback inline-feedback-btn", html)
+            self.assertIn("feedback-icon-svg", html)
+            self.assertIn("https://github.com/erbolamm/oficina-apliarte/issues/new", html)
+
+    def test_feedback_contextual_en_construccion(self):
+        with urllib.request.urlopen(f"{self.base_url}/vista/seo") as resp:
+            self.assertEqual(resp.status, 200)
+            html = resp.read().decode("utf-8")
+            self.assertIn("btn-contextual-feedback", html)
+            self.assertIn("feedback-icon-svg", html)
+            self.assertIn("https://github.com/erbolamm/oficina-apliarte/issues/new", html)
+            self.assertIn("En%20construcci", html)
+
     def test_vista_pestana_privada_bloqueada(self):
         for ruta in ("/vista/aplichat", "/vista/tiendas", "/vista/facturas", "/vista/seo"):
             with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
@@ -411,11 +547,11 @@ class TestServidorOficina(unittest.TestCase):
         for nombre in archivos_esperados:
             self.assertTrue((dir_archivo / nombre).exists(), f"{nombre} debe existir en archivado-vistas")
             self.assertFalse((dir_vistas / nombre).exists(), f"{nombre} no debe existir en vistas/")
-        for nombre in ("aplicaciones.html", "paquetes.html", "propuestas.html", "skills.html"):
+        for nombre in ("aplicaciones.html", "paquetes.html", "propuestas.html", "skills.html", "verticales.html"):
             self.assertTrue((dir_vistas / nombre).exists(), f"{nombre} debe existir como vista activa en vistas/")
 
     def test_datos_estaticos_json(self):
-        for ruta in ("/datos/habilidades.json", "/datos/resenas.json", "/datos/pestanas.json", "/datos/aplicaciones.json", "/datos/paquetes.json", "/datos/tareas.json", "/datos/propuestas.json"):
+        for ruta in ("/datos/habilidades.json", "/datos/resenas.json", "/datos/pestanas.json", "/datos/aplicaciones.json", "/datos/paquetes.json", "/datos/tareas.json", "/datos/propuestas.json", "/datos/verticales.json", "/datos/borradores-camino-rojo.json"):
             with urllib.request.urlopen(f"{self.base_url}{ruta}") as resp:
                 self.assertEqual(resp.status, 200)
                 self.assertIn("application/json", resp.headers.get("Content-Type", ""))
@@ -489,6 +625,26 @@ class TestServidorOficina(unittest.TestCase):
             self.assertIn('id="lane-en-curso"', html)
             self.assertIn('id="lane-hecho"', html)
             self.assertIn('repeat(4, minmax(0, 1fr))', html)
+
+    def test_boton_info_sin_duplicados_ni_anidamiento(self):
+        with urllib.request.urlopen(f"{self.base_url}/panel-shell.js") as resp:
+            self.assertEqual(resp.status, 200)
+            js = resp.read().decode("utf-8")
+            self.assertIn("window.self !== window.top", js)
+            self.assertIn("if (window.self !== window.top || esModoLimpio) return;", js)
+            self.assertIn("comoCard.click()", js)
+
+        with urllib.request.urlopen(f"{self.base_url}/panel-shell.css") as resp:
+            self.assertEqual(resp.status, 200)
+            css = resp.read().decode("utf-8")
+            self.assertIn("body > a.guide-info", css)
+            self.assertIn("display: none !important", css)
+
+        with urllib.request.urlopen(f"{self.base_url}/index.html") as resp:
+            self.assertEqual(resp.status, 200)
+            html = resp.read().decode("utf-8")
+            self.assertIn("window.self !== window.top", html)
+            self.assertIn("window.top.location.href = window.location.href", html)
 
 
 if __name__ == "__main__":

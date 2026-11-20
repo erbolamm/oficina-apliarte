@@ -72,6 +72,10 @@
     }
   </style>
   <script>
+    // Frame-buster guard: si index.html se carga dentro de un iframe, redirigir la ventana superior
+    if (window.self !== window.top) {
+      window.top.location.href = window.location.href;
+    }
     try {
       document.documentElement.dataset.theme =
         localStorage.getItem("erbolamm-panel-theme") === "light" ? "light" : "dark";
@@ -274,7 +278,18 @@
           <h1 id="tablero-titulo">Oficina · Tablero de tareas</h1>
         </div>
         <span class="private-chip">Oficina pública · lectura</span>
-        <a id="issues-btn" class="topbar-issues-btn" href="https://github.com/erbolamm/oficina-apliarte/issues/new/choose" target="_blank" rel="noopener noreferrer" title="Proponer una idea, mejora o avisar de un fallo en GitHub" aria-label="Proponer idea o fallo en GitHub">Proponer idea o fallo</a>
+        <div class="topbar-feedback-legend" id="topbar-feedback-legend">
+          <span class="legend-text-full">¿Tienes algo que comentar, proponer o dar una idea de mejora? Pulsa en</span>
+          <span class="legend-text-mobile">¿Comentar o proponer? Pulsa</span>
+          <a id="issues-btn" class="btn-contextual-feedback inline-feedback-btn" href="https://github.com/erbolamm/oficina-apliarte/issues/new?title=%5BPropuesta%5D%20Oficina%20ApliArte%3A%20&body=%23%23%23%20Contexto%0A-%20%2A%2ASecci%C3%B3n%2A%2A%3A%20Oficina%20General%0A-%20%2A%2AEstado%2A%2A%3A%20Implementado%0A-%20%2A%2AUbicaci%C3%B3n%2A%2A%3A%20Portada%20principal%0A%0A%23%23%23%20Comentario%20o%20propuesta%20de%20mejora%0A" target="_blank" rel="noopener noreferrer" title="Comentar o proponer una idea de mejora sobre la Oficina" aria-label="Comentar o proponer una idea de mejora sobre la Oficina">
+            <svg class="feedback-icon-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              <line x1="12" y1="8" x2="12" y2="14"/>
+              <line x1="9" y1="11" x2="15" y2="11"/>
+            </svg>
+          </a>
+          <span>Gracias</span>
+        </div>
         <button id="refresh-btn" class="btn-refresh" type="button" aria-label="Actualizar vista" title="Actualizar">↻</button>
         <button id="theme-toggle" type="button" aria-label="Cambiar tema" title="Cambiar tema">
           <span id="theme-icon" aria-hidden="true">☾</span>
@@ -322,6 +337,9 @@
             </a>
             <a href="?vista=skills" class="panel-action-btn" title="Abrir catálogo de Skills" onclick="const c=document.querySelector('.office-sidebar .nav-card[data-vista-href=\'/vista/skills\'], .office-sidebar .nav-card[href=\'/vista/skills\']'); if(c){event.preventDefault(); c.click();}">
               <span aria-hidden="true">⌘</span> Skills
+            </a>
+            <a href="?vista=verticales" class="panel-action-btn" title="Abrir catálogo de Módulos Verticales" onclick="const c=document.querySelector('.office-sidebar .nav-card[data-vista-href=\'/vista/verticales\'], .office-sidebar .nav-card[href=\'/vista/verticales\']'); if(c){event.preventDefault(); c.click();}">
+              <span aria-hidden="true">▦</span> Verticales
             </a>
           </div>
         </div>
@@ -468,6 +486,75 @@
       <div style="display:flex; justify-content:flex-end; gap:0.5rem; padding-top:0.75rem; border-top:1px solid var(--border, #475569);">
         <button type="button" class="btn btn-secondary" onclick="document.getElementById('task-detail-modal').close()" style="padding:0.4rem 1rem; cursor:pointer;">Cerrar</button>
       </div>
+    </div>
+  </dialog>
+
+  <!-- Fase 2 Capa 1: Ventana Modal de Confirmación Humana en 1 Clic (Camino Rojo) -->
+  <dialog id="modal-confirmacion-humana" class="modal-confirmacion-humana" role="dialog" aria-modal="true" aria-labelledby="modal-confirmacion-titulo">
+    <div class="modal-confirmacion-header">
+      <div class="modal-confirmacion-header-title">
+        <span class="badge-camino-rojo">Camino Rojo · Ensayo Previo (Dry-Run)</span>
+        <h3 id="modal-confirmacion-titulo">Confirmación humana en 1 clic</h3>
+        <p>Revisión obligatoria previa a la ejecución en el sistema operativo</p>
+      </div>
+      <button type="button" class="btn-cerrar-modal" id="btn-cerrar-modal-confirmacion" aria-label="Cerrar ventana de confirmación"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+
+    <div class="modal-confirmacion-body">
+      <!-- Módulo solicitante -->
+      <div class="modal-modulo-solicitante">
+        <div class="modal-modulo-info">
+          <strong id="modal-confirmacion-modulo-nombre">Módulo solicitante</strong>
+          <span id="modal-confirmacion-modulo-cat">Categoría</span>
+        </div>
+        <span class="badge-camino-rojo" style="font-size:0.65rem;">Capa 5: Filtro Simbólico</span>
+      </div>
+
+      <!-- Acción solicitada -->
+      <div class="modal-accion-box">
+        <span class="modal-accion-label">Acción solicitada en ensayo previo</span>
+        <p class="modal-accion-texto" id="modal-confirmacion-accion">Acción exacta</p>
+      </div>
+
+      <!-- Salvaguarda neurosimbólica: Por qué requiere confirmación humana -->
+      <div class="salvaguarda-box">
+        <div class="salvaguarda-box-header">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>¿Por qué requiere confirmación humana?</span>
+        </div>
+        <p id="modal-confirmacion-motivo">
+          Salvaguarda neurosimbólica: esta operación produce un efecto irreversible o trámite oficial con consecuencias legales o financieras ante terceros. El modelo de lenguaje actúa únicamente en modo borrador y el sistema operativo bloquea la ejecución hasta que el titular revisa y autoriza explícitamente en un clic.
+        </p>
+      </div>
+
+      <!-- Destinatario oficial -->
+      <div style="font-size:0.85rem; color:var(--ink-muted, #94a3b8);">
+        <strong>Organismo o destinatario oficial:</strong> <span id="modal-confirmacion-destinatario" style="color:var(--ink, #f1f5f9); font-weight:600;"></span>
+      </div>
+
+      <!-- Resumen estructurado del borrador -->
+      <div>
+        <label style="display:block; font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:var(--ink-muted, #94a3b8); margin-bottom:0.4rem;">
+          Resumen del borrador verificado
+        </label>
+        <div class="modal-resumen-grid" id="modal-confirmacion-resumen">
+          <!-- Tarjetas clave/valor generadas dinámicamente -->
+        </div>
+      </div>
+
+      <!-- Detalle técnico -->
+      <details class="modal-detalle-tecnico">
+        <summary>Ver borrador telemático completo (JSON / Texto oficial)</summary>
+        <pre id="modal-confirmacion-detalle"></pre>
+      </details>
+
+      <!-- Mensaje de estado tras acción -->
+      <div id="modal-confirmacion-alerta" class="modal-confirmacion-alerta" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="modal-confirmacion-footer">
+      <button type="button" class="btn-cancelar-borrador" id="btn-cancelar-confirmacion">Cancelar</button>
+      <button type="button" class="btn-confirmar-ejecutar" id="btn-ejecutar-confirmacion">Confirmar y ejecutar</button>
     </div>
   </dialog>
 

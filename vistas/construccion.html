@@ -14,7 +14,16 @@
 </head>
 <body data-slug="{{SLUG}}">
   <main class="card">
-    <span class="badge">En construcción · Laboratorio abierto</span>
+    <div style="display:flex; justify-content:center; align-items:center; gap:8px;">
+      <span class="badge">En construcción · Laboratorio abierto</span>
+      <a class="btn-contextual-feedback" href="https://github.com/erbolamm/oficina-apliarte/issues/new?title=%5BPropuesta%5D%20{{TITULO}}%20%28En%20construcci%C3%B3n%29%3A%20&body=%23%23%23%20Contexto%0A-%20%2A%2ASecci%C3%B3n%2A%2A%3A%20{{TITULO}}%0A-%20%2A%2AEstado%2A%2A%3A%20En%20construcci%C3%B3n%0A-%20%2A%2ASlug%2A%2A%3A%20{{SLUG}}%0A%0A%23%23%23%20Comentario%20o%20propuesta%0A" target="_blank" rel="noopener noreferrer" title="Comentar o proponer una idea sobre {{TITULO}} (En construcción)" aria-label="Comentar o proponer una idea sobre {{TITULO}} (En construcción)">
+        <svg class="feedback-icon-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          <line x1="12" y1="8" x2="12" y2="14"/>
+          <line x1="9" y1="11" x2="15" y2="11"/>
+        </svg>
+      </a>
+    </div>
     <h1>{{TITULO}}</h1>
     <p class="lead">{{SUBTITULO}}. Esta herramienta está cobrando vida ahora mismo entre bastidores.</p>
     <img class="art" src="en-construccion.svg" alt="Bot trabajando en un ordenador" width="720" height="480">

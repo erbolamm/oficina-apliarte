@@ -24,6 +24,7 @@
     "propuestas",
     "radar",
     "skills",
+    "verticales",
     "visita-guiada",
   ]);
   function resolveVistaIframeUrl(href, item) {
@@ -159,12 +160,13 @@
   const $ = (sel) => document.querySelector(sel);
   const root = document.documentElement;
 
-  // Detección de Modo Limpio / Aislado (?modo=limpio o ?aislado=1)
+  // Detección de Modo Limpio / Aislado (?modo=limpio, ?aislado=1 o embebido en iframe)
   const urlParams = new URLSearchParams(window.location.search);
   const esModoLimpio =
     urlParams.get("modo") === "limpio" ||
     urlParams.get("aislado") === "1" ||
-    urlParams.has("limpio");
+    urlParams.has("limpio") ||
+    window.self !== window.top;
   if (esModoLimpio) {
     root.dataset.modo = "limpio";
     if (document.head && !document.getElementById("modo-limpio-guard")) {
@@ -2062,6 +2064,7 @@
     { href: "/vista/aplicaciones", label: "Aplicaciones", desc: "Catálogo oficial", icon: "📱" },
     { href: "/vista/paquetes", label: "Paquetes", desc: "Librerías Flutter", icon: "📦" },
     { href: "/vista/skills", label: "Skills", desc: "Botonera y catálogo", icon: "⌘" },
+    { href: "/vista/verticales", label: "Verticales", desc: "Módulos de negocio", icon: "▦" },
     { href: "/vista/propuestas", label: "Propuestas", desc: "Bandeja de Orquestadores", icon: "💡" },
     { href: "/vista/como-funciona", label: "Cómo funciona", desc: "Guía de la Oficina", icon: "?" },
     { href: "/vista/agentes", label: "Agentes", desc: "Fichas de agentes", icon: "🤖" },
@@ -3779,6 +3782,35 @@
     );
     link.setAttribute("aria-label", "Cómo funciona: " + label);
     link.setAttribute("data-tip", tip);
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const targetHash = sectionId ? "#" + sectionId : "";
+      const targetDoc = (window.self !== window.top && window.top.document) ? window.top.document : document;
+      const comoCard = targetDoc.querySelector(
+        '.office-sidebar .nav-card[data-vista-href*="como-funciona"], .office-sidebar .nav-card[href*="como-funciona"]'
+      );
+      if (comoCard) {
+        comoCard.click();
+        const iframe = targetDoc.getElementById("office-iframe");
+        if (iframe && targetHash) {
+          const applyHash = () => {
+            try {
+              if (iframe.contentWindow) {
+                iframe.contentWindow.location.hash = targetHash;
+              }
+            } catch (_) {}
+          };
+          iframe.addEventListener("load", applyHash, { once: true });
+          applyHash();
+        }
+        return;
+      }
+      if (window.self !== window.top) {
+        window.top.location.href = link.href;
+      } else {
+        window.location.href = link.href;
+      }
+    });
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("viewBox", "0 0 16 16");
     svg.setAttribute("width", "16");
@@ -3809,7 +3841,15 @@
   }
 
   function mountGuideInfoIcons() {
+    // Si estamos dentro de un iframe o en modo limpio, NUNCA montar botón de información (i) duplicado
+    if (window.self !== window.top || esModoLimpio) return;
     if (document.querySelector("a.guide-info")) return;
+    const topbar = document.querySelector(".topbar");
+    const header = document.querySelector("header");
+    // NUNCA montar en document.body (evita botones flotantes duplicados en vistas sin cabecera)
+    const host = topbar || header;
+    if (!host) return;
+
     const sectionId = guideSectionId(window.location.pathname);
     let label = sectionId;
     for (const item of sideNavItems) {
@@ -3824,10 +3864,6 @@
       if (text) label = text;
     }
     const link = buildGuideInfoLink(sectionId, label);
-    const topbar = document.querySelector(".topbar");
-    const header = document.querySelector("header");
-    const host = topbar || header || document.body;
-    if (!host) return;
     const theme = host.querySelector("#theme-toggle, .theme-toggle");
     if (theme && theme.parentElement === host) host.insertBefore(link, theme);
     else host.appendChild(link);
@@ -3835,8 +3871,167 @@
     if (document.head && !document.getElementById("guide-info-style")) {
       const style = document.createElement("style");
       style.id = "guide-info-style";
-      style.textContent = "a.guide-info{box-sizing:border-box;width:28px;height:28px;min-width:28px;min-height:28px;padding:0;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid currentColor;border-radius:50%;color:inherit;text-decoration:none}a.guide-info:focus-visible{outline:2px solid #5ecef5;outline-offset:2px}a.guide-info svg{display:block}body>a.guide-info{position:fixed;top:8px;right:8px;z-index:40;background:var(--surface,#fff)}";
+      style.textContent = "a.guide-info{box-sizing:border-box;width:28px;height:28px;min-width:28px;min-height:28px;padding:0;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid currentColor;border-radius:50%;color:inherit;text-decoration:none}a.guide-info:focus-visible{outline:2px solid #5ecef5;outline-offset:2px}a.guide-info svg{display:block}body>a.guide-info{display:none!important}html[data-modo='limpio'] a.guide-info{display:none!important}";
       document.head.appendChild(style);
+    }
+  }
+
+  // ── Botón contextual e icono de propuesta / feedback ─────────────
+  const FEEDBACK_ICON_SVG = '<svg class="feedback-icon-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="12" y1="8" x2="12" y2="14"/><line x1="9" y1="11" x2="15" y2="11"/></svg>';
+
+  function buildFeedbackIssueUrl(options) {
+    const rawTitle = (options && options.title) ? String(options.title).trim() : "Oficina ApliArte";
+    const sectionName = (options && options.section) ? String(options.section).trim() : rawTitle;
+    const isDev = Boolean(
+      (options && options.status && options.status.toLowerCase().includes("construcci")) ||
+      (options && options.isDev) ||
+      document.querySelector("body[data-slug]") ||
+      document.querySelector(".badge")?.textContent?.includes("construcción") ||
+      window.location.pathname.includes("construccion.html")
+    );
+    const statusText = isDev ? "En construcción" : "Implementado";
+    const pathText = (options && options.path) ? options.path : (window.location.pathname + window.location.search);
+
+    const issueTitle = `[Propuesta] ${sectionName}: `;
+    const issueBody = `### Contexto del apartado
+- **Apartado / Tarjeta**: ${rawTitle}
+- **Sección**: ${sectionName}
+- **Estado**: ${statusText}
+- **Ubicación**: ${pathText}
+
+### ¿Qué te gustaría comentar, proponer o mejorar?
+<!-- Escribe aquí tu idea, propuesta o el fallo que has detectado. ¡Gracias por ayudarnos a mejorar Oficina ApliArte! -->
+`;
+
+    const params = new URLSearchParams();
+    params.set("title", issueTitle);
+    params.set("body", issueBody);
+    return `https://github.com/erbolamm/oficina-apliarte/issues/new?${params.toString()}`;
+  }
+
+  function createFeedbackButton(options) {
+    const a = document.createElement("a");
+    a.className = "btn-contextual-feedback" + (options && options.inline ? " inline-feedback-btn" : "");
+    a.href = buildFeedbackIssueUrl(options);
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    const titleVal = (options && options.title) ? options.title : "este apartado";
+    const accessibleLabel = "Comentar o proponer una idea de mejora sobre " + titleVal;
+    a.title = accessibleLabel;
+    a.setAttribute("aria-label", accessibleLabel);
+    a.innerHTML = FEEDBACK_ICON_SVG;
+    return a;
+  }
+
+  function decorateFeedbackElements() {
+    // a) Tarjetas de catálogos (.catalog-card)
+    document.querySelectorAll(".catalog-card").forEach((card) => {
+      if (card.querySelector(".btn-contextual-feedback")) return;
+      const head = card.querySelector(".catalog-card-top") || card.querySelector("h2, h3")?.parentElement || card;
+      const title = card.querySelector("h2, h3")?.textContent?.trim() || "Tarjeta de catálogo";
+      const btn = createFeedbackButton({ title, section: document.title, status: "Implementado" });
+      head.appendChild(btn);
+    });
+
+    // b) Cajas comerciales (.commercial-box)
+    document.querySelectorAll(".commercial-box").forEach((box) => {
+      if (box.querySelector(".btn-contextual-feedback")) return;
+      const title = box.querySelector("h3")?.textContent?.trim() || "Propuesta comercial";
+      const btn = createFeedbackButton({ title, section: "Modelo Comercial", status: "Implementado" });
+      const badge = box.querySelector(".commercial-badge") || box.querySelector("h3");
+      if (badge && badge.parentElement) {
+        badge.parentElement.style.display = "flex";
+        badge.parentElement.style.justifyContent = "space-between";
+        badge.parentElement.style.alignItems = "flex-start";
+        badge.parentElement.appendChild(btn);
+      } else {
+        box.prepend(btn);
+      }
+    });
+
+    // c) Columnas de tareas (.lane)
+    document.querySelectorAll(".lane").forEach((lane) => {
+      const heading = lane.querySelector(".lane-heading-interactive, h3");
+      if (!heading || heading.querySelector(".btn-contextual-feedback")) return;
+      const laneName = heading.textContent?.replace(/[^\w\s]/gi, "")?.trim() || "Columna de tareas";
+      const btn = createFeedbackButton({ title: laneName, section: "Tablero de tareas", status: "Implementado", inline: true });
+      heading.appendChild(btn);
+    });
+
+    // d) Módulos de guía (.module-card)
+    document.querySelectorAll(".module-card").forEach((m) => {
+      if (m.querySelector(".btn-contextual-feedback")) return;
+      const head = m.querySelector(".module-head") || m;
+      const title = m.querySelector("h4, h3")?.textContent?.trim() || "Módulo de oficina";
+      const btn = createFeedbackButton({ title, section: "Guía Cómo Funciona", status: "Implementado", inline: true });
+      head.appendChild(btn);
+    });
+
+    // e) Anclas de guía (.guide-anchor)
+    document.querySelectorAll(".guide-anchor").forEach((a) => {
+      if (a.querySelector(".btn-contextual-feedback")) return;
+      const h3 = a.querySelector("h3");
+      if (h3) {
+        const title = h3.textContent?.trim() || "Apartado de oficina";
+        const btn = createFeedbackButton({ title, section: "Pestaña de Oficina", status: "Implementado", inline: true });
+        h3.appendChild(btn);
+      }
+    });
+
+    // f) Tarjetas secundarias y cajas genéricas
+    document.querySelectorAll(".secondary-card, .directos-promo").forEach((c) => {
+      if (c.querySelector(".btn-contextual-feedback")) return;
+      const title = c.querySelector("h2, h3, h4")?.textContent?.trim() || "Sección";
+      const btn = createFeedbackButton({ title, section: document.title, status: "Implementado" });
+      c.appendChild(btn);
+    });
+  }
+
+  function mountFeedbackLegendAndButtons() {
+    const topbars = document.querySelectorAll(".topbar, #tablero-topbar");
+    topbars.forEach((topbar) => {
+      if (topbar.querySelector(".topbar-feedback-legend")) return;
+      const legend = document.createElement("div");
+      legend.className = "topbar-feedback-legend";
+      legend.id = "topbar-feedback-legend";
+      const currentTitle = document.querySelector("h1")?.textContent?.trim() || "Oficina General";
+      const issueUrl = buildFeedbackIssueUrl({
+        title: currentTitle,
+        section: currentTitle,
+        status: "Implementado",
+        path: window.location.pathname + window.location.search
+      });
+      legend.innerHTML = `
+        <span class="legend-text-full">¿Tienes algo que comentar, proponer o dar una idea de mejora? Pulsa en</span>
+        <span class="legend-text-mobile">¿Comentar o proponer? Pulsa</span>
+        <a href="${issueUrl}" target="_blank" rel="noopener noreferrer" class="btn-contextual-feedback inline-feedback-btn" title="Comentar o proponer una idea de mejora sobre ${currentTitle}" aria-label="Comentar o proponer una idea de mejora sobre ${currentTitle}">
+          ${FEEDBACK_ICON_SVG}
+        </a>
+        <span>Gracias</span>
+      `;
+      const themeToggle = topbar.querySelector("#theme-toggle, .theme-toggle");
+      const issuesBtn = topbar.querySelector(".topbar-issues-btn, #issues-btn");
+      if (issuesBtn) {
+        issuesBtn.replaceWith(legend);
+      } else if (themeToggle && themeToggle.parentElement === topbar) {
+        topbar.insertBefore(legend, themeToggle);
+      } else {
+        topbar.appendChild(legend);
+      }
+    });
+
+    decorateFeedbackElements();
+
+    if (window.MutationObserver && document.body) {
+      let timeout = null;
+      const observer = new MutationObserver(() => {
+        if (timeout) return;
+        timeout = setTimeout(() => {
+          timeout = null;
+          decorateFeedbackElements();
+        }, 120);
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
     }
   }
 
@@ -4144,6 +4339,175 @@
   initHeaderPlanoButtons();
   initPanelTabs();
   mountGuideInfoIcons();
+  mountFeedbackLegendAndButtons();
+  initHumanConfirmationModal();
+
+  function ensureHumanConfirmationModal() {
+    let dialog = document.getElementById("modal-confirmacion-humana");
+    if (!dialog) {
+      dialog = document.createElement("dialog");
+      dialog.id = "modal-confirmacion-humana";
+      dialog.className = "modal-confirmacion-humana";
+      dialog.setAttribute("role", "dialog");
+      dialog.setAttribute("aria-modal", "true");
+      dialog.setAttribute("aria-labelledby", "modal-confirmacion-titulo");
+      dialog.innerHTML = `
+        <div class="modal-confirmacion-header">
+          <div class="modal-confirmacion-header-title">
+            <span class="badge-camino-rojo">Camino Rojo · Ensayo Previo (Dry-Run)</span>
+            <h3 id="modal-confirmacion-titulo">Confirmación humana en 1 clic</h3>
+            <p>Revisión obligatoria previa a la ejecución en el sistema operativo</p>
+          </div>
+          <button type="button" class="btn-cerrar-modal" id="btn-cerrar-modal-confirmacion" aria-label="Cerrar ventana de confirmación"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+        <div class="modal-confirmacion-body">
+          <div class="modal-modulo-solicitante">
+            <div class="modal-modulo-info">
+              <strong id="modal-confirmacion-modulo-nombre">Módulo solicitante</strong>
+              <span id="modal-confirmacion-modulo-cat">Categoría</span>
+            </div>
+            <span class="badge-camino-rojo" style="font-size:0.65rem;">Capa 5: Filtro Simbólico</span>
+          </div>
+          <div class="modal-accion-box">
+            <span class="modal-accion-label">Acción solicitada en ensayo previo</span>
+            <p class="modal-accion-texto" id="modal-confirmacion-accion">Acción exacta</p>
+          </div>
+          <div class="salvaguarda-box">
+            <div class="salvaguarda-box-header">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span>¿Por qué requiere confirmación humana?</span>
+            </div>
+            <p id="modal-confirmacion-motivo">
+              Salvaguarda neurosimbólica: esta operación produce un efecto irreversible o trámite oficial con consecuencias legales o financieras ante terceros. El modelo de lenguaje actúa únicamente en modo borrador y el sistema operativo bloquea la ejecución hasta que el titular revisa y autoriza explícitamente en un clic.
+            </p>
+          </div>
+          <div style="font-size:0.85rem; color:var(--ink-muted, #94a3b8);">
+            <strong>Organismo o destinatario oficial:</strong> <span id="modal-confirmacion-destinatario" style="color:var(--ink, #f1f5f9); font-weight:600;"></span>
+          </div>
+          <div>
+            <label style="display:block; font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:var(--ink-muted, #94a3b8); margin-bottom:0.4rem;">
+              Resumen del borrador verificado
+            </label>
+            <div class="modal-resumen-grid" id="modal-confirmacion-resumen"></div>
+          </div>
+          <details class="modal-detalle-tecnico">
+            <summary>Ver borrador telemático completo (JSON / Texto oficial)</summary>
+            <pre id="modal-confirmacion-detalle"></pre>
+          </details>
+          <div id="modal-confirmacion-alerta" class="modal-confirmacion-alerta" role="status" aria-live="polite"></div>
+        </div>
+        <div class="modal-confirmacion-footer">
+          <button type="button" class="btn-cancelar-borrador" id="btn-cancelar-confirmacion">Cancelar</button>
+          <button type="button" class="btn-confirmar-ejecutar" id="btn-ejecutar-confirmacion">Confirmar y ejecutar</button>
+        </div>
+      `;
+      document.body.appendChild(dialog);
+    }
+    return dialog;
+  }
+
+  function initHumanConfirmationModal() {
+    const dialog = ensureHumanConfirmationModal();
+    if (!dialog) return;
+
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) {
+        dialog.close();
+      }
+    });
+
+    const btnCerrar = dialog.querySelector("#btn-cerrar-modal-confirmacion");
+    if (btnCerrar) {
+      btnCerrar.addEventListener("click", () => dialog.close());
+    }
+  }
+
+  function abrirConfirmacionCaminoRojo(borrador, opciones = {}) {
+    const dialog = ensureHumanConfirmationModal();
+    if (!dialog) return;
+
+    const nombreEl = dialog.querySelector("#modal-confirmacion-modulo-nombre");
+    const catEl = dialog.querySelector("#modal-confirmacion-modulo-cat");
+    const accionEl = dialog.querySelector("#modal-confirmacion-accion");
+    const motivoEl = dialog.querySelector("#modal-confirmacion-motivo");
+    const destEl = dialog.querySelector("#modal-confirmacion-destinatario");
+    const resumenEl = dialog.querySelector("#modal-confirmacion-resumen");
+    const detalleEl = dialog.querySelector("#modal-confirmacion-detalle");
+    const alertaEl = dialog.querySelector("#modal-confirmacion-alerta");
+    const btnConfirmar = dialog.querySelector("#btn-ejecutar-confirmacion");
+    const btnCancelar = dialog.querySelector("#btn-cancelar-confirmacion");
+
+    if (nombreEl) nombreEl.textContent = borrador.modulo_nombre || "Módulo ApliArte";
+    if (catEl) catEl.textContent = borrador.categoria || "Ecosistema Modular";
+    if (accionEl) accionEl.textContent = borrador.accion_solicitada || "Operación del camino rojo en ensayo previo";
+    if (motivoEl) motivoEl.textContent = borrador.motivo_firma_humana || "Esta acción requiere supervisión humana antes de su ejecución telemática.";
+    if (destEl) destEl.textContent = borrador.destinatario_entidad || "Tercero / Administración pública";
+
+    if (resumenEl) {
+      resumenEl.innerHTML = "";
+      const resumenObj = borrador.resumen || {};
+      for (const [clave, valor] of Object.entries(resumenObj)) {
+        const item = document.createElement("div");
+        item.className = "modal-resumen-item";
+        item.innerHTML = `<small>${clave}</small><span>${valor}</span>`;
+        resumenEl.appendChild(item);
+      }
+    }
+
+    if (detalleEl) {
+      detalleEl.textContent = borrador.detalle_tecnico || JSON.stringify(borrador, null, 2);
+    }
+
+    if (alertaEl) {
+      alertaEl.className = "modal-confirmacion-alerta";
+      alertaEl.textContent = "";
+      alertaEl.style.display = "none";
+    }
+
+    if (btnConfirmar) {
+      btnConfirmar.disabled = false;
+      btnConfirmar.onclick = () => {
+        btnConfirmar.disabled = true;
+        if (typeof opciones.onConfirm === "function") {
+          opciones.onConfirm(borrador);
+        }
+        window.dispatchEvent(new CustomEvent("camino-rojo:confirmado", { detail: { borrador } }));
+        if (alertaEl) {
+          alertaEl.className = "modal-confirmacion-alerta exito";
+          alertaEl.textContent = "Operación confirmada y registrada en el registro de auditoría local (Audit Log). Procediendo a la ejecución autorizada.";
+          alertaEl.style.display = "block";
+        }
+        window.setTimeout(() => {
+          dialog.close();
+        }, 900);
+      };
+    }
+
+    if (btnCancelar) {
+      btnCancelar.disabled = false;
+      btnCancelar.onclick = () => {
+        if (typeof opciones.onCancel === "function") {
+          opciones.onCancel(borrador);
+        }
+        window.dispatchEvent(new CustomEvent("camino-rojo:cancelado", { detail: { borrador } }));
+        if (alertaEl) {
+          alertaEl.className = "modal-confirmacion-alerta cancelado";
+          alertaEl.textContent = "Operación cancelada. El borrador ha sido descartado y no se ha ejecutado ninguna acción en el sistema operativo.";
+          alertaEl.style.display = "block";
+        }
+        window.setTimeout(() => {
+          dialog.close();
+        }, 600);
+      };
+    }
+
+    if (typeof dialog.showModal === "function") {
+      dialog.showModal();
+    }
+  }
+
+  window.abrirConfirmacionCaminoRojo = abrirConfirmacionCaminoRojo;
+  window.ensureHumanConfirmationModal = ensureHumanConfirmationModal;
 
   isPublicReadOnlyPromise.then((isPublic) => {
     if (isPublic) return;
@@ -4154,6 +4518,13 @@
 
   // Superficie pública mínima para inspecciones y tests headless.
   window.Oficina = Object.freeze({
+    abrirConfirmacionCaminoRojo,
+    ensureHumanConfirmationModal,
+    feedbackSvg: FEEDBACK_ICON_SVG,
+    buildFeedbackIssueUrl,
+    createFeedbackButton,
+    mountFeedbackLegendAndButtons,
+    decorateFeedbackElements,
     fallbackAgents,
     roleNames,
     roleColors,

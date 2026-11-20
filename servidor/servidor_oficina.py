@@ -24,6 +24,7 @@ PESTANAS_ECOSISTEMA = [
     {"slug": "aplicaciones", "titulo": "Aplicaciones", "subtitulo": "Catálogo oficial", "ruta": "/vista/aplicaciones", "publica": True, "activa": True, "icono": "📱"},
     {"slug": "paquetes", "titulo": "Paquetes", "subtitulo": "Librerías Flutter", "ruta": "/vista/paquetes", "publica": True, "activa": True, "icono": "📦"},
     {"slug": "skills", "titulo": "Skills", "subtitulo": "Botonera y catálogo", "ruta": "/vista/skills", "publica": True, "activa": True, "icono": "⌘"},
+    {"slug": "verticales", "titulo": "Verticales", "subtitulo": "Módulos desacoplados", "ruta": "/vista/verticales", "publica": True, "activa": True, "icono": "▦"},
     {"slug": "agentes", "titulo": "Agentes", "subtitulo": "Fichas de agentes", "ruta": "/vista/agentes", "publica": True, "activa": True, "icono": "🤖"},
     {"slug": "como-funciona", "titulo": "Cómo funciona", "subtitulo": "Guía de la Oficina", "ruta": "/vista/como-funciona", "publica": True, "activa": True, "icono": "?"},
     {"slug": "herdr", "titulo": "Herdr", "subtitulo": "Consola móvil", "ruta": "/vista/herdr", "publica": True, "activa": True, "icono": "⚡"},
@@ -351,6 +352,22 @@ class ManejadorOficina(BaseHTTPRequestHandler):
             archivo_paq = DIR_DATOS / "paquetes.json"
             if archivo_paq.exists():
                 self.responder_json(json.loads(archivo_paq.read_text(encoding="utf-8")))
+            else:
+                self.responder_json([])
+            return
+
+        if ruta == "/api/verticales":
+            archivo_vert = DIR_DATOS / "verticales.json"
+            if archivo_vert.exists():
+                self.responder_json(json.loads(archivo_vert.read_text(encoding="utf-8")))
+            else:
+                self.responder_json([])
+            return
+
+        if ruta in ("/api/borradores-camino-rojo", "/api/camino-rojo"):
+            archivo_borr = DIR_DATOS / "borradores-camino-rojo.json"
+            if archivo_borr.exists():
+                self.responder_json(json.loads(archivo_borr.read_text(encoding="utf-8")))
             else:
                 self.responder_json([])
             return

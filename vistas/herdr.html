@@ -48,6 +48,10 @@
   </style>
   <script>
     try {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("modo") === "limpio" || urlParams.get("aislado") === "1" || window.self !== window.top) {
+        document.documentElement.dataset.modo = "limpio";
+      }
       document.documentElement.dataset.theme =
         localStorage.getItem("oficina-panel-theme") === "dark" ? "dark" : "light";
     } catch (_) {}

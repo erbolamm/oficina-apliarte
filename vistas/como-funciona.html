@@ -10,6 +10,10 @@
   <link rel="stylesheet" href="../panel-shell.css">
   <script>
     try {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("modo") === "limpio" || urlParams.get("aislado") === "1" || window.self !== window.top) {
+        document.documentElement.dataset.modo = "limpio";
+      }
       document.documentElement.dataset.theme =
         localStorage.getItem("erbolamm-panel-theme") === "dark" ? "dark" : "light";
       document.documentElement.dataset.sidebar =
@@ -553,6 +557,7 @@
           <section class="guide-anchor" id="aplichat"><h3>ApliChat</h3><p>Canal de chat accesible y limpio entre Javier y el Intérprete.</p></section>
           <section class="guide-anchor" id="aplichat-pro"><h3>ApliChat Pro</h3><p>Hub de asistentes, con vuelta al ApliChat clásico.</p></section>
           <section class="guide-anchor" id="skills"><h3>Skills</h3><p>Catálogo interactivo con las skills operativas del ecosistema en cuadrícula 3x3.</p></section>
+          <section class="guide-anchor" id="verticales"><h3>Módulos Verticales</h3><p>Catálogo desacoplado de soluciones de negocio sobre motor-apliarte con libertad de terminal.</p></section>
           <section class="guide-anchor" id="conectores"><h3>Conectores</h3><p>Los servicios externos del ecosistema: para qué se usa cada uno, qué credencial necesita y cómo comprobarlo.</p></section>
           <section class="guide-anchor" id="plugins"><h3>Plugins</h3><p>Enciende o apaga las pestañas de la barra lateral para dejar a la vista solo los módulos que usas.</p></section>
           <section class="guide-anchor" id="reflect"><h3>Reflect</h3><p>Las directivas consolidadas de la oficina y un cuaderno de notas de reflexión.</p></section>
@@ -653,6 +658,68 @@
         <h3 class="section-title"><span>💻</span> Comandos útiles en la consola del Mac</h3>
         <div id="cli-container">
           <p style="color:#666; font-size:0.9rem;">Cargando comandos...</p>
+        </div>
+      </section>
+
+      <!-- Sección de Agradecimientos y Proyectos Abiertos -->
+      <section id="section-agradecimientos" class="guide-section" style="margin-top: 40px; padding: 24px; background: var(--surface, #fff); border: 1px solid var(--border, #e0e4e8); border-radius: 12px;">
+        <h3 class="section-title" style="margin-top:0;">Agradecimientos y proyectos abiertos</h3>
+        <p style="color: var(--text-subtle, #555); font-size: 0.92rem; line-height: 1.6; margin-bottom: 20px;">
+          Oficina ApliArte y el ecosistema modular se construyen sobre los hombros de grandes proyectos libres, abiertos y comunitarios. Nuestro sincero reconocimiento y gratitud a las herramientas y comunidades que hacen posible este trabajo:
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
+          <div style="padding: 12px; border: 1px solid var(--border, #e0e4e8); border-radius: 8px;">
+            <strong style="color: var(--brand-blue, #005fa9);">Flutter y Dart</strong>
+            <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: var(--text-subtle, #555);">Base tipada, sólida y multiplataforma para interfaces y lógica de negocio.</p>
+          </div>
+          <div style="padding: 12px; border: 1px solid var(--border, #e0e4e8); border-radius: 8px;">
+            <strong style="color: var(--brand-blue, #005fa9);">Python</strong>
+            <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: var(--text-subtle, #555);">Ecosistema versátil y determinista en servidores locales y automatización.</p>
+          </div>
+          <div style="padding: 12px; border: 1px solid var(--border, #e0e4e8); border-radius: 8px;">
+            <strong style="color: var(--brand-blue, #005fa9);">Git</strong>
+            <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: var(--text-subtle, #555);">Soberanía en el control de versiones y trazabilidad quirúrgica en local.</p>
+          </div>
+          <div style="padding: 12px; border: 1px solid var(--border, #e0e4e8); border-radius: 8px;">
+            <strong style="color: var(--brand-blue, #005fa9);">Herdr</strong>
+            <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: var(--text-subtle, #555);">Protocolo ligero y desacoplado de comunicación entre procesos.</p>
+          </div>
+          <div style="padding: 12px; border: 1px solid var(--border, #e0e4e8); border-radius: 8px;">
+            <strong style="color: var(--brand-blue, #005fa9);">Engram</strong>
+            <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: var(--text-subtle, #555);">Persistencia estructurada y recuperación eficiente de memoria de trabajo.</p>
+          </div>
+          <div style="padding: 12px; border: 1px solid var(--border, #e0e4e8); border-radius: 8px;">
+            <strong style="color: var(--brand-blue, #005fa9);">Tailscale</strong>
+            <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: var(--text-subtle, #555);">Redes malladas privadas y seguras con configuración mínima.</p>
+          </div>
+          <div style="padding: 12px; border: 1px solid var(--border, #e0e4e8); border-radius: 8px;">
+            <strong style="color: var(--brand-blue, #005fa9);">Docker</strong>
+            <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: var(--text-subtle, #555);">Empaquetado reproducible y contención fiable de servicios.</p>
+          </div>
+          <div style="padding: 12px; border: 1px solid var(--border, #e0e4e8); border-radius: 8px;">
+            <strong style="color: var(--brand-blue, #005fa9);">n8n</strong>
+            <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: var(--text-subtle, #555);">Orquestación visual y automatización de flujos de trabajo e integraciones.</p>
+          </div>
+          <div style="padding: 12px; border: 1px solid var(--border, #e0e4e8); border-radius: 8px;">
+            <strong style="color: var(--brand-blue, #005fa9);">Ollama y llama.cpp</strong>
+            <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: var(--text-subtle, #555);">Inferencia de modelos de lenguaje en hardware local y de consumo.</p>
+          </div>
+          <div style="padding: 12px; border: 1px solid var(--border, #e0e4e8); border-radius: 8px;">
+            <strong style="color: var(--brand-blue, #005fa9);">mlx-whisper, Kokoro y Piper</strong>
+            <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: var(--text-subtle, #555);">Transcripción y síntesis neuronal de voz de alta eficiencia en local.</p>
+          </div>
+          <div style="padding: 12px; border: 1px solid var(--border, #e0e4e8); border-radius: 8px;">
+            <strong style="color: var(--brand-blue, #005fa9);">OpenCode y Pi</strong>
+            <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: var(--text-subtle, #555);">Entornos ágiles y accesibles de ejecución en terminal.</p>
+          </div>
+          <div style="padding: 12px; border: 1px solid var(--border, #e0e4e8); border-radius: 8px;">
+            <strong style="color: var(--brand-blue, #005fa9);">HyperFrames</strong>
+            <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: var(--text-subtle, #555);">Generación y renderizado programático declarativo de vídeo.</p>
+          </div>
+          <div style="padding: 12px; border: 1px solid var(--border, #e0e4e8); border-radius: 8px;">
+            <strong style="color: var(--brand-blue, #005fa9);">rea-agents</strong>
+            <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: var(--text-subtle, #555);">Ingeniería inversa y análisis riguroso de artefactos y binarios.</p>
+          </div>
         </div>
       </section>
 

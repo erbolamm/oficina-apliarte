@@ -1,7 +1,7 @@
 {
-  "version": "1.6.0",
-  "actualizado": "2026-10-24",
-  "descripcion": "Catálogo maestro y documentación viva de la Oficina ApliArte. Fuente canónica para /api/como-funciona.",
+  "version": "1.7.0",
+  "actualizado": "2026-11-20",
+  "descripcion": "Catálogo maestro y arquitectura modular desacoplada de Oficina ApliArte. La Oficina opera como la capa visual independiente desde la que cualquier usuario o cliente descarga y activa en local únicamente los módulos contratados sobre motor-apliarte, reutilizando habilidades compartidas del motor con libertad de terminal (incluidos planes gratuitos de Antigravity, Codex o Grok, modelos locales o suscripciones como Claude Pro). Fuente canónica para /api/como-funciona y /api/verticales.",
   "modulos_principales": [
     {
       "id": "oficina",
@@ -504,6 +504,24 @@
         "Sincronizar tareas de mejora con el orquestador local de la app."
       ],
       "automatizaciones": "Genera estudios en control-erbolamm/pnl/estudio-pnl.json y avisa en INBOX.md."
+    },
+    {
+      "id": "verticales",
+      "titulo": "Módulos Verticales (Catálogo desacoplado)",
+      "icono": "▦",
+      "ruta": "/vista/verticales",
+      "sidebar": true,
+      "resumen": "Catálogo modular de productos y verticales comerciales activables sobre motor-apliarte.",
+      "para_que_sirve": "Permite a cualquier cliente o negocio activar únicamente los módulos que necesita con privacidad local (sin alquiler de servidores en la nube ni ataduras a un único proveedor de IA), cálculos numéricos deterministas verificados al céntimo y confirmación humana obligatoria en trámites críticos, ahorrando tiempo real mediante terminales gratuitas de Antigravity, Codex o Grok, modelos locales o suscripciones como Claude Pro.",
+      "que_puedes_hacer": [
+        "Comprender por qué elegir ApliArte: privacidad en disco local, coste cero en nube y libertad total de proveedor de IA.",
+        "Verificar para qué sirve: módulos a la medida sobre motor único con cálculos exactos y aprobación humana en operaciones críticas.",
+        "Evaluar con qué fin contratarlo: ahorro real de horas semanales en administración usando terminales gratuitas y escalando a demanda.",
+        "Explorar módulos verticales comerciales disponibles y sus capacidades operativas.",
+        "Consultar qué habilidades compartidas de motor-apliarte reutiliza cada vertical.",
+        "Copiar el comando de activación local para desplegar el módulo en tu máquina sin dependencias forzadas."
+      ],
+      "automatizaciones": "Descarga modular desacoplada y verificación de requisitos locales de motor-apliarte sin cuotas obligatorias de pago."
     }
   ],
   "herramientas_apoyo": [
@@ -1002,6 +1020,75 @@
       "estado": "hecho",
       "titulo": "Oficina modular: registro de pestañas, componentes y capturas reales",
       "detalle": "La barra lateral sale de un registro único (/api/modulos) con interruptor por pestaña preparado. Hay una carpeta de componentes reutilizables, estilos compartidos y un icono de información en cada pestaña que lleva a esta guía. Skills y Shorts abren con una explicación en lenguaje llano y sus capturas reales aparecen aquí. El resto de pestañas se migra en próximos pasos."
+    },
+    {
+      "fecha": "2026-11-20",
+      "estado": "hecho",
+      "titulo": "Arquitectura modular desacoplada, catálogo de verticales y libertad de terminal",
+      "detalle": "Oficina ApliArte se alinea como la capa visual desacoplada desde la que cualquier cliente activa en local solo los módulos contratados sobre el motor. Se prepara el catálogo de supuestos de uso modulares escalables (hostelería, gestoría, autónomos, alojamientos) reutilizando habilidades compartidas del motor y garantizando funcionamiento agnóstico con cualquier terminal, incluidos planes gratuitos de Antigravity, Codex o Grok, modelos locales o suscripciones como Claude Pro."
+    }
+  ],
+  "modulos_verticales": [
+    {
+      "id": "ejemplo-hosteleria",
+      "nombre": "Ejemplo: Negocio de hostelería",
+      "subtitulo": "Gestión hostelera, comandas y facturación simplificada",
+      "categoria": "Hostelería y Restauración",
+      "icono": "▦",
+      "habilidades_motor": [
+        "autonomo-facturacion-proyectos",
+        "cierre-fiscal-trimestral",
+        "aislar-voces-demucs",
+        "correo-transaccional",
+        "seo"
+      ],
+      "terminales_compatibles": "Antigravity, Codex, Grok, modelos locales (Pi y OpenCode) o suscripciones como Claude Pro",
+      "comando_activacion": "dart run bin/trabajo.dart modulo activar ejemplo-hosteleria"
+    },
+    {
+      "id": "ejemplo-gestoria",
+      "nombre": "Ejemplo: Despacho o gestoría",
+      "subtitulo": "Trámites administrativos, expedientes y tasas",
+      "categoria": "Gestoría y Asesoría Legal",
+      "icono": "◈",
+      "habilidades_motor": [
+        "ses-hospedajes",
+        "autonomo-facturacion-proyectos",
+        "correo-transaccional",
+        "cierre-fiscal-trimestral"
+      ],
+      "terminales_compatibles": "Antigravity, Codex, Grok, modelos locales (Pi y OpenCode) o suscripciones como Claude Pro",
+      "comando_activacion": "dart run bin/trabajo.dart modulo activar ejemplo-gestoria"
+    },
+    {
+      "id": "ejemplo-autonomo",
+      "nombre": "Ejemplo: Profesional autónomo",
+      "subtitulo": "Asesoría fiscal, conciliación bancaria y modelos tributarios",
+      "categoria": "Fiscalidad y Finanzas",
+      "icono": "▣",
+      "habilidades_motor": [
+        "autonomo-facturacion-proyectos",
+        "cierre-fiscal-trimestral",
+        "conciliacion-bancaria",
+        "correo-transaccional"
+      ],
+      "terminales_compatibles": "Antigravity, Codex, Grok, modelos locales (Pi y OpenCode) o suscripciones como Claude Pro",
+      "comando_activacion": "dart run bin/trabajo.dart modulo activar ejemplo-autonomo"
+    },
+    {
+      "id": "ejemplo-alojamiento",
+      "nombre": "Ejemplo: Alojamiento turístico",
+      "subtitulo": "Partes de entrada de viajeros y registro normativo",
+      "categoria": "Turismo y Hospedaje",
+      "icono": "◉",
+      "habilidades_motor": [
+        "ses-hospedajes",
+        "autonomo-facturacion-proyectos",
+        "correo-transaccional",
+        "seo"
+      ],
+      "terminales_compatibles": "Antigravity, Codex, Grok, modelos locales (Pi y OpenCode) o suscripciones como Claude Pro",
+      "comando_activacion": "dart run bin/trabajo.dart modulo activar ejemplo-alojamiento"
     }
   ]
 }

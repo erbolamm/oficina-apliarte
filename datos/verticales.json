@@ -1,0 +1,107 @@
+[
+  {
+    "id": "ejemplo-hosteleria",
+    "nombre": "Ejemplo: Negocio de hosteleria",
+    "subtitulo": "Gestion de pedidos, comandas y facturacion simplificada",
+    "descripcion": "Supuesto de uso generico e ilustrativo para hosteleria y restauracion. Muestra como un negocio puede digitalizar cartas interactivas, organizar comandas y emitir facturas simplificadas adaptadas a la normativa legal.",
+    "categoria": "Hosteleria y Restauracion",
+    "estado": "Caso de uso ilustrativo",
+    "version": "0.1.0",
+    "icono": "▦",
+    "habilidades_motor": [
+      "autonomo-facturacion-proyectos",
+      "cierre-fiscal-trimestral",
+      "aislar-voces-demucs",
+      "correo-transaccional",
+      "seo"
+    ],
+    "terminales_compatibles": [
+      "Antigravity y Gemini (Planes Gratuitos y Avanzados)",
+      "Claude Pro (Suscripcion oficial)",
+      "Grok (Plan Gratuito y Avanzado)",
+      "Codex (Planes Gratuitos y Basicos)",
+      "Pi y OpenCode (Modelos Locales Gratuitos)"
+    ],
+    "terminales_libres": true,
+    "requisitos": "motor en local + terminal cliente elegida",
+    "activacion": "dart run bin/trabajo.dart modulo activar ejemplo-hosteleria"
+  },
+  {
+    "id": "ejemplo-gestoria",
+    "nombre": "Ejemplo: Despacho o gestoria",
+    "subtitulo": "Expedientes administrativos, tasas y tramitacion documental",
+    "descripcion": "Supuesto de uso generico e ilustrativo para despachos profesionales y gestorias administrativas. Demuestra la automatizacion de cotejo documental, calculo de tasas y preparacion de expedientes.",
+    "categoria": "Gestoria y Asesoria Legal",
+    "estado": "Caso de uso ilustrativo",
+    "version": "0.1.0",
+    "icono": "◈",
+    "habilidades_motor": [
+      "ses-hospedajes",
+      "autonomo-facturacion-proyectos",
+      "correo-transaccional",
+      "cierre-fiscal-trimestral"
+    ],
+    "terminales_compatibles": [
+      "Antigravity y Gemini (Planes Gratuitos y Avanzados)",
+      "Claude Pro (Suscripcion oficial)",
+      "Grok (Plan Gratuito y Avanzado)",
+      "Codex (Planes Gratuitos y Basicos)",
+      "Pi y OpenCode (Modelos Locales Gratuitos)"
+    ],
+    "terminales_libres": true,
+    "requisitos": "motor en local + terminal cliente elegida",
+    "activacion": "dart run bin/trabajo.dart modulo activar ejemplo-gestoria"
+  },
+  {
+    "id": "ejemplo-autonomo",
+    "nombre": "Ejemplo: Profesional autonomo",
+    "subtitulo": "Facturacion con retencion, conciliacion bancaria y modelos tributarios",
+    "descripcion": "Supuesto de uso generico e ilustrativo para profesionales autonomos y pequenas actividades. Permite estructurar ingresos y gastos, conciliar extractos bancarios y preparar borradores de autoliquidaciones trimestrales.",
+    "categoria": "Fiscalidad y Finanzas",
+    "estado": "Caso de uso ilustrativo",
+    "version": "0.1.0",
+    "icono": "▣",
+    "habilidades_motor": [
+      "autonomo-facturacion-proyectos",
+      "cierre-fiscal-trimestral",
+      "conciliacion-bancaria",
+      "correo-transaccional"
+    ],
+    "terminales_compatibles": [
+      "Antigravity y Gemini (Planes Gratuitos y Avanzados)",
+      "Claude Pro (Suscripcion oficial)",
+      "Grok (Plan Gratuito y Avanzado)",
+      "Codex (Planes Gratuitos y Basicos)",
+      "Pi y OpenCode (Modelos Locales Gratuitos)"
+    ],
+    "terminales_libres": true,
+    "requisitos": "motor en local + terminal cliente elegida",
+    "activacion": "dart run bin/trabajo.dart modulo activar ejemplo-autonomo"
+  },
+  {
+    "id": "ejemplo-alojamiento",
+    "nombre": "Ejemplo: Alojamiento turistico",
+    "subtitulo": "Partes de entrada de viajeros y registro normativo",
+    "descripcion": "Supuesto de uso generico e ilustrativo para viviendas vacacionales, casas rurales y pequenos alojamientos. Automatiza la recogida de datos de huespedes y la preparacion de ficheros normativos de comunicacion.",
+    "categoria": "Turismo y Hospedaje",
+    "estado": "Caso de uso ilustrativo",
+    "version": "0.1.0",
+    "icono": "◉",
+    "habilidades_motor": [
+      "ses-hospedajes",
+      "autonomo-facturacion-proyectos",
+      "correo-transaccional",
+      "seo"
+    ],
+    "terminales_compatibles": [
+      "Antigravity y Gemini (Planes Gratuitos y Avanzados)",
+      "Claude Pro (Suscripcion oficial)",
+      "Grok (Plan Gratuito y Avanzado)",
+      "Codex (Planes Gratuitos y Basicos)",
+      "Pi y OpenCode (Modelos Locales Gratuitos)"
+    ],
+    "terminales_libres": true,
+    "requisitos": "motor en local + terminal cliente elegida",
+    "activacion": "dart run bin/trabajo.dart modulo activar ejemplo-alojamiento"
+  }
+]

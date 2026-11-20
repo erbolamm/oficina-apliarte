@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Módulos Verticales · Oficina ApliArte</title>
+  <link rel="stylesheet" href="../panel-shell.css">
+  <style>
+    .commercial-guide {
+      margin: 1.5rem 0 2rem 0;
+      padding: 1.5rem;
+      background: var(--paper, #ffffff);
+      border: 1px solid var(--light, #e0e6ed);
+      border-radius: var(--radius-lg, 12px);
+      box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.06));
+    }
+    .commercial-header h2 {
+      margin: 0 0 0.35rem 0;
+      font-size: 1.35rem;
+      color: var(--navy, #005fa9);
+    }
+    html[data-theme="dark"] .commercial-header h2 {
+      color: var(--cyan, #5ecef5);
+    }
+    .commercial-header p {
+      margin: 0 0 1.25rem 0;
+      font-size: 0.95rem;
+      color: var(--ink-muted, #666666);
+    }
+    .commercial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 1.25rem;
+    }
+    .commercial-box {
+      background: var(--surface, rgba(0, 95, 169, 0.03));
+      border: 1px solid var(--light, #e2e8f0);
+      border-radius: var(--radius-md, 8px);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+    html[data-theme="dark"] .commercial-box {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    .commercial-badge {
+      display: inline-block;
+      align-self: flex-start;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(0, 95, 169, 0.1);
+      color: var(--navy, #005fa9);
+      margin-bottom: 0.5rem;
+    }
+    html[data-theme="dark"] .commercial-badge {
+      background: rgba(94, 206, 245, 0.15);
+      color: var(--cyan, #5ecef5);
+    }
+    .commercial-box h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.15rem;
+      color: var(--text, #1e293b);
+    }
+    html[data-theme="dark"] .commercial-box h3 {
+      color: #f1f5f9;
+    }
+    .commercial-lead {
+      margin: 0 0 0.85rem 0;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      font-weight: 600;
+      color: var(--text-secondary, #334155);
+    }
+    html[data-theme="dark"] .commercial-lead {
+      color: #cbd5e1;
+    }
+    .commercial-list {
+      margin: 0;
+      padding-left: 1.2rem;
+      font-size: 0.85rem;
+      line-height: 1.45;
+      color: var(--ink-muted, #475569);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    html[data-theme="dark"] .commercial-list {
+      color: #94a3b8;
+    }
+    .commercial-list strong {
+      color: var(--text, #1e293b);
+    }
+    html[data-theme="dark"] .commercial-list strong {
+      color: #f1f5f9;
+    }
+  </style>
+</head>
+<body>
+  <main class="catalog-wrap">
+    <section class="catalog-hero">
+      <div>
+        <h1>Módulos Verticales Desacoplados</h1>
+        <p>Capa visual modular para activar en local sobre el motor. Reutilizan habilidades compartidas con total libertad de terminal, incluidos planes gratuitos de Antigravity, Codex o Grok, modelos locales o suscripciones como Claude Pro.</p>
+      </div>
+      <span class="catalog-tag accent" id="verticales-count">Cargando...</span>
+    </section>
+
+    <!-- Claridad comercial para futuros clientes: Por que, Para que y Con que fin -->
+    <section class="commercial-guide" aria-label="Garantías y modelo para clientes">
+      <div class="commercial-header" style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;">
+        <div>
+          <h2>Claridad para tu negocio: el modelo ApliArte</h2>
+          <p>Tres respuestas directas sobre privacidad, utilidad práctica y rentabilidad antes de activar cualquier módulo.</p>
+        </div>
+        <a class="btn-contextual-feedback" href="https://github.com/erbolamm/oficina-apliarte/issues/new?title=%5BPropuesta%5D%20Modelo%20Comercial%20ApliArte%3A%20&body=%23%23%23%20Contexto%0A-%20%2A%2ASecci%C3%B3n%2A%2A%3A%20Modelo%20Comercial%0A-%20%2A%2AEstado%2A%2A%3A%20Implementado%0A%0A%23%23%23%20Comentario%20o%20propuesta%0A" target="_blank" rel="noopener noreferrer" title="Comentar o proponer una idea sobre el modelo comercial" aria-label="Comentar o proponer una idea sobre el modelo comercial">
+          <svg class="feedback-icon-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="12" y1="8" x2="12" y2="14"/><line x1="9" y1="11" x2="15" y2="11"/></svg>
+        </a>
+      </div>
+
+      <div class="commercial-grid">
+        <article class="commercial-box">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div class="commercial-badge">1. Privacidad y Soberanía</div>
+            <a class="btn-contextual-feedback inline-feedback-btn" href="https://github.com/erbolamm/oficina-apliarte/issues/new?title=%5BPropuesta%5D%20Por%20que%20ApliArte%3A%20&body=%23%23%23%20Contexto%0A-%20%2A%2ASecci%C3%B3n%2A%2A%3A%20Por%20que%20ApliArte%20%28Privacidad%20Local%29%0A-%20%2A%2AEstado%2A%2A%3A%20Implementado%0A%0A%23%23%23%20Comentario%20o%20propuesta%0A" target="_blank" rel="noopener noreferrer" title="Comentar o proponer una idea sobre ¿Por qué ApliArte?" aria-label="Comentar o proponer una idea sobre ¿Por qué ApliArte?">
+              <svg class="feedback-icon-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="12" y1="8" x2="12" y2="14"/><line x1="9" y1="11" x2="15" y2="11"/></svg>
+            </a>
+          </div>
+          <h3>¿Por qué ApliArte?</h3>
+          <p class="commercial-lead">Privacidad local absoluta, sin alquiler de servidores en la nube ni ataduras a un único proveedor de inteligencia artificial.</p>
+          <ul class="commercial-list">
+            <li><strong>Tus datos se quedan en tu equipo:</strong> La información fiscal, contable, registros de clientes y expedientes se procesan y almacenan en tu disco local. Nada se vende ni se comparte.</li>
+            <li><strong>Cero costes ocultos de nube:</strong> No pagas cuotas mensuales por servidores remotos que no necesitas.</li>
+            <li><strong>Independencia tecnológica:</strong> Si mañana cambia el mercado, puedes alternar de terminal de inteligencia artificial sin perder tus configuraciones ni tus datos.</li>
+          </ul>
+        </article>
+
+        <article class="commercial-box">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div class="commercial-badge">2. Precisión y Control</div>
+            <a class="btn-contextual-feedback inline-feedback-btn" href="https://github.com/erbolamm/oficina-apliarte/issues/new?title=%5BPropuesta%5D%20Para%20que%20sirve%20ApliArte%3A%20&body=%23%23%23%20Contexto%0A-%20%2A%2ASecci%C3%B3n%2A%2A%3A%20Para%20que%20sirve%20%28Calculos%20Verificados%20y%20Confirmacion%20Humana%29%0A-%20%2A%2AEstado%2A%2A%3A%20Implementado%0A%0A%23%23%23%20Comentario%20o%20propuesta%0A" target="_blank" rel="noopener noreferrer" title="Comentar o proponer una idea sobre ¿Para qué sirve?" aria-label="Comentar o proponer una idea sobre ¿Para qué sirve?">
+              <svg class="feedback-icon-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="12" y1="8" x2="12" y2="14"/><line x1="9" y1="11" x2="15" y2="11"/></svg>
+            </a>
+          </div>
+          <h3>¿Para qué sirve?</h3>
+          <p class="commercial-lead">Para activar solo los módulos que necesita tu empresa sobre un motor único con cálculos matemáticos verificados y confirmación humana.</p>
+          <ul class="commercial-list">
+            <li><strong>Módulos a la medida:</strong> Solo descargas y pones en marcha lo que tu actividad requiere (restauración, gestoría de tráfico, autónomos o alojamientos).</li>
+            <li><strong>Cálculos exactos sin inventar datos:</strong> Los impuestos, bases imponibles y tasas se calculan mediante código determinista estricto, nunca mediante aproximaciones.</li>
+            <li><strong>Supervisión en trámites críticos:</strong> Cualquier comunicación con bancos, la Agencia Tributaria o Tráfico genera un borrador previo que requiere tu aprobación explícita en un clic.</li>
+          </ul>
+        </article>
+
+        <article class="commercial-box">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div class="commercial-badge">3. Ahorro y Escalabilidad</div>
+            <a class="btn-contextual-feedback inline-feedback-btn" href="https://github.com/erbolamm/oficina-apliarte/issues/new?title=%5BPropuesta%5D%20Con%20que%20fin%20contratar%20ApliArte%3A%20&body=%23%23%23%20Contexto%0A-%20%2A%2ASecci%C3%B3n%2A%2A%3A%20Con%20que%20fin%20contratar%20%28Ahorro%20y%20Planes%20Gratuitos%29%0A-%20%2A%2AEstado%2A%2A%3A%20Implementado%0A%0A%23%23%23%20Comentario%20o%20propuesta%0A" target="_blank" rel="noopener noreferrer" title="Comentar o proponer una idea sobre ¿Con qué fin contratarlo?" aria-label="Comentar o proponer una idea sobre ¿Con qué fin contratarlo?">
+              <svg class="feedback-icon-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="12" y1="8" x2="12" y2="14"/><line x1="9" y1="11" x2="15" y2="11"/></svg>
+            </a>
+          </div>
+          <h3>¿Con qué fin contratarlo?</h3>
+          <p class="commercial-lead">Para ahorrar horas de trabajo administrativo a la semana usando terminales gratuitas y escalando solo cuando tu negocio lo decida.</p>
+          <ul class="commercial-list">
+            <li><strong>Compatible con planes gratuitos:</strong> Funciona con las versiones estándar y gratuitas de Antigravity, Codex o Grok, modelos locales o suscripciones como Claude Pro, reduciendo a cero el coste de suscripciones de inteligencia artificial para comenzar.</li>
+            <li><strong>Automatización de tareas repetitivas:</strong> Delegas la clasificación de facturas, preparación de partes oficiales y lectura de documentación técnica.</li>
+            <li><strong>Inversión gradual:</strong> Empiezas con un módulo específico y amplías capacidades a tu propio ritmo, sin permanencias obligatorias.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- Fase 2 Capa 1: Salvaguarda Neurosimbolica y Puerta de Confirmacion Humana en 1 Clic -->
+    <section class="commercial-guide" style="border-left: 4px solid #ef4444;" aria-label="Salvaguarda de confirmación humana">
+      <div class="commercial-header" style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;">
+        <div>
+          <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.35rem;">
+            <span class="badge-camino-rojo">Fase 2 · Capa 1</span>
+            <span class="catalog-tag accent">Validación determinista y control humano</span>
+          </div>
+          <h2>Salvaguarda del Camino Rojo: Confirmación Humana en 1 Clic</h2>
+          <p>Freno de seguridad estructural: en operaciones irreversibles o con consecuencias legales, la inteligencia artificial únicamente prepara un borrador en ensayo previo (Dry-Run). Nada se ejecuta en el sistema operativo hasta que tú lo apruebas en pantalla.</p>
+        </div>
+        <a class="btn-contextual-feedback" href="https://github.com/erbolamm/oficina-apliarte/issues/new?title=%5BPropuesta%5D%20Salvaguarda%20Confirmacion%20Humana%3A%20&body=%23%23%23%20Contexto%0A-%20%2A%2ASecci%C3%B3n%2A%2A%3A%20Confirmacion%20Humana%20en%201%20Clic%0A-%20%2A%2AEstado%2A%2A%3A%20Implementado%0A%0A%23%23%23%20Comentario%20o%20propuesta%0A" target="_blank" rel="noopener noreferrer" title="Comentar o proponer una idea sobre la confirmación humana" aria-label="Comentar o proponer una idea sobre la confirmación humana">
+          <svg class="feedback-icon-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="12" y1="8" x2="12" y2="14"/><line x1="9" y1="11" x2="15" y2="11"/></svg>
+        </a>
+      </div>
+
+      <div style="margin-top: 1rem; padding: 1rem; background: var(--surface-elevated, rgba(0,0,0,0.03)); border: 1px solid var(--light, #e2e8f0); border-radius: var(--radius-md, 8px);">
+        <strong style="display:block; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.04em; color:#ef4444; margin-bottom:0.5rem;">
+          Demostrador interactivo en vivo: prueba la ventana de confirmación en 1 clic
+        </strong>
+        <p style="margin: 0 0 0.85rem 0; font-size: 0.85rem; color: var(--ink-muted, #64748b);">
+          Casos ilustrativos de lo que cada cliente puede activar y adaptar en su equipo local. Pulsa cualquiera de los supuestos oficiales generados en ensayo previo para comprobar cómo la Oficina ApliArte exige tu visto bueno humano antes de presentar modelos a la administración, recursos o partes de viajeros:
+        </p>
+        <div style="display:flex; flex-wrap:wrap; gap:0.5rem;" id="simuladores-camino-rojo">
+          <button type="button" class="catalog-btn copy-btn" data-draft="borrador-tributario-modelo-303" style="border-color:rgba(220,53,69,0.4); color:var(--ink);">
+            Simular Modelo 303 (Autónomos)
+          </button>
+          <button type="button" class="catalog-btn copy-btn" data-draft="borrador-recurso-administrativo" style="border-color:rgba(220,53,69,0.4); color:var(--ink);">
+            Simular Recurso Administrativo (Gestoría)
+          </button>
+          <button type="button" class="catalog-btn copy-btn" data-draft="borrador-partes-viajeros" style="border-color:rgba(220,53,69,0.4); color:var(--ink);">
+            Simular Fichero Registro (Alojamientos)
+          </button>
+          <button type="button" class="catalog-btn copy-btn" data-draft="borrador-hosteleria-reserva" style="border-color:rgba(220,53,69,0.4); color:var(--ink);">
+            Simular Fianza Reserva (Hostelería)
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <div class="catalog-controls">
+      <input id="verticales-search" class="catalog-search" type="search" placeholder="Buscar módulo por nombre, categoría, habilidad del motor o terminal..." aria-label="Buscar módulo vertical">
+      <div id="verticales-filters" style="display:flex; flex-wrap:wrap; gap:0.45rem;"></div>
+    </div>
+
+    <div id="verticales-grid" class="catalog-grid"></div>
+  </main>
+
+  <script src="../panel-shell.js"></script>
+  <script>
+    (function () {
+      const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+      let items = [];
+      let activeCat = "Todas";
+      let query = "";
+
+      function copyText(text, btn) {
+        const done = () => {
+          const orig = btn.textContent;
+          btn.textContent = "Comando copiado";
+          setTimeout(() => { btn.textContent = orig; }, 1600);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done).catch(done);
+        } else {
+          done();
+        }
+      }
+
+      function render() {
+        const grid = document.getElementById("verticales-grid");
+        const count = document.getElementById("verticales-count");
+        const q = query.trim().toLowerCase();
+        const filtered = items.filter((m) => {
+          const okCat = activeCat === "Todas" || m.categoria === activeCat;
+          const skillsList = Array.isArray(m.habilidades_motor) ? m.habilidades_motor.join(" ") : "";
+          const termsList = Array.isArray(m.terminales_compatibles) ? m.terminales_compatibles.join(" ") : String(m.terminales_compatibles || "");
+          const okQ = !q || [m.nombre, m.subtitulo, m.descripcion, m.categoria, skillsList, termsList].some((f) => String(f || "").toLowerCase().includes(q));
+          return okCat && okQ;
+        });
+
+        if (count) count.textContent = filtered.length + " de " + items.length + " módulos";
+        if (!filtered.length) {
+          grid.innerHTML = '<div class="catalog-empty">No hay módulos verticales que coincidan con la búsqueda actual.</div>';
+          return;
+        }
+
+        grid.innerHTML = filtered.map((m, idx) => {
+          const skills = Array.isArray(m.habilidades_motor)
+            ? m.habilidades_motor.map((s) => '<span class="catalog-tag" style="font-family:monospace; font-size:0.75rem;">' + esc(s) + '</span>').join("")
+            : '';
+
+          const terms = Array.isArray(m.terminales_compatibles)
+            ? m.terminales_compatibles.map((t) => '<span class="catalog-tag accent">' + esc(t) + '</span>').join("")
+            : ('<span class="catalog-tag accent">' + esc(String(m.terminales_compatibles || "")) + '</span>');
+
+          const iconSpan = m.icono ? '<span style="font-size:1.3rem; margin-right:0.5rem; display:inline-block; vertical-align:middle;">' + esc(m.icono) + '</span>' : '';
+          const activacion = m.activacion || ('dart run bin/trabajo.dart modulo activar ' + m.id);
+          const issueUrl = 'https://github.com/erbolamm/oficina-apliarte/issues/new?title=' +
+            encodeURIComponent('[Propuesta] ' + m.nombre + ': ') +
+            '&body=' + encodeURIComponent('### Contexto del apartado\n- **Módulo**: ' + m.nombre + '\n- **Categoría**: ' + (m.categoria || '') + '\n- **Estado**: ' + (m.estado || 'Disponible') + '\n\n### ¿Qué te gustaría comentar, proponer o mejorar?\n');
+
+          return (
+            '<article class="catalog-card">' +
+              '<div class="catalog-card-top">' +
+                '<div style="display:flex; align-items:center;">' +
+                  iconSpan +
+                  '<div><h2>' + esc(m.nombre) + '</h2><p class="catalog-subtitle">' + esc(m.subtitulo || "") + '</p></div>' +
+                '</div>' +
+                '<div style="display:flex; align-items:center; gap:0.4rem;">' +
+                  (m.version ? '<span class="catalog-tag accent">v' + esc(m.version) + '</span>' : '') +
+                  '<a class="btn-contextual-feedback inline-feedback-btn" href="' + esc(issueUrl) + '" target="_blank" rel="noopener noreferrer" title="Comentar o proponer una idea sobre ' + esc(m.nombre) + '" aria-label="Comentar o proponer una idea sobre ' + esc(m.nombre) + '">' +
+                    '<svg class="feedback-icon-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="12" y1="8" x2="12" y2="14"/><line x1="9" y1="11" x2="15" y2="11"/></svg>' +
+                  '</a>' +
+                '</div>' +
+              '</div>' +
+              '<p class="catalog-desc">' + esc(m.descripcion || "") + '</p>' +
+              '<div style="margin-top:0.75rem;">' +
+                '<strong style="display:block; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.04em; color:var(--text-subtle, #666); margin-bottom:0.35rem;">Habilidades del Motor Reutilizadas:</strong>' +
+                '<div class="catalog-meta" style="margin-top:0.2rem;">' + skills + '</div>' +
+              '</div>' +
+              '<div style="margin-top:0.75rem;">' +
+                '<strong style="display:block; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.04em; color:var(--text-subtle, #666); margin-bottom:0.35rem;">Terminales Compatibles (Planes Gratuitos):</strong>' +
+                '<div class="catalog-meta" style="margin-top:0.2rem;">' + terms + '</div>' +
+              '</div>' +
+              '<div style="margin-top:0.75rem;">' +
+                '<strong style="display:block; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.04em; color:var(--text-subtle, #666); margin-bottom:0.25rem;">Activación Modular en Local:</strong>' +
+                '<pre class="catalog-code" style="margin-top:0.2rem; font-size:0.75rem;">' + esc(activacion) + '</pre>' +
+              '</div>' +
+              '<div class="catalog-actions" style="margin-top:1rem; flex-wrap:wrap; gap:0.5rem;">' +
+                (m.repositorio ? '<a class="catalog-btn primary" href="' + esc(m.repositorio) + '" target="_blank" rel="noopener noreferrer">Repositorio del módulo</a>' : '') +
+                '<button type="button" class="catalog-btn copy-btn" data-idx="' + idx + '">Copiar comando de activación</button>' +
+                '<button type="button" class="catalog-btn test-dryrun-btn" data-mod-id="' + esc(m.id) + '" style="border-color:rgba(220,53,69,0.45); color:#ef4444;" title="Probar borrador de ensayo previo para ' + esc(m.nombre) + '">Probar borrador (Camino Rojo)</button>' +
+              '</div>' +
+            '</article>'
+          );
+        }).join("");
+
+        grid.querySelectorAll(".copy-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const m = filtered[Number(btn.dataset.idx)];
+            const cmd = m.activacion || ('dart run bin/trabajo.dart modulo activar ' + m.id);
+            copyText(cmd, btn);
+          });
+        });
+
+        grid.querySelectorAll(".test-dryrun-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const modId = btn.dataset.modId;
+            const draft = borradores.find((b) => b.modulo_id === modId);
+            if (draft && typeof window.abrirConfirmacionCaminoRojo === "function") {
+              window.abrirConfirmacionCaminoRojo(draft);
+            }
+          });
+        });
+      }
+
+      function initSimuladores() {
+        document.querySelectorAll("#simuladores-camino-rojo [data-draft]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const draftId = btn.dataset.draft;
+            const draft = borradores.find((b) => b.id === draftId);
+            if (draft && typeof window.abrirConfirmacionCaminoRojo === "function") {
+              window.abrirConfirmacionCaminoRojo(draft);
+            }
+          });
+        });
+      }
+
+      function renderFilters() {
+        const box = document.getElementById("verticales-filters");
+        if (!box) return;
+        const cats = ["Todas", ...new Set(items.map((m) => m.categoria).filter(Boolean))];
+        box.innerHTML = cats.map((c) => '<button type="button" class="catalog-pill' + (c === activeCat ? ' active' : '') + '" data-cat="' + esc(c) + '">' + esc(c) + '</button>').join("");
+        box.querySelectorAll("button").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            activeCat = btn.dataset.cat || "Todas";
+            renderFilters();
+            render();
+          });
+        });
+      }
+
+      const searchInput = document.getElementById("verticales-search");
+      if (searchInput) {
+        searchInput.addEventListener("input", (e) => {
+          query = e.target.value || "";
+          render();
+        });
+      }
+
+      const esEstatico = location.pathname.startsWith("/oficina-apliarte") || location.hostname.endsWith(".github.io");
+      let borradores = [];
+      const urlBorradores = esEstatico ? "../datos/borradores-camino-rojo.json?v=" + Date.now() : "/api/borradores-camino-rojo";
+      fetch(urlBorradores, { cache: "no-store" })
+        .then((r) => (r.ok ? r : fetch("../datos/borradores-camino-rojo.json?v=" + Date.now(), { cache: "no-store" })))
+        .then((r) => (r.ok ? r.json() : []))
+        .then((data) => {
+          borradores = Array.isArray(data) ? data : [];
+          initSimuladores();
+        })
+        .catch(() => {
+          borradores = [];
+        });
+
+      const urlVerticales = esEstatico ? "../datos/verticales.json?v=" + Date.now() : "/api/verticales";
+      fetch(urlVerticales, { cache: "no-store" })
+        .then((r) => (r.ok ? r : fetch("../datos/verticales.json?v=" + Date.now(), { cache: "no-store" })))
+        .then((r) => (r.ok ? r.json() : []))
+        .then((data) => {
+          items = Array.isArray(data) ? data : [];
+          renderFilters();
+          render();
+        })
+        .catch(() => {
+          document.getElementById("verticales-grid").innerHTML = '<div class="catalog-empty">No se pudo cargar el catálogo de módulos verticales.</div>';
+        });
+    })();
+  </script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 {
   "modo": "solo_lectura",
-  "total": 27,
-  "activas": 5,
+  "total": 28,
+  "activas": 6,
   "en_desarrollo": 22,
   "pestanas": [
     {
@@ -53,6 +53,16 @@
       "publica": true,
       "estado_desarrollo": "completada",
       "icono": "⌘"
+    },
+    {
+      "slug": "verticales",
+      "titulo": "Verticales",
+      "subtitulo": "Módulos desacoplados",
+      "ruta": "vistas/verticales.html",
+      "activa": true,
+      "publica": true,
+      "estado_desarrollo": "completada",
+      "icono": "▦"
     },
     {
       "slug": "seo",

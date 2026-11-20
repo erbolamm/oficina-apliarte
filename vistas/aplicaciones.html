@@ -64,6 +64,10 @@
           const shotsHtml = shots.length
             ? '<div class="catalog-shots">' + shots.map((s, i) => '<a class="catalog-shot" href="' + esc(s.replace("=w526-h296-rw", "=w1280")) + '" target="_blank" rel="noopener noreferrer" title="Ampliar captura ' + (i + 1) + '"><img src="' + esc(s) + '" alt="Captura ' + (i + 1) + ' de ' + esc(a.nombre) + '" loading="lazy" referrerpolicy="no-referrer"></a>').join("") + '</div>'
             : '';
+          const versionHtml = (a.version && /^\d/.test(String(a.version).trim()) ? '<span class="catalog-tag accent">v' + esc(String(a.version).trim()) + '</span>' : (a.version ? '<span class="catalog-tag accent">' + esc(a.version) + '</span>' : ''));
+          const issueUrl = 'https://github.com/erbolamm/oficina-apliarte/issues/new?title=' +
+            encodeURIComponent('[Propuesta] ' + a.nombre + ': ') +
+            '&body=' + encodeURIComponent('### Contexto del apartado\n- **Aplicación**: ' + a.nombre + '\n- **Categoría**: ' + (a.categoria || '') + '\n- **Estado**: ' + (a.estado || 'Disponible') + '\n\n### ¿Qué te gustaría comentar, proponer o mejorar?\n');
           return (
             '<article class="catalog-card">' +
               '<div class="catalog-card-top">' +
@@ -71,7 +75,12 @@
                   iconHtml +
                   '<div><h2>' + esc(a.nombre) + '</h2><p class="catalog-subtitle">' + esc(a.subtitulo || "") + '</p></div>' +
                 '</div>' +
-                (a.version && /^\d/.test(String(a.version).trim()) ? '<span class="catalog-tag accent">v' + esc(String(a.version).trim()) + '</span>' : (a.version ? '<span class="catalog-tag accent">' + esc(a.version) + '</span>' : '')) +
+                '<div style="display:flex; align-items:center; gap:0.4rem;">' +
+                  versionHtml +
+                  '<a class="btn-contextual-feedback inline-feedback-btn" href="' + esc(issueUrl) + '" target="_blank" rel="noopener noreferrer" title="Comentar o proponer una idea sobre ' + esc(a.nombre) + '" aria-label="Comentar o proponer una idea sobre ' + esc(a.nombre) + '">' +
+                    '<svg class="feedback-icon-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="12" y1="8" x2="12" y2="14"/><line x1="9" y1="11" x2="15" y2="11"/></svg>' +
+                  '</a>' +
+                '</div>' +
               '</div>' +
               '<p class="catalog-desc">' + esc(a.descripcion || "") + '</p>' +
               shotsHtml +
