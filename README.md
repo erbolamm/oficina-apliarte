@@ -22,7 +22,7 @@ Acceso directo a la suite desplegada en producción sin requerir servidor local 
 
 ## 🎯 Misión y Arquitectura
 
-1. **Capa Visual Modular Desacoplada**: `oficina-apliarte` es estrictamente la interfaz visual desacoplada desde la que cualquier usuario o cliente descarga y activa en local únicamente los módulos contratados sobre `motor-apliarte`.
+1. **Capa Visual Modular Desacoplada**: `oficina-apliarte` es estrictamente la interfaz visual desacoplada desde la que cualquier usuario o cliente descarga y activa en local únicamente los módulos necesarios sobre `motor-apliarte`. Se basa en un modelo abierto de libre descarga para uso en local por cuenta propia, con opción de acompañamiento profesional e instalación llave en mano mediante presupuesto a medida y sin compromiso (sin tarifas fijas).
 2. **Habilidades Troncales Únicas en el Motor**: `motor-apliarte` es la fuente única de toda habilidad compartida. Queda prohibido duplicar habilidades en satélites o verticales; cada módulo comercial reutiliza las capacidades existentes del motor.
 3. **Libertad de Terminal**: Todo módulo y contrato opera de forma agnóstica con cualquier terminal cliente elegida por el usuario (incluidos planes gratuitos de Antigravity, Codex o Grok, modelos locales o suscripciones como Claude Pro), funcionando con opciones accesibles sin forzar dependencias exclusivas.
 4. **Modo Exclusivo de Solo Lectura Inicial**: Durante la fase de construcción, el servidor opera en modo de solo lectura para consulta y descarga de datos (habilidades, metadatos, catálogo), garantizando cero escrituras imprevistas o mutaciones no verificadas.
