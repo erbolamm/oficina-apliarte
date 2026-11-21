@@ -54,9 +54,10 @@
   },
   {
     "id": "ejemplo-autonomo",
+    "ancla": "verticales-autonomos",
     "nombre": "Ejemplo: Profesional autonomo",
     "subtitulo": "Facturacion con retencion, conciliacion bancaria y modelos tributarios",
-    "descripcion": "Supuesto de uso generico e ilustrativo para profesionales autonomos y pequenas actividades. Permite estructurar ingresos y gastos, conciliar extractos bancarios y preparar borradores de autoliquidaciones trimestrales.",
+    "descripcion": "Supuesto de uso generico e ilustrativo para profesionales autonomos y pequenas actividades: 100% gratuito y de codigo abierto para montar tu propia oficina en tu ordenador (macOS, Windows o Linux). Permite estructurar ingresos y gastos, conciliar extractos bancarios y preparar borradores de autoliquidaciones trimestrales, con asistencia profesional opcional bajo presupuesto a medida y sin compromiso.",
     "categoria": "Fiscalidad y Finanzas",
     "estado": "Caso de uso ilustrativo",
     "version": "0.1.0",

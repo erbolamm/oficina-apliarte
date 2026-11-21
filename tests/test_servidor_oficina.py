@@ -650,6 +650,44 @@ class TestServidorOficina(unittest.TestCase):
             self.assertIn("window.self !== window.top", html)
             self.assertIn("window.top.location.href = window.location.href", html)
 
+    def test_ancla_verticales_autonomos(self):
+        # 1. Verificar datos de Autonomos en /api/verticales (sin fugas ni precios fijos)
+        with urllib.request.urlopen(f"{self.base_url}/api/verticales") as resp:
+            self.assertEqual(resp.status, 200)
+            verticales = json.loads(resp.read().decode("utf-8"))
+            autonomo = next((v for v in verticales if v.get("id") == "ejemplo-autonomo"), None)
+            self.assertIsNotNone(autonomo)
+            self.assertEqual(autonomo.get("ancla"), "verticales-autonomos")
+            desc = autonomo.get("descripcion", "").lower()
+            self.assertIn("100% gratuito", desc)
+            self.assertIn("codigo abierto", desc)
+            self.assertIn("presupuesto a medida y sin compromiso", desc)
+            self.assertNotIn("€", desc)
+            self.assertNotIn("/" + "users" + "/", desc)
+            self.assertNotIn("~" + "/trabajo/", desc)
+
+        # 2. Verificar que panel-shell.js enruta #verticales-autonomos hacia /vista/verticales con el hash
+        with urllib.request.urlopen(f"{self.base_url}/panel-shell.js") as resp:
+            self.assertEqual(resp.status, 200)
+            js = resp.read().decode("utf-8")
+            self.assertIn("function resolveHashRoute(rawHash)", js)
+            self.assertIn('clean.startsWith("verticales-")', js)
+            self.assertIn('vista: "verticales"', js)
+            self.assertIn("ev.targetAnchorHash = resolvedHash", js)
+            self.assertIn("openHashRouteIfMatched(window.location.hash)", js)
+            self.assertIn('encodeURIComponent(slug) + (window.location.hash || "")', js)
+
+        # 3. Verificar que /vista/verticales asigna el ancla y enfoca el bloque de Autonomos
+        with urllib.request.urlopen(f"{self.base_url}/vista/verticales") as resp:
+            self.assertEqual(resp.status, 200)
+            html = resp.read().decode("utf-8")
+            self.assertIn('"ejemplo-autonomo": "verticales-autonomos"', html)
+            self.assertIn('"verticales-autonomos": "ejemplo-autonomo"', html)
+            self.assertIn("function focusVerticalFromHash()", html)
+            self.assertIn('targetCard.classList.add("vertical-focused")', html)
+            self.assertIn('targetCard.setAttribute("data-focused-vertical", "true")', html)
+            self.assertIn('window.addEventListener("hashchange", focusVerticalFromHash)', html)
+
 
 if __name__ == "__main__":
     unittest.main()

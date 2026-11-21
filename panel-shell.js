@@ -220,7 +220,7 @@
       slug !== "pestana_privada"
     ) {
       window.location.replace(
-        OFICINA_BASE + "/?vista=" + encodeURIComponent(slug)
+        OFICINA_BASE + "/?vista=" + encodeURIComponent(slug) + (window.location.hash || "")
       );
       return;
     }
@@ -2239,7 +2239,10 @@
         const frameView = document.getElementById("office-frame-view");
         const iframe = document.getElementById("office-iframe");
 
-        const targetUrl = resolveVistaIframeUrl(item.href || a.dataset.vistaHref || "/", item);
+        const baseHref = item.href || a.dataset.vistaHref || "/";
+        const anchorHash = (e && e.targetAnchorHash) ? String(e.targetAnchorHash) : "";
+        const hrefWithHash = (anchorHash && !baseHref.includes("#")) ? (baseHref + anchorHash) : baseHref;
+        const targetUrl = resolveVistaIframeUrl(hrefWithHash, item);
 
         if (nativeView && frameView && iframe) {
           nativeView.style.display = "none";
@@ -2256,17 +2259,19 @@
           if (!e.isFromPopstate) {
             try {
               window.history.pushState(
-                { vista: vistaSlug },
+                { vista: vistaSlug, hash: anchorHash },
                 "",
-                vistaSlug ? OFICINA_BASE + "/?vista=" + encodeURIComponent(vistaSlug) : OFICINA_BASE + "/"
+                vistaSlug
+                  ? OFICINA_BASE + "/?vista=" + encodeURIComponent(vistaSlug) + anchorHash
+                  : OFICINA_BASE + "/" + anchorHash
               );
             } catch (_) {}
           }
         } else {
           const fallbackSlug = (item.href || "").replace(/^\/vista\//, "").replace(/^\//, "");
           window.location.href = fallbackSlug
-            ? OFICINA_BASE + "/?vista=" + encodeURIComponent(fallbackSlug)
-            : OFICINA_BASE + "/";
+            ? OFICINA_BASE + "/?vista=" + encodeURIComponent(fallbackSlug) + anchorHash
+            : OFICINA_BASE + "/" + anchorHash;
         }
       });
 
@@ -2274,18 +2279,58 @@
     }
     syncBloggerNavBadge();
 
+    function resolveHashRoute(rawHash) {
+      const clean = String(rawHash || "").replace(/^#/, "").trim().toLowerCase();
+      if (!clean) return null;
+      if (clean === "verticales" || clean === "autonomos" || clean.startsWith("verticales-")) {
+        return {
+          vista: "verticales",
+          hash: "#" + (clean === "autonomos" ? "verticales-autonomos" : clean),
+        };
+      }
+      return null;
+    }
+
+    function openHashRouteIfMatched(rawHash) {
+      const hashRoute = resolveHashRoute(rawHash);
+      if (!hashRoute) return false;
+      const targetHref = "/vista/" + hashRoute.vista;
+      const cards = Array.from(nav.querySelectorAll(".nav-card"));
+      const match = cards.find((c) => {
+        const h = c.dataset.vistaHref || c.getAttribute("href") || "";
+        return h === targetHref || h === "/" + hashRoute.vista;
+      });
+      if (!match) return false;
+      const ev = new CustomEvent("click", { bubbles: true });
+      ev.targetAnchorHash = hashRoute.hash;
+      match.dispatchEvent(ev);
+      return true;
+    }
+
+    if (!window.__oficinaHashRouteBound) {
+      window.__oficinaHashRouteBound = true;
+      window.addEventListener("hashchange", () => {
+        openHashRouteIfMatched(window.location.hash);
+      });
+    }
+
     if (!esModoLimpio && !window.__oficinaVistaRestaurada) {
       const initialVista = new URLSearchParams(window.location.search).get("vista");
-      if (initialVista) {
+      const hashRoute = resolveHashRoute(window.location.hash);
+      const resolvedVista = initialVista || (hashRoute ? hashRoute.vista : "");
+      const resolvedHash = hashRoute ? hashRoute.hash : (window.location.hash || "");
+      if (resolvedVista) {
         window.__oficinaVistaRestaurada = true;
-        const targetHref = "/vista/" + initialVista;
+        const targetHref = "/vista/" + resolvedVista;
         const cards = Array.from(nav.querySelectorAll(".nav-card"));
         const match = cards.find((c) => {
           const h = c.dataset.vistaHref || c.getAttribute("href") || "";
-          return h === targetHref || h === "/" + initialVista;
+          return h === targetHref || h === "/" + resolvedVista;
         });
         if (match) {
-          match.dispatchEvent(new CustomEvent("click", { bubbles: true }));
+          const ev = new CustomEvent("click", { bubbles: true });
+          if (resolvedHash) ev.targetAnchorHash = resolvedHash;
+          match.dispatchEvent(ev);
         }
       }
     }

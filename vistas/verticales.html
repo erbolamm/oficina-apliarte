@@ -98,6 +98,15 @@
     html[data-theme="dark"] .commercial-list strong {
       color: #f1f5f9;
     }
+    .catalog-card.vertical-focused {
+      border-color: var(--navy, #005fa9);
+      box-shadow: 0 0 0 3px rgba(0, 95, 169, 0.22), 0 8px 24px rgba(0, 95, 169, 0.12);
+      transition: box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    html[data-theme="dark"] .catalog-card.vertical-focused {
+      border-color: var(--cyan, #5ecef5);
+      box-shadow: 0 0 0 3px rgba(94, 206, 245, 0.25), 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
   </style>
 </head>
 <body>
@@ -258,6 +267,26 @@
   <script>
     (function () {
       const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+      const ANCHOR_BY_ID = {
+        "ejemplo-autonomo": "verticales-autonomos",
+        "ejemplo-hosteleria": "verticales-hosteleria",
+        "ejemplo-gestoria": "verticales-gestoria",
+        "ejemplo-alojamiento": "verticales-alojamiento",
+      };
+      const ID_BY_HASH = {
+        "verticales-autonomos": "ejemplo-autonomo",
+        "autonomos": "ejemplo-autonomo",
+        "ejemplo-autonomo": "ejemplo-autonomo",
+        "verticales-hosteleria": "ejemplo-hosteleria",
+        "hosteleria": "ejemplo-hosteleria",
+        "ejemplo-hosteleria": "ejemplo-hosteleria",
+        "verticales-gestoria": "ejemplo-gestoria",
+        "gestoria": "ejemplo-gestoria",
+        "ejemplo-gestoria": "ejemplo-gestoria",
+        "verticales-alojamiento": "ejemplo-alojamiento",
+        "alojamiento": "ejemplo-alojamiento",
+        "ejemplo-alojamiento": "ejemplo-alojamiento",
+      };
       let items = [];
       let activeCat = "Todas";
       let query = "";
@@ -303,13 +332,14 @@
             : ('<span class="catalog-tag accent">' + esc(String(m.terminales_compatibles || "")) + '</span>');
 
           const iconSpan = m.icono ? '<span style="font-size:1.3rem; margin-right:0.5rem; display:inline-block; vertical-align:middle;">' + esc(m.icono) + '</span>' : '';
+          const anchorId = m.ancla || ANCHOR_BY_ID[m.id] || ("verticales-" + m.id);
           const activacion = m.activacion || ('dart run bin/trabajo.dart modulo activar ' + m.id);
           const issueUrl = 'https://github.com/erbolamm/oficina-apliarte/issues/new?title=' +
             encodeURIComponent('[Propuesta] ' + m.nombre + ': ') +
             '&body=' + encodeURIComponent('### Contexto del apartado\n- **Módulo**: ' + m.nombre + '\n- **Categoría**: ' + (m.categoria || '') + '\n- **Estado**: ' + (m.estado || 'Disponible') + '\n\n### ¿Qué te gustaría comentar, proponer o mejorar?\n');
 
           return (
-            '<article class="catalog-card">' +
+            '<article class="catalog-card" id="' + esc(anchorId) + '" data-vertical-id="' + esc(m.id) + '" tabindex="-1">' +
               '<div class="catalog-card-top">' +
                 '<div style="display:flex; align-items:center;">' +
                   iconSpan +
@@ -411,6 +441,42 @@
           borradores = [];
         });
 
+      function focusVerticalFromHash() {
+        let rawHash = (window.location.hash || "").replace(/^#/, "").trim().toLowerCase();
+        if (!rawHash) {
+          try {
+            if (window.parent && window.parent !== window && window.parent.location && window.parent.location.hash) {
+              rawHash = String(window.parent.location.hash).replace(/^#/, "").trim().toLowerCase();
+            }
+          } catch (_) {}
+        }
+        const targetModId = ID_BY_HASH[rawHash];
+        if (!targetModId) return false;
+        if (activeCat !== "Todas" || query !== "") {
+          activeCat = "Todas";
+          query = "";
+          if (searchInput) searchInput.value = "";
+          renderFilters();
+          render();
+        }
+        const cards = document.querySelectorAll("#verticales-grid .catalog-card");
+        cards.forEach((c) => {
+          c.classList.remove("vertical-focused");
+          c.removeAttribute("data-focused-vertical");
+        });
+        const targetCard = document.querySelector('#verticales-grid .catalog-card[data-vertical-id="' + targetModId + '"]');
+        if (!targetCard) return false;
+        targetCard.classList.add("vertical-focused");
+        targetCard.setAttribute("data-focused-vertical", "true");
+        try {
+          targetCard.scrollIntoView({ behavior: "smooth", block: "center" });
+          targetCard.focus({ preventScroll: true });
+        } catch (_) {}
+        return true;
+      }
+
+      window.addEventListener("hashchange", focusVerticalFromHash);
+
       const urlVerticales = esEstatico ? "../datos/verticales.json?v=" + Date.now() : "/api/verticales";
       fetch(urlVerticales, { cache: "no-store" })
         .then((r) => (r.ok ? r : fetch("../datos/verticales.json?v=" + Date.now(), { cache: "no-store" })))
@@ -419,6 +485,7 @@
           items = Array.isArray(data) ? data : [];
           renderFilters();
           render();
+          focusVerticalFromHash();
         })
         .catch(() => {
           document.getElementById("verticales-grid").innerHTML = '<div class="catalog-empty">No se pudo cargar el catálogo de módulos verticales.</div>';
