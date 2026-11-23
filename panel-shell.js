@@ -2131,6 +2131,15 @@
     return list;
   }
 
+  // The shell owns session history; embedded navigation replaces its current entry.
+  let officeFrameUrl = "about:blank";
+  function navigateOfficeFrame(iframe, url) {
+    if (!iframe || officeFrameUrl === url) return;
+    if (iframe.contentWindow) iframe.contentWindow.location.replace(url);
+    else iframe.src = url;
+    officeFrameUrl = url;
+  }
+
   function syncCanonicalSideNav() {
     const nav = document.querySelector(".office-sidebar .side-nav");
     if (!nav) return;
@@ -2212,14 +2221,14 @@
             else x.removeAttribute("aria-current");
           });
           const title = document.querySelector("#tablero-topbar h1");
-          if (title) title.textContent = "Oficina · Tablero de tareas";
+          if (title && title.textContent !== "Oficina · Tablero de tareas") title.textContent = "Oficina · Tablero de tareas";
           const nativeView = document.getElementById("office-native-view");
           const frameView = document.getElementById("office-frame-view");
           const iframe = document.getElementById("office-iframe");
           if (nativeView) nativeView.style.display = "";
           if (frameView) frameView.style.display = "none";
-          if (iframe) iframe.src = "about:blank";
-          if (!e.isFromPopstate) {
+          navigateOfficeFrame(iframe, "about:blank");
+          if (!e.isFromLocation) {
             try { window.history.pushState(null, "", OFICINA_BASE + "/"); } catch (_) {}
           }
           return;
@@ -2233,7 +2242,8 @@
           else x.removeAttribute("aria-current");
         });
         const title = document.querySelector("#tablero-topbar h1");
-        if (title) title.textContent = "Oficina · " + item.label;
+        const viewTitle = "Oficina · " + item.label;
+        if (title && title.textContent !== viewTitle) title.textContent = viewTitle;
 
         const nativeView = document.getElementById("office-native-view");
         const frameView = document.getElementById("office-frame-view");
@@ -2247,7 +2257,6 @@
         if (nativeView && frameView && iframe) {
           nativeView.style.display = "none";
           frameView.style.display = "block";
-          iframe.src = targetUrl;
           iframe.onload = () => {
             try {
               if (iframe.contentDocument && iframe.contentDocument.documentElement) {
@@ -2255,8 +2264,9 @@
               }
             } catch (_) {}
           };
+          navigateOfficeFrame(iframe, targetUrl);
           const vistaSlug = (item.href || "").replace(/^\/vista\//, "").replace(/^\//, "");
-          if (!e.isFromPopstate) {
+          if (!e.isFromLocation) {
             try {
               window.history.pushState(
                 { vista: vistaSlug, hash: anchorHash },
@@ -2279,66 +2289,29 @@
     }
     syncBloggerNavBadge();
 
-    function resolveHashRoute(rawHash) {
-      const clean = String(rawHash || "").replace(/^#/, "").trim().toLowerCase();
-      if (!clean) return null;
-      if (clean === "verticales" || clean === "autonomos" || clean.startsWith("verticales-")) {
-        return {
-          vista: "verticales",
-          hash: "#" + (clean === "autonomos" ? "verticales-autonomos" : clean),
-        };
-      }
-      return null;
-    }
-
-    function openHashRouteIfMatched(rawHash) {
-      const hashRoute = resolveHashRoute(rawHash);
-      if (!hashRoute) return false;
-      const targetHref = "/vista/" + hashRoute.vista;
-      const cards = Array.from(nav.querySelectorAll(".nav-card"));
-      const match = cards.find((c) => {
-        const h = c.dataset.vistaHref || c.getAttribute("href") || "";
-        return h === targetHref || h === "/" + hashRoute.vista;
-      });
-      if (!match) return false;
-      const ev = new CustomEvent("click", { bubbles: true });
-      ev.targetAnchorHash = hashRoute.hash;
-      match.dispatchEvent(ev);
-      return true;
-    }
-
-    if (!window.__oficinaHashRouteBound) {
-      window.__oficinaHashRouteBound = true;
-      window.addEventListener("hashchange", () => {
-        openHashRouteIfMatched(window.location.hash);
-      });
-    }
-
     if (!esModoLimpio && !window.__oficinaVistaRestaurada) {
       const initialVista = new URLSearchParams(window.location.search).get("vista");
-      const hashRoute = resolveHashRoute(window.location.hash);
-      const resolvedVista = initialVista || (hashRoute ? hashRoute.vista : "");
-      const resolvedHash = hashRoute ? hashRoute.hash : (window.location.hash || "");
-      if (resolvedVista) {
-        window.__oficinaVistaRestaurada = true;
-        const targetHref = "/vista/" + resolvedVista;
-        const cards = Array.from(nav.querySelectorAll(".nav-card"));
-        const match = cards.find((c) => {
-          const h = c.dataset.vistaHref || c.getAttribute("href") || "";
-          return h === targetHref || h === "/" + resolvedVista;
-        });
-        if (match) {
-          const ev = new CustomEvent("click", { bubbles: true });
-          if (resolvedHash) ev.targetAnchorHash = resolvedHash;
-          match.dispatchEvent(ev);
-        }
+      if (initialVista || resolveHashRoute(window.location.hash)) {
+        window.__oficinaVistaRestaurada = restoreOfficeRoute();
       }
     }
   }
 
-  window.addEventListener("popstate", () => {
-    const params = new URLSearchParams(window.location.search);
-    const vista = params.get("vista");
+  function resolveHashRoute(rawHash) {
+    const clean = String(rawHash || "").replace(/^#/, "").trim().toLowerCase();
+    if (clean === "verticales" || clean === "autonomos" || clean.startsWith("verticales-")) {
+      return {
+        vista: "verticales",
+        hash: "#" + (clean === "autonomos" ? "verticales-autonomos" : clean),
+      };
+    }
+    return null;
+  }
+
+  function restoreOfficeRoute() {
+    if (esModoLimpio || !document.getElementById("office-iframe")) return false;
+    const hashRoute = resolveHashRoute(window.location.hash);
+    const vista = hashRoute?.vista || new URLSearchParams(window.location.search).get("vista");
     let rawPath = window.location.pathname;
     if (OFICINA_BASE && rawPath.startsWith(OFICINA_BASE)) {
       rawPath = rawPath.slice(OFICINA_BASE.length) || "/";
@@ -2349,19 +2322,16 @@
       const h = c.dataset.vistaHref || c.getAttribute("href") || "";
       return h === current || (h !== "/" && (current.startsWith(h + "/") || current === h + ".html"));
     });
-    if (match) {
-      const ev = new Event("click", { bubbles: true });
-      ev.isFromPopstate = true;
-      match.dispatchEvent(ev);
-    } else if (current === "/" || current === "" || current === "/index.html") {
-      const officeCard = cards.find((c) => (c.getAttribute("href") || "") === "/") || cards[0];
-      if (officeCard) {
-        const ev = new Event("click", { bubbles: true });
-        ev.isFromPopstate = true;
-        officeCard.dispatchEvent(ev);
-      }
-    }
-  });
+    if (!match) return false;
+    const ev = new Event("click", { cancelable: true });
+    ev.isFromLocation = true;
+    ev.targetAnchorHash = hashRoute?.hash || window.location.hash;
+    match.dispatchEvent(ev);
+    return true;
+  }
+
+  window.addEventListener("popstate", restoreOfficeRoute);
+  window.addEventListener("hashchange", restoreOfficeRoute);
 
   // ─── Aviso de propuesta de Blogger lista ───
   // La vista de Blogger anota en localStorage el trabajo editorial en curso.

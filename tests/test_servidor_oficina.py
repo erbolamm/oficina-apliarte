@@ -673,8 +673,8 @@ class TestServidorOficina(unittest.TestCase):
             self.assertIn("function resolveHashRoute(rawHash)", js)
             self.assertIn('clean.startsWith("verticales-")', js)
             self.assertIn('vista: "verticales"', js)
-            self.assertIn("ev.targetAnchorHash = resolvedHash", js)
-            self.assertIn("openHashRouteIfMatched(window.location.hash)", js)
+            self.assertIn("ev.targetAnchorHash = hashRoute?.hash || window.location.hash", js)
+            self.assertIn('window.addEventListener("hashchange", restoreOfficeRoute)', js)
             self.assertIn('encodeURIComponent(slug) + (window.location.hash || "")', js)
 
         # 3. Verificar que /vista/verticales asigna el ancla y enfoca el bloque de Autonomos

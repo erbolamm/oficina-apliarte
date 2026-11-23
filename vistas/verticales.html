@@ -98,10 +98,11 @@
     html[data-theme="dark"] .commercial-list strong {
       color: #f1f5f9;
     }
+    html { scroll-behavior: auto; }
     .catalog-card.vertical-focused {
       border-color: var(--navy, #005fa9);
       box-shadow: 0 0 0 3px rgba(0, 95, 169, 0.22), 0 8px 24px rgba(0, 95, 169, 0.12);
-      transition: box-shadow 0.25s ease, border-color 0.25s ease;
+      transition: none;
     }
     html[data-theme="dark"] .catalog-card.vertical-focused {
       border-color: var(--cyan, #5ecef5);
@@ -263,7 +264,7 @@
     <div id="verticales-grid" class="catalog-grid"></div>
   </main>
 
-  <script src="../panel-shell.js"></script>
+  <script src="../panel-shell.js?v=20261123_1"></script>
   <script>
     (function () {
       const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -441,37 +442,36 @@
           borradores = [];
         });
 
+      let focusedCard = null;
+
       function focusVerticalFromHash() {
-        let rawHash = (window.location.hash || "").replace(/^#/, "").trim().toLowerCase();
-        if (!rawHash) {
-          try {
-            if (window.parent && window.parent !== window && window.parent.location && window.parent.location.hash) {
-              rawHash = String(window.parent.location.hash).replace(/^#/, "").trim().toLowerCase();
-            }
-          } catch (_) {}
-        }
+        const rawHash = window.location.hash.slice(1).trim().toLowerCase();
         const targetModId = ID_BY_HASH[rawHash];
-        if (!targetModId) return false;
-        if (activeCat !== "Todas" || query !== "") {
+        if (targetModId && (activeCat !== "Todas" || query !== "")) {
           activeCat = "Todas";
           query = "";
           if (searchInput) searchInput.value = "";
           renderFilters();
           render();
         }
-        const cards = document.querySelectorAll("#verticales-grid .catalog-card");
-        cards.forEach((c) => {
-          c.classList.remove("vertical-focused");
-          c.removeAttribute("data-focused-vertical");
-        });
-        const targetCard = document.querySelector('#verticales-grid .catalog-card[data-vertical-id="' + targetModId + '"]');
+        const targetCard = targetModId
+          ? document.querySelector('#verticales-grid .catalog-card[data-vertical-id="' + targetModId + '"]')
+          : null;
+        if (targetCard === focusedCard) return Boolean(targetCard);
+        if (focusedCard) {
+          focusedCard.classList.remove("vertical-focused");
+          focusedCard.removeAttribute("data-focused-vertical");
+        }
+        focusedCard = targetCard;
         if (!targetCard) return false;
         targetCard.classList.add("vertical-focused");
         targetCard.setAttribute("data-focused-vertical", "true");
-        try {
-          targetCard.scrollIntoView({ behavior: "smooth", block: "center" });
-          targetCard.focus({ preventScroll: true });
-        } catch (_) {}
+        const rect = targetCard.getBoundingClientRect();
+        window.scrollTo({
+          top: window.scrollY + rect.top - (window.innerHeight - rect.height) / 2,
+          behavior: "instant",
+        });
+        targetCard.focus({ preventScroll: true });
         return true;
       }
 
