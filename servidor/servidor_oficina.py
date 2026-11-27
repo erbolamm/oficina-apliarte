@@ -191,6 +191,15 @@ class ManejadorOficina(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(cuerpo)
 
+    def responder_binario(self, cuerpo: bytes, tipo_contenido: str, codigo: int = 200):
+        self.send_response(codigo)
+        self.send_header("Content-Type", tipo_contenido)
+        self.send_header("Content-Length", str(len(cuerpo)))
+        self.send_header("Cache-Control", "public, max-age=604800")
+        self.send_header("X-Modo-Oficina", "solo_lectura")
+        self.end_headers()
+        self.wfile.write(cuerpo)
+
     def responder_error(self, mensaje: str, codigo: int = 404):
         if codigo == 405:
             cuerpo = json.dumps({"error": mensaje, "codigo": codigo}, ensure_ascii=False, indent=2).encode("utf-8")
@@ -284,6 +293,27 @@ class ManejadorOficina(BaseHTTPRequestHandler):
             archivo_css = (RAIZ_PROYECTO / ruta.lstrip("/")).resolve()
             if archivo_css.is_relative_to(raiz_est) and archivo_css.exists() and archivo_css.is_file():
                 self.responder_css(archivo_css.read_text(encoding="utf-8"))
+                return
+
+        if ruta.startswith("/assets/"):
+            raiz_assets = (RAIZ_PROYECTO / "assets").resolve()
+            archivo_asset = (RAIZ_PROYECTO / ruta.lstrip("/")).resolve()
+            tipos_assets = {
+                ".jpg": "image/jpeg",
+                ".jpeg": "image/jpeg",
+                ".png": "image/png",
+                ".webp": "image/webp",
+                ".gif": "image/gif",
+                ".svg": "image/svg+xml",
+            }
+            tipo_asset = tipos_assets.get(archivo_asset.suffix.lower())
+            if (
+                tipo_asset
+                and archivo_asset.is_relative_to(raiz_assets)
+                and archivo_asset.exists()
+                and archivo_asset.is_file()
+            ):
+                self.responder_binario(archivo_asset.read_bytes(), tipo_asset)
                 return
 
         if ruta in ("", "/", "/index.html"):

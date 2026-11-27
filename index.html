@@ -9,7 +9,7 @@
   <title>Tablero · Oficina ApliArte</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="panel-shell.css?v=20261115_1">
+  <link rel="stylesheet" href="panel-shell.css?v=20261127_tl4">
   <style>
     /* Distribución de cuatro columnas para el tablero auténtico */
     @media (min-width: 960px) {
@@ -104,6 +104,10 @@
         <a class="nav-card active" href="#" aria-current="page" onclick="return false;">
           <span class="nav-icon" aria-hidden="true">⌂</span>
           <span class="nav-copy"><strong>Oficina</strong><small>Tablero de tareas</small></span>
+        </a>
+        <a class="nav-card nav-card-talent" href="#talent-land" id="nav-talent-land" data-talent-land="true">
+          <span class="nav-icon" aria-hidden="true">★</span>
+          <span class="nav-copy"><strong>Talent Land 2026</strong><small>Resultado del evento en directo</small></span>
         </a>
         <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
           <span class="nav-icon" aria-hidden="true">💡</span>
@@ -455,6 +459,144 @@
             <div class="accent-heading" style="font-weight: 700; font-size: 1rem;">co · Codex</div>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Automatización de pruebas unitarias, análisis estático y tipado seguro.</p>
           </div>
+        </div>
+      </section>
+
+      <!-- Sección Talent Land (Resultado del reto en directo) -->
+      <section class="panel talent-land-panel" id="talent-land" aria-labelledby="talent-land-title" hidden>
+        <div class="tl-wrap">
+          <header class="tl-hero">
+            <div class="tl-hero-copy">
+              <span class="tl-badge">Talent Land Málaga 2026 · Evento finalizado</span>
+              <h2 id="talent-land-title">Resultado de la votación y boceto de la aplicación</h2>
+              <p class="tl-sub">Oficina de Agentes ApliArte · 26 de noviembre de 2026</p>
+            </div>
+            <div class="tl-hero-actions">
+              <a class="tl-btn tl-btn-lime" href="https://github.com/erbolamm/oficina-apliarte" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.94 5.96 6.58.96-4.76 4.64 1.12 6.55L12 17.52l-5.88 3.09 1.12-6.55L2.48 9.42l6.58-.96z"/></svg>
+                Danos una estrella en GitHub
+              </a>
+              <a class="tl-btn" href="https://oficina.apliarte.com/demo/resultado-reto-hoy" target="_blank" rel="noopener noreferrer">Ver el cierre original</a>
+            </div>
+          </header>
+
+          <div class="tl-grid">
+            <div class="tl-col">
+              <section class="tl-card">
+                <p class="tl-kicker">Votación oficial en oficina.apliarte.com</p>
+                <h3>Resultado final · 21 votos</h3>
+
+                <div class="tl-vote">
+                  <div class="tl-vote-head">
+                    <span>Ganadora · Una aplicación nueva para móvil</span>
+                    <span>19 votos (90%)</span>
+                  </div>
+                  <div class="tl-bar"><span class="tl-bar-fill tl-bar-win" style="width:90%"></span></div>
+                </div>
+
+                <div class="tl-vote">
+                  <div class="tl-vote-head">
+                    <span>Un espacio nuevo en el mundo en tres dimensiones</span>
+                    <span>2 votos (10%)</span>
+                  </div>
+                  <div class="tl-bar"><span class="tl-bar-fill" style="width:10%"></span></div>
+                </div>
+
+                <div class="tl-notice">
+                  <strong>Aviso transparente sobre tiendas oficiales</strong>
+                  <p>Por la falta de asistencia presencial en el tramo final del evento, no se publicó en Google Play ni en Apple App Store. El resultado queda abierto aquí como escaparate interactivo en el navegador para probarlo y valorar qué os parece.</p>
+                </div>
+              </section>
+
+              <section class="tl-card">
+                <p class="tl-kicker">Directos del evento</p>
+                <h3>Recorre lo construido en el Pabellón 1</h3>
+                <div class="tl-links">
+                  <a class="tl-link" href="https://oficina.apliarte.com/mundo" target="_blank" rel="noopener noreferrer">
+                    <span class="tl-link-icon" aria-hidden="true">3D</span>
+                    <span class="tl-link-copy"><strong>Mundo 3D del Pabellón 1</strong><small>Cámara en primera persona dentro del recinto real.</small></span>
+                    <span class="tl-link-go">Abrir</span>
+                  </a>
+                  <a class="tl-link" href="https://oficina.apliarte.com/demo/resultado-reto-hoy" target="_blank" rel="noopener noreferrer">
+                    <span class="tl-link-icon" aria-hidden="true">Web</span>
+                    <span class="tl-link-copy"><strong>Boceto de cierre del reto</strong><small>Resultado de la votación y resumen del evento.</small></span>
+                    <span class="tl-link-go">Abrir</span>
+                  </a>
+                  <a class="tl-link" href="https://www.twitch.tv/apliarte" target="_blank" rel="noopener noreferrer">
+                    <span class="tl-link-icon" aria-hidden="true">Live</span>
+                    <span class="tl-link-copy"><strong>Directos en Twitch de ApliArte</strong><small>Emisiones en directo grabadas durante Talent Land Málaga.</small></span>
+                    <span class="tl-link-go">Ver canal</span>
+                  </a>
+                </div>
+              </section>
+
+              <section class="tl-card">
+                <p class="tl-kicker">Muro público de participantes · 7</p>
+                <h3>Quienes participaron hoy</h3>
+                <div class="tl-wall">
+                  <span class="tl-chip">Celia</span>
+                  <span class="tl-chip">aperez</span>
+                  <span class="tl-chip">ApliArte <small>Oficina en el mundo 3D</small></span>
+                  <span class="tl-chip">Claudia</span>
+                  <span class="tl-chip">Caro</span>
+                  <span class="tl-chip">Ariadna <small>Está todo perfecto</small></span>
+                  <span class="tl-chip">Visitante anónimo <small>Prueba de seguridad</small></span>
+                </div>
+                <p class="tl-wall-note">Solo nombres públicos. Sin correos ni datos privados.</p>
+              </section>
+            </div>
+
+            <div class="tl-col">
+              <section class="tl-card">
+                <p class="tl-kicker">Proyecto propio de ApliArte</p>
+                <h3>Mapa 3D del Pabellón 1</h3>
+                <div class="tl-gallery">
+                  <a class="tl-shot" href="https://oficina.apliarte.com/mundo" target="_blank" rel="noopener noreferrer">
+                    <span class="tl-shot-media"><img src="assets/talent-land/mapa-pabellon1.jpg" alt="Mapa 3D del Pabellón 1 de Talent Land" loading="lazy" width="480" height="361"></span>
+                    <span class="tl-shot-body"><strong>Mapa 3D Pabellón 1</strong><small>Recorrido en primera persona · 3 min</small></span>
+                  </a>
+                </div>
+              </section>
+
+              <section class="tl-card">
+                <p class="tl-kicker">Seis retos en directo</p>
+                <h3>Historias reales construidas en el evento</h3>
+                <div class="tl-stories">
+                  <article class="tl-story">
+                    <p>Reto improvisado sin tarjeta de visita a mano, partiendo de una foto a una camiseta y su logotipo.</p>
+                  </article>
+                  <article class="tl-story">
+                    <p>Demostración en directo durante la presentación de cinco minutos en el escenario expositor, a partir de la tarjeta de uno de los asistentes.</p>
+                  </article>
+                  <article class="tl-story">
+                    <p>Herramienta rápida en torno a currículums nacida de una conversación en el puesto.</p>
+                  </article>
+                  <article class="tl-story">
+                    <p>Propuesta web creada en vivo tras charlar con un músico, a partir de una captura de su perfil público de Instagram.</p>
+                  </article>
+                  <article class="tl-story">
+                    <p>Rediseño exprés en dos minutos de una portada móvil a partir de una captura de pantalla.</p>
+                  </article>
+                  <article class="tl-story">
+                    <p>Demostración a última hora en vivo para un asistente que había visto la presentación anterior de cinco minutos.</p>
+                  </article>
+                </div>
+                <p class="tl-privacy-note">Por respeto a esas personas y a su privacidad, hemos retirado de internet sus páginas temporales y miniaturas, guardando cada proyecto de forma estricta en local.</p>
+                <div class="tl-app-actions" style="margin-top: 0.75rem;">
+                  <a class="tl-app-btn tl-app-btn-lime" href="https://www.twitch.tv/apliarte" target="_blank" rel="noopener noreferrer">Ver directos en Twitch</a>
+                  <a class="tl-app-btn" href="https://oficina.apliarte.com/mundo" target="_blank" rel="noopener noreferrer">Entrar al mundo 3D</a>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <footer class="tl-footer">
+            <span>¿Qué te parece el resultado? · <strong>oficina.apliarte.com</strong></span>
+            <a class="tl-btn tl-btn-lime" href="https://github.com/erbolamm/oficina-apliarte" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.94 5.96 6.58.96-4.76 4.64 1.12 6.55L12 17.52l-5.88 3.09 1.12-6.55L2.48 9.42l6.58-.96z"/></svg>
+              Estrella en GitHub
+            </a>
+          </footer>
         </div>
       </section>
 
@@ -874,6 +1016,6 @@
       cargarAplicacionesEscaparate();
     });
   </script>
-  <script src="panel-shell.js?v=20261123_1"></script>
+  <script src="panel-shell.js?v=20261127_tl4"></script>
 </body>
 </html>

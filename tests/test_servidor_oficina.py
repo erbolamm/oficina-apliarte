@@ -521,6 +521,42 @@ class TestServidorOficina(unittest.TestCase):
                 contenido = resp.read().decode("utf-8")
                 self.assertTrue(len(contenido) > 50)
 
+    def test_entrada_lateral_talent_land(self):
+        with urllib.request.urlopen(f"{self.base_url}/index.html") as resp:
+            html = resp.read().decode("utf-8")
+        self.assertIn('id="nav-talent-land"', html)
+        self.assertIn("Talent Land 2026", html)
+        self.assertIn("nav-card-talent", html)
+        self.assertNotIn('id="tab-btn-talent-land"', html)
+        self.assertIn('id="talent-land"', html)
+        self.assertIn("talent-land-panel", html)
+        self.assertIn("https://github.com/erbolamm/oficina-apliarte", html)
+        self.assertIn("https://oficina.apliarte.com/mundo", html)
+        self.assertIn("https://oficina.apliarte.com/demo/resultado-reto-hoy", html)
+        self.assertIn("https://www.twitch.tv/apliarte", html)
+        self.assertIn("21 votos", html)
+        self.assertIn("assets/talent-land/mapa-pabellon1.jpg", html)
+        seccion = html.split('id="talent-land"', 1)[1].split("      </section>", 1)[0]
+        self.assertNotIn("@", seccion)
+        for prohibido in ("Bastida", "Adriana", "Marcos", "GestyM", "Shane", "Ferriz", "Semáforo", "semaforo"):
+            self.assertNotIn(prohibido, seccion)
+
+    def test_entrada_lateral_talent_land_en_js(self):
+        with urllib.request.urlopen(f"{self.base_url}/panel-shell.js") as resp:
+            js_code = resp.read().decode("utf-8")
+        self.assertIn("Talent Land 2026", js_code)
+        self.assertIn("talentLand: true", js_code)
+        self.assertIn('"#talent-land"', js_code)
+        self.assertIn("activatePanelTab", js_code)
+
+    def test_assets_talent_land(self):
+        ruta = DIR_REPOSITORIO / "assets" / "talent-land" / "mapa-pabellon1.jpg"
+        self.assertTrue(ruta.exists())
+        with urllib.request.urlopen(f"{self.base_url}/assets/talent-land/mapa-pabellon1.jpg") as resp:
+            self.assertEqual(resp.status, 200)
+            self.assertIn("image/jpeg", resp.headers.get("Content-Type", ""))
+            self.assertTrue(len(resp.read()) > 1000)
+
     def test_vistas_secundarias_retiradas(self):
         for ruta in (
             "/vistas/skills.html",

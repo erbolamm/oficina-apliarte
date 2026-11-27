@@ -2061,6 +2061,7 @@
     { href: "/vista/directo", label: "Directo", desc: "Demo de retransmisión", icon: "▶" },
     { href: "/vista/radar", label: "Radar", desc: "Multi-agente · 2D y 3D", icon: "📡" },
     { href: "/", label: "Oficina", desc: "Tablero de tareas", icon: "⌂", id: "casita" },
+    { href: "#talent-land", label: "Talent Land 2026", desc: "Resultado del evento en directo", icon: "★", id: "nav-talent-land", talentLand: true },
     { href: "/vista/aplicaciones", label: "Aplicaciones", desc: "Catálogo oficial", icon: "📱" },
     { href: "/vista/paquetes", label: "Paquetes", desc: "Librerías Flutter", icon: "📦" },
     { href: "/vista/skills", label: "Skills", desc: "Botonera y catálogo", icon: "⌘" },
@@ -2101,7 +2102,7 @@
   // La Oficina y la propia vista de Plugins no se pueden ocultar, para que
   // siempre haya un camino de vuelta.
   const HIDDEN_NAV_KEY = "erbolamm-panel-hidden-nav";
-  const LOCKED_NAV = Object.freeze(["/", "/vista/seo", "/vista/plugins", "/vista/correos"]);
+  const LOCKED_NAV = Object.freeze(["/", "/vista/seo", "/vista/plugins", "/vista/correos", "#talent-land"]);
 
   function readHiddenNav() {
     try {
@@ -2156,10 +2157,13 @@
       nav.removeChild(nav.firstChild);
     }
 
+    const currentHash = String(window.location.hash || "").replace(/^#/, "");
     for (const item of sideNavItems) {
       let isCurrent = false;
-      if (item.href === "/" && (currentPath === "/" || currentPath === "" || currentPath === "/index.html")) {
-        isCurrent = true;
+      if (item.talentLand) {
+        isCurrent = currentHash === "talent-land";
+      } else if (item.href === "/" && (currentPath === "/" || currentPath === "" || currentPath === "/index.html")) {
+        isCurrent = currentHash !== "talent-land";
       } else if (item.href !== "/" && (currentPath === item.href || currentPath.startsWith(item.href + "/") || currentPath === item.href + ".html")) {
         isCurrent = true;
       }
@@ -2169,9 +2173,14 @@
       if (!isCurrent && hiddenNav.includes(item.href)) continue;
 
       const a = document.createElement("a");
-      a.className = "nav-card" + (isCurrent ? " active" : "");
+      a.className = "nav-card" + (item.talentLand ? " nav-card-talent" : "") + (isCurrent ? " active" : "");
       a.dataset.vistaHref = item.href;
-      if (item.href === "/") {
+      if (item.talentLand) {
+        a.dataset.talentLand = "true";
+      }
+      if (item.talentLand) {
+        a.href = OFICINA_BASE + "/#talent-land";
+      } else if (item.href === "/") {
         a.href = OFICINA_BASE + "/";
       } else if (isStaticMode) {
         const vistaSlugLink = item.href.replace(/^\/vista\//, "").replace(/^\//, "");
@@ -2211,6 +2220,27 @@
 
       a.addEventListener("click", (e) => {
         if (isMobileView()) closeDrawer();
+        if (item.talentLand) {
+          if (typeof window.activatePanelTab !== "function") return;
+          e.preventDefault();
+          const nativeView = document.getElementById("office-native-view");
+          const frameView = document.getElementById("office-frame-view");
+          const iframe = document.getElementById("office-iframe");
+          if (nativeView) nativeView.style.display = "";
+          if (frameView) frameView.style.display = "none";
+          navigateOfficeFrame(iframe, "about:blank");
+          window.activatePanelTab("talent-land", false);
+          document.querySelectorAll(".office-sidebar .nav-card").forEach((x) => {
+            const isActive = x === a;
+            x.classList.toggle("active", isActive);
+            if (isActive) x.setAttribute("aria-current", "page");
+            else x.removeAttribute("aria-current");
+          });
+          if (!e.isFromLocation) {
+            try { window.history.pushState(null, "", OFICINA_BASE + "/#talent-land"); } catch (_) {}
+          }
+          return;
+        }
         const targetPath = item.href || a.getAttribute("href") || "";
         if (targetPath === "/" || targetPath === "" || targetPath === "/index.html") {
           e.preventDefault();
@@ -2228,6 +2258,9 @@
           if (nativeView) nativeView.style.display = "";
           if (frameView) frameView.style.display = "none";
           navigateOfficeFrame(iframe, "about:blank");
+          if (typeof window.activatePanelTab === "function") {
+            window.activatePanelTab("tablero", false);
+          }
           if (!e.isFromLocation) {
             try { window.history.pushState(null, "", OFICINA_BASE + "/"); } catch (_) {}
           }
@@ -2299,6 +2332,9 @@
 
   function resolveHashRoute(rawHash) {
     const clean = String(rawHash || "").replace(/^#/, "").trim().toLowerCase();
+    if (clean === "talent-land" || clean === "talent-land-panel" || clean === "talent") {
+      return { native: "talent-land", hash: "#talent-land" };
+    }
     if (clean === "verticales" || clean === "autonomos" || clean.startsWith("verticales-")) {
       return {
         vista: "verticales",
@@ -2311,6 +2347,7 @@
   function restoreOfficeRoute() {
     if (esModoLimpio || !document.getElementById("office-iframe")) return false;
     const hashRoute = resolveHashRoute(window.location.hash);
+    if (hashRoute && hashRoute.native) return false;
     const vista = hashRoute?.vista || new URLSearchParams(window.location.search).get("vista");
     let rawPath = window.location.pathname;
     if (OFICINA_BASE && rawPath.startsWith(OFICINA_BASE)) {
@@ -2480,6 +2517,17 @@
       items.push(item);
     }
     if (!items.length) return false;
+    if (!items.some((it) => it.href === "#talent-land")) {
+      const idx = items.findIndex((it) => it.href === "/");
+      items.splice(idx >= 0 ? idx + 1 : 0, 0, {
+        href: "#talent-land",
+        label: "Talent Land 2026",
+        desc: "Resultado del evento en directo",
+        icon: "★",
+        id: "nav-talent-land",
+        talentLand: true,
+      });
+    }
     sideNavItems = items;
     syncCanonicalSideNav();
     return true;
@@ -4179,6 +4227,7 @@
       recurrentes: $("#recurrentes-panel"),
       buzon: $("#office-tools-buzon"),
       agentes: $("#agentes-panel") || $("#office-tools-agentes"),
+      "talent-land": $("#talent-land"),
     };
 
     function activateTab(targetId, persist = true) {
@@ -4192,6 +4241,13 @@
         btn.setAttribute("aria-selected", String(isActive));
       });
 
+      const activeBtn = tabsNav.querySelector('button[data-tab="' + targetId + '"]');
+      if (activeBtn) {
+        const navRect = tabsNav.getBoundingClientRect();
+        const btnRect = activeBtn.getBoundingClientRect();
+        tabsNav.scrollLeft += (btnRect.left - navRect.left) - (navRect.width - btnRect.width) / 2;
+      }
+
       for (const [id, el] of Object.entries(sections)) {
         if (!el) continue;
         if (id === targetId) {
@@ -4200,6 +4256,31 @@
         } else {
           el.hidden = true;
           el.style.display = "none";
+        }
+      }
+
+      const titleEl = document.querySelector("#tablero-topbar h1");
+      if (titleEl) {
+        if (targetId === "talent-land") titleEl.textContent = "Oficina · Talent Land 2026";
+        else if (targetId === "tablero") titleEl.textContent = "Oficina · Tablero de tareas";
+      }
+
+      document.querySelectorAll(".office-sidebar .nav-card").forEach((x) => {
+        const isTalent = x.id === "nav-talent-land" || x.dataset.talentLand === "true";
+        if (targetId === "talent-land") {
+          x.classList.toggle("active", isTalent);
+          if (isTalent) x.setAttribute("aria-current", "page");
+          else x.removeAttribute("aria-current");
+        } else if (isTalent) {
+          x.classList.remove("active");
+          x.removeAttribute("aria-current");
+        }
+      });
+      if (targetId === "tablero" && !document.querySelector(".office-sidebar .nav-card.active")) {
+        const casita = document.getElementById("casita") || document.querySelector('.office-sidebar .nav-card[data-vista-href="/"]');
+        if (casita) {
+          casita.classList.add("active");
+          casita.setAttribute("aria-current", "page");
         }
       }
 
@@ -4238,12 +4319,14 @@
       initialTab = "buzon";
     } else if (hash === "agentes") {
       initialTab = "agentes";
+    } else if (hash === "talent-land" || hash === "talent-land-panel" || hash === "talent") {
+      initialTab = "talent-land";
     } else if (hash === "tablero") {
       initialTab = "tablero";
     } else {
       try {
         const saved = localStorage.getItem(TAB_STORAGE_KEY);
-        if (saved && sections[saved]) {
+        if (saved && saved !== "talent-land" && sections[saved]) {
           initialTab = saved;
         }
       } catch (_) {}
@@ -4257,6 +4340,7 @@
       if (h === "recurrentes" || h === "recurrentes-panel") activateTab("recurrentes", false);
       else if (h === "buzon" || h === "inbox") activateTab("buzon", false);
       else if (h === "agentes") activateTab("agentes", false);
+      else if (h === "talent-land" || h === "talent-land-panel" || h === "talent") activateTab("talent-land", false);
       else if (h === "tablero") activateTab("tablero", false);
     });
 
