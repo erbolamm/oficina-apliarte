@@ -638,8 +638,9 @@ class TestServidorOficina(unittest.TestCase):
         with urllib.request.urlopen(f"{self.base_url}/index.html") as resp:
             self.assertEqual(resp.status, 200)
             html = resp.read().decode("utf-8")
-            self.assertIn('id="tab-btn-aplicaciones"', html)
-            self.assertIn('pill-btn-destacado', html)
+            self.assertNotIn('id="panel-tabs"', html)
+            self.assertNotIn('id="tab-btn-aplicaciones"', html)
+            self.assertIn('id="nav-recurrentes"', html)
             self.assertIn('id="aplicaciones-panel"', html)
             self.assertIn('id="apps-showcase-grid"', html)
             self.assertIn('id="apps-filters"', html)

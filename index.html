@@ -109,6 +109,10 @@
           <span class="nav-icon" aria-hidden="true">★</span>
           <span class="nav-copy"><strong>Talent Land 2026</strong><small>Resultado del evento en directo</small></span>
         </a>
+        <a class="nav-card" href="#recurrentes" id="nav-recurrentes" data-native-tab="recurrentes">
+          <span class="nav-icon" aria-hidden="true">🔁</span>
+          <span class="nav-copy"><strong>Tareas recurrentes</strong><small>Programadas y periódicas</small></span>
+        </a>
         <a class="nav-card disabled-card" href="#" aria-disabled="true" tabindex="-1" style="pointer-events: none; opacity: 0.5; cursor: not-allowed;">
           <span class="nav-icon" aria-hidden="true">💡</span>
           <span class="nav-copy"><strong>Propuestas</strong><small>Bandeja comunitaria</small></span>
@@ -301,28 +305,6 @@
       </header>
 
       <div id="office-native-view">
-        <nav class="panel-tabs" id="panel-tabs" role="tablist" aria-label="Secciones del panel">
-        <button type="button" class="pill-btn active" role="tab" id="tab-btn-tablero" aria-selected="true" aria-controls="tablero" data-tab="tablero">
-          <span aria-hidden="true">📋</span> Tablero de tareas
-        </button>
-        <button type="button" class="pill-btn pill-btn-destacado" role="tab" id="tab-btn-aplicaciones" aria-selected="false" aria-controls="aplicaciones-panel" data-tab="aplicaciones">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align: -2px; margin-right: 4px;">
-            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
-            <line x1="12" y1="18" x2="12.01" y2="18"></line>
-          </svg>Aplicaciones
-          <span class="tab-badge" id="badge-total-apps">12</span>
-        </button>
-        <button type="button" class="pill-btn" role="tab" id="tab-btn-recurrentes" aria-selected="false" aria-controls="recurrentes-panel" data-tab="recurrentes">
-          <span aria-hidden="true">🔁</span> Tareas recurrentes
-        </button>
-        <a href="https://github.com/erbolamm/oficina-apliarte/issues/new/choose" target="_blank" rel="noopener noreferrer" class="pill-btn" role="tab" id="tab-btn-buzon" title="Enviar ideas y recordatorios en GitHub">
-          <span aria-hidden="true">💡</span> Ideas y recordatorios
-        </a>
-        <button type="button" class="pill-btn" role="tab" id="tab-btn-agentes" aria-selected="false" aria-controls="agentes-panel" data-tab="agentes">
-          <span aria-hidden="true">🤖</span> Agentes
-        </button>
-      </nav>
-
       <!-- Sección Principal Tablero -->
       <section class="panel board" id="tablero" aria-labelledby="board-title">
         <div class="panel-head">
@@ -715,15 +697,24 @@
       }
     }
 
-    // 3. Acceso directo lateral hacia la sección Aplicaciones (el conmutador vive en panel-shell.js)
+    // 3. Acceso directo lateral hacia secciones nativas (el conmutador vive en panel-shell.js)
 
     const sidebarApps = document.getElementById("sidebar-nav-aplicaciones");
     if (sidebarApps) {
       sidebarApps.addEventListener("click", (e) => {
         e.preventDefault();
-        const tabBtnApps = document.getElementById("tab-btn-aplicaciones");
-        if (tabBtnApps) {
-          tabBtnApps.click();
+        if (typeof window.activatePanelTab === "function") {
+          window.activatePanelTab("aplicaciones", true);
+          if (isMobile()) closeDrawer();
+        }
+      });
+    }
+    const sidebarRecurrentes = document.getElementById("nav-recurrentes");
+    if (sidebarRecurrentes) {
+      sidebarRecurrentes.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (typeof window.activatePanelTab === "function") {
+          window.activatePanelTab("recurrentes", true);
           if (isMobile()) closeDrawer();
         }
       });

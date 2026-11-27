@@ -2061,7 +2061,8 @@
     { href: "/vista/directo", label: "Directo", desc: "Demo de retransmisión", icon: "▶" },
     { href: "/vista/radar", label: "Radar", desc: "Multi-agente · 2D y 3D", icon: "📡" },
     { href: "/", label: "Oficina", desc: "Tablero de tareas", icon: "⌂", id: "casita" },
-    { href: "#talent-land", label: "Talent Land 2026", desc: "Resultado del evento en directo", icon: "★", id: "nav-talent-land", talentLand: true },
+    { href: "#talent-land", label: "Talent Land 2026", desc: "Resultado del evento en directo", icon: "★", id: "nav-talent-land", talentLand: true, nativeTab: "talent-land" },
+    { href: "#recurrentes", label: "Tareas recurrentes", desc: "Programadas y periódicas", icon: "🔁", id: "nav-recurrentes", nativeTab: "recurrentes" },
     { href: "/vista/aplicaciones", label: "Aplicaciones", desc: "Catálogo oficial", icon: "📱" },
     { href: "/vista/paquetes", label: "Paquetes", desc: "Librerías Flutter", icon: "📦" },
     { href: "/vista/skills", label: "Skills", desc: "Botonera y catálogo", icon: "⌘" },
@@ -2102,7 +2103,7 @@
   // La Oficina y la propia vista de Plugins no se pueden ocultar, para que
   // siempre haya un camino de vuelta.
   const HIDDEN_NAV_KEY = "erbolamm-panel-hidden-nav";
-  const LOCKED_NAV = Object.freeze(["/", "/vista/seo", "/vista/plugins", "/vista/correos", "#talent-land"]);
+  const LOCKED_NAV = Object.freeze(["/", "/vista/seo", "/vista/plugins", "/vista/correos", "#talent-land", "#recurrentes"]);
 
   function readHiddenNav() {
     try {
@@ -2159,11 +2160,12 @@
 
     const currentHash = String(window.location.hash || "").replace(/^#/, "");
     for (const item of sideNavItems) {
+      const nativeTab = item.nativeTab || (item.talentLand ? "talent-land" : "");
       let isCurrent = false;
-      if (item.talentLand) {
-        isCurrent = currentHash === "talent-land";
+      if (nativeTab) {
+        isCurrent = currentHash === nativeTab;
       } else if (item.href === "/" && (currentPath === "/" || currentPath === "" || currentPath === "/index.html")) {
-        isCurrent = currentHash !== "talent-land";
+        isCurrent = currentHash !== "talent-land" && currentHash !== "recurrentes";
       } else if (item.href !== "/" && (currentPath === item.href || currentPath.startsWith(item.href + "/") || currentPath === item.href + ".html")) {
         isCurrent = true;
       }
@@ -2178,8 +2180,9 @@
       if (item.talentLand) {
         a.dataset.talentLand = "true";
       }
-      if (item.talentLand) {
-        a.href = OFICINA_BASE + "/#talent-land";
+      if (nativeTab) {
+        a.dataset.nativeTab = nativeTab;
+        a.href = OFICINA_BASE + "/#" + nativeTab;
       } else if (item.href === "/") {
         a.href = OFICINA_BASE + "/";
       } else if (isStaticMode) {
@@ -2220,7 +2223,7 @@
 
       a.addEventListener("click", (e) => {
         if (isMobileView()) closeDrawer();
-        if (item.talentLand) {
+        if (nativeTab) {
           if (typeof window.activatePanelTab !== "function") return;
           e.preventDefault();
           const nativeView = document.getElementById("office-native-view");
@@ -2229,7 +2232,7 @@
           if (nativeView) nativeView.style.display = "";
           if (frameView) frameView.style.display = "none";
           navigateOfficeFrame(iframe, "about:blank");
-          window.activatePanelTab("talent-land", false);
+          window.activatePanelTab(nativeTab, false);
           document.querySelectorAll(".office-sidebar .nav-card").forEach((x) => {
             const isActive = x === a;
             x.classList.toggle("active", isActive);
@@ -2237,7 +2240,7 @@
             else x.removeAttribute("aria-current");
           });
           if (!e.isFromLocation) {
-            try { window.history.pushState(null, "", OFICINA_BASE + "/#talent-land"); } catch (_) {}
+            try { window.history.pushState(null, "", OFICINA_BASE + "/#" + nativeTab); } catch (_) {}
           }
           return;
         }
@@ -2334,6 +2337,12 @@
     const clean = String(rawHash || "").replace(/^#/, "").trim().toLowerCase();
     if (clean === "talent-land" || clean === "talent-land-panel" || clean === "talent") {
       return { native: "talent-land", hash: "#talent-land" };
+    }
+    if (clean === "recurrentes" || clean === "recurrentes-panel") {
+      return { native: "recurrentes", hash: "#recurrentes" };
+    }
+    if (clean === "aplicaciones" || clean === "aplicaciones-panel") {
+      return { native: "aplicaciones", hash: "#aplicaciones" };
     }
     if (clean === "verticales" || clean === "autonomos" || clean.startsWith("verticales-")) {
       return {
@@ -2526,6 +2535,18 @@
         icon: "★",
         id: "nav-talent-land",
         talentLand: true,
+        nativeTab: "talent-land",
+      });
+    }
+    if (!items.some((it) => it.href === "#recurrentes")) {
+      const idx = items.findIndex((it) => it.href === "#talent-land");
+      items.splice(idx >= 0 ? idx + 1 : 1, 0, {
+        href: "#recurrentes",
+        label: "Tareas recurrentes",
+        desc: "Programadas y periódicas",
+        icon: "🔁",
+        id: "nav-recurrentes",
+        nativeTab: "recurrentes",
       });
     }
     sideNavItems = items;
@@ -4216,10 +4237,7 @@
 
   function initPanelTabs() {
     const tabsNav = $("#panel-tabs");
-    if (!tabsNav) return;
-
-    const tabButtons = tabsNav.querySelectorAll("button[data-tab]");
-    if (!tabButtons.length) return;
+    const tabButtons = tabsNav ? tabsNav.querySelectorAll("button[data-tab]") : [];
 
     const sections = {
       tablero: $("#tablero"),
@@ -4229,6 +4247,7 @@
       agentes: $("#agentes-panel") || $("#office-tools-agentes"),
       "talent-land": $("#talent-land"),
     };
+    if (!Object.values(sections).some(Boolean)) return;
 
     function activateTab(targetId, persist = true) {
       if (!targetId) targetId = "tablero";
@@ -4241,8 +4260,8 @@
         btn.setAttribute("aria-selected", String(isActive));
       });
 
-      const activeBtn = tabsNav.querySelector('button[data-tab="' + targetId + '"]');
-      if (activeBtn) {
+      const activeBtn = tabsNav ? tabsNav.querySelector('button[data-tab="' + targetId + '"]') : null;
+      if (tabsNav && activeBtn) {
         const navRect = tabsNav.getBoundingClientRect();
         const btnRect = activeBtn.getBoundingClientRect();
         tabsNav.scrollLeft += (btnRect.left - navRect.left) - (navRect.width - btnRect.width) / 2;
@@ -4262,16 +4281,20 @@
       const titleEl = document.querySelector("#tablero-topbar h1");
       if (titleEl) {
         if (targetId === "talent-land") titleEl.textContent = "Oficina · Talent Land 2026";
+        else if (targetId === "recurrentes") titleEl.textContent = "Oficina · Tareas recurrentes";
+        else if (targetId === "aplicaciones") titleEl.textContent = "Oficina · Aplicaciones";
         else if (targetId === "tablero") titleEl.textContent = "Oficina · Tablero de tareas";
       }
 
+      const nativeNavTabs = new Set(["talent-land", "recurrentes"]);
       document.querySelectorAll(".office-sidebar .nav-card").forEach((x) => {
-        const isTalent = x.id === "nav-talent-land" || x.dataset.talentLand === "true";
-        if (targetId === "talent-land") {
-          x.classList.toggle("active", isTalent);
-          if (isTalent) x.setAttribute("aria-current", "page");
+        const itemNative = x.dataset.nativeTab || (x.id === "nav-talent-land" || x.dataset.talentLand === "true" ? "talent-land" : "");
+        if (nativeNavTabs.has(targetId)) {
+          const isMatch = itemNative === targetId;
+          x.classList.toggle("active", isMatch);
+          if (isMatch) x.setAttribute("aria-current", "page");
           else x.removeAttribute("aria-current");
-        } else if (isTalent) {
+        } else if (itemNative) {
           x.classList.remove("active");
           x.removeAttribute("aria-current");
         }
