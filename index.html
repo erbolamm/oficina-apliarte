@@ -860,7 +860,7 @@
             <span class="app-stores-label">Disponibilidad en tiendas:</span>
             <div class="app-stores-row">
               ${app.tiendas.map(t => {
-                if (t.disponible && t.url) {
+                if ((t.disponible ?? t.publicada) && t.url) {
                   return `<a href="${escapeHtml(t.url)}" class="app-store-pill app-store-pill-active" title="Abrir en ${escapeHtml(t.tienda)}">${escapeHtml(t.tienda)} <span aria-hidden="true">↗</span></a>`;
                 } else {
                   return `<span class="app-store-pill app-store-pill-disabled" title="Proximamente en ${escapeHtml(t.tienda)}">${escapeHtml(t.tienda)} (Proximamente)</span>`;
@@ -899,7 +899,7 @@
             <h3 class="app-card-title">${escapeHtml(app.nombre)}</h3>
             <p class="app-card-subtitle">${escapeHtml(app.subtitulo || "")}</p>
           </div>
-          <span class="app-status-badge ${estadoBadgeClass}">${escapeHtml(app.estado || "")} · v${escapeHtml(app.version || "1.0")}</span>
+          <span class="app-status-badge ${estadoBadgeClass}">${escapeHtml(app.estado || "")}</span>
         </div>
         <p class="app-card-desc">${escapeHtml(app.descripcion || "")}</p>
         ${featsHtml}

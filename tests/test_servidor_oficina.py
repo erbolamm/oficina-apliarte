@@ -816,6 +816,26 @@ class TestServidorOficina(unittest.TestCase):
             self.assertIn("corazon-modelo-avanzado.jpg", js)
             self.assertIn("Modelo Ligero / Local", js)
             self.assertIn("Modelo Avanzado", js)
+            # Descargas conserva su versión en preparación
+            self.assertIn("En preparación (v0.1)", js)
+
+        # Aplicaciones y paquetes no muestran versiones fijas ni claves heterogéneas
+        with urllib.request.urlopen(f"{self.base_url}/index.html") as resp:
+            idx = resp.read().decode("utf-8")
+            self.assertNotIn("app.version", idx)
+        with urllib.request.urlopen(f"{self.base_url}/vista/aplicaciones") as resp:
+            apps_html = resp.read().decode("utf-8")
+            self.assertNotIn("a.version", apps_html)
+        with urllib.request.urlopen(f"{self.base_url}/vista/paquetes") as resp:
+            pkgs_html = resp.read().decode("utf-8")
+            self.assertNotIn("p.version", pkgs_html)
+        with urllib.request.urlopen(f"{self.base_url}/datos/aplicaciones.json") as resp:
+            apps_data = json.loads(resp.read().decode("utf-8"))
+            for app in apps_data:
+                self.assertNotIn("version", app)
+                for t in app.get("tiendas", []):
+                    self.assertNotIn("publicada", t)
+                    self.assertIn("disponible", t)
 
         for img_ruta in (
             "/assets/reflect/corazon-modelo-basico.jpg",

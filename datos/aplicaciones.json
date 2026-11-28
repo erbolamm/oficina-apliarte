@@ -6,7 +6,6 @@
     "descripcion": "Proyecta cualquier dibujo o boceto sobre papel o lienzo para calcar y aprender a dibujar con precisión asistida por cámara en Android e iOS.",
     "categoria": "Creatividad y Diseno",
     "estado": "Disponible en Produccion",
-    "version": "2.5.7",
     "icono": "palette",
     "enlace_principal": {
       "texto": "Sitio Web Oficial",
@@ -47,7 +46,6 @@
     "descripcion": "Utilidad práctica para gestionar de forma rápida el sellado autonómico de la demanda de empleo y la solicitud de cita previa en toda España.",
     "categoria": "Productividad y Gestiones",
     "estado": "Disponible en Produccion",
-    "version": "225.1.0",
     "icono": "clipboard-check",
     "enlace_principal": {
       "texto": "Portal Oficial ApliArte",
@@ -88,7 +86,6 @@
     "descripcion": "Programa alarmas y recordatorios cotidianos con la apariencia y el sonido de una llamada telefónica entrante personalizada.",
     "categoria": "Productividad y Gestiones",
     "estado": "Disponible en Produccion",
-    "version": "80.0.1",
     "icono": "phone-ring",
     "enlace_principal": {
       "texto": "Portal Oficial ApliArte",
@@ -129,7 +126,6 @@
     "descripcion": "Herramienta musical ligera para entrenar el oído y afinar guitarra e instrumentos de cuerda mediante tonos reales de referencia.",
     "categoria": "Creatividad y Diseno",
     "estado": "Disponible en Produccion",
-    "version": "77.0.0",
     "icono": "music-tuning",
     "enlace_principal": {
       "texto": "Portal Oficial ApliArte",
@@ -169,7 +165,6 @@
     "descripcion": "Asistente accesible de identificación sonora y visual para reconocer al instante avisos y llamadas importantes sin mirar la pantalla.",
     "categoria": "Accesibilidad y Comunicacion",
     "estado": "Disponible en Produccion",
-    "version": "85.0.0",
     "icono": "caller-voice",
     "enlace_principal": {
       "texto": "Portal Oficial ApliArte",
@@ -210,7 +205,6 @@
     "descripcion": "Comunicación adaptada con interfaz limpia, tipografía extragrande, botones de alto contraste y lectura por voz integrada.",
     "categoria": "Accesibilidad y Comunicacion",
     "estado": "En Desarrollo Activo",
-    "version": "1.2.43",
     "icono": "chat-accessible",
     "enlace_principal": {
       "texto": "Portal Oficial ApliArte",
@@ -244,7 +238,6 @@
     "descripcion": "Utilidad ligera de escritorio para captura por voz, transcripción local inmediata e integración con el flujo de tareas de Oficina ApliArte.",
     "categoria": "Herramientas de Oficina",
     "estado": "En Desarrollo Activo",
-    "version": "0.5.0",
     "icono": "mic-desk",
     "enlace_principal": {
       "texto": "Escaparate Oficina ApliArte",
@@ -278,7 +271,6 @@
     "descripcion": "Ecosistema de Aplicaciones, Música y Recursos",
     "categoria": "Educación y Comunidad",
     "estado": "Disponible en Produccion",
-    "version": "68",
     "icono": "smartphone",
     "icono_url": "https://play-lh.googleusercontent.com/biILlOkmLj2E0jGw0bZOGRgap8W3QQEAnMx67txPXEYxqdW0x5HUCn2axS8bxAujlyvIwlUVR_AyJOo2aTNG=s180",
     "capturas": [
@@ -296,13 +288,13 @@
         "tienda": "Google Play",
         "plataforma": "Android",
         "url": "https://play.google.com/store/apps/details?id=com.mobincube.android.sc_ST8Y4",
-        "publicada": true
+        "disponible": true
       },
       {
         "tienda": "App Store",
         "plataforma": "iOS",
         "url": "https://apps.apple.com/es/app/id6449417577",
-        "publicada": true
+        "disponible": true
       }
     ]
   },
@@ -313,7 +305,6 @@
     "descripcion": "Teoría Musical, Solfeo y Ejercicios",
     "categoria": "Música y Audio",
     "estado": "Disponible en Produccion",
-    "version": "4",
     "icono": "smartphone",
     "icono_url": "https://play-lh.googleusercontent.com/aakRaiPRZRNF-qATtQzMvOXncZ3omYZcxzq0Sxzdt0uBh_u7OzBJ5fbGC6Mbw98IyOaw0_ht3RcbpuCIfvmYmg=s180",
     "capturas": [
@@ -331,13 +322,13 @@
         "tienda": "Google Play",
         "plataforma": "Android",
         "url": "https://play.google.com/store/apps/details?id=com.mobincube.android.sc_9V9E9",
-        "publicada": true
+        "disponible": true
       },
       {
         "tienda": "App Store",
         "plataforma": "iOS",
         "url": "https://apps.apple.com/es/app/id993270084",
-        "publicada": true
+        "disponible": true
       }
     ]
   },
@@ -348,7 +339,6 @@
     "descripcion": "Aprende a Interpretar Gestos y Expresiones",
     "categoria": "Educación y Psicología",
     "estado": "Disponible en Produccion",
-    "version": "104",
     "icono": "smartphone",
     "icono_url": "https://play-lh.googleusercontent.com/tZUk-A8e6MtGa72DAjFZVuoXizDMfnphJSmGgoM5Oxm5GJU7JyCFeOdoUuuYf2S6VFMa4PgxGRh1qj8EjoHx=s180",
     "capturas": [
@@ -366,13 +356,13 @@
         "tienda": "Google Play",
         "plataforma": "Android",
         "url": "https://play.google.com/store/apps/details?id=com.mobincube.android.sc_JDQKL",
-        "publicada": true
+        "disponible": true
       },
       {
         "tienda": "App Store",
         "plataforma": "iOS",
         "url": "https://apps.apple.com/es/app/id1540393330",
-        "publicada": true
+        "disponible": true
       }
     ]
   },
@@ -383,7 +373,6 @@
     "descripcion": "Reto de Reflexión y Bienestar Personal",
     "categoria": "Entretenimiento y Reflexión",
     "estado": "Disponible en Produccion",
-    "version": null,
     "icono": "smartphone",
     "icono_url": "https://play-lh.googleusercontent.com/gDDv0bFi-KtQt6aZgPUM-MCDkQdJD1IlI8xyikufZZifHvazgWrkgIT9Ww2P_JZxr-oGV3EGZSnn6k-rnhm7=s180",
     "capturas": [
@@ -401,13 +390,13 @@
         "tienda": "Google Play",
         "plataforma": "Android",
         "url": "https://play.google.com/store/apps/details?id=com.mobincube.android.sc_T2IM5",
-        "publicada": true
+        "disponible": true
       },
       {
         "tienda": "App Store",
         "plataforma": "iOS",
         "url": null,
-        "publicada": false
+        "disponible": false
       }
     ]
   },
@@ -418,7 +407,6 @@
     "descripcion": "Asistencia Rápida, Emergencias y Utilidades",
     "categoria": "Utilidades",
     "estado": "Disponible en Produccion",
-    "version": null,
     "icono": "smartphone",
     "icono_url": "https://play-lh.googleusercontent.com/qVbxvhxx37xGLWiRo10pXUGJG2PndobAb93FO_AolIZfsHJr0aKeye-n66EB0LRZbhmPj7O004VDy7yia-0f=s180",
     "capturas": [
@@ -436,13 +424,13 @@
         "tienda": "Google Play",
         "plataforma": "Android",
         "url": "https://play.google.com/store/apps/details?id=com.mobincube.android.sc_W4GWE.app_79498",
-        "publicada": true
+        "disponible": true
       },
       {
         "tienda": "App Store",
         "plataforma": "iOS",
         "url": null,
-        "publicada": false
+        "disponible": false
       }
     ]
   }

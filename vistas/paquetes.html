@@ -55,7 +55,7 @@
         }
         grid.innerHTML = filtered.map((p, idx) => {
           const plats = Array.isArray(p.plataformas) ? p.plataformas.map((pl) => '<span class="catalog-tag">' + esc(pl) + '</span>').join("") : "";
-          const install = p.instalacion || ("dependencies:\n  " + p.nombre + ": ^" + (p.version || "0.1.0"));
+          const install = p.instalacion || ("dependencies:\n  " + p.nombre + ": any");
           const issueUrl = 'https://github.com/erbolamm/oficina-apliarte/issues/new?title=' +
             encodeURIComponent('[Propuesta] ' + p.nombre + ': ') +
             '&body=' + encodeURIComponent('### Contexto del apartado\n- **Paquete**: ' + p.nombre + '\n- **Tipo**: ' + (p.tipo || 'Librería Flutter') + '\n- **Estado**: Implementado\n\n### ¿Qué te gustaría comentar, proponer o mejorar?\n');
@@ -64,7 +64,6 @@
               '<div class="catalog-card-top">' +
                 '<div><h2>' + esc(p.nombre) + '</h2><p class="catalog-subtitle">' + esc(p.subtitulo || p.tipo || "") + '</p></div>' +
                 '<div style="display:flex; align-items:center; gap:0.4rem;">' +
-                  (p.version ? '<span class="catalog-tag accent">v' + esc(p.version) + '</span>' : '') +
                   '<a class="btn-contextual-feedback inline-feedback-btn" href="' + esc(issueUrl) + '" target="_blank" rel="noopener noreferrer" title="Comentar o proponer una idea sobre ' + esc(p.nombre) + '" aria-label="Comentar o proponer una idea sobre ' + esc(p.nombre) + '">' +
                     '<svg class="feedback-icon-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="12" y1="8" x2="12" y2="14"/><line x1="9" y1="11" x2="15" y2="11"/></svg>' +
                   '</a>' +
@@ -84,7 +83,7 @@
         grid.querySelectorAll(".copy-btn").forEach((btn) => {
           btn.addEventListener("click", () => {
             const p = filtered[Number(btn.dataset.idx)];
-            const install = p.instalacion || ("dependencies:\n  " + p.nombre + ": ^" + (p.version || "0.1.0"));
+            const install = p.instalacion || ("dependencies:\n  " + p.nombre + ": any");
             copyText(install, btn);
           });
         });
