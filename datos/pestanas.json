@@ -157,7 +157,7 @@
     {
       "slug": "correos",
       "titulo": "Correos y Alertas",
-      "subtitulo": "erbolamm y javier",
+      "subtitulo": "Buzón y soporte",
       "ruta": "vistas/instala-tu-oficina.html",
       "activa": false,
       "publica": false,

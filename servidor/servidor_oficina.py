@@ -39,7 +39,7 @@ PESTANAS_ECOSISTEMA = [
     {"slug": "diseno", "titulo": "Estudio de Diseño", "subtitulo": "Vídeo, marcos y SFX", "ruta": "/vista/diseno", "publica": False, "activa": False, "icono": "🎨"},
     {"slug": "tiendas", "titulo": "Tiendas y ASO", "subtitulo": "Auditoría y keywords", "ruta": "/vista/tiendas", "publica": False, "activa": False, "icono": "🎯"},
     {"slug": "mercado", "titulo": "Radar de Mercado", "subtitulo": "Tendencias y noticias", "ruta": "/vista/mercado", "publica": False, "activa": False, "icono": "📊"},
-    {"slug": "correos", "titulo": "Correos y Alertas", "subtitulo": "erbolamm y javier", "ruta": "/vista/correos", "publica": False, "activa": False, "icono": "✉"},
+    {"slug": "correos", "titulo": "Correos y Alertas", "subtitulo": "Buzón y soporte", "ruta": "/vista/correos", "publica": False, "activa": False, "icono": "✉"},
     {"slug": "pnl", "titulo": "Estudio PNL", "subtitulo": "Enganche y microcopy", "ruta": "/vista/pnl", "publica": False, "activa": False, "icono": "🧠"},
     {"slug": "musica", "titulo": "Estudio Musical", "subtitulo": "Música procedural", "ruta": "/vista/musica", "publica": False, "activa": False, "icono": "🎵"},
     {"slug": "locucion", "titulo": "Locución y Guiones", "subtitulo": "TTS y guiones cortos", "ruta": "/vista/locucion", "publica": False, "activa": False, "icono": "🎙"},
@@ -474,6 +474,7 @@ class ManejadorOficina(BaseHTTPRequestHandler):
                     self.responder_html(contenido)
                     return
             vistas_apoyo = {
+                "descargas": ("Descargas", "Asistente ApliArte, Motor ApliArte y Orquestador ApliArte"),
                 "settings": ("Ajustes", "Opciones por defecto"),
                 "manual": ("Manual", "Guía de uso y arquitectura"),
                 "buzon": ("Buzón de ideas", "Ideas y recordatorios"),

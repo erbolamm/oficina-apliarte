@@ -725,6 +725,113 @@ class TestServidorOficina(unittest.TestCase):
             self.assertIn('targetCard.setAttribute("data-focused-vertical", "true")', html)
             self.assertIn('window.addEventListener("hashchange", focusVerticalFromHash)', html)
 
+    def test_privacidad_estricta_sin_correos_pnl_facturas_en_menu(self):
+        # 1. Verificar CANONICAL_SIDE_NAV y LOCKED_NAV en panel-shell.js
+        with urllib.request.urlopen(f"{self.base_url}/panel-shell.js") as resp:
+            js = resp.read().decode("utf-8")
+            self.assertIn("CANONICAL_SIDE_NAV", js)
+            self.assertIn("LOCKED_NAV", js)
+            # No deben estar las tres entradas privadas locales en el menú
+            self.assertNotIn('href: "/vista/correos"', js)
+            self.assertNotIn('href: "/vista/pnl"', js)
+            self.assertNotIn('href: "/vista/facturas"', js)
+            self.assertNotIn('"/vista/correos"', js.split("LOCKED_NAV")[1].split(";")[0])
+            # Debe estar Descargas como único bloque con dev: true
+            self.assertIn('href: "/vista/descargas"', js)
+            self.assertIn('id: "nav-descargas", dev: true', js)
+
+        # 2. Verificar datos/oficina-modulos.json sin correos personales
+        with urllib.request.urlopen(f"{self.base_url}/datos/oficina-modulos.json") as resp:
+            mod_json = resp.read().decode("utf-8")
+            self.assertNotIn("erbolamm@gmail.com", mod_json)
+            self.assertNotIn("javier@apliarte.com", mod_json)
+
+        # 3. Verificar index.html y vistas sin rastros privados
+        with urllib.request.urlopen(f"{self.base_url}/index.html") as resp:
+            idx = resp.read().decode("utf-8")
+            self.assertNotIn("erbolamm y javier", idx)
+            self.assertNotIn("erbolamm@gmail.com", idx)
+            self.assertNotIn("javier@apliarte.com", idx)
+            self.assertNotIn("Espacio Javier", idx)
+
+        with urllib.request.urlopen(f"{self.base_url}/vista/como-funciona") as resp:
+            cf = resp.read().decode("utf-8")
+            self.assertNotIn("erbolamm y javier", cf)
+            self.assertNotIn("erbolamm@gmail.com", cf)
+            self.assertNotIn("javier@apliarte.com", cf)
+            self.assertNotIn("Espacio Javier", cf)
+            self.assertNotIn("Correos y Alertas", cf)
+            self.assertNotIn("Estudio PNL", cf)
+            self.assertNotIn('id="facturas"', cf)
+
+        with urllib.request.urlopen(f"{self.base_url}/vista/visita-guiada") as resp:
+            vg = resp.read().decode("utf-8")
+            self.assertNotIn("Correos y Alertas", vg)
+            self.assertNotIn("Estudio PNL", vg)
+            self.assertNotIn('"t":"Facturas"', vg)
+
+        with urllib.request.urlopen(f"{self.base_url}/construccion.js") as resp:
+            cjs = resp.read().decode("utf-8")
+            self.assertNotIn("Gestor de Facturas", cjs)
+            self.assertNotIn(":8787", cjs)
+            self.assertNotIn("/Users/", cjs)
+            self.assertNotIn("mabel", cjs.lower())
+            self.assertNotIn("franalba", cjs.lower())
+
+        for prohibido in ("Correos y Alertas", "Estudio PNL", "Gestor de facturas", "/Users/"):
+            self.assertNotIn(prohibido, mod_json)
+
+        with urllib.request.urlopen(f"{self.base_url}/datos/pestanas.json") as resp:
+            pj = resp.read().decode("utf-8")
+            self.assertNotIn("erbolamm y javier", pj)
+            self.assertNotIn("erbolamm@gmail.com", pj)
+
+    def test_19_escaparates_visuales_y_descargas(self):
+        slugs = [
+            "seo", "inicio-dia", "aplichat", "conectores", "plugins", "reflect",
+            "diseno", "tiendas", "mercado", "musica", "locucion", "voicestudio",
+            "terminales", "blogger", "bitacora", "diapositivas", "shorts", "resenas", "settings",
+            "descargas"
+        ]
+        for s in slugs:
+            with urllib.request.urlopen(f"{self.base_url}/vista/{s}") as resp:
+                self.assertEqual(resp.status, 200)
+                html = resp.read().decode("utf-8")
+                self.assertIn("text/html", resp.headers.get("Content-Type", ""))
+                self.assertIn("showcase-container", html)
+                self.assertIn("construccion.js", html)
+                self.assertIn("construccion.css", html)
+
+        # Verificar contenido de construccion.js y css
+        with urllib.request.urlopen(f"{self.base_url}/construccion.js") as resp:
+            js = resp.read().decode("utf-8")
+            self.assertIn("MODULOS_CATALOGO", js)
+            self.assertIn("badge-demo", js)
+            self.assertIn("Demostración visual · Datos simulados de ejemplo", js)
+            self.assertIn("badge-preparacion", js)
+            self.assertIn("En preparación · Lista blanca de salida", js)
+            self.assertIn("heart-svg-pulse-simple", js)
+            self.assertIn("heart-svg-pulse-complex", js)
+            self.assertIn("corazon-modelo-basico.jpg", js)
+            self.assertIn("corazon-modelo-avanzado.jpg", js)
+            self.assertIn("Modelo Ligero / Local", js)
+            self.assertIn("Modelo Avanzado", js)
+
+        for img_ruta in (
+            "/assets/reflect/corazon-modelo-basico.jpg",
+            "/assets/reflect/corazon-modelo-avanzado.jpg",
+        ):
+            with urllib.request.urlopen(f"{self.base_url}{img_ruta}") as resp:
+                self.assertEqual(resp.status, 200)
+                self.assertEqual(resp.headers.get("Content-Type"), "image/jpeg")
+
+        with urllib.request.urlopen(f"{self.base_url}/construccion.css") as resp:
+            css = resp.read().decode("utf-8")
+            self.assertIn(".badge-demo", css)
+            self.assertIn(".badge-preparacion", css)
+            self.assertIn(".heart-compare-container", css)
+            self.assertIn(".demo-sandbox", css)
+
 
 if __name__ == "__main__":
     unittest.main()

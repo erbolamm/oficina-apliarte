@@ -2071,28 +2071,26 @@
     { href: "/vista/como-funciona", label: "Cómo funciona", desc: "Guía de la Oficina", icon: "?" },
     { href: "/vista/agentes", label: "Agentes", desc: "Fichas de agentes", icon: "🤖" },
     { href: "/vista/herdr", label: "Herdr", desc: "Consola móvil", icon: "⚡" },
-    { href: "/vista/seo", label: "Espacio SEO", desc: "Auditoría y posicionamiento", icon: "🔍", id: "nav-seo", dev: true },
-    { href: "/vista/inicio-dia", label: "Inicio del día", desc: "Checklist matutino", icon: "☼", dev: true },
-    { href: "/vista/aplichat", label: "ApliChat", desc: "Chat accesible", icon: "💬", dev: true },
-    { href: "/vista/conectores", label: "Conectores", desc: "Servicios y credenciales", icon: "⇄", dev: true },
-    { href: "/vista/plugins", label: "Plugins", desc: "Módulos de la Oficina", icon: "⊞", dev: true },
-    { href: "/vista/reflect", label: "Reflect", desc: "Directivas y memoria", icon: "◐", dev: true },
-    { href: "/vista/diseno", label: "Estudio de Diseño", desc: "Vídeo, marcos y SFX", icon: "🎨", dev: true },
-    { href: "/vista/tiendas", label: "Tiendas y ASO", desc: "Auditoría y keywords", icon: "🎯", dev: true },
-    { href: "/vista/mercado", label: "Radar de Mercado", desc: "Tendencias y noticias", icon: "📊", dev: true },
-    { href: "/vista/correos", label: "Correos y Alertas", desc: "erbolamm y javier", icon: "✉", dev: true },
-    { href: "/vista/pnl", label: "Estudio PNL", desc: "Enganche y microcopy", icon: "🧠", dev: true },
-    { href: "/vista/musica", label: "Estudio Musical", desc: "Música procedural", icon: "🎵", dev: true },
-    { href: "/vista/locucion", label: "Locución y Guiones", desc: "TTS y guiones cortos", icon: "🎙", dev: true },
-    { href: "/vista/voicestudio", label: "Voces ApliArte", desc: "Clonación ultrarrápida", icon: "⚡", dev: true },
-    { href: "/vista/terminales", label: "Terminales", desc: "Lanzadores locales", icon: "▣", dev: true },
-    { href: "/vista/facturas", label: "Facturas", desc: "Gestor de facturas", icon: "€", dev: true },
-    { href: "/vista/blogger", label: "Blogger", desc: "Monitor y difusión", icon: "✎", dev: true },
-    { href: "/vista/bitacora", label: "Bitácora", desc: "Proyectos y enlaces", icon: "☰", dev: true },
-    { href: "/vista/diapositivas", label: "Diapositivas", desc: "Presentaciones y difusión", icon: "⎘", dev: true },
-    { href: "/vista/shorts", label: "Shorts", desc: "Vídeo acelerado a 60 s", icon: "⏩", dev: true },
-    { href: "/vista/resenas", label: "Reseñas", desc: "Contestador inteligente", icon: "★", dev: true },
-    { href: "/vista/settings", label: "Ajustes", desc: "Opciones por defecto", icon: "⚙", dev: true },
+    { href: "/vista/seo", label: "Espacio SEO", desc: "Auditoría y posicionamiento", icon: "🔍", id: "nav-seo" },
+    { href: "/vista/inicio-dia", label: "Inicio del día", desc: "Checklist matutino", icon: "☼" },
+    { href: "/vista/aplichat", label: "ApliChat", desc: "Chat accesible", icon: "💬" },
+    { href: "/vista/conectores", label: "Conectores", desc: "Servicios y credenciales", icon: "⇄" },
+    { href: "/vista/plugins", label: "Plugins", desc: "Módulos de la Oficina", icon: "⊞" },
+    { href: "/vista/reflect", label: "Reflect", desc: "Directivas y memoria", icon: "◐" },
+    { href: "/vista/diseno", label: "Estudio de Diseño", desc: "Vídeo, marcos y SFX", icon: "🎨" },
+    { href: "/vista/tiendas", label: "Tiendas y ASO", desc: "Auditoría y keywords", icon: "🎯" },
+    { href: "/vista/mercado", label: "Radar de Mercado", desc: "Tendencias y noticias", icon: "📊" },
+    { href: "/vista/musica", label: "Estudio Musical", desc: "Música procedural", icon: "🎵" },
+    { href: "/vista/locucion", label: "Locución y Guiones", desc: "TTS y guiones cortos", icon: "🎙" },
+    { href: "/vista/voicestudio", label: "Voces ApliArte", desc: "Clonación ultrarrápida", icon: "⚡" },
+    { href: "/vista/terminales", label: "Terminales", desc: "Lanzadores locales", icon: "▣" },
+    { href: "/vista/blogger", label: "Blogger", desc: "Monitor y difusión", icon: "✎" },
+    { href: "/vista/bitacora", label: "Bitácora", desc: "Proyectos y enlaces", icon: "☰" },
+    { href: "/vista/diapositivas", label: "Diapositivas", desc: "Presentaciones y difusión", icon: "⎘" },
+    { href: "/vista/shorts", label: "Shorts", desc: "Vídeo acelerado a 60 s", icon: "⏩" },
+    { href: "/vista/resenas", label: "Reseñas", desc: "Contestador inteligente", icon: "★" },
+    { href: "/vista/settings", label: "Ajustes", desc: "Opciones por defecto", icon: "⚙" },
+    { href: "/vista/descargas", label: "Descargas", desc: "Asistente, Motor y Orquestador", icon: "⬇", id: "nav-descargas", dev: true },
   ];
   // The server registry (/api/modulos) replaces this list once loaded; the
   // built-in array above stays as the fallback when it cannot be reached.
@@ -2103,7 +2101,7 @@
   // La Oficina y la propia vista de Plugins no se pueden ocultar, para que
   // siempre haya un camino de vuelta.
   const HIDDEN_NAV_KEY = "erbolamm-panel-hidden-nav";
-  const LOCKED_NAV = Object.freeze(["/", "/vista/seo", "/vista/plugins", "/vista/correos", "#talent-land", "#recurrentes"]);
+  const LOCKED_NAV = Object.freeze(["/", "/vista/seo", "/vista/plugins", "#talent-land", "#recurrentes"]);
 
   function readHiddenNav() {
     try {
@@ -2217,7 +2215,7 @@
       if (item.dev) {
         const badge = document.createElement("span");
         badge.className = "badge-dev";
-        badge.textContent = "En desarrollo";
+        badge.textContent = "En preparación";
         a.appendChild(badge);
       }
 
